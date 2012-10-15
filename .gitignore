@@ -1,1 +1,4 @@
 /wfw/yui/
+/nbproject/
+.*
+!/.gitignore
