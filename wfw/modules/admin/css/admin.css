@@ -1,0 +1,109 @@
+
+/*
+-------------------------------------------------------------------------
+    Additionnal Webframework specific
+-------------------------------------------------------------------------
+*/
+
+body {
+	background-color:#fafafa;
+}
+
+h1,h2,h3,h4,h5,h6{
+    color:#3f3524;
+	font-family: "Myriad Pro";
+}
+
+h1
+{
+    border-bottom:2px solid black;
+    background-color:#f5dba6;
+    margin:0px 0px 0px 0px;
+    padding:6px 6px 6px 6px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -webkit-border-radius: 5px 5px 0px 0px;
+    border-radius: 5px 5px 0px 0px;
+}
+
+h1 + p
+{
+    font-style:italic;
+    font-weight:bold;
+}
+
+/*
+    Usage: wfw.ext.document
+*/
+#wfw_ext_content{
+    margin:0px 0px 0px 0px;
+    padding:6px 6px 6px 6px;
+	overflow:hidden;
+    color:#474249;
+	font-family:Verdana, FreeSans, "Deja Vu";
+	font-size:8pt;
+	
+    position:relative;
+    margin-left:auto; 
+	margin-right:auto;
+	margin-top:20px;
+	padding-bottom:30px;/*footer*/
+	text-align:left;
+	width:800px;
+	min-height:100%;
+	
+}
+
+.module_block
+{
+    display:block;
+    width:632px;
+    border:1px solid #eeeeee;
+	background-color:#ffffff;
+    padding:8px;
+    margin:8px;
+    vertical-align:top;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+    box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+    margin:0px auto 0px auto;
+}
+.module
+{
+    display:inline-block;
+    width:300px;
+    min-height:150px;
+    border:1px solid #eeeeee;
+	background-color:#ffffff;
+    padding:8px;
+    margin:8px;
+    vertical-align:top;
+    -webkit-box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+    -moz-box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+    box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+}
+.module_title
+{
+    border:1px solid #444444;
+    background-color:#eeeeee;
+    color:Black;
+    padding:8px;
+    font-size:medium;
+    text-align:center;
+}
+.module_desc
+{
+    color:#444444;
+    padding:4px;
+    font-size:small;
+    text-align:center;
+}
+.float_rightTop
+{
+    position:absolute;
+    top:0;
+    right:0;
+    /*border:1px solid red;*/
+}

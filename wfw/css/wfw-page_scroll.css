@@ -1,0 +1,14 @@
+
+.wfw_ext_scrollable_container {
+    padding:0px;
+    margin:0px;
+    /*border:1px solid black;*/
+    overflow:hidden;
+    /*display:inline-block;*/
+    vertical-align:top;
+}
+
+.wfw_ext_scrollable_container > * {
+    padding:0px;
+    margin:0px;
+}

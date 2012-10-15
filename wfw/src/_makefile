@@ -1,0 +1,11 @@
+EXEC= sysinfo
+OBJS= sysinfo.o
+CC= /usr/local/powerpc-linux/bin/powerpc-linux-gcc
+LD= /usr/local/powerpc-linux/bin/powerpc-linux-ld
+CFLAGS += -I/usr/local/powerpc-linux/include
+LDFLAGS+=-L/usr/local/powerpc-linux/lib
+all: $(EXEC)
+$(EXEC): $(OBJS)
+$(CC) $(CFLAGS) $(OBJS) -o $@ $(LDFLAGS)
+clean:
+rm -rf *.o $(PROG) *.core

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<data>
+	<wfw_id>sample-catalog</wfw_id>
+	<wfw_type>catalog</wfw_type>
+	<wfw_remote_ip>192.168.1.4</wfw_remote_ip>
+	<wfw_timestamp>1324639476</wfw_timestamp>
+	<wfw_date>23/12/2011 12:24:36</wfw_date>
+	<wfw_filename>sample-catalog.xml</wfw_filename>
+	<wfw_type>catalog</wfw_type>
+	
+	<file>catalog.xml</file><!-- for xml database -->
+	<type>xml</type> <!-- xml(client)/sql(db) -->
+	<server_adr>localhost</server_adr>
+	<server_pwd>nikiball</server_pwd>
+	<server_usr>wfw_public</server_usr>
+	<template>catalog_index.html</template>
+	<out_dir>pages</out_dir>
+	<id>Enfant__Puericulture</id>
+	<name>Enfants &amp; Pu&#xE9;riculture (Exemple)</name>
+	<desc>Jouets, jeux, soin et hygi&#xE8;ne de b&#xE9;b&#xE9;</desc>
+</data>

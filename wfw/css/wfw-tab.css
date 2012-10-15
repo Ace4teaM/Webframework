@@ -1,0 +1,90 @@
+/*
+-------------------------------------------------------------------------
+    Webframework(R) Contenu avec tabulation
+
+    Z-Order: 0~3
+-------------------------------------------------------------------------
+*/
+
+.wfw_tabMenu
+{
+    overflow:hidden;
+    vertical-align:bottom;
+    display:block;
+    padding:0px;
+    margin:0px;
+    position:relative;
+}
+.wfw_tabMenu_tab
+{
+    z-index:0;
+    cursor:pointer;
+    display:inline-block;
+    float:left;
+    height:30px;
+    line-height:30px;
+    top:0px;
+    left:auto;
+    position:relative;
+    border:1px solid black;
+    padding:0px 20px 0px 20px;
+    margin:3px -6px 0px 0px;
+    background-color:White;
+}
+.wfw_tabMenu_tab:hover 
+{
+    margin-top:0px;
+    z-index:3;
+}
+.wfw_tabMenu_tab_selected
+{
+    margin-top:0px;
+    z-index:2;
+}
+.wfw_tabMenu_content
+{
+    z-index:1;
+    position:absolute;
+    top:31px;
+    display:none;
+    width:100%;
+    background-color:white;
+    height:90%;
+}
+.wfw_tabMenu_content > div
+{
+    border:1px solid black;
+    padding:20px;
+    height:90%;
+    overflow:scroll;
+}
+.wfw_tabMenu_content_selected
+{
+    clear:both;
+    display:block;
+}
+  
+.wfw_tabMenu_content_fixed > div
+{
+    overflow:hidden;
+}
+  
+/*
+    Fly Menu
+*/
+
+.wfw_tabMenu_fly
+{
+    overflow:visible;
+}
+
+.wfw_tabMenu_content_fly
+{
+    z-index:1002;
+    height:auto;
+}
+
+.wfw_tabMenu_content_fly > div
+{
+    height:auto;
+}

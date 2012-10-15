@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>-{_title}</title>
+
+<meta http-equiv="wfw.page-id" content="-{_page_id_}" /><!-- page identifier -->
+<meta name="keywords" content="actualité, news, résultat, rss" />
+<meta name="description" content="-{_desc}" />
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+// intialise
+function getObjTimer(id) {
+	var i=0;
+	while((timer=wfw.timer.get(i))!=null){
+		if(typeof(timer.user.element_id) && (timer.user.element_id == id))
+			return timer;
+		i++;
+	}
+	return null;
+}
+
+function onShowNews(id) {
+	var timer = getObjTimer(id);
+	//cree
+	if(timer==null){
+		timer = wfw.timer.CreateFrequencyTimer();
+		timer.user.element_id= id;
+		timer.user.element   = docGetElement(document,id);
+    //    timer.user.orgHeight = objGetOrgH(timer.user.element);
+		timer.user.orgHeight = objGetH(timer.user.element);
+	}
+	if(timer.state == "update")
+		return;
+	if(objGetH(timer.user.element)==0){
+		timer.user.onUpdateFrame = function(time,normTime,frame){
+			objSetH(this.element,(normTime*this.orgHeight));
+		};
+	}
+	else{
+		timer.user.onUpdateFrame = function(time,normTime,frame){
+			objSetH(this.element,((1.0-normTime)*this.orgHeight));
+		};
+	}
+    timer.start(500);
+}
+// ]]>
+</script>
+
+<style name="head" type="text/css">
+div.rss_date {
+    font-size:small;
+    padding:0px;
+    margin:0px;
+    font-weight:bold;
+    font-family:Consolas;
+}
+img.rss_image
+{
+     float:left;
+     margin:0px 10px 10px 10px;
+     max-width:144px;
+     max-height:400px;
+     width:88px;
+}
+</style>
+
+</head>
+<!-- Document -->
+<body>
+
+<div name="content">
+    <h1>Actualités</h1>
+    <div style="text-align:center;">
+        <a template:action="array" template:path="/rss/channel" href="#section_-{guid}"><span class="wfw_button_text" style="width:100px; margin:8px;">-{title}</span></a>
+    </div>
+</div>
+
+<div name="content">
+    <div template:action="array" template:path="/rss/channel">
+    <input name="date" type="hidden" value="-{pubDate}" />
+    <input name="title" type="hidden" value="-{title}" />
+    <fieldset>
+    <h1><a name="section_-{guid}">-{title}</a></h1>
+        <div template:action="array" template:path="item">
+            <h2><a href="javascript:onShowNews('-{guid}');">-{title}</a></h2>
+            <div id="-{guid}" style="overflow:hidden;">
+            <p id="P1" style="overflow:hidden;"><img template:action="select" template:path="image" class="rss_image" src="-{url}" alt="-{title}" /><span class="rss_date">[-{pubDate}]</span></p>
+            <div template:action="format">-{description}</div>
+	        </div>
+	        
+        </div>
+    </fieldset>
+    </div>
+</div>
+
+<div name="content">
+    <center><a type="application/rss+xml" href="-{__base_uri__}-{_file_path}"><span class="wfw_button_text"><span class="wfw_icon fmt_rss"></span>S'Abonner à ce flux RSS</span></a></center>
+</div>
+
+</body>
+
+</html>

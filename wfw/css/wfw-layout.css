@@ -1,0 +1,48 @@
+.wfw_ext_layout
+{
+	position:relative;
+	overflow:hidden;
+	display:inline-block;
+    padding:0px;
+    margin:0px;
+	width:0px;
+	height:0px;
+	/*background-color:#aaaaaa;
+	border:0px solid red;*/
+}
+.wfw_ext_layout_item
+{
+	position:absolute;
+	overflow:hidden;
+	display:inline-block;
+    padding:0px;
+    margin:0px;
+	left:0px;
+	top:0px;
+	/*border:0px solid black;
+	background-color:#eeeeee;*/
+}
+.wfw_ext_layout_streach {
+	position:absolute;
+	margin:0px;
+	bottom:0;
+	top:0;
+	left:0;
+	right:0;
+	width:100%;
+	height:100%;
+}
+.wfw_ext_layout_streach_x {
+	position:absolute;
+	margin:0px;
+	left:0;
+	right:0;
+	width:100%;
+}
+.wfw_ext_layout_streach_y {
+	position:absolute;
+	margin:0px;
+	bottom:0;
+	top:0;
+	height:100%;
+}

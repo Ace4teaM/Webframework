@@ -1,0 +1,322 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Gestion des dossiers</title>
+
+<meta http-equiv="wfw.page-id" content="client_dossier" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- wfw : template -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_template.js"></script>
+
+<!-- Link -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/page_scroll.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="js/client/client_dossier.js"></script>
+
+<!-- Styles -->
+<link name="link" rel="stylesheet" href="wfw/css/wfw-page_scroll.css" type="text/css" />
+<link name="link" rel="stylesheet" href="wfw/css/wfw-list.css" type="text/css" />
+
+<style name="head" type="text/css">
+    .list_header
+    {
+        font:12px Tahoma;
+        margin-right:5px;
+        margin-top:7px;
+        border:1px solid #aaa;
+        padding:6px 10px 7px 10px;
+        margin:0px;
+        font:11px Tahoma;
+        text-align:left;
+        color:#000000;
+        line-height:17px;
+        background-color:#fffff5;
+    }
+    .list_header tr td
+    {
+        border-color:#939037;
+        color:#000000;
+        padding:0px 4px 0px 4px;
+        margin:0px;
+        height:20px;
+    }
+
+    .list_header tr td:hover
+    {
+        border-color:#939037;
+        background-color:#fffff5;
+        color:#000000;
+    }
+    
+    .list_content
+    {
+        border:0px;
+        padding:0px;
+        margin:0px;
+    }
+    
+    .list_content tr.item
+    {
+        border:1px solid #aaa;
+        padding:6px 0px 7px 0px;
+        margin:0px;
+        background-color:InactiveCaption;
+    }
+    
+    .list_content tr.item td
+    {
+        border:0px;
+        padding:4px;
+        margin:0px;
+        background-color:InactiveCaption;
+        color:MenuText;
+    }
+    .list_content tr.item td:hover
+    {
+        background-color:ActiveCaption;
+        color:HighlightText;
+        cursor:pointer;
+    }
+    .float_content
+    {
+        position:relative;
+        /*border:1px solid black;
+        margin:40px;*/
+    }
+    .float_rightTop
+    {
+        position:absolute;
+        top:0;
+        right:0;
+        /*border:1px solid red;*/
+    }
+    .float_leftTop
+    {
+        position:absolute;
+        top:0;
+        left:0;
+        /*border:1px solid red;*/
+    }
+</style>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content"><!-- content -->
+
+<!-- Header -->
+<div>
+    <h1>Base de données</h1>
+    <p>Editeur de base de données</p>
+    <!-- Menu -->
+    <div style="padding:10px;" class="float_rightTop">
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return wfw.ext.navigator.openPage('#index');"><span class="wfw_icon left"></span><span class="wfw_hidden_help-content">Retour à l'accueil</span></span>
+        <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+        <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon add" onclick="create_file();"></span><span class="wfw_hidden_help-content">Créé un nouveau dossier</span></span>
+        <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon delete" onclick="removeSelection();"></span><span class="wfw_hidden_help-content">Supprime les dossiers sélectionnés</span></span>
+    </div>
+</div>
+
+<hr />
+
+<!-- **************************************************
+     Formulaire: Nouveau Dossier
+*************************************************** -->
+
+<div class="wfw_list_content wfw_hidden">
+    <form id="new_file_form" name="new_file_form" action="../req/client/create.php" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="wfw_redirection" value="-{:client_dossier}" /><!-- redirection --> 
+        <input type="hidden" name="wfw_redirection_failed" value="-{:client_dossier}" /><!-- redirection --> 
+        <input type="hidden" name="wfw_form_name" value="new_file_form" /><!-- nom du formulaire -->
+
+        <div class="wfw_edit_field"><span>Identifiant <input type="checkbox" id="wfw_id_check" /></span><span><input type="text" disabled="disabled" name="wfw_id" value="" /></span></div>
+        <div class="wfw_edit_field"><span>Mot de passe <input type="checkbox" id="wfw_pwd_check" /></span><span><input type="text" disabled="disabled" name="wfw_pwd" value="" /></span></div>
+        <div class="wfw_edit_field"><span>Type <input type="checkbox" id="wfw_type_check" /></span><span><input type="text" disabled="disabled" name="wfw_type" value="" /></span></div>
+    </form>
+</div>
+
+<!-- **************************************************
+     Liste des dossiers existants
+*************************************************** -->
+
+<div class="wfw_list_content float_content">
+
+    <!-- Menu de tri -->
+    <div class="wfw_bg_frame" style="text-align:left; vertical-align:middle;">
+        <!-- selection -->
+        <span style="width:50px; display:inline-block;"></span>
+        <!-- name -->
+        <span style="width:200px; display:inline-block;">
+            <span class="wfw_icon bottom" onclick="sort_by('file_list_content','name',true);"></span>
+            <span class="wfw_icon top" onclick="sort_by('file_list_content','name',false);"></span>
+            <span>Nom</span>
+        </span>
+        <!-- type -->
+        <span style="width:100px; display:inline-block;">
+            <span class="wfw_icon bottom" onclick="sort_by('file_list_content','type',true);"></span>
+            <span class="wfw_icon top" onclick="sort_by('file_list_content','type',false);"></span>
+            <span>Type</span>
+        </span>
+        <!-- time -->
+        <span style="width:150px; display:inline-block;">
+            <span class="wfw_icon bottom" onclick="sort_by('file_list_content','time',true);"></span>
+            <span class="wfw_icon top" onclick="sort_by('file_list_content','time',false);"></span>
+            <span>Date de création</span>
+        </span>
+        <!-- actions -->
+        <span>Etats/Actions</span>
+    </div>
+    
+    <!-- Item template -->
+    <div id="dossier_item" template:action="ignore" class="wfw_hidden">
+        <!-- sort fields -->
+        <input type="hidden" name="type" value="-{wfw_type}" />
+        <input type="hidden" name="name" value="-{wfw_id}" />
+        <input type="hidden" name="time" value="-{wfw_timestamp}" />
+        <!-- item -->
+        <div class="wfw_bg_frame" style="text-align:left; vertical-align:middle; margin-bottom:1px;">
+            <!-- selection -->
+            <span style="width:50px; display:inline-block;">
+                <input type="checkbox" onchange="onChangeSelection(this,'-{wfw_id}');" />
+            </span>
+            <!-- name -->
+            <span style="width:200px; display:inline-block;">
+                <span>-{wfw_id}</span>
+            </span>
+            <!-- type -->
+            <span style="width:100px; display:inline-block;">
+                <span>-{wfw_type}</span>
+            </span>
+            <!-- time -->
+            <span style="width:150px; display:inline-block;">
+                <span>-{wfw_date}</span>
+            </span>
+            <!-- actions -->
+            <span>
+                <span class="wfw_button_icon"><span class="wfw_icon file_detail wfw_hidden_help" onclick="return onLoadFields('-{wfw_id}');"><span class="wfw_hidden_help-content">Editer les champs</span></span></span>
+                <span class="wfw_button_icon"><span class="wfw_icon fmt_xml wfw_hidden_help" onclick="return onOpenXML('-{wfw_id}');"><span class="wfw_hidden_help-content">Voir le contenu XML</span></span></span>
+                <span class="wfw_button_icon" template:action="exp" template:exp="^true$" template:target="public_link"><span class="wfw_icon file_empty wfw_hidden_help" onclick="data_disconnect('-{wfw_id}');"><span class="wfw_icon connect"></span><span class="wfw_hidden_help-content">Le partage public des fichiers est activé</span></span></span>
+                <span class="wfw_button_icon" template:action="exp" template:exp="^false$" template:target="public_link"><span class="wfw_icon file_empty wfw_hidden_help" onclick="data_connect('-{wfw_id}');"><span class="wfw_icon disconnect"></span><span class="wfw_hidden_help-content">Le partage public des fichiers est désactivé</span></span></span>
+                <span class="wfw_button_icon" template:action="exp" template:exp="^true$" template:target="wfw_readonly"><span class="wfw_icon lock wfw_hidden_help" onclick="return onUpdateField('-{wfw_id}','wfw_readonly','false');"><span class="wfw_hidden_help-content">Les champs sont en lecture seule</span></span></span>
+                <span class="wfw_button_icon" template:action="exp" template:exp="^$" template:target="wfw_readonly"><span class="wfw_icon unlock wfw_hidden_help" onclick="return onUpdateField('-{wfw_id}','wfw_readonly','true');"><span class="wfw_hidden_help-content">Les champs sont modifiables</span></span></span>
+                <span class="wfw_button_icon" template:action="exp" template:exp="(?=[^true$])" template:target="wfw_readonly"><span class="wfw_icon unlock wfw_hidden_help" onclick="return onUpdateField('-{wfw_id}','wfw_readonly','true');"><span class="wfw_hidden_help-content">Les champs sont modifiables</span></span></span>
+                <span class="wfw_button_icon" template:action="exp" template:exp="(?=[^\s])" template:target="wfw_pwd"><span class="wfw_icon pwd wfw_hidden_help" onclick="return onUpdateField('-{wfw_id}','wfw_pwd','');"><span class="wfw_hidden_help-content">Le dossier est protégé par mot-de-passe</span></span></span>
+            </span>
+        </div>
+    </div>
+    
+    <!-- Item list -->
+    <div style="height:200px; overflow-y:scroll; border-top:3px solid #eeeeee; border-bottom:2px solid #eeeeee; margin-top:3px;">
+        <div id="file_list_content"></div>
+    </div>
+</div>
+
+
+<!-- **************************************************
+     Liste des champs du dossier selectionné
+*************************************************** -->
+<div id="editable_content" class="wfw_hidden">
+
+<div class="wfw_list_content float_content">
+    <center>
+        <h2>Champs</h2>
+        <div style="padding-bottom:5px;">Cliquez sur le champ à éditer.</div>
+    </center>
+
+    <!-- menu -->
+    <div style="padding:10px;" class="float_rightTop">
+        <span class="wfw_button_icon"><span class="wfw_icon file_empty wfw_hidden_help" onclick="openFileUpload($value('wfw_id'));"><span class="wfw_hidden_help-content">Editer les fichiers</span></span></span>
+        <span class="wfw_button_icon"><span class="wfw_icon view_thumbs wfw_hidden_help" onclick="openImageUpload($value('wfw_id'));"><span class="wfw_hidden_help-content">Télécharger une image</span></span></span>
+        <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+        <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon delete" onclick="remove_fields();"></span><span class="wfw_hidden_help-content">Supprime les champs sélectionnés</span></span>
+    </div>
+    <div style="padding:10px;" class="float_leftTop">
+        <input type="checkbox" id="show_private_fields" onchange="onLoadFields($value('wfw_id')); return false;" /> Voir les champs privés
+    </div>
+    
+    <!-- sort list bar -->
+    <div class="wfw_bg_frame" style="text-align:left; vertical-align:middle;">
+        <!-- selection -->
+        <span style="width:50px; display:inline-block;"></span>
+        <!-- name -->
+        <span style="width:250px; display:inline-block;">
+            <span class="wfw_icon bottom" onclick="sort_by('field_list','name',true);"></span>
+            <span class="wfw_icon top" onclick="sort_by('field_list','name',false);"></span>
+            <span>Nom</span>
+        </span>
+        <!-- value -->
+        <span style="width:250px; display:inline-block;">
+            <span class="wfw_icon bottom" onclick="sort_by('field_list','value',true);"></span>
+            <span class="wfw_icon top" onclick="sort_by('field_list','value',false);"></span>
+            <span>Valeur</span>
+        </span>
+        <!-- actions -->
+        <span></span>
+    </div>
+    
+
+    <!-- edit bar -->
+    <input type="hidden" name="wfw_id" id="wfw_id" />
+    <div class="wfw_bg_frame" style="text-align:left; vertical-align:middle;">
+        <!-- edit -->
+        <span style="width:50px; display:inline-block;">
+            <span class="wfw_button_icon"><span class="wfw_icon update wfw_hidden_help" onclick="return update_value();"><span class="wfw_hidden_help-content">Insérer un nouveau champ ( si le champ existe il sera remplacé )</span></span></span>
+        </span>
+        <!-- name -->
+        <span style="width:250px; display:inline-block;">
+            <input type="text" style="width:90%;" id="new_name" value="" />
+        </span>
+        <!-- value -->
+        <span style="width:250px; display:inline-block;">
+            <input type="text" style="width:90%;" id="new_value" value="" />
+        </span>
+        <!-- actions -->
+        <span></span>
+    </div>
+
+    <!-- Item template -->
+    <div id="field_template" template:action="ignore" class="wfw_bg_frame wfw_hidden" style="text-align:left; vertical-align:middle; margin-bottom:1px;">
+        <!-- sort fields -->
+        <input type="hidden" name="value" value="-{value}" />
+        <input type="hidden" name="name" value="-{name}" />
+        <input type="hidden" name="private" value="-{private}" />
+        <!-- selection -->
+        <span style="width:50px; display:inline-block;">
+            <input type="checkbox" onchange="onChangeFieldSelection(this,'-{name}');" />
+        </span>
+        <!-- name -->
+        <span style="width:250px; display:inline-block;">
+            <span>-{name}</span>
+        </span>
+        <!-- value -->
+        <span style="width:250px; display:inline-block;">
+            <span>-{value}</span>
+        </span>
+        <!-- actions -->
+        <span>
+            <span class="wfw_button_icon"><span class="wfw_icon edit wfw_hidden_help" onclick="return onEditField('-{wfw_id}','-{name}');"><span class="wfw_hidden_help-content">Modifier cette valeur</span></span></span>
+        </span>
+    </div>
+    
+    <!-- Field list -->
+    <div style="height:200px; overflow-y:scroll; border-top:3px solid #eeeeee; border-bottom:2px solid #eeeeee; margin-top:3px;">
+        <div id="field_list"></div>
+    </div>
+</div>
+</div>
+
+</div><!-- content -->
+</body>
+</html>

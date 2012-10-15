@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- (C)2011-ID-Informatik -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Editeur de formulaire</title>
+<meta name="description" content="Editeur de formulaire" />
+
+<meta http-equiv="wfw.page-id" content="article_form" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- article_writer -->
+<script name="link" type="text/javascript" language="javascript" src="js/article_writer/article_writer.js"></script>
+
+<!-- nicEdit -->
+<script name="link" type="text/javascript" language="javascript" src="js/tiny_mce/tiny_mce.js"></script>
+
+
+<style type="text/css" name="head">
+    div.hdiv
+    {
+        vertical-align:middle;
+    }
+    div.hdiv > div
+    {
+        display:inline-block;
+        width:48%;
+        padding:0px;
+        margin:0px;
+        vertical-align:middle;
+        border:1px solid black;
+    }
+    input.auto
+    {
+        font-style:italic; color:Gray; font-size:small;
+    }
+</style>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<!-- Header -->
+<div>
+    <h1>Articles</h1>
+    <p>Editeur de formulaire</p>
+    <!-- Menu -->
+    <div style="padding:10px;" class="float_rightTop">
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return wfw.ext.navigator.openPage('#index');"><span class="wfw_icon left"></span><span class="wfw_hidden_help-content">Retour à l'accueil</span></span>
+        <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return newArticle();"><span class="wfw_icon new"></span><span class="wfw_hidden_help-content">Nouveau</span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return openArticle();"><span class="wfw_icon open"></span><span class="wfw_hidden_help-content">Ouvrir</span></span>
+        <span id="edit_menu" class="wfw_hidden">
+            <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return delete_doc();"><span class="wfw_icon delete"></span><span class="wfw_hidden_help-content">Supprimer / Dépublier cet article</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return save_doc();"><span class="wfw_icon save"></span><span class="wfw_hidden_help-content">Sauvegarder</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return publish_doc();"><span class="wfw_icon publish"></span><span class="wfw_hidden_help-content">Publier</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return view_doc();"><span class="wfw_icon view"></span><span class="wfw_hidden_help-content">Voir le document</span></span>
+        </span>
+    </div>
+</div>
+
+<hr />
+
+<!-- Editeur -->
+<div id="editor" class="wfw_hidden">
+    <form id="form" enctype="multipart/form-data" onsubmit="return save_doc();">
+
+        <input type="hidden" name="wfw_redirection" value="-{:article_writer}" /> <!-- redirection --> 
+        <input type="hidden" name="wfw_redirection_failed" value="-{:article_writer}" /> <!-- redirection --> 
+        <input type="hidden" name="wfw_form_name" value="form" /><!-- nom du formulaire -->
+
+        <div><center><textarea id="input" name="input" rows="50" cols="100" style="background-color:White;"></textarea></center></div>
+        <input id="client_id" name="client_id" type="hidden" /><!-- identificateur du dossier client -->
+        <input id="org_id" name="org_id" type="hidden" /><!-- identificateur originale du document -->
+        <input id="org_name" name="org_name" type="hidden" />
+    </form>
+</div>
+
+<!-- Page de bienvenue -->
+<div id="welcome_screen" style="vertical-align:top;">
+    <p style="text-decoration:underline;">Pour commencer créez ou ouvrez un fichier :</p>
+    <blockquote>
+        <div><span class="wfw_button_text" style="width:200px; margin:3px;" onclick="openArticle();"><span class="wfw_icon open"></span>Ouvrir un fichier existant</span></div>
+        <div><span class="wfw_button_text" style="width:200px; margin:3px;" onclick="newArticle();"><span class="wfw_icon new"></span>Créer un nouveau fichier</span></div>
+    </blockquote>
+</div>
+
+<div id="hidden_content" class="wfw_hidden">
+
+<!-- **************************************************
+     Formulaire: Nouveau
+*************************************************** -->
+
+<form id="new_doc_form" method="post" enctype="multipart/form-data">
+    <!-- erreurs de formulaire -->
+    <input type="hidden" id="new_doc_form_xarg_result_2002_id" value="Veuillez entrer un identificateur pour cette page" />
+    <input type="hidden" id="new_doc_form_xarg_result_2002_input" value="Veuillez entrer un contenu à votre article" />
+    <input type="hidden" id="new_doc_form_xarg_result_2002_name" value="Veuillez entrer un titre à votre document" />
+    
+    <!-- paramètres du dossier -->
+    <input type="hidden" name="type" value="html" />
+    <input type="hidden" name="file" value="last.txt" />
+    <input type="hidden" name="wfw_type" value="article" />
+    <input type="hidden" name="output_dir" value="pages" />
+    <input type="hidden" name="parent_id" value="index" />
+    
+    <center>
+        <div class="wfw_edit_field"><span>Titre</span><span><input id="new_page_name" name="name" type="text" value="" /></span></div>
+        <div class="wfw_edit_field"><span>Catégorie</span><span><input name="category" type="text" value="" /></span></div>
+        <div class="wfw_edit_field"><span>Auteur</span><span><input name="author" type="text" value="-{title:contact}" /></span></div>
+        <div class="wfw_edit_field"><span><a href="javascript:choosePageId();">Identificateur de page</a> <input type="checkbox" id="auto_page_id" /></span><span><input id="new_page_id" name="id" type="text" readonly="readonly" /></span></div>
+    </center>
+</form>
+
+<!-- **************************************************
+     Formulaire: Enregister
+*************************************************** -->
+
+<form id="save_doc_form" method="post" enctype="multipart/form-data">
+    <!-- erreurs de formulaire -->
+    <input type="hidden" id="save_doc_form_xarg_result_2002_id" value="Veuillez entrer un identificateur pour cette page" />
+    <input type="hidden" id="save_doc_form_xarg_result_2002_input" value="Veuillez entrer un contenu à votre article" />
+    <input type="hidden" id="save_doc_form_xarg_result_2002_name" value="Veuillez entrer un titre à votre document" />
+    
+    <!-- paramètres du dossier -->
+    <input type="hidden" name="type" value="html" />
+    <input type="hidden" name="file" value="last.txt" />
+    <input type="hidden" name="parent_id" value="articles" />
+    <input type="hidden" name="wfw_type" value="article" />
+    
+    <center>
+        <div>Client ID<br /><input name="wfw_id" type="text" style="width:320px;" disabled="disabled" /></div>
+        <div><input id="lock_id" type="checkbox" /> Page-Id<br /><input id="id" name="id" type="text" style="width:320px;" /></div>
+        <div>Titre<br /><input id="name" name="name" style="width:320px;" type="text" value="" /></div>
+        <div>Catégorie<br /><input id="category" name="category" style="width:320px;" type="text" value="" /></div>
+        <div>Auteur<br /><input id="author" name="author" style="width:320px;" type="text" value="-{title:contact}" /></div>
+        <div>Template de sortie<br /><input id="output_dir" name="output_dir" style="width:290px;" type="text" value="pages" /> <input type="button" value="..." onclick="selectTemplateDir();" /></div>
+        <div>Document Parent<br /><input id="parent_id" name="parent_id" style="width:290px;" type="text" value="" /> <input type="button" value="..." onclick="selectParentFile();" /></div>
+        <div><input id="publish_on_save" type="checkbox" checked="checked" /> Publier</div>
+    </center>
+</form>
+
+<!-- **************************************************
+     Formulaire: Publier
+*************************************************** -->
+
+<form id="publish_doc_form" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="wfw_redirection" value="-{:article_writer}" /> <!-- redirection --> 
+    <input type="hidden" name="wfw_redirection_failed" value="-{:article_writer}" /> <!-- redirection --> 
+    <input type="hidden" name="wfw_form_name" value="form" /><!-- nom du formulaire -->
+    
+    <center>
+        <div>Client ID<br /><input name="client_id" type="text" style="width:320px;" disabled="disabled" /></div>
+        <div>ID <input name="id" type="text" readonly="readonly" /></div>
+    </center>
+</form>
+
+<!-- **************************************************
+     Formulaire: Supprimer
+*************************************************** -->
+
+<form id="delete_doc_form" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="wfw_redirection" value="-{:article_writer}" /> <!-- redirection --> 
+    <input type="hidden" name="wfw_redirection_failed" value="-{:article_writer}" /> <!-- redirection --> 
+    <input type="hidden" name="wfw_form_name" value="form" /><!-- nom du formulaire -->
+    <center>
+    <div><input id="not_remove" type="checkbox" checked="checked" /> Dépublier seulement (ne supprime pas la sauvegarde)</div>
+    </center>
+</form>
+
+</div>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

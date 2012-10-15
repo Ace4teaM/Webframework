@@ -1,0 +1,303 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+    (C)2010-ID-Informatik
+
+    Popup de selection dans l'arbre de navigation
+
+    INPUT Values:
+        seltype : Type de selection, par defaut "single"
+                  "multiple" = Plusieurs document selectionnables
+                  "single"   = Un seul document selectionnable
+
+    OUTPUT Values:
+        id      : identificateur du/des document(s) selectionné(s) (séparé par des point-virgule pour la selection multiple)
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Sélectionner un document ...</title>
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- wfw : template -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_template.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_default.js"></script>
+
+<!-- Add include -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/page_scroll.js"></script>
+
+<style name="head" type="text/css">
+    a.list_item_text
+    {
+        color:#999999;
+    }
+    a.list_item_text:hover
+    {
+        color:#ee9999;
+    }
+    a.selected
+    {
+        color:#000099;
+    }
+    a.selected:hover
+    {
+        color:#eeee99;
+    }
+</style>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+
+var old_selection = null;
+
+//options par defaut
+var opt = {
+    seltype:"single",
+    sel:""
+};
+
+/*
+    Initialise le document
+*/
+wfw.event.SetCallback( // window
+    "wfw_window",
+    "load",
+    "onLoadDoc",
+    function()
+    {
+        // genere la liste des dossiers utilisateurs
+        UpdateList();
+
+        // obtient les options 
+        var uri_fields = wfw.utils.getURIFields();
+        if(uri_fields != null)
+        {
+            for(opt_name in opt)
+            {
+                if(typeof(uri_fields[opt_name])=="string")
+                  opt[opt_name] = uri_fields[opt_name];
+            }
+        }
+
+        // selection de base ?
+        if(!empty(opt.sel))
+        {
+            makeSelection(opt.sel);
+        }
+    }
+);
+
+/*
+    supprime un id de la chaine de selection
+*/
+
+function removeSelection(id)
+{
+    var new_list="";
+    var list = strexplode($value("id"),";",true);
+    for(var i in list)
+    {
+        if(list[i] != id)
+            new_list += list[i]+";";
+    }
+    return $value("id",new_list);
+}
+
+/*
+    actualise la selection en cours depuis la chaine 'list'
+*/
+
+function makeSelection(strList)
+{
+    var x,i,id;
+    var new_list = "";
+    var list = strexplode(strList,";",true);
+    //recherche les items selectionnés dans la liste d'élément
+    var all = wfw.ext.sort.fieldsFromElement(objGetChild($doc("list_content"),"div"),["visibleOnly"]);
+    for(x in all)
+    {
+        //verfifie la selection
+        for(i=0; i<list.length; i++)
+        {
+            //compare l'id
+            id = list[i];
+            if(all[x].id == id)
+            {
+                var anchor = objGetChild(all[x].node,"a");
+                wfw.style.addClass(anchor,"selected");
+                if(opt.seltype=="multiple") {
+                    //defile sur le premier item
+                    //if(empty(new_list))//premier ?
+                    //    $doc("list_content").scrollTop = objGetY(all[x].node);
+                    new_list += id+";";
+                    //continue avec l'élément suivant
+                    i=list.length;
+                    continue;
+                }
+                else
+                {
+                    //wfw.ext.page_scroll.goto_vertical_pos($doc("list_content"),objGetY(all[x].node),1000);
+                    //$doc("list_content").scrollTop = objGetY(all[x].node);
+                    //termine ici la selection unique
+                    old_selection = anchor;
+                    return $value("id",id);
+                }
+            }
+            else
+            {
+                wfw.style.removeClass(all[x].node,"selected");
+            }
+        }
+    }
+    $value("id",new_list);
+    return new_list;
+}
+
+/*
+    Change selection
+*/
+
+function onSelectFile(id,anchor)
+{
+    // deselectionner ?
+    if(wfw.style.haveClass(anchor,"selected"))
+    {
+        wfw.style.removeClass(anchor,"selected");
+        removeSelection(id);
+        return;
+    }
+
+    // selection
+    switch(opt.seltype)
+    {
+        case "multiple":
+            wfw.style.addClass(anchor,"selected");
+            $value("id",$value("id")+";"+id);
+            break;
+        
+            // "single"
+        default: 
+            if(old_selection!=null)
+                wfw.style.removeClass(old_selection,"selected");
+            wfw.style.addClass(anchor,"selected");
+            old_selection = anchor;
+            $value("id",id);
+            break;
+    }
+
+    return false;
+}
+
+/*
+    Initialise l'arbre
+*/
+
+function UpdateList()
+{
+    var def = new cXMLDefault();
+    if(def.Initialise("../default.xml"))
+    {
+        var depth = 0;
+        var treeNode  = def.getTreeNode(null);
+        addNavChildNodes(def,treeNode,$doc("list_content"),depth);
+        return true;
+    }
+    return false;
+}
+
+// ajoute les noeuds enfants de la navigation
+function addNavChildNodes(doc,parent,insert_into,depth)
+{
+    var template_model = $doc("list_item_template");
+
+    depth++;
+
+    //ajoute l'enfant et les noeuds suivant
+    var node = objGetChild(parent,null);
+    while(node!=null)
+    {
+        /* infos sur la page */
+        var node_index = doc.getIndexNode("page",node.tagName);
+        if(node_index){
+            var item = wfw.ext.listElement.insertFields(template_model,insert_into,{depth:((depth*10)+"px")},doc,node_index);
+            /* fabrique le template */
+            if(item!=null)
+            {
+                /* insert les enfants*/
+                if(objGetChild(node,null) != null)
+                {
+                    addNavChildNodes(doc,node,insert_into,depth);
+                }
+            }
+            else
+                wfw.puts("addNavChildNodes : wfw.ext.listElement.insertFields");
+        }
+        else
+            wfw.puts("addNavChildNodes: can't get index: "+node.tagName);
+        //wfw.puts("insert: "+node.tagName);
+        node = objGetNext(node,null);
+    }
+    return depth;
+}
+
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<!-- **************************************************
+     Liste des fichiers
+*************************************************** -->
+<div class="wfw_list_content" style="vertical-align:top;">
+    <!-- Item template -->
+    <div class="wfw_hidden" template:action="ignore" id="list_item_template">
+        <!-- sort fields -->
+        <input type="hidden" name="id" value="-{@id}" />
+        <input type="hidden" name="name" value="-{@name}" />
+        <!-- item -->
+        <a name="anchor" style="margin-left:-{depth};" class="list_item_text" href="javacript:void();" onclick="return onSelectFile('-{@id}',this);">-{@name}</a>
+    </div>
+    
+    <!-- Item list -->
+    <div id="list_content"></div>
+</div>
+
+<!-- **************************************************
+     Selection...
+*************************************************** -->
+
+<div class="wfw_hidden">
+    <div>Id's <input id="id" type="hidden" value="" /></div>
+</div>
+
+<!-- **************************************************
+     Nouveau...
+***************************************************
+
+<div class="wfw_list_content" style="vertical-align:top;">
+    <center><h2>Nouveau fichier</h2></center>
+    <div>Nom <input id="new_id" type="text" value="" /></div>
+    <div>Description <input type="text" value="" /></div>
+    <div>Parent <select id="parent_id" value=""></select></div>
+    <div>Id <input type="text" value="" /></div>
+</div> -->
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

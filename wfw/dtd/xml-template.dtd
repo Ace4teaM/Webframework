@@ -1,0 +1,18 @@
+<!--
+   XML template for XHTML DTD
+
+   Copyright (c) 2011 ID-INFORMATIK
+   All Rights Reserved. 
+-->
+<!ATTLIST ANY
+  action    %Text;  #IMPLIED
+  path      %Text;  #IMPLIED
+  option    %Text;  #IMPLIED
+  condition %Text;  #IMPLIED
+  exp       %Text;  #IMPLIED
+>
+
+<!--================ Import XHTML DTD =========================-->
+
+<!ENTITY % DTDXHTML SYSTEM "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+%DTDXHTML;

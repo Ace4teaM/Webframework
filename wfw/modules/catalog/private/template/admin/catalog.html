@@ -1,0 +1,473 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- (C)2011-ID-Informatik -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Editeur de catalogue</title>
+<meta name="description" content="Editeur de catalogue" />
+
+<meta http-equiv="wfw.page-id" content="catalog" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- <link name="link" type="text/css" href="wfw/css/wfw-medium-icon.css" /> -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_template.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_default.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<!-- tabMenu -->
+<link name="link" rel="Stylesheet" type="text/css" href="wfw/css/wfw-tab.css" />
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-tab.js"></script>
+
+<!-- Fonctions -->
+<script name="link" src="js/catalog/catalog.js" type="text/javascript" language="javascript"></script>
+
+<!-- style -->
+<style name="head" type="text/css">
+    
+    .float_content
+    {
+        position:relative;
+        /*border:1px solid black;
+        margin:40px;*/
+    }
+    .float_rightTop
+    {
+        position:absolute;
+        top:0;
+        right:0;
+        /*border:1px solid red;*/
+    }
+    .float_leftTop
+    {
+        position:absolute;
+        top:0;
+        left:0;
+        /*border:1px solid red;*/
+    }
+    /* item_field_template */
+    fieldset.item_field
+    {
+        border:none;
+        padding:0px;
+        margin:0px;
+    }
+    fieldset.item_field legend
+    {
+        border:none;
+    }
+
+    div.hdiv
+    {
+        vertical-align:middle;
+    }
+    div.hdiv > div
+    {
+        display:inline-block;
+        width:48%;
+        padding:0px;
+        margin:0px;
+        vertical-align:middle;
+        border:1px solid black;
+    }
+    input.auto
+    {
+        font-style:italic; color:Gray; font-size:small;
+    }
+</style>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<input type="hidden" id="filename" /><!--fichier en cours d'edition-->
+
+<!-- Header -->
+<div>
+    <h1>Catalogue</h1>
+    <p>Editeur de catalogue</p>
+    <!-- Menu -->
+    <div style="padding:10px;" class="float_rightTop">
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return wfw.ext.navigator.openPage('#index');"><span class="wfw_icon left"></span><span class="wfw_hidden_help-content">Retour à l'accueil</span></span>
+        <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return newCatalog();"><span class="wfw_icon new"></span><span class="wfw_hidden_help-content">Nouveau</span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return openCatalog();"><span class="wfw_icon open"></span><span class="wfw_hidden_help-content">Ouvrir</span></span>
+        <span id="edit_menu" class="wfw_hidden">
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return deleteCatalog();"><span class="wfw_icon delete"></span><span class="wfw_hidden_help-content">Supprimer</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return saveCatalog();"><span class="wfw_icon save"></span><span class="wfw_hidden_help-content">Sauvegarder</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return publishCatalog(false);"><span class="wfw_icon publish"></span><span class="wfw_hidden_help-content">Publier le catalogue</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return publishCatalog(true);"><span class="wfw_icon update"></span><span class="wfw_hidden_help-content">Actualiser la page principale</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return viewCatalog();"><span class="wfw_icon view"></span><span class="wfw_hidden_help-content">Voir le catalogue</span></span>
+        </span>
+    </div>
+</div>
+
+<hr />
+
+<!-- Editeur -->
+<div id="editor" class="wfw_hidden">
+    <!-- catalogue -->
+    <form id="form" enctype="multipart/form-data" onsubmit="return save_doc();">
+
+        <input type="hidden" name="wfw_redirection" value="-{:article_writer}" /> <!-- redirection --> 
+        <input type="hidden" name="wfw_redirection_failed" value="-{:article_writer}" /> <!-- redirection --> 
+        <input type="hidden" name="wfw_form_name" value="form" /><!-- nom du formulaire -->
+
+        <!-- infos sur le dossier en cours -->
+        <div id="catalog_infos">
+            <input id="client_id" name="client_id" type="hidden" /><!-- identificateur du dossier client -->
+            <input id="catalog_guid" name="catalog_guid" type="hidden" /><!-- guid du catalogue -->
+            <input id="catalog_id" name="catalog_id" type="hidden" /><!-- identificateur du catalogue -->
+        </div>
+
+        <!-- catalogue -->
+        <div id="catalog_content"></div>
+    </form>
+
+    <!-- Tab Menu -->
+    <div id="tabMenu" class="wfw_tabMenu" style="height:900px;">
+        <div id="tabMenu_newItem_tab" class="wfw_tabMenu_tab wfw_hidden_help"><span class="wfw_fixed_icon"><span class="wfw_icon edit"></span></span><span class="wfw_hidden_help-content">Ajouter/Modifier un item au catalogue</span></div>
+        <div class="wfw_tabMenu_content">
+            <div id="new_item">
+                <div id="edit_item_no_content" class="float_content">
+                    <h2>Ajouter un item</h2>
+                    <p>Les items sont les composants de votre catalogue. Ils peuvent être de toutes sortes: produit, photo, video, etc... C'est vous qui décidez du contenu de votre catalogue.</p>
+                    <!-- menu -->
+                    <div class="float_rightTop">
+                        <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon right" onclick="showItemEditor(true);"></span><span class="wfw_hidden_help-content">Editer un item</span></span>
+                    </div>
+                    <!-- param -->
+                    <div id="new_item_form">
+                        <input type="hidden" name="wfw_form_name" value="new_item_form" />
+                        <div class="wfw_hidden_help">Nom<br /><input name="name" style="width:320px;" type="text" value="" /><span class="wfw_hidden_help-content">Nom courant de l'item (intialise le champ "name")</span></div>
+                        <div class="wfw_hidden_help">Description<br /><input name="desc" style="width:320px;" type="text" value="" /><span class="wfw_hidden_help-content">Coutre description de l'item (intialise le champ "desc")</span></div>
+                        <div class="wfw_hidden_help">Identificateur<br /><input name="wfw_item_id" style="width:320px;" type="text" value="" /><span class="wfw_hidden_help-content">L'Identificateur définit le type d'item qui sera inséré.<br />La valeur de l'identificateur sera utilisé pour générer le nom du template associé à l'item (vous pourrez changer cette valeur ultérieurement).</span></div>
+                        <div class="wfw_hidden_help">Catégories<br /><input name="wfw_item_category" style="width:320px;" type="text" value="base; " /><span class="wfw_hidden_help-content">Les catégories définissent les champs d'un item</span></div>
+                    </div>
+                    <!-- menu -->
+                    <hr />
+                    <div>
+                        <span class="wfw_button_text" style="width:150px;" onclick="newItem();">Ajouter</span>
+                    </div>
+                </div>
+                <div id="edit_item_content" class="wfw_hidden float_content">
+                    <h2>Ajouter/Modifier un item</h2>
+                    <!-- menu -->
+                    <div class="float_rightTop">
+                        <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon left" onclick="showItemEditor(false);"></span><span class="wfw_hidden_help-content">Ajouter un item</span></span>
+                        <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon clone" onclick="cloneItem($value('edit_item_guid'));"></span><span class="wfw_hidden_help-content">Dupliquer l'item</span></span>
+                        <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon save" onclick="saveItem();"></span><span class="wfw_hidden_help-content">Sauvegarder</span></span>
+                    </div>
+                    <div id="edit_item_options">
+                        <!-- options -->
+                        <fieldset><legend>Générale</legend>
+                            <div class="wfw_edit_field"><span>GUID</span><span><input type="text" name="guid" id="edit_item_guid" readonly="readonly" /></span></div>
+                            <div class="wfw_edit_field"><span>Identificateur</span><span><input type="text" name="id" id="edit_item_id" readonly="readonly" /></span></div>
+                        </fieldset>
+                        <!-- parametres -->
+                        <div id="edit_item_params">
+                            <!-- type de contenu -->
+                            <fieldset><legend>Type de contenu</legend>
+                                <div class="wfw_edit_field"><span>Aucun <input type="radio" name="content_type" value="none" /></span><span></span></div>
+                                <div class="wfw_static_field"><span>Template <input type="radio" name="content_type" value="template" /></span><span class="wfw_hidden_help"><div class="wfw_button_text" onclick="selectTemplateFile($value('edit_item_id'),$value('edit_item_guid'));"><input name="template" id="edit_item_template" readonly="readonly" /> <span class="wfw_icon open"></span></div><span class="wfw_hidden_help-content">Template utilisé pour générer cette page</span></span> </div>
+                                <div class="wfw_edit_field"><span>Template ID</span><span><input type="text" name="template_id" /></span></div>
+                                <div class="wfw_edit_field"><span>Liée à une URI <input type="radio" name="content_type" value="uri" /></span><span><input type="text" name="uri" /></span></div>
+                                <div class="wfw_static_field"><span>Liée une page <input type="radio" name="content_type" value="page_id" /></span><span class="wfw_hidden_help"><div class="wfw_button_text" onclick="selectPageFile('page_id');"><input name="page_id" id="page_id" readonly="readonly" /> <span class="wfw_icon open"></span></div><span class="wfw_hidden_help-content">Lier le document à une page existante</span></span></div>
+                            </fieldset>
+                            <!-- Paramètres -->
+                            <fieldset><legend>Paramètres</legend>
+                                <div class="wfw_edit_field"><span>Catégories</span><span class="wfw_hidden_help"><input type="text" name="category" id="edit_item_category" /><span class="wfw_hidden_help-content">Liste des catègories de champs (séparées par des points virgules ';')</span></span></div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    
+                    <fieldset><legend>Champs</legend>
+                        <!-- insertion de champs
+                        <fieldset style="vertical-align:middle;">
+                            <div>
+                                Editer un champ: <input type="text" id="add_item_id" style="width:150px;" /> : <input type="text" id="add_item_value" style="width:250px;" />
+                                <span class="wfw_button_icon" onclick="insertItemField($doc('add_item_fields'),$value('add_item_id'),$value('add_item_value')); return false;"><span class="wfw_icon add"></span></span>
+                            </div>
+                        </fieldset>
+                        <hr /> -->
+                        <!-- list des champs -->
+                        <div id="add_item_fields" wfw_fieldlist="list"></div>
+                    </fieldset>
+                </div>
+            </div>
+        </div>
+        <!-- champs -->
+        <div id="tabMenu_fields_tab" class="wfw_tabMenu_tab wfw_hidden_help"><span class="wfw_fixed_icon"><span class="wfw_icon fields"></span></span><span class="wfw_hidden_help-content">Editer les champs globaux</span></div>
+        <div class="wfw_tabMenu_content">
+            <div class="float_content">
+                <p>Ces champs sont transmis au template lors de sa création.</p>
+                <!-- menu -->
+                <div style="padding:10px;" class="float_rightTop">
+                    <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon save" onclick="saveFields();"></span><span class="wfw_hidden_help-content">Sauvegarder</span></span>
+                </div>
+                <!-- Editeur -->
+                <fieldset style="vertical-align:middle;">
+                    <div>
+                        Editer un champ: <input type="text" id="add_field_id" style="width:150px;" /> : <input type="text" id="add_field_value" style="width:250px;" />
+                        <span class="wfw_button_icon" onclick="insertField($value('add_field_id'),$value('add_field_value')); return false;"><span class="wfw_icon add"></span></span>
+                    </div>
+                </fieldset>
+                <!-- list des champs -->
+                <div id="fields_list" wfw_fieldlist="list"></div>
+            </div>
+        </div>
+        <!-- termes -->
+        <div id="tabMenu_def_tab" class="wfw_tabMenu_tab wfw_hidden_help"><span class="wfw_fixed_icon"><span class="wfw_icon file_detail"></span></span><span class="wfw_hidden_help-content">Editer les définitions de termes</span></div>
+        <div class="wfw_tabMenu_content">
+            <div class="float_content">
+                <p>Définitions des termes</p>
+                <!-- menu -->
+                <div style="padding:10px;" class="float_rightTop">
+                    <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon save" onclick="saveTerm();"></span><span class="wfw_hidden_help-content">Sauvegarder</span></span>
+                </div>
+                <!-- Editeur -->
+                <fieldset style="vertical-align:middle;">
+                    <div>
+                        Editer un champ: <input type="text" id="add_term_id" style="width:150px;" /> : <input type="text" id="add_term_value" style="width:250px;" />
+                        <span class="wfw_button_icon" onclick="insertTermField($value('add_term_id'),$value('add_term_value')); return false;"><span class="wfw_icon add"></span></span>
+                    </div>
+                </fieldset>
+                <!-- list des champs -->
+                <div id="terms_list" wfw_fieldlist="list"></div>
+            </div>
+        </div>
+        <!-- categories -->
+        <div id="tabMenu_category_tab" class="wfw_tabMenu_tab wfw_hidden_help"><span class="wfw_fixed_icon"><span class="wfw_icon category"></span></span><span class="wfw_hidden_help-content">Editer les catégories de champs</span></div>
+        <div class="wfw_tabMenu_content">
+            <div class="float_content">
+                <p>Chaque catégorie posséde une liste de champs.</p>
+                <p>Un item est constitué des champs de une ou plusieurs catégories.</p>
+                <!-- menu -->
+                <div style="padding:10px;" class="float_rightTop">
+                    <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon save" onclick="saveCategory();"></span><span class="wfw_hidden_help-content">Sauvegarder</span></span>
+                </div>
+                <!-- Editeur -->
+                <fieldset style="vertical-align:middle;">
+                    <div>
+                        Ajouter une catégorie: <input type="text" id="add_category_id" style="width:150px;" /> : <select id="add_category_value" style="width:250px;"></select>
+                        <span class="wfw_button_icon" onclick="insertCategory($value('add_category_id'),$value('add_category_value')); return false;"><span class="wfw_icon add"></span></span>
+                    </div>
+                </fieldset>
+                <!-- list des champs -->
+                <div id="category_list" wfw_fieldlist="list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Page de bienvenue -->
+<div id="welcome_screen" style="vertical-align:top;">
+    <p style="text-decoration:underline;">Pour commencer créez ou ouvrez un fichier :</p>
+    <blockquote>
+        <div><span class="wfw_button_text" style="width:250px; margin:3px;" onclick="openCatalog();"><span class="wfw_icon open"></span>Ouvrir un fichier existant</span></div>
+        <div><span class="wfw_button_text" style="width:250px; margin:3px;" onclick="newCatalog();"><span class="wfw_icon new"></span>Créer un nouveau fichier</span></div>
+    </blockquote>
+</div>
+
+<div id="hidden_content" class="wfw_hidden">
+
+<!-- **************************************************
+     Template catalogue
+*************************************************** -->
+
+<div id="catalog_template" template:action="ignore">
+    <!-- catalogue -->
+    <div id="-{id}" style="padding:16px;">
+        <!-- edition -->
+        <div class="wfw_edit_field"><span>Titre</span><span><input name="name" style="width:100%;" type="text" value="-{name}" /></span></div>
+        <div class="wfw_edit_field"><span>Description</span><span><input name="desc" style="width:100%;" type="text" value="-{desc}" /></span></div>
+        <div class="wfw_static_field"><span>Template</span><span><div class="wfw_button_text wfw_hidden_help" onclick="selectCatalogTemplateFile();"><input name="template" id="template" readonly="readonly" value="-{template}" /> <span class="wfw_icon open"></span><span class="wfw_hidden_help-content">Template qui sera utilisé pour générer la page principale du catalogue</span></div></span></div>
+        <div class="wfw_edit_field"><span>Template ID</span><span><input type="text" id="page_id" name="page_id" readonly="readonly" value="-{page_id}" /></span></div>
+        <div class="wfw_static_field"><span>Dossier de sortie</span><span><div class="wfw_button_text wfw_hidden_help" onclick="selectTemplateDir();"><input name="out_dir" id="out_dir" readonly="readonly" value="-{out_dir}" /> <span class="wfw_icon open"></span><span class="wfw_hidden_help-content">Dossier dans lequel les pages serons créés</span></div></span></div>
+        <div class="wfw_static_field"><span>Page parent</span><span><div class="wfw_button_text wfw_hidden_help" onclick="selectPageFile('parent_id');"><input name="parent_id" id="parent_id" readonly="readonly" value="-{parent_id}" /> <span class="wfw_icon open"></span><span class="wfw_hidden_help-content">Page parent</span></div></span></div>
+        <div class="wfw_edit_field"><span>Client ID</span><span><input type="text" name="wfw_id" readonly="readonly" value="-{wfw_id}" /></span></div>
+    </div>
+</div>
+
+<!-- **************************************************
+     Template item
+*************************************************** -->
+
+<div id="item_template" template:action="ignore">
+    <!-- items -->
+    <fieldset class="float_content" style="background-color:#ffffcc; height:40px;">
+        <!-- options -->
+        <div id="fieldlist_-{@guid}_options">
+            <input type="hidden" name="guid" value="-{@guid}" />
+            <input type="hidden" name="id" value="-{@id}" />
+            <input type="hidden" name="uri" value="-{uri}" />
+            <input type="hidden" name="page_id" value="-{page_id}" />
+            <input type="hidden" name="template" value="-{template}" />
+            <input type="hidden" name="content_type" value="-{content_type}" />
+            <input type="hidden" name="template_id" value="-{template_id}" />
+            <input type="hidden" name="category" value="-{category}" />
+        </div>
+
+        <!-- menu -->
+        <div style="padding:10px;" class="float_rightTop">
+            <span class="wfw_hidden_help">-{@guid}<span class="wfw_hidden_help-content">Ce code identifie de façon unique l'item dans le catalogue</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon edit" onclick="editItem('-{@guid}');"></span><span class="wfw_hidden_help-content">Modifier</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon view" onclick="viewItem('-{@guid}');"></span><span class="wfw_hidden_help-content">Aperçu</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon update" onclick="publishItem('-{@guid}');"></span><span class="wfw_hidden_help-content">Publier</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon delete" onclick="removeItem('-{@guid}');"></span><span class="wfw_hidden_help-content">Supprimer</span></span>
+        </div>
+        <div template:action="select" template:path="set">
+            <div style="font-size:10pt;">-{name|'Sans Nom'}</div>
+            <div style="margin-left:8px; font-size:8pt;">-{desc}</div>
+        </div>
+        <!-- list des champs -->
+        <div id="fieldlist_-{@guid}" wfw_fieldlist="list">
+           <input template:action="each" template:path="set" type="hidden" name="-{__selection_name__}" value="-{__inner_text__}" />
+        </div>
+    </fieldset>
+</div>
+
+<!-- **************************************************
+     Template DataField (add_field_list)
+*************************************************** -->
+<div id="item_datafield_template" class="wfw_edit_field" template:action="ignore">
+    <span>-{name}</span>
+    <span>
+        <input template:action="exp" template:target="type" template:exp="^(?:Integer|String|Float|Identifier)$" type="text" name="-{id}" value="-{value}" />
+        <span template:action="exp" template:target="type" template:exp="^Bool$">
+            <input template:action="exp" template:target="value" template:exp="^(?:on|true|1|yes)$" type="checkbox" name="-{id}" checked="checked" />
+            <input template:action="exp" template:target="value" template:exp="^(?:off|false|0|no|^$)$" type="checkbox" name="-{id}" />
+        </span>
+        <textarea template:action="exp" template:target="type" template:exp="^Text$" name="-{id}" rows="8" cols="10">-{value}</textarea>
+        <span template:action="exp" template:target="type" template:exp="^File$" class="wfw_button_text" name="-{id}" onclick="selectFile(this,'-{id}');">-{value}</span>
+        <span template:action="exp" template:target="type" template:exp="^Image$" class="wfw_button_text" name="-{id}" onclick="selectImage(this,'-{id}');">-{value}</span>
+    </span>
+</div>
+<!-- **************************************************
+     Template item en liste (terms_list, field_list, category_list)
+*************************************************** -->
+<fieldset id="item_field_template" class="item_field" template:action="ignore">
+    <div class="wfw_edit_field"><span>-{name}</span><span><input type="text" name="-{name}" value="-{value}" /></span></div>
+</fieldset>
+
+<!-- **************************************************
+     Template item en liste (terms_list, field_list, category_list)
+*************************************************** -->
+<fieldset id="item_text_template" class="item_field" template:action="ignore">
+    <div class="wfw_edit_field"><span>-{name}</span><span><textarea cols="20" rows="-{rows|'1'}" name="-{name}" style="white-space:nowrap;">-{value}</textarea></span></div>
+</fieldset>
+
+<!-- **************************************************
+     Formulaire: Enregister
+*************************************************** -->
+
+<form id="save_doc_form" action="req/article_writer/set.php" method="post" enctype="multipart/form-data">
+    <!-- erreurs de formulaire -->
+    <input type="hidden" id="form_xarg_result_2002_id" value="Veuillez entrer un identificateur pour cette page" />
+    <input type="hidden" id="form_xarg_result_2002_input" value="Veuillez entrer un contenu à votre article" />
+    <input type="hidden" id="form_xarg_result_2002_name" value="Veuillez entrer un titre à votre document" />
+    
+    <!-- paramètres du dossier -->
+    <input type="hidden" name="type" value="html" />
+    <input type="hidden" name="file" value="last.txt" />
+    <input type="hidden" name="parent_id" value="articles" />
+    <input type="hidden" name="wfw_type" value="article" />
+    
+    <center>
+        <div>Catalogue<br /><input name="filename" type="text" style="width:320px;" disabled="disabled" /></div>
+        <div><input id="lock_id" type="checkbox" /> Page-Id<br /><input id="id" name="id" type="text" style="width:320px;" /></div>
+        <div>Titre<br /><input id="name" name="name" style="width:320px;" type="text" value="" /></div>
+        <div>Description<br /><input id="desc" name="desc" style="width:320px;" type="text" value="" /></div>
+        <div>Template de sortie<br /><input id="output_dir" name="output_dir" style="width:290px;" type="text" value="pages" /> <input type="button" value="..." onclick="selectTemplateDir();" /></div>
+        <div>Document Parent<br /><input id="parent_id" name="parent_id" style="width:290px;" type="text" value="" /> <input type="button" value="..." onclick="selectPageFile('parent_id');" /></div>
+    </center>
+</form>
+
+<!-- **************************************************
+     Formulaire: Publier
+*************************************************** -->
+
+<form id="publish_doc_form" action="req/article_writer/publish.php" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="wfw_redirection" value="-{:article_writer}" /> <!-- redirection --> 
+    <input type="hidden" name="wfw_redirection_failed" value="-{:article_writer}" /> <!-- redirection --> 
+    <input type="hidden" name="wfw_form_name" value="form" /><!-- nom du formulaire -->
+    
+    <center>
+        <div>Client ID<br /><input name="client_id" type="text" style="width:320px;" disabled="disabled" /></div>
+        <div>ID <input name="id" type="text" readonly="readonly" /></div>
+    </center>
+</form>
+
+<!-- **************************************************
+     Formulaire: Supprimer
+*************************************************** -->
+
+<form id="delete_doc_form" action="req/article_writer/delete.php" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="wfw_redirection" value="-{:article_writer}" /> <!-- redirection --> 
+    <input type="hidden" name="wfw_redirection_failed" value="-{:article_writer}" /> <!-- redirection --> 
+    <input type="hidden" name="wfw_form_name" value="form" /><!-- nom du formulaire -->
+    <center>
+    <div><input id="remove_all" type="checkbox" /> Supprimer définitivement l'article</div>
+    </center>
+</form>
+
+<!-- **************************************************
+     Formulaire: Nouveau
+*************************************************** -->
+
+<form id="new_form" method="post" enctype="multipart/form-data">
+    <!-- req param -->
+    <input type="hidden" name="wfw_form_name" value="new_form" />
+
+    <!-- erreurs de formulaire -->
+    <input type="hidden" id="new_form_xarg_result_2002_name" value="Veuillez entrer un titre à votre catalogue" />
+    <input type="hidden" id="new_form_xarg_result_2002_desc" value="Veuillez entrer une description à votre catalogue" />
+
+    <!-- paramètres du dossier -->
+    <input type="hidden" name="file" value="catalog.xml" />
+    <input type="hidden" name="wfw_type" value="catalog" />
+    <input type="hidden" name="parent_id" value="index" />
+    <input type="hidden" name="template" value="catalog_catalog.html" />
+    <input type="hidden" name="out_dir" value="pages" />
+    <input type="hidden" name="id" value="" /><!-- complété automatiquement -->
+    <input type="hidden" name="page_id" value="" /><!-- complété automatiquement -->
+
+    <center>
+        <div>Titre<br /><input name="name" style="width:320px;" type="text" value="" /></div>
+        <div>Description<br /><input name="desc" style="width:320px;" type="text" value="" /></div>
+    </center>
+</form>
+
+<!-- **************************************************
+     Formulaire: Cloner un item
+*************************************************** -->
+
+<form id="clone_item_form" method="post" enctype="multipart/form-data">
+    <!-- req param -->
+    <input type="hidden" name="wfw_form_name" value="clone_item_form" />
+    <input type="hidden" name="wfw_item_guid" />
+    
+    <center>
+        <div>Nom<br /><input name="name" style="width:320px;" type="text" value="" /></div>
+        <div>Description<br /><input name="desc" style="width:320px;" type="text" value="" /></div>
+        <div>Identificateur<br /><input name="wfw_item_id" style="width:320px;" type="text" value="" /></div>
+    </center>
+</form>
+
+</div>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

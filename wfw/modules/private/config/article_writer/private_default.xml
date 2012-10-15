@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <config>
+    <module id="article_writer" name="Editeur d'article" require="client tiny_mce">
+      <name>Editeur d'articles</name>
+      <desc>Ecrivez/modifiez vos articles en ligne</desc>
+      <img>data/pictures/modules/article_writer.png</img>
+      <page>
+        <name>article_writer</name>
+        <desc>Editer un article</desc>
+      </page>
+    </module>
+  </config>
+  
+  <index>
+    <!--module: article_writer-->
+    <page protocol="https" id="article_writer" name="Editer un article">article_writer.html</page>
+    <page protocol="https" id="article_form" name="Editer un formulaire">article_form.html</page>
+  </index>
+
+  <tree>
+    <article_writer />
+  </tree>
+</site>

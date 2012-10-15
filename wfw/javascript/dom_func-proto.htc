@@ -1,0 +1,8 @@
+<PUBLIC:COMPONENT>
+<PUBLIC:METHOD NAME="getAtt" INTERNALNAME="_getAtt" />
+<PUBLIC:METHOD NAME="setAtt" INTERNALNAME="_setAtt" />
+<script type="text/javascript">
+_getAtt = objGetAtt;
+_setAtt = objSetAtt;
+</script>
+</PUBLIC:COMPONENT>

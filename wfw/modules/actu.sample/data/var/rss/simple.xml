@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <title>Science</title>
+    <description>Actualit&#xE9;s dans le monde</description>
+    <link>http://ubuntu/aceteam/rss_simple.html</link>
+    <guid>4ee792c0ba576</guid>
+    <item>
+      <title>Le myst&#xE8;re du boson de Higgs pourrait &#xEA;tre lev&#xE9; en 2012 !</title>
+      <description>Comme pr&#xE9;vu, le s&#xE9;minaire du Cern pr&#xE9;sentant hier les derniers r&#xE9;sultats de la chasse au boson de Higgs au LHC n'a pas annonc&#xE9; sa d&#xE9;couverte... ni son inexistence. Les observations d&#x2019;Atlas et de CMS sont toutefois troublantes, rendant probable la d&#xE9;couverte de la particule mythique avant la fin de l&#x2019;ann&#xE9;e 2012. Mais la prudence doit rester de mise. Futura-Sciences a suivi pour vous en direct cette conf&#xE9;rence. En voici le d&#xE9;cryptage.</description>
+      <link>http://www.futura-sciences.com/fr/news/t/physique-1/d/le-mystere-du-boson-de-higgs-pourrait-etre-leve-en-2012_35267/</link>
+      <pubDate>Mon, 13 Dec 11 19:00:39 +0000</pubDate>
+      <guid>4ee792c42bcf2</guid>
+    </item>
+  </channel>
+  <channel>
+    <title>Politique</title>
+    <description>Actualit&#xE9;s dans le monde</description>
+    <link>http://ubuntu/aceteam/rss_simple.html</link>
+    <guid>4ee796fe4fccd</guid>
+    <item>
+      <title>Le drapeau palestinien flotte &#xE0; l'Unesco</title>
+      <description>Le pr&#xE9;sident Mahmoud Abbas a hiss&#xE9; le drapeau palestinien au si&#xE8;ge de l'Unesco [&#xE0; Paris]", se f&#xE9;licite le quotidien de Ramallah, qui publie une photo de la sc&#xE8;ne avec la tour Eiffel en toile de fond. "Un acte symbolique, &#xE9;crit le journal, qualifi&#xE9; de 'premier pas vers une reconnaissance internationale d'un Etat palestinien' par Abbas." La Palestine a obtenu le 31 octobre le statut de membre &#xE0; part enti&#xE8;re &#xE0; l'Unesco, malgr&#xE9; l'opposition des Etats-Unis et d'Isra&#xEB;l. Sa demande d'adh&#xE9;sion &#xE0; l'ONU est, elle, toujours suspendue au veto am&#xE9;ricain au Conseil de s&#xE9;curit&#xE9;. Abbas a &#xE9;galement rencontr&#xE9; &#xE0; Paris le pr&#xE9;sident fran&#xE7;ais, Nicolas Sarkozy, ainsi que le candidat socialiste &#xE0; la pr&#xE9;sidentielle, Fran&#xE7;ois Hollande, note le journal.</description>
+      <link>http://www.courrierinternational.com/breve/2011/12/14/le-drapeau-palestinien-flotte-a-l-unesco</link>
+      <pubDate>Mon, 14 Dec 11 21:00:39 +0000</pubDate>
+      <guid>4ee792c42bcb4</guid>
+    </item>
+  </channel>
+</rss>

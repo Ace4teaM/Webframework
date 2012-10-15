@@ -1,0 +1,297 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+    (C)2010-ID-Informatik
+
+    Popup de selection de fichiers privés
+
+    Input:
+        id          : Identificateur du dossier client
+        sel         : Nom du/des fichiers pré-selectionnés
+        sel_type    : Type de séléction ("multiple" ou "single"). Par défaut "single"
+        filter_type : Filtre les types MIME (voir l'utilisation de wfw.search )
+    Output:
+        file_name   : Nom du/des fichiers selectionnés
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Selectionnez les fichiers...</title>
+
+<meta http-equiv="wfw.page-id" content="client_file_list" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- wfw : page scroll -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/page_scroll.js"></script>
+
+<!-- wfw : list -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<style name="head" type="text/css">
+    .list_item_text a
+    {
+        color:#999999;
+    }
+    .list_item_text:hover a
+    {
+        color:#ee9999;
+    }
+    .selected a
+    {
+        color:#000099;
+    }
+    .selected:hover a
+    {
+        color:#eeee99;
+    }
+</style>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+var selection = [];
+
+//options par defaut
+var opt = {
+    id:"public_upload", //dossier client
+    sel:"", //selection de base
+    sel_type:"single", //type de selection
+    filter_type:"" //filtre des types MIME
+};
+
+/*
+    Initialise le document
+*/
+wfw.event.SetCallback( // window
+    "wfw_window",
+    "load",
+    "onLoadDoc",
+    function()
+    {
+        // obtient les options 
+        opt = object_merge(opt, wfw.utils.getURIFields());
+
+        // genere la liste des dossiers utilisateurs
+        if(UpdateList())
+        {
+            if(opt.sel)
+            {
+                var tmp = strexplode(opt.sel,";",true);
+                for(var key in tmp)
+                    onSelection(tmp[key]);
+            }
+            updateSelection();
+        }
+
+        // initialise les filtres
+        //init_sort_filter();
+
+    }
+);
+
+/*
+    onSelection
+*/
+function onDeselectAll()
+{
+    $value("file_name","");
+    updateSelection();
+}
+
+/*
+    onSelection
+*/
+function onSelection(name)
+{
+    var binsert=true;
+
+    if(opt.sel_type=="multiple")
+    {
+        selection = strexplode($value("file_name"),";",true);
+
+        for(var sel_key in selection)
+        {
+            if(selection[sel_key] == name)
+            {
+                delete(selection[sel_key]);
+                binsert=false;
+            }
+        }
+    }
+    else
+    {
+        selection = [];
+    }
+
+    if(binsert)
+        selection.push(name);
+
+    if (opt.sel_type == "multiple")
+        $value("file_name", strimplode(selection, ";", true));
+    else
+        $value("file_name", name);
+
+    updateSelection();
+}
+
+/*
+    updateSelection
+*/
+function updateSelection()
+{
+    selection = strexplode($value("file_name"),";",true);
+    var all = wfw.ext.sort.fieldsFromElement(objGetChild($doc("list_content")));
+    
+    //verifie chacun des items
+    for(var list_key in all)
+    {
+        var cur = all[list_key];
+        wfw.style.removeClass(cur.node,"selected");
+        //se trouve dans la selection ?
+        for(var sel_key in selection)
+        {
+            if(cur.name == selection[sel_key])
+                wfw.style.addClass(cur.node,"selected");
+        }
+    }
+}
+
+/*
+    initialise les filtres du tri
+
+function init_sort_filter()
+{
+    //liste les types d'utilisateurs
+    var all = wfw.ext.sort.fieldsFromElement(objGetChild($doc("list_content")));
+    all = wfw.ext.sort.enumByValues(all,"type");
+    
+    //initialise l'element select
+    var sel_list=$doc("sel_file_type");
+    var option;
+    for(var item in all)
+    {
+        option = document.createElement("option");
+        objSetAtt(option,"value",item);
+        objSetInnerText(option,item);
+        objInsertNode(option,sel_list,null,INSERTNODE_END);
+    }
+}*/
+
+/*
+    Tri la liste
+
+function resort()
+{
+    // initialise la liste des elements
+    var all = wfw.ext.sort.fieldsFromElement(objGetChild($doc("list_content")));
+
+    // filtre les types
+    if($value("sel_file_type") != "")
+        all = wfw.ext.sort.filterValue(all,"type",$value("sel_file_type"));
+
+    // tri les éléments a l'écran
+    wfw.ext.sort.showElements($doc("list_content"),all,false);
+
+    // retourne a la premiere page de la liste
+    wfw.ext.page_scroll.goto_next_vertical_page($doc('list_content'),0,1);
+}*/
+
+
+/*
+    Recharge la liste des utilisateurs
+*/
+
+function UpdateList() {
+    var param = {
+        "onsuccess": function (obj, args) {
+            //vide la liste
+            var olist = $doc("list_content");
+            objRemoveChildNode(olist, null, REMOVENODE_ALL);
+
+            //verifie les noms de fichiers
+            if (empty(args.name)) {
+                //wfw.ext.document.print("Aucun fichier n'a été ajouté a votre dossier.");
+                return false;
+            }
+
+            //initialise la liste
+            var nameList = strexplode(args.name, ";", true);
+            var typeList = strexplode(args.type, ";", true);
+            var sizeList = strexplode(args.size, ";", true);
+            for (var i = 0; i < nameList.length; i++) {
+                if (empty(opt.filter_type) || wfw.search.string(opt.filter_type, typeList[i], wfw.search.MATCH_EXPRESSION)) {
+                    var fields = { name: nameList[i], size: sizeList[i], type: typeList[i] };
+                    //icone
+                    fields.icon = wfw.ext.document.extensionToClassName(fileext(fields.name));
+                    wfw.ext.listElement.insertFields($doc("list_item_template"), olist, fields);
+                }
+            }
+        }
+    };
+
+    //envoie la requete
+    wfw.request.Add(null, "req/client/list.php", { wfw_id: opt.id }, wfw.utils.onCheckRequestResult_XARG, param, false);
+
+
+    wfw.ext.sort.sortElementsBy($doc('list_content'), 'name', false);
+
+    return true;
+}
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<input id="file_name" type="hidden" value="" />
+
+<!-- **************************************************
+     Message liste vide
+*************************************************** -->
+<div id="no_content" class="wfw_hidden wfw_ext_adversing">Aucun fichier n'est disponible.</div>
+
+<!-- **************************************************
+     Liste des fichiers
+*************************************************** -->
+<div class="wfw_list_content" style="vertical-align:top;">
+    <!-- Item template -->
+    <div id="list_item_template" class="wfw_hidden list_item_text" template:action="ignore" style="margin-left:10px;">
+        <!-- sort fields -->
+        <input type="hidden" name="type" value="-{type}" />
+        <input type="hidden" name="name" value="-{name}" />
+        <input type="hidden" name="size" value="-{size}" />
+        <!-- item -->
+        <div><a id="anchor_-{name}" href="javacript:void();" onclick="onSelection('-{name}'); return false;"><span class="wfw_icon -{icon}"></span> -{name}</a></div>
+    </div>
+    
+    <!-- Item list -->
+    <div id="list_content"></div>
+</div>
+
+<!-- **************************************************
+     Filtrage de la liste
+***************************************************
+
+<div>
+    <fieldset>
+        Type <select id="sel_file_type" onchange="resort();"><option value="" selected="selected">-</option></select>
+        <input type="button" value="Tout désélectionner" onclick="onDeselectAll(); return false;" />
+    </fieldset>
+</div>
+ -->
+</div><!-- content -->
+
+</body>
+
+
+</html>

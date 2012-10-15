@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <config>
+    <module id="article_writer" name="Editeur d'article" require="client tiny_mce">
+      <name>Editeur d'article</name>
+      <desc>Ecrivez/modifiez vos articles en ligne</desc>
+      <img>data/pictures/modules/article_writer.png</img>
+    </module>
+  </config>
+</site>

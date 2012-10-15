@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Administration</title>
+
+<meta http-equiv="wfw.page-id" content="index" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- Add Includes -->
+<script name="link" type="text/javascript" src="js/admin.js"></script>
+<script name="link" type="text/javascript" src="wfw/javascript/xml_template.js"></script>
+<script name="link" type="text/javascript" src="wfw/javascript/wfw-list.js"></script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+    <!-- infos sur le site et Menu principale -->
+    <div template:path="/site">
+    	<!-- infos -->
+        <h1>-{__title__}</h1>
+        <p>-{__description__}</p>
+        <p>Numéro client: <strong>-{__id__} (-{__name__})</strong></p>
+        <!-- menu -->
+        <div style="padding:10px;" class="float_rightTop">
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon left" onclick="window.open('-{__base_uri__}','_self');"></span><span class="wfw_hidden_help-content">Retour au site</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon file_detail" onclick="wfw.ext.navigator.openPage('log');"></span><span class="wfw_hidden_help-content">Voir le journal</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon task" onclick="wfw.ext.navigator.openPage('task');"></span><span class="wfw_hidden_help-content">Voir les tâches planifiées</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon refresh" onclick="update();"></span><span class="wfw_hidden_help-content">Actualiser le cache des pages web</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon configure" onclick="configure();"></span><span class="wfw_hidden_help-content">Configuration</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon map" onclick="update_location();"></span><span class="wfw_hidden_help-content">Changer les données de localisation</span></span>
+        </div>
+    </div>
+    
+    <!--
+		Widget template
+		Liste les widgets disponibles dans le fichier: "private/default.xml"
+		La fonction initWidgetList() initialise la liste
+	-->
+    <div class="wfw_hidden module_block" template:action="ignore" id="widget_template" style="text-align:left;">
+        <div class="module_title">-{name}</div>
+        <div class="module_desc">-{desc}</div>
+        <iframe src="-{{page:-{page}}}" height="-{height|'auto'}" width="100%" frameborder="no" title="-{desc}"></iframe>
+    </div>
+    <div id="widget" style="text-align:center;"></div>
+
+    <!--
+		Event template
+		Les evenements sont editable depuis le module client
+		Liste les evenements en cours
+		La fonction listEvent() initialise la liste
+	-->
+    <fieldset class="wfw_hidden" template:action="ignore" id="event_template">
+        <legend style="text-align:right;">[ -{wfw_type} ]</legend>
+        <p>-{wfw_note}</p>
+        <span>De: -{wfw_remote_ip}<br />Le: -{wfw_date}</span>
+        <div style="float:right;"><span class="wfw_button_text" style="width:120px;" onclick="ignoreEvent('-{_guid_}','-{wfw_id}');">Ignorer</span> <span class="wfw_button_text" style="width:120px;" onclick="removeEvent('-{_guid_}','-{wfw_id}');">Supprimer</span> <span class="wfw_button_text" style="width:120px;" onclick="showEvent('-{_guid_}','-{wfw_type}','-{wfw_id}');">Voir</span></div>
+    </fieldset>
+    <!-- liste -->
+    <div id="events" class="module_block wfw_hidden">
+        <div class="module_title">Evénements</div>
+        <div id="event_list"></div>
+    </div>
+
+    <!--
+		Module template 
+		Liste les modules et les pages disponibles dans le fichier: "private/default.xml"
+		La fonction initModuleList() initialise la liste
+	-->
+    <div class="wfw_hidden module" template:action="ignore" id="module_template" style="text-align:left;">
+        <div class="module_title">-{name}</div>
+        <div class="module_desc">-{desc}</div>
+        <img src="-{img}" alt="-{name}" height="80" style="float:left;" />
+        <ul>
+            <li template:action="array" template:path="page" style="list-style-type:none; list-style-image:none; list-style-position:inside; text-align:right; border-bottom:1px solid #dddddd;"><a href="-{{page:-{name}}}">-{desc}</a></li>
+        </ul>
+    </div>
+    <!-- liste -->
+    <div id="modules" style="text-align:center;"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <config>
+    <widget id="google_analytics" name="Google Analytics">
+      <name>Statistiques</name>
+      <desc>Statistiques des visites (Google Analytics)</desc>
+      <page>google_analytics_stats_1year</page>
+    </widget>
+  </config>
+  
+  <index>
+    <!--google analytics profile-->
+    <google_analytics id="mail"></google_analytics>
+    <google_analytics id="pwd"></google_analytics>
+    <google_analytics id="id"></google_analytics>
+    <!--pages-->
+    <page id="google_analytics_stats_1year" name="Statistiques des visites (1an)">google_analytics_stats_1year.html</page>
+  </index>
+
+</site>

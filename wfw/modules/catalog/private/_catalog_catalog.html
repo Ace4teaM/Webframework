@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+(C)2012-ID-Informatik
+Catalogue générique
+*********************************************************************************************************************** 
+    Attention:                                                                                                             
+    Ce document est géneré par un template intermédiaire, toutes modifications manuelle risques d'être perdu
+***********************************************************************************************************************
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Catalogue de produits</title>
+
+<meta http-equiv="wfw.page-id" content="-{_page_id_}" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+    <h2>-{name}</h2>
+
+    <div template:action="array" template:path="/data/item">
+        <div template:action="select" template:path="set">
+            <!-- miniatures -->
+            <img template:action="select" template:path="image" src="-{__inner_text__}" alt="aperçu" />
+            <!-- infos -->
+            <h3>-{name}</h3>
+            <p>-{desc}</p>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

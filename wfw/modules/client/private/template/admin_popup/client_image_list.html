@@ -1,0 +1,469 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+    (C)2010-ID-Informatik
+    
+    Liste les images d'un dossier en aperçu
+    
+    Input:
+        client_id        : Identificateur du dossier client
+        sel              : Nom du/des fichiers pré-selectionnés
+        sel_type         : Type de séléction ("multiple" ou "single"). Par défaut "single"
+        use_private_path : Si true, le chemin d'accès privé au fichier est retourné, sinon c'est le chemin d'accès publique qui est utilisé
+    Output:
+        file_name        : Nom du/des fichiers sélectionnés
+        file_path        : Dossier du/des fichiers sélectionnés (Chemin d'accès publique)
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Selectionnez une image...</title>
+
+<meta http-equiv="wfw.page-id" content="client_image_list" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- wfw : page scroll -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/page_scroll.js"></script>
+
+<!-- wfw : list -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<style name="head" type="text/css">
+    .img
+    {
+        background-color:White;
+        border:16px solid black;
+    }
+    .shadow
+    {
+        -webkit-box-shadow: 1px 1px 10px 1px rgba(10, 10, 10, 0.5);
+        -moz-box-shadow: 1px 1px 10px 1px rgba(10, 10, 10, 0.5);
+        box-shadow: 1px 1px 10px 1px rgba(10, 10, 10, 0.5);
+    }
+    .item_shadow
+    {
+        -webkit-box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+        -moz-box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+        box-shadow: 1px 1px 2px 1px rgba(10, 10, 10, 0.5);
+    }
+    .selected
+    {
+        border-color:#dddd00 !important;
+    }
+</style>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+var selection = [];
+var public_client_path = "data/clients";
+var private_client_path = "clients/data";
+
+//options par defaut
+var opt = {
+    sel:"", //selection de base
+    client_id:"public_upload", //identificateur du dossier client a lire
+    sel_type:"single", // type de selection
+    use_private_path: "false"
+};
+
+/*
+    Initialise le document
+*/
+wfw.event.SetCallback( // window
+    "wfw_window",
+    "load",
+    "onLoadDoc",
+    function()
+    {
+        // obtient les options 
+        var uri_fields = wfw.utils.getURIFields();
+        if(uri_fields != null)
+        {
+            for(opt_name in opt)
+            {
+                if(typeof(uri_fields[opt_name])=="string")
+                    opt[opt_name] = uri_fields[opt_name];
+            }
+        }
+
+        // genere la liste des dossiers utilisateurs
+        if(UpdateList())
+        {
+            if(opt.sel)
+            {
+                var tmp = strexplode(opt.sel,";",true);
+                for(var key in tmp)
+                    onSelection(tmp[key]);
+            }
+            updateSelection();
+        }
+
+        //file path
+        if (cInputBool.toBool(opt.use_private_path) == true)
+            $value("file_path", private_client_path + "/" + opt.client_id);
+        else
+            $value("file_path", public_client_path + "/" + opt.client_id);
+    }
+);
+
+/*
+    onSelection
+*/
+function onDeselectAll()
+{
+    $value("file_name","");
+    updateSelection();
+}
+
+/*
+    onSelection
+*/
+function onSelection(name)
+{
+    var binsert=true;
+
+    //selection multiple ?
+    if(opt.sel_type=="multiple")
+    {
+        selection = strexplode($value("file_name"),";",true);
+
+        for(var sel_key in selection)
+        {
+            if(selection[sel_key] == name)
+            {
+                delete(selection[sel_key]);
+                binsert=false;
+            }
+        }
+    }
+    //simple selection
+    else
+    {
+        selection = [];
+    }
+
+    if(binsert)
+        selection.push(name);
+
+    if(selection.length>1)
+        $value("file_name", strimplode(selection, ";", true));
+    else
+        $value("file_name", selection[0]);
+
+    updateSelection();
+}
+
+/*
+    updateSelection
+    Met a jour les classes de style de chacun des elements
+*/
+function updateSelection()
+{
+    selection = strexplode($value("file_name"),";",true);
+    var all = wfw.ext.sort.fieldsFromElement(objGetChild($doc("list_content")));
+    
+    //verifie chacun des items
+    for(var list_key in all)
+    {
+        var cur = all[list_key];
+        var node = $doc("image_" + cur.id);
+        wfw.style.removeClass(node, "selected");
+        //se trouve dans la selection ?
+        for(var sel_key in selection)
+        {
+            if (cur.name == selection[sel_key]) {
+                //span image contener
+                wfw.style.addClass(node, "selected");
+            }
+        }
+    }
+}
+
+/*
+    Recharge la liste
+*/
+
+function UpdateList()
+{
+    var param = {
+        "onsuccess": function (obj, args) {
+            //vide la liste
+            var olist = $doc("list_content");
+            objRemoveChildNode(olist, null, REMOVENODE_ALL);
+
+            var image_count = 0;
+
+            //verifie les noms de fichiers
+            if (!empty(args.name)) {
+                //initialise la liste
+                var nameList = strexplode(args.name, ";", true);
+                var sizeList = strexplode(args.size, ";", true);
+                for (var i = 0; i < nameList.length; i++) {
+                    wfw.puts("add" + nameList[i]);
+                    switch (fileext(nameList[i])) {
+                        case "jpg":
+                        case "jpeg":
+                        case "png":
+                        case "tiff":
+                        case "wbmp":
+                        case "bmp":
+                        case "gif":
+                            break;
+                        default:
+                            continue;
+                    }
+
+                    //insert le template
+                    var fields = {
+                        name: nameList[i],
+                        size: sizeList[i],
+                        id: uniqid()
+                    };
+                    wfw.ext.listElement.insertFields($doc("list_item_template"), olist, fields);
+
+                    //initialise et insert l'image
+                    var img = document.createElement("img");
+                    objInsertNode(img, $doc("image_" + fields.id), null, INSERTNODE_END);
+                    objSetAtt(img, "src", "clients/data/" + opt.client_id + "/" + fields.name);
+                    objSetAtt(img, "id", fields.id);
+
+                    //chargement
+                    objSetEvent(img, "load", function (e, p) {
+                        //ajuste la taille de l'image
+                        ajustImageSize(this, 50);
+                    }, fields);
+
+                    //affichage en taille reel
+                    objSetEvent(img, "dblclick", function (e, p) {
+                        window.open(this.src, "_blank");
+                    });
+
+                    //affichage de l'apercu
+                    objSetEvent($doc("anchor_" + fields.id), "click", function (e, p) {
+                        showImageInfos(this, p);
+                    }, fields);
+
+                    image_count++;
+                }
+            }
+            //
+            showInterface((!image_count ? false : true));
+        }
+    };
+
+    //envoie la requete
+    wfw.request.Add(null, "req/client/list.php", { wfw_id: (opt.client_id) }, wfw.utils.onCheckRequestResult_XARG, param, false);
+
+    return true;
+}
+
+//Affiche / Cache l'interface
+function showInterface(bShow) {
+    if (bShow) {
+        wfw.style.addClass($doc("no_content"), "wfw_hidden");
+        wfw.style.removeClass($doc("view"), "wfw_hidden");
+    }
+    else {
+        wfw.style.removeClass($doc("no_content"), "wfw_hidden");
+        wfw.style.addClass($doc("view"), "wfw_hidden");
+    }
+}
+
+/*
+    Recharge la liste des utilisateurs
+*/
+
+function showImageInfos(img, p) {
+    //initialise et insert l'image de l'apercu
+    var large_img = document.createElement("img");
+    objRemoveChildNode($doc("apercu_image"), null, REMOVENODE_ALL);
+    objInsertNode(large_img, $doc("apercu_image"), null, INSERTNODE_END);
+    objSetAtt(large_img, "src", $doc(p.id).src);
+    wfw.style.addClass(large_img, "wfw_hidden"); //tronque 'width' et 'height' à zero
+
+    //Une fois l'image chargée...
+    objSetEvent(large_img, "load", function (e, p) {
+        wfw.style.removeClass(this, "wfw_hidden"); //recupere la taille de l'image
+        wfw.style.addClass(this, "shadow");
+        //insert les infos
+        objRemoveChildNode($doc("apercu"), null, REMOVENODE_ALL);
+        p.width = this.width.toString();
+        p.height = this.height.toString();
+        p.weight = byteToSize(p.size);
+        p.src = this.src;
+        var template = wfw.ext.listElement.insertFields($doc("info_template"), $doc("apercu"), p);
+
+        //ajuste la taille de l'image
+        ajustOuterImageSize(this, 128);
+
+        //affichage en taille reel...
+        objSetEvent(large_img, "click", function (e) {
+            window.open(this.src, "_blank");
+        });
+
+    }, p);
+}
+
+//ajuste la taille de l'image dans un cadre definit par 'max'
+//si l'image depasse la taille du cadre, le coté le plus petit de l'image est ajuster sur la limite (et le plus grand tronqué)
+function ajustImageSize(img,max) {
+    var w = img.width;
+    var h = img.height;
+    //si la taille de l'image est inferieur à celle du cadre, ajuste les dimensions
+    if (w < max || h < max) {
+        if (w < h) {
+            h = (max / w) * h;
+            w = max;
+        }
+        else {
+            w = (max / h) * w;
+            h = max;
+        }
+    }
+    //si la taille de l'image est superieur à celle du cadre, ajuste les dimensions
+    else if (w > max || h > max) {
+        if (w < h) {
+            h = (max / w) * h;
+            w = max;
+        }
+        else {
+            w = (max / h) * w;
+            h = max;
+        }
+    }
+    //
+    var clip_y = (h - max) / 2;
+    var clip_x = (w - max) / 2;
+    //arrondie
+    clip_y = parseInt(clip_y);
+    clip_x = parseInt(clip_x);
+    h = parseInt(h);
+    w = parseInt(w);
+    //
+    objSetAtt(img, "width", w);
+    objSetAtt(img, "height", h);
+    objSetAtt(img, "style", "margin-top:-" + clip_y + "px;margin-left:-" + clip_x + "px;");
+/*  wfw.puts(basename(img.src) + " h = " + h + "/" + max);
+    wfw.puts(basename(img.src) + " w = " + w + "/" + max);
+    wfw.puts(basename(img.src) + " clip = " + clip_x + "," + clip_y);
+    wfw.puts("load " + basename(img.src) + " ok");*/
+}
+
+//ajuste la taille de l'image dans un cadre definit par 'max'
+//si l'image depasse la taille du cadre, le coté le plus grand de l'image est ajuster sur la limite (et le plus petit centré)
+function ajustOuterImageSize(img, max, bresize, bclip) {
+    var w = img.width;
+    var h = img.height;
+
+    //si la taille de l'image est inferieur à celle du cadre, ajuste les dimensions
+    if (bresize && (w < max || h < max)) {
+        if (w > h) {
+            h = (max / w) * h;
+            w = max;
+        }
+        else {
+            w = (max / h) * w;
+            h = max;
+        }
+    }
+    //si la taille de l'image est superieur à celle du cadre, ajuste les dimensions
+    else if (!bclip && (w > max || h > max)) {
+        if (w > h) {
+            h = (max / w) * h;
+            w = max;
+        }
+        else {
+            w = (max / h) * w;
+            h = max;
+        }
+    }
+    //
+    var margin_y = (max - h) / 2;
+    var margin_x = (max - w) / 2;
+    //arrondie
+    margin_y = parseInt(margin_y);
+    margin_x = parseInt(margin_x);
+    h = parseInt(h);
+    w = parseInt(w);
+    //
+    objSetAtt(img, "width", w);
+    objSetAtt(img, "height", h);
+    objSetAtt(img, "style", "margin-top:" + margin_y + "px;" + "margin-left:" + margin_x + "px;");
+
+  /*  wfw.puts(basename(img.src) + " h = " + h + "/" + max);
+    wfw.puts(basename(img.src) + " w = " + w + "/" + max);
+    wfw.puts(basename(img.src) + " margin = " + margin_x + "," + margin_y);*/
+}
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<input id="file_name" type="hidden" value="" />
+<input id="file_path" type="hidden" value="" />
+
+<!-- **************************************************
+     Message liste vide
+*************************************************** -->
+<div id="no_content" class="wfw_hidden wfw_ext_adversing" style="height:50px;">Aucune image n'est disponible.</div>
+
+<!-- **************************************************
+     Template: apercu
+*************************************************** -->
+<div id="info_template" class="wfw_hidden" template:action="ignore">
+    <strong>-{name}</strong>
+    <hr />
+    <div>Largeur: -{width} pixels</div>
+    <div>Hauteur: -{height} pixels</div>
+    <div>Taille: -{weight} (-{size} octets)</div>
+    <div>Chemin complet: -{src}</div>
+</div>
+
+<!-- **************************************************
+     Template: Item
+*************************************************** -->
+<div id="list_item_template" class="wfw_hidden item_shadow" template:action="ignore" style="margin:10px; padding:0px; display:inline-block; background-color:#444444; vertical-align:top; text-align:center;">
+    <!-- fields -->
+    <input type="hidden" name="name" value="-{name}" />
+    <input type="hidden" name="size" value="-{size}" />
+    <input type="hidden" name="id" value="-{id}" />
+    <!-- item -->
+    <div><a id="anchor_-{id}" href="javacript:void();" onclick="onSelection('-{name}'); return false;"><span id="image_-{id}" style="border:2px solid #EEEEEE; border-bottom:10px solid #EEEEEE; margin:0px; padding:0px; width:50px; height:50px; display:inline-block; background-color:White; overflow:hidden;"></span></a></div>
+</div>
+
+<!-- **************************************************
+     Liste des fichiers
+*************************************************** -->
+<div id="view">
+    <!-- Infos -->
+    <div style="vertical-align:top;">
+        <div style="display:inline-block; width:150px; vertical-align:middle; text-align:center;"><span id="apercu_image" style="vertical-align:top; text-align:left; margin:2px; width:128px; height:128px; display:inline-block; background-color:White;"><p style="text-align:center; vertical-align:middle;">[Apercu]</p></span></div>
+        <div id="apercu" style="display:inline-block; width:300px; vertical-align:top;"><p style="text-align:center; vertical-align:middle;">Cliquez sur une image pour afficher son aperçu</p></div>
+    </div>
+    <hr />
+    <div id="scroll_list" style="vertical-align:top; text-align:left; height:180px; overflow-y:scroll;">
+        <div class="wfw_list_content" style="vertical-align:top;">
+            <!-- Liste des miniatures -->
+            <div id="list_content"></div>
+        </div>
+    </div>
+</div>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

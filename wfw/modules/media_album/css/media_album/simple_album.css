@@ -1,0 +1,48 @@
+#simple_album
+{
+    position:relative;
+    height:350px;
+    overflow:hidden;
+}
+
+#simple_album_title
+{
+    height:20px;
+    font-weight:bold;
+    padding:5px;
+    font-size:larger;
+    text-align:center;
+}
+
+#simple_album_description
+{
+    padding:5px;
+    text-align:center;
+    height:20px;
+}
+
+/*
+image
+*/
+
+.simple_album_image
+{
+    position:absolute;
+    left:0px;
+    top:0px;
+}
+
+.simple_album_hidden_image
+{
+    display:none;
+}
+
+.simple_album_background_image
+{
+    z-index:0;
+}
+
+.simple_album_foreground_image
+{
+    z-index:9999;
+}

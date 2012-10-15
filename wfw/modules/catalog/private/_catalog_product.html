@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>-{_title_}</title>
+
+<meta http-equiv="wfw.page-id" content="-{_page_id_}" /><!-- page identifier -->
+<meta name="description" content="-{_desc_}" />
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- tabMenu -->
+<link name="link" rel="Stylesheet" type="text/css" href="wfw/css/wfw-tab.css" />
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-tab.js"></script>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+
+    wfw.event.SetCallback("wfw_window", "load", "onInitProductPage",
+        function (e) {
+            // initialise le menu
+            wfw.ext.tabMenu.initMenu($doc("tabMenu"));
+
+            //add_comment
+            objSetEvent($doc("add_comment_btn"), "click", function (e, p) {
+                if (!wfw.ext.module.user.isConnected() == null) {
+                    wfw.ext.document.lockFrame(
+                        "user_connect.html",
+                        {
+                            title: "Vous devez être connectez pour poster un commentaire",
+                            onOK: function (dlg) { window.location.reload(); }
+                        }
+                    );
+                    return;
+                }
+                var args = wfw.form.get_fields($doc("add_comment"));
+                var param = {
+                    onsuccess: function (obj, args) {
+                        wfw.ext.document.messageBox("Nous vous remerçions de votre participation. Votre avis sera mis en ligne après vérification de son contenu.");
+                    }
+                };
+                wfw.request.Add(null, "req/client/create.php", args, wfw.utils.onCheckRequestResult_XARG, param, false);
+            }, null);
+        },
+        false// apres l'initialisation des modules
+    );
+// ]]>
+</script>
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content" template:action="select" template:path="set">
+
+    <h2>-{name}</h2>
+    <p>-{desc}</p>
+    <div>
+        <span template:action="select" template:path="image"><img style="margin:8px;" height="128" src="-{__base_uri__}-{_data_path_}/-{__inner_text__}" alt="" /></span>
+        <span template:action="array" template:path="image"><img style="margin:8px;" height="32" src="-{__base_uri__}-{_data_path_}/-{__inner_text__}" alt="" /></span>
+    </div>
+    
+    <p template:action="format" template:transform="true">-{long_desc}</p>
+    <div>
+        <div template:action="select" template:path="color">Colorie: -{__inner_text__}</div>
+        <div template:action="select" template:path="width">Largeur: -{__inner_text__} cm</div>
+        <div template:action="select" template:path="height">Hauteur: -{__inner_text__} cm</div>
+        <div template:action="select" template:path="depth">Profondeur: -{__inner_text__} cm</div>
+        <div template:action="select" template:path="weigth">Poids: -{__inner_text__} kg</div>
+        <div template:action="select" template:path="price">Prix: -{__inner_text__} €</div>
+        <div template:action="select" template:path="label">Fabriquant: <a href="-{{|page:catalog_-{_catalog_guid_}_-{__inner_text__}|}}">-{{|page:catalog_-{_catalog_guid_}_-{__inner_text__}@name|}}</a></div>
+    </div>
+    
+    <span class="wfw_button_text" onclick="wfw.ext.navigator.openPage('#parent');">Retour</span>
+
+    <h2>Avis</h2>
+    <div>
+        <a href="#score"></a>
+        <!-- avis -->
+        <template:container template:action="array" template:path="/data/item" template:condition="id='opinion'; link=#_cur_guid_;">
+            <div template:action="select" template:path="set">
+                <div template:action="eval" template:target="_score_width_" template:eval="-{score|'0'}*48">
+                    <span class="icon score_shadow" style="width:48px;"><span class="icon score_light" style="width:-{_score_width_|'0'}px;"></span></span>
+                </div>
+                <div>
+                    <p template:action="format" template:transform="true">-{desc}</p>
+                    <div style="text-align:right;">Le -{date}, [Par -{uid}]</div>
+                </div>
+            </div>
+        </template:container>
+        <!-- ajouter un avis -->
+        <hr />
+        <h2>Ajouter un avis</h2>
+        <div id="add_comment">
+            <input type="hidden" name="wfw_type" value="add_score" />
+            <input type="hidden" name="wfw_event" value="true" />
+            <input type="hidden" name="wfw_note" value="" /><!-- AUTO -->
+            <input type="hidden" name="uid" value="-{uid}" />
+            <input type="hidden" name="catalog" value="-{_catalog_guid_}" />
+            <input type="hidden" name="item" value="-{_item_guid_}" />
+            <div class="wfw_edit_field"><span>Votre note</span><span><span class="icon score_shadow" style="width:48px;"><span id="edit_score" class="icon score_light" style="width:0px;"></span></span></span></div>
+            <div class="wfw_edit_field"><span>Commentaire</span><span><textarea cols="16" rows="5"></textarea></span></div>
+            <div style="text-align:right;"><span id="add_comment_btn" class="wfw_button_text">Ajouter</span></div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

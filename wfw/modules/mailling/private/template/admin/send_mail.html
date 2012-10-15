@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Envoyer un mail</title>
+
+<meta http-equiv="wfw.page-id" content="send_mail" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-fieldbar.js"></script>
+
+<!-- tiny_mce -->
+<script name="link" type="text/javascript" language="javascript" src="js/tiny_mce/tiny_mce.js"></script>
+
+<!-- Styles -->
+<link name="link" rel="stylesheet" href="wfw/css/wfw-page_scroll.css" type="text/css" />
+<link name="link" rel="stylesheet" href="wfw/css/wfw-list.css" type="text/css" />
+
+<!-- Styles -->
+<style name="head" type="text/css" >
+.title{
+    width:200px;
+    display:inline-block;
+    font-weight:bold;
+}
+ 
+.value{
+    width:250px;
+    display:inline-block;
+    text-align:left;
+}
+
+.value select{
+    width:100%;
+}
+</style>
+
+<!-- Fonctions -->
+<script name="link" type="text/javascript" language="javascript" src="js/mailling/send_mail.js"></script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content"><!-- content ToolBar -->
+
+<!-- Header -->
+<div>
+    <h1>Mailling</h1>
+    <p>Envoyer un courrier</p>
+    <!-- Menu -->
+    <div style="padding:10px;" class="float_rightTop">
+        <span class="wfw_hidden_help wfw_button_icon" onclick="wfw.ext.navigator.openPage('#index');"><span class="wfw_icon left"></span><span class="wfw_hidden_help-content">Retour à l'accueil</span></span>
+        <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="new_mail();"><span class="wfw_icon new"></span><span class="wfw_hidden_help-content">Nouveau</span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="open_mail();"><span class="wfw_icon open"></span><span class="wfw_hidden_help-content">Ouvrir</span></span>
+        <span id="edit_menu" class="wfw_hidden">
+            <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="save();"><span class="wfw_icon save"></span><span class="wfw_hidden_help-content">Sauvegarder</span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="delete_mail();"><span class="wfw_icon delete"></span><span class="wfw_hidden_help-content">Supprimer</span></span>
+            <span wfw_require_module="user">
+                <span class="wfw_hidden_help wfw_button_icon" onclick="importUserList();"><span class="wfw_icon user_list"></span><span class="wfw_hidden_help-content">Choisir les destinataires dans la liste des utilisateurs</span></span>
+            </span>
+            <span wfw_require_module="client">
+                <span class="wfw_hidden_help wfw_button_icon" onclick="importFileList();"><span class="wfw_icon add_file"></span><span class="wfw_hidden_help-content">Ajouter une pièce jointe</span></span>
+                <span class="wfw_hidden_help wfw_button_icon" onclick="removeAttachement();"><span class="wfw_icon remove_file"></span><span class="wfw_hidden_help-content">Supprimer les pieces jointes</span></span>
+            </span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="viewTemplate();"><span class="wfw_icon view"></span><span class="wfw_hidden_help-content">Aperçu du template</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="send_mail();"><span class="wfw_icon send"></span><span class="wfw_hidden_help-content">Envoyer ce message</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="send_mail_to_task();"><span class="wfw_icon send_diff"></span><span class="wfw_hidden_help-content">Programmer l'envoie de ce message</span></span>
+        </span>
+    </div>
+</div>
+
+<hr />
+
+<!-- Editeur -->
+<div id="editor" class="wfw_hidden">
+    <form id="form" action="req/mailling/mail.php" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+    <input type="hidden" name="wfw_id" id="wfw_id" value="" />
+
+    <!-- erreurs de formulaire -->
+    <input type="hidden" id="form_xarg_result_0" value="Votre message est envoyé" />
+    <input type="hidden" id="form_xarg_result_2002_from" value="Veuillez entrer l'adresse de l'expéditeur" />
+    <input type="hidden" id="form_xarg_result_2002_to" value="Veuillez entrer l'adresse du destinataire" />
+    <input type="hidden" id="form_xarg_result_2002_msg" value="Veuillez entrer un message" />
+    <input type="hidden" id="form_xarg_result_2002_subject" value="Veuillez entrer un sujet" />
+    <!-- erreurs viewTemplate -->
+    <input type="hidden" id="viewTemplate_xarg_result_1" value="L'Aperçu ne peut être affiché" />
+    <input type="hidden" id="viewTemplate_xarg_result_1_save_output_file" value="Erreur à l'enregistrement du fichier temporaire" />
+    <input type="hidden" id="viewTemplate_xarg_result_1_load_input_file" value="Erreur à l'ouverture du fichier template" />
+
+
+    <table class="table_options">
+        <colgroup>
+            <col align="left" style="width:120px;" />
+            <col align="left" style="width:630px;" />
+        </colgroup>
+        <tr><th>Destinataire(s)</th><td><input id="to" name="to" type="text" style="width:580px" wfw_fieldbar="on" /></td></tr>
+        <tr><th>Expéditeur<br />Nom de l'expéditeur</th><td><input type="text" style="width:580px" id="from" name="from" wfw_datatype="mail" value="-{mail:contact}" /><br /><input type="text" style="width:580px" id="fromname" name="fromname" value="-{title:contact}" /></td></tr>
+        <tr><th>Sujet du message</th><td><input type="text" style="width:580px;" maxlength="256" id="subject" name="subject" value="Sujet du message" /></td></tr>
+        <tr><th>Pièces jointes</th><td><input type="text" style="width:580px;" maxlength="256" id="attachments" name="attachments" readonly="readonly" onclick="importFileList();" /></td></tr>
+        <tr><th>Corps du message</th><td><div><input id="html_mode" type="checkbox" name="html_mode" checked="checked" onclick="switch_edit_mode(this.checked);" /> HTML</div><textarea id="html_msg" name="html_msg" rows="20" cols="80"></textarea><textarea class="wfw_hidden" rows="20" cols="80" id="msg" name="msg" style="height:480px;">Votre message ici.</textarea></td></tr>
+        <tr><th>Serveur SMTP</th>
+            <td class="wfw_hidden_help">
+                <div class="wfw_hidden_help-content">Si vous rencontrez des problèmes pour envoyer vos courriers, spécifiez l'adresse de votre hébergeur Internet.</div>
+                <!-- servers list -->
+                <select name="server" style="width:500px;" wfw_datalist="wfw-smtp-servers">
+                    <option value="-{{smtp_server:-{__hostname__}}}">Défaut (-{{smtp_server:-{__hostname__}}})</option>
+                </select>
+                <strong> Port : </strong>
+                <input type="text" style="width:30px;" name="port" value="-{{smtp_port:-{__hostname__}}}" />
+            </td>
+        </tr>
+        <tr>
+            <th>Template <input type="checkbox" checked="checked" id="use_template" name="use_template" /></th>
+            <td>
+                <input type="hidden" id="template_base" value="-{__path__}" />
+                <select style="width:580px;" id="template" name="template">
+                    <option value="_mail.html">Standard avec en-tête</option>
+                    <option value="_mail_noheader.html">Standard sans en-tête</option>
+                </select>
+                <input type="hidden" id="input" name="input" />
+            </td>
+        </tr>
+        <tr>
+            <th>A.R <input type="checkbox" id="notify" name="notify" /></th>
+            <td>Note: Vous recevrez un accusé de réception uniquement si le destinataire accepte de l’envoyer.</td>
+        </tr>
+    </table>
+    </form>
+</div>
+
+<!-- Page de bienvenue -->
+<div id="welcome_screen" style="vertical-align:top;">
+    <p style="text-decoration:underline;">Pour commencer créez ou ouvrez un fichier :</p>
+    <blockquote>
+        <div><span class="wfw_button_text" style="width:200px; margin:3px;" onclick="open_mail();"><span class="wfw_icon open"></span>Ouvrir un mail existant</span></div>
+        <div><span class="wfw_button_text" style="width:200px; margin:3px;" onclick="new_mail();"><span class="wfw_icon new"></span>Créer un nouveau mail</span></div>
+    </blockquote>
+</div>
+
+<!-- Templates -->
+<div class="wfw_hidden">
+
+<!-- **************************************************
+     Formulaire: Nouveau
+*************************************************** -->
+
+<form id="new_doc_form" method="post" enctype="multipart/form-data">
+    <!-- erreurs de formulaire -->
+    <input type="hidden" id="new_doc_form_xarg_result_2002_id" value="Veuillez entrer un identificateur pour cette page" />
+    <input type="hidden" id="new_doc_form_xarg_result_2002_input" value="Veuillez entrer un contenu à votre article" />
+    <input type="hidden" id="new_doc_form_xarg_result_2002_name" value="Veuillez entrer un titre à votre document" />
+    
+    <!-- paramètres du dossier -->
+    <input type="hidden" name="wfw_type" value="mail" />
+    <input type="hidden" name="html_mode" value="on" />
+    <input type="hidden" name="msg" value="Contenu de votre mail" />
+    <input type="hidden" name="html_msg" value="Contenu de votre mail" />
+    <input type="hidden" name="use_template" value="on" />
+    <input type="hidden" name="template" value="_mail_noheader.html" />
+    <input type="hidden" name="server" value="-{{smtp_server:-{__hostname__}}}" />
+    
+    <center>
+        <div>Sujet<br /><input name="subject" style="width:320px;" type="text" value="Nouveau sujet" /></div>
+    </center>
+</form>
+
+<!-- **************************************************
+     Formulaire: Planifier une tache
+*************************************************** -->
+<form id="task_form" method="post" enctype="multipart/form-data">
+    <center>
+        <div><span class="title">Nom de la tâche</span><span class="value"><input id="task_name" name="task_name" style="width:100%;" type="text" value="test" /></span></div>
+        <div><span class="title">Nombre d'envoie</span><span class="value"><input id="exec_count" name="exec_count" style="width:100%;" type="text" value="1" /></span></div>
+        <div><span class="title">Fréquence d'envoie</span><span class="value"><input id="cron_time" name="cron_time" style="width:80%;" type="text" value="" /> <input type="button" value="..." onclick="selectCronTime();" /></span></div>
+    </center>
+</form>
+</div>
+</div><!-- content -->
+
+</body>
+</html>

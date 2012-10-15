@@ -1,0 +1,37 @@
+
+/*
+    AQUA style
+*/
+
+.wfw_tabMenu_content > div
+{
+    border-color:#3988a4;
+}
+.wfw_tabMenu_tab
+{
+    border:1px solid #3988a4;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    /*background: -webkit-linear-gradient(top, #b7deed 0%,#71ceef 50%,#b7deed 100%);*/
+    color:#444444;
+    background-image:url('images/list_33_bg.png');
+    background-repeat:repeat-x;
+    background-position:0px;
+    height:30px;
+    line-height:30px;
+}
+.wfw_tabMenu_tab:hover 
+{
+    /*background: -webkit-linear-gradient(top, #e0f3fa 0%,#d8f0fc 50%,#b6dffd 100%);*/
+    background-image:url('images/list_33_bg_hover.png');
+}
+.wfw_tabMenu_tab_selected
+{
+    /*background: -webkit-linear-gradient(top, #b7deed 0%,#cbe4ed 50%,#b7deed 100%);*/
+    color:Black;
+    background-image:url('images/list_33_bg_hover.png');
+}
+.wfw_tabMenu_content
+{
+    top:31px;
+}

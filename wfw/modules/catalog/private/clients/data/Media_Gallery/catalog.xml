@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<data>
+  <guid>uid_256_1330773387640_1</guid>
+
+  <category><image>image_fields</image><photo>photo_fields</photo><base>base_fields</base></category>
+
+  <fields/>
+
+  <item guid="citem_4f51fdf70aa9d" id="image">
+    <template_id>catalog__citem_4f51fdf70aa9d</template_id>
+    <template>_catalog_image.html</template>
+    <content_type>none</content_type>
+    <category>base; image; photo</category>
+    <set>
+      <name>Surfer</name>
+      <desc>NA</desc>
+      <image>1-california-surfing.jpg</image>
+      <image_thumbnail>1-california-surfing.thumb.jpg</image_thumbnail>
+      <view_longitude>14.1</view_longitude>
+      <view_latitude>8.2</view_latitude>
+    </set>
+    <uri/>
+    <page_id/>
+  </item>
+
+  <item guid="citem_4f524be14d468" id="image">
+    <category>image</category>
+    <set>
+      <name>Colosseum</name>
+      <desc>NA</desc>
+      <image>colosseum.jpg</image>
+      <image_thumbnail>colosseum.thumb.jpg</image_thumbnail>
+    </set>
+    <uri/>
+    <page_id/>
+    <template_id>catalog_uid_256_1330773387640_1_citem_4f51fdf70aa9d</template_id>
+    <template>_catalog_image.html</template>
+    <content_type>template</content_type>
+  </item>
+  <set>
+    <name>Nom</name>
+    <desc>Description</desc>
+    <image>Image</image>
+    <image_thumbnail>Miniature</image_thumbnail>
+    <view_longitude>Prise de vue (Longitude)</view_longitude>
+    <view_latitude>Prise de vue (Latitude)</view_latitude>
+  </set>
+</data>

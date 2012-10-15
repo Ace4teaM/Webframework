@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <title>SITE_NAME</title>
+  <name>SITE_NAME</name>
+  <base>webframework</base>
+  <description>An generic Webframework-based web site</description>
+
+  <config>
+    <!-- Base de données -->
+	<database use="true" name="SITE_NAME" user="SITE_NAME" pwd="admin" server="localhost" port="5432" />
+    <!-- Templates -->
+	<template input="_template.html"         inputdata="private/template/pages/*.html"   output="*.html" />
+	<template input="_popup.html"            inputdata="private/template/popup/*.html"   output="*.html" />
+	<template input="_simple.html"           inputdata="private/template/simples/*.html" output="*.html" />
+	<template input="private/_template.html" inputdata="template/admin/*.html"           output="private/*.html" />
+	<template input="private/_popup.html"    inputdata="template/admin_popup/*.html"     output="private/*.html" />
+	<template input="private/_popup.html"    inputdata="template/event_popup/*.html"     output="private/*.html" />
+	<template input="_sitemap.xml"           inputdata="default.xml"                     output="sitemap.xml" />
+  </config>
+
+  <index>
+    <!--pages-->
+    <page id="index" name="Accueil">index.html</page>
+    <!--contact-->
+    <title id="contact">SITE_NAME</title>
+    <mail id="contact">contact@DOMAIN_NAME</mail>
+    <mail id="no-reply">noreply@DOMAIN_NAME</mail>
+    <!--graphic-->
+    <image id="logo">data/pictures/logo.png</image>
+    <image id="icon">data/pictures/icon.ico</image>
+    
+    <!-- LOCAL SERVER PATH (ubuntu) -->
+    <path_root id="HOSTNAME">SITE_DIR/private</path_root>
+    <path id="HOSTNAME">DOMAIN_DIR/private</path>
+    <base_path id="HOSTNAME">DOMAIN_DIR</base_path>
+    <domain id="HOSTNAME">DOMAIN_NAME</domain>
+    <smtp_server id="HOSTNAME">localhost</smtp_server>
+    <smtp_port id="HOSTNAME">25</smtp_port>
+    
+    <!-- autres -->
+  </index>
+
+  <tree>
+    <index />
+  </tree>
+</site>

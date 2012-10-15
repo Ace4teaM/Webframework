@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<data>
+  <name>Exemple de catalogue</name>
+  <template>_catalog.html</template>
+
+  <set>
+    <category>Catégorie</category>
+    <price>Prix</price>
+    <label>Marque/Fabriquant</label>
+    <weight>Poids</weight>
+    <width>Largeur</width>
+    <height>Hauteur</height>
+    <depth>Profondeur</depth>
+    <color>Couleur</color>
+    <name>Nom</name>
+    <desc>Description</desc>
+    <web>Site-Web</web>
+  </set>
+
+  <item guid="157-445-866" id="label">
+    <template>_catalog_label.html</template>
+    <set>
+      <name>NICOTOY</name>
+      <desc>Les doudous de la marque Nicotoy sont irrésistiblement câlins</desc>
+    </set>
+  </item>
+
+  <item guid="467-854-426" id="label">
+    <template>_catalog_label.html</template>
+    <set>
+      <name>COTOONS</name>
+      <desc>Doudou pour enfants</desc>
+      <web>http://www.cotoons.com/</web>
+    </set>
+  </item>
+
+  <item guid="764-541-487" id="category">
+    <template>_catalog_category.html</template>
+    <set>
+      <name>Enfants</name>
+      <desc>Jeux, jouets, doudou, etc...</desc>
+      <category>789-456-123</category>
+      <image>doudou.jpg</image>
+    </set>
+  </item>
+
+  <item guid="789-456-123" id="category">
+    <name>Doudou</name>
+    <desc>Doudou pour enfants</desc>
+    <template>_catalog_category.html</template>
+    <set>
+      <category>789-456-123</category>
+      <image>doudou.jpg</image>
+    </set>
+  </item>
+
+  <item guid="789-764-159" id="product">
+    <name>Doudou poupée</name>
+    <desc>Modèle: Doudou poupée - Coloris : Bleu - Dès la naissance - Garçon et Fille - Livré à l'unité</desc>
+    <template>_catalog_product.html</template>
+    <set>
+      <category>enfants</category>
+      <category>doudou</category>
+      <price>3,89</price>
+      <image>4771069.jpg</image>
+      <image>4771069 (1).jpg</image>
+      <image>4771069 (2).jpg</image>
+      <label>COTOONS</label>
+      <weight>0,046</weight>
+      <width>14</width>
+      <height>7</height>
+      <depth>19</depth>
+      <color>Bleu</color>
+    </set>
+  </item>
+
+  <item guid="492-456-756" id="product">
+    <name>Doudou Jeans</name>
+    <desc>Modèle : Jeans - Doudou lapin - Dès la naissance - Coloris : Marine/Blanc - Garçon et Fille - Livré à l'unité</desc>
+    <template>_catalog_product.html</template>
+    <set>
+      <category>enfants</category>
+      <category>doudou</category>
+      <price>4,38</price>
+      <image>4771069.jpg</image>
+      <image>4771069 (1).jpg</image>
+      <image>4771069 (2).jpg</image>
+      <label>NICOTOY</label>
+      <color>Marine/Blanc</color>
+    </set>
+  </item>
+
+</data>

@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- (C)2011-ID-Informatik -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Configuration</title>
+<meta name="description" content="Configuration" />
+
+<meta http-equiv="wfw.page-id" content="config" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- Add Include -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_template.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_default.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+
+/*
+    Initialise le document
+*/
+
+    wfw.event.SetCallback( // window
+        "wfw_window",
+        "load",
+        "onLoadDoc",
+        function () {
+            update_private_address();
+        }
+    );
+
+    function update_private_address() {
+        var arg = {};
+        var private_default = new cXMLDefault();
+        if (!private_default.Initialise("default.xml"))
+            return false;
+        arg.name = "private_address";
+        arg.title = "Votre adresse de contact (privée)";
+        arg.phone = private_default.getIndexValue("phone", "contact");
+        arg.mail = private_default.getIndexValue("mail", "contact");
+        arg.country = private_default.getIndexValue("country", "contact");
+        arg.city = private_default.getIndexValue("city", "contact");
+        arg.zipcode = private_default.getIndexValue("zipcode", "contact");
+        arg.address = private_default.getIndexValue("address", "contact");
+        arg.latitude = private_default.getIndexValue("latitude", "contact");
+        arg.longitude = private_default.getIndexValue("longitude", "contact");
+
+        //fabrique le template
+        var template = wfw.ext.listElement.insertFields($doc("template_private_address"), $doc("address_list"), arg, null, null, $doc(arg.name));
+        objSetAtt(template, "id", arg.name);
+
+        return true;
+    }
+
+    function update_public_address() {
+        var arg = {};
+        var private_default = new cXMLDefault();
+        if (!private_default.Initialise("../default.xml"))
+            return false;
+        arg.name = "public_address";
+        arg.title = "Votre adresse de contact";
+        arg.phone = private_default.getIndexValue("phone", "contact");
+        arg.mail = private_default.getIndexValue("mail", "contact");
+        arg.country = private_default.getIndexValue("country", "contact");
+        arg.city = private_default.getIndexValue("city", "contact");
+        arg.zipcode = private_default.getIndexValue("zipcode", "contact");
+        arg.address = private_default.getIndexValue("address", "contact");
+        arg.latitude = private_default.getIndexValue("latitude", "contact");
+        arg.longitude = private_default.getIndexValue("longitude", "contact");
+
+        //fabrique le template
+        var template = wfw.ext.listElement.insertFields($doc("template_public_address"), $doc("address_list"), arg, null, null, $doc(arg.name));
+        objSetAtt(template, "id", arg.name);
+
+        return true;
+    }
+// ]]>
+</script>
+
+<style type="text/css" name="head">
+</style>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<!-- Header -->
+<div>
+    <h1>Configuration</h1>
+    <p>Options générales du site</p>
+    <!-- Menu -->
+    <div style="padding:10px;" class="float_rightTop">
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return wfw.ext.navigator.openPage('#index');"><span class="wfw_icon left"></span><span class="wfw_hidden_help-content">Retour à l'accueil</span></span>
+    </div>
+</div>
+
+<div id="address_list"></div>
+
+<!-- **************************************************
+     Template: address contact
+*************************************************** -->
+<div template:action="ignore">
+    <fieldset id="template_private_address" class="wfw_hidden">
+        <legend>Addresse de contact client</legend>
+        <p>Nous utilisons cette adresse pour vous contacter:</p>
+        <div>-{mail}</div>
+        <div>-{address}</div>
+        <div>-{zipcode} -{city}</div>
+        <div>-{phone}</div>
+    </fieldset>
+    <fieldset id="template_public_address" class="wfw_hidden">
+        <legend>Addresse de contact publique</legend>
+        <p>Vos visiteurs peuvent vous contacter avec cette adresse:</p>
+        <div>-{mail}</div>
+        <div>-{address}</div>
+        <div>-{zipcode} -{city}</div>
+        <div>-{phone}</div>
+    </fieldset>
+</div>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

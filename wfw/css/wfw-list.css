@@ -1,0 +1,160 @@
+/*
+    listElement default item style
+*/
+
+.wfw_list_content{
+}
+
+
+ul.wfw_list_item
+{
+    display:block;
+    padding:0px;
+    margin:0px;
+}
+
+ul.wfw_list_item li
+{
+    display:inline-block;
+    padding:0px;
+    margin:0px;
+    list-style-type:none;
+    list-style-image:none;
+}
+
+ul.wfw_list_item li.wfw_list_item_right
+{
+    display:inline-block;
+    padding:0px;
+    margin:0px;
+    list-style-type:none;
+    list-style-image:none;
+}
+
+ul.wfw_list_item li.wfw_list_item_separator
+{
+    display:inline-block;
+    padding:0px;
+    margin:0px;
+    list-style-type:none;
+    list-style-image:none;
+}
+
+/*
+    AQUA
+*/
+
+.wfw_list_content
+{
+    margin:10px;
+    text-align:center;
+    border:1px solid black;
+    padding:10px;
+    background-color:#d5ddff;
+    border-radius:10px;
+}
+
+ul.wfw_list_item
+{
+    padding:0px;
+    line-height:33px;
+    height:33px;
+    vertical-align:bottom;
+}
+
+ul.wfw_list_item > li
+{
+    background-image:url('images/list_33_bg.png');
+    background-repeat:repeat-x;
+    padding:0px;
+    margin:0px;
+    line-height:inherit;
+    height:inherit;
+    vertical-align:inherit;
+    cursor:default;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+ul.wfw_list_item > li.wfw_list_item_left
+{
+    background-image:url('images/list_33_left.png');
+    width:12px;
+    padding:0px;
+    margin:0px;
+    line-height:inherit;
+    height:inherit;
+    vertical-align:inherit;
+}
+
+ul.wfw_list_item > li.wfw_list_item_right
+{
+    background-image:url('images/list_33_right.png');
+    width:13px;
+    line-height:inherit;
+    height:inherit;
+    vertical-align:inherit;
+    padding:0px;
+    margin:0px;
+}
+
+ul.wfw_list_item > li.wfw_list_item_separator
+{
+    background-image:url('images/list_33_separator.png');
+    width:16px;
+    display:inline-block;
+    padding:0px;
+    margin:0px;
+    list-style-type:none;
+    list-style-image:none;
+}
+
+ul.wfw_list_item:hover > li
+{
+    background-image:url('images/list_33_bg_hover.png');
+}
+
+ul.wfw_list_item:hover > li.wfw_list_item_right
+{
+    background-image:url('images/list_33_right_hover.png');
+}
+
+ul.wfw_list_item:hover > li.wfw_list_item_left
+{
+    background-image:url('images/list_33_left_hover.png');
+}
+
+ul.wfw_list_item:hover > li.wfw_list_item_separator
+{
+    background-image:url('images/list_33_separator_hover.png');
+}
+
+ul.wfw_list_item > li > input[type=checkbox]
+{
+    line-height:inherit;
+    height:inherit;
+    vertical-align:bottom;
+}
+
+ul.wfw_list_item > li > input[type=text]
+{
+    line-height:16px;
+    height:16px;
+    vertical-align:bottom;
+    font-size:13px;
+    margin-top:8px;
+}
+
+ul.wfw_list_item > li > input[type=file]
+{
+    line-height:23px;
+    height:23px;
+    vertical-align:bottom;
+    font-size:13px;
+    margin-top:4px;
+}
+
+ul.wfw_list_item > li .wfw_icon
+{
+    margin-top:8px;
+}

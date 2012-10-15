@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
+  <head> 
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
+    <title>Styles</title>
+    <link rel="stylesheet" href="../css/wfw-extends.css" type="text/css" />
+    <link rel="stylesheet" href="../css/wfw-theme-seablue.css" type="text/css" />
+  </head> 
+  <body>
+	<h1>Welcome to CSS sample styles</h1>
+	<p>Cette page présente les différents style employé par la librairie Webframework-étendue. Cela vous donne un aperçu des classes CSS disponibles et peut aussi servir de page de test, les principaux éléments HTML sont représentés.</p>
+
+	<h2>Buttons</h2>
+	<input type="button" class="wfw_button_text" value="INPUT Button"/>
+	<span type="button" class="wfw_button_text"><span>SPAN Button</span></span>
+	<span type="button" class="wfw_button_text"><span class="wfw_icon right"></span><span>Go!</span></span>
+
+	<h2>Frame + Button icon</h2>
+	<div class="wfw_bg_frame">
+		<label style="font-weight:bold;margin-left:10px;">::</label>
+		<span class="wfw_button_icon"><span class="wfw_icon new"></span></span>
+		<span class="wfw_button_icon"><span class="wfw_icon open"></span></span>
+		<span class="wfw_button_icon"><span class="wfw_icon save"></span></span>
+		<span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+		<span class="wfw_button_icon"><span class="wfw_icon remove"></span></span>
+		<span class="wfw_button_icon"><span class="wfw_icon download"></span></span>
+	</div>
+
+	<h2>Frame</h2>
+	<fieldset>
+		<legend>Lisez ce texte</legend>
+		<div class="wfw_horizontal_divisor">
+		<p style="margin:4px; text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porta neque nulla. Etiam diam nibh, aliquet vel eleifend at, lobortis nec nisi. Duis condimentum adipiscing elit, id sodales massa pellentesque quis. Quisque bibendum molestie magna, et lobortis velit commodo quis. Quisque quis purus magna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut rutrum nulla vel mi faucibus euismod. Pellentesque ut dapibus velit. In hac habitasse platea dictumst. Quisque vestibulum malesuada justo nec consectetur. Morbi eu nisl ac orci porttitor porta sed nec nulla. Pellentesque mattis ligula et dolor tincidunt ornare. Donec luctus, velit et pellentesque accumsan, odio risus venenatis risus, id imperdiet metus ligula sit amet nibh. Aliquam facilisis sapien nibh, sed suscipit lectus.</p>
+		</div>
+		<div class="wfw_horizontal_divisor">
+		<p style="margin:4px; text-align: justify;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus porta neque nulla. Etiam diam nibh, aliquet vel eleifend at, lobortis nec nisi. Duis condimentum adipiscing elit, id sodales massa pellentesque quis. Quisque bibendum molestie magna, et lobortis velit commodo quis. Quisque quis purus magna. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut rutrum nulla vel mi faucibus euismod. Pellentesque ut dapibus velit. In hac habitasse platea dictumst. Quisque vestibulum malesuada justo nec consectetur. Morbi eu nisl ac orci porttitor porta sed nec nulla. Pellentesque mattis ligula et dolor tincidunt ornare. Donec luctus, velit et pellentesque accumsan, odio risus venenatis risus, id imperdiet metus ligula sit amet nibh. Aliquam facilisis sapien nibh, sed suscipit lectus.</p>
+		</div>
+	</fieldset>
+
+	<h2>Fields list</h2>
+	<div class="wfw_edit_field"><label for="text1">Editable field</label><span><input type="text" id="text1" value="lobortis nec nisi" /></span></div>
+	<div class="wfw_edit_field"><label for="text2">Editable field</label><span><input type="checkbox" id="text2" /> On/Off</span></div>
+	<div class="wfw_edit_field"><label for="text3">Editable field</label><span><input type="radio" id="text3" /> Choix</span></div>
+	<div class="wfw_edit_field"><label for="text4">Editable field</label><span><input type="file"  id="text4" /></span></div>
+	<div class="wfw_static_field"><label for="text5">Static field</label><span><input type="text" id="text5" value="lobortis nec nisi" /></span></div>
+	<div class="wfw_edit_field"><label for="text6">Editable select</label><span><select id="text6"><option>Paris</option><option>NewYork</option><option>London</option></select></span></div>
+	<div class="wfw_edit_field"><label for="text7">Unvalidate field</label><span><input id="text7" class="wfw_invalidate" value="lobortis nec nisi" type="text" /></span></div>
+	<div class="wfw_edit_field"><label id="text8">Unvalidate select</label><span><select id="text8" class="wfw_invalidate"><option>Paris</option><option>NewYork</option><option>London</option></select></span></div>
+	<div class="wfw_edit_field"><label id="text9">Editable text</label><span><textarea id="text9" rows="5" cols="1">Donec luctus, velit et pellentesque accumsan, odio risus venenatis risus, id imperdiet metus ligula sit amet nibh. Aliquam facilisis sapien nibh, sed suscipit lectus.</textarea></span></div>
+	<div style="text-align:right;"><input type="submit" onclick="alert('Hello');" value="Submit" /></div>
+
+	<h2>Divers</h2>
+	<div class="wfw_ext_adversing">message d'avertissement.</div>
+	<div class="wfw_information">message d'information.</div>
+
+	<h2>Assistant</h2>
+	<div class="wfw_hidden_help">Passez votre curseur pour voir l'aide<div class="wfw_hidden_help-content">Renseignez ici l'aide en cours</div></div>
+
+	<h2>Menu</h2>
+	<ul class="wfw_menu">
+		<li>Home</li>
+		<li>Introduction</li>
+		<li>Catalog</li>
+		<li>Credit</li>
+		<li>Contact</li>
+	</ul>
+
+  </body>
+</html>

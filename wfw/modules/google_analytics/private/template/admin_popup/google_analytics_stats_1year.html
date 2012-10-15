@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Google Analytics Stats</title>
+
+<!-- Includes -->
+<script type="text/javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- google analytics chart -->
+<script name="link" type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script name="link" type="text/javascript" src="js/google_analytics/analyticsCharts.js"></script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+	<div name="content">
+		<div id="google_analytics">
+			<input type="hidden" name="email" value="-{google_analytics:mail}" />
+			<input type="hidden" name="passwd" value="-{google_analytics:pwd}" />
+			<input type="hidden" name="id" value="-{google_analytics:id}" />
+			<div id="chart_div"></div>
+		</div>
+	</div><!-- content -->
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <config>
+    <module id="actu" name="Actualités">
+      <name>Actualités</name>
+      <desc>Flux RSS et actualités en ligne</desc>
+      <img>data/pictures/modules/actu.png</img>
+    </module>
+  </config>
+</site>

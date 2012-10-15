@@ -1,0 +1,59 @@
+
+/*
+-------------------------------------------------------------------------
+    Webframework system icons
+-------------------------------------------------------------------------
+*/
+
+.wfw_icon_large
+{
+	display:inline-block;
+	width:48px;
+	height:48px;
+	background-image: url('wfw-extends/sys_icons_big.png');
+	background-repeat: no-repeat;
+	margin:0px;
+	padding:0px;
+	background-position:center center;
+	border:none;
+}
+
+/* ligne 0 */
+.bottom{ background-position: 0px 0px; }
+.left{ background-position: -48px 0px; }
+.right{ background-position: -96px 0px; }
+.top{ background-position: -144px 0px; }
+.print{ background-position: -192px 0px; }
+.save{ background-position: -240px 0px; }
+.configure{ background-position: -288px 0px; }
+.new{ background-position: -336px 0px; }
+.open{ background-position: -384px 0px; }
+.publish{ background-position: -432px 0px; }
+
+/* ligne 1 */
+.no{ background-position: 0px -48px; }
+.yes{ background-position: -48px -48px; }
+.warning{ background-position: -96px -48px; }
+.information, .help{ background-position: -144px -48px; }
+.error{ background-position: -192px -48px; }
+
+/* ligne 2 */
+.add{ background-position: 0px -96px; }
+.sub{ background-position: -48px -96px; }
+.edit{ background-position: -96px -96px; }
+.delete{ background-position: -144px -96px; }
+.separator{ background-position: -192px -96px; }
+.refresh, .update{ background-position: -192px -96px; }
+.find, .view{ background-position: -240px -96px; }
+.send{ background-position: -288px -32px; }
+
+/* ligne 3 */
+.fmt_pdf{ background-position: 0px -144px; }
+.fmt_txt{ background-position: -48px -144px; }
+.file_empty{ background-position: -144px -144px; }
+.file_detail{ background-position: -192px -144px; }
+.fmt_xml{ background-position: -240px -144px; }
+.date{ background-position: -288px -144px; }
+
+/* ligne 3*/
+.type_rss{ background-position: 0px -192px; }

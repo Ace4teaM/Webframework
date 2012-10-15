@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik. Generic Template -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+
+<!-- Merge doc title -->
+<title template:action="merge" template:path="/html/head/title"></title>
+
+<!-- Merge doc page's id -->
+<meta template:action="merge" template:path="/html/head/meta" template:condition="http-equiv='wfw.page-id';" http-equiv="wfw.page-id" content="" />
+
+<!-- Meta -->
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8;" />
+<meta http-equiv="content-language" content="fr" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" /><!-- Internet explorer CSS compatible -->
+<meta http-equiv="content-script-type" content="text/javascript" /><!-- Default script langage -->
+<meta http-equiv="last-modified" content="-{__date_rfc822__}" /><!-- Derniere date de modification -->
+
+<meta name="Author" lang="fr" content="AUGUEY Thomas" />
+<meta name="Publisher" lang="fr" content="AUGUEY Thomas" />
+<meta name="Copyright" content="(C)2010 ID-Informatik" />
+<meta name="revisit-after" content="7 days" />
+<meta template:action="merge" template:path="/html/head/meta" template:condition="name='description';" name="description" content="" />
+<meta template:action="merge" template:path="/html/head/meta" template:condition="name='keywords';" name="keywords" content="site internet, " />
+
+<!-- Default icon -->
+<link rel="shortcut icon" type="image/x-icon" href="-{image:icon}" />
+
+<!-- Webframework-Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/xml_template.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/xml_default.js"></script>
+
+<!-- Styles -->
+<link rel="stylesheet" href="../css/default.css" type="text/css" />
+<link rel="stylesheet" href="wfw/css/wfw-extends.css" type="text/css" />
+<link rel="stylesheet" href="../css/admin.css" type="text/css" />
+
+<!-- Styles importés -->
+<template:container template:action="array" template:path="/html/head/link" template:condition="name='link';">
+<link template:action="merge" rel="stylesheet" href="" type="text/css" />
+</template:container>
+<template:container template:action="array" template:path="/html/head/style" template:condition="name='head';">
+<style template:action="merge" type="text/css"></style>
+</template:container>
+
+<!-- scripts importés (toujours avant wfw.ext.initAll) -->
+<template:container template:action="array" template:path="/html/head/script" template:condition="name='head';">
+<script template:action="merge" type="text/javascript" language="javascript"></script>
+</template:container>
+<template:container template:action="array" template:path="/html/head/script" template:condition="name='link';">
+<script template:action="merge" type="text/javascript" language="javascript" src=""></script>
+</template:container>
+
+<!-- intialisation principale -->
+<script type="text/javascript" language="javascript">
+// <![CDATA[
+
+function onLoad()
+{
+    //request?
+    if(typeof(wfw.http_get)!="function")
+        wfw.ext.document.adversing("Attention! votre navigateur ne supporte pas les requêtes dynamiques.\nIl se peut que le site web ne fonctionne pas correctement sur ce navigateur.",null);
+}
+
+// intialise les extensions
+wfw.ext.initAll();
+// intialise les evenements
+wfw.event.SetCallback("wfw_window","load","onLoad",onLoad,true); // avant l'initialisation des modules
+// assigne les evenements
+wfw.event.ApplyTo(window, "wfw_window");
+
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+    <!-- contenu -->
+    <div id="wfw_ext_content">
+        <!-- Merge doc content -->
+        <div template:action="array" template:path="/html/body/div" template:condition="name='content';">
+            <div template:action="include"></div>
+        </div>
+
+    </div><!-- wfw_ext_content -->
+</body>
+
+
+</html>

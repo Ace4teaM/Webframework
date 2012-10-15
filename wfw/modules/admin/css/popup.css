@@ -1,0 +1,141 @@
+
+body {
+	background-color:white;
+}
+
+/*
+-------------------------------------------------------------------------
+    Additionnal Webframework specific
+-------------------------------------------------------------------------
+*/
+
+#wfw_ext_content{
+	
+	/* center into body */
+	position:relative;
+    margin: 0px;
+    padding:0px;
+	text-align:left;
+	background-color:white;
+    vertical-align:top;
+}
+
+/*
+-------------------------------------------------------------------------
+ Table
+-------------------------------------------------------------------------
+*/
+.table_view 
+{
+    background-color:White;
+    border:1px solid #5e90b3;
+    margin:6px 20px 6px 20px;
+    display:block;
+}
+
+.table_view tr
+{
+    background-color:White;
+}
+
+.table_view td
+{
+    background-color:White;
+    margin:1px;
+    vertical-align:top;
+}
+
+.table_view th, .table_view thead td
+{
+    font-family:Calibri;
+    font-weight:bolder;
+    font-size:larger;
+    letter-spacing:1px;
+    text-align:left;
+    color:#5e90b3;
+    vertical-align:top;
+    font-size:12pt;
+}
+
+.table_view h1,.table_view h2,.table_view h3,.table_view h4
+{
+	font-family:Calibri;
+    margin-bottom:0px;
+}
+
+
+/*
+-------------------------------------------------------------------------
+ Table
+-------------------------------------------------------------------------
+*/
+.table_options 
+{
+	font-family:Calibri;
+    background-color:White;
+    border:1px solid #5e90b3;
+    margin:6px 20px 6px 20px;
+}
+
+.table_options td
+{
+    background-color:White;
+    margin:0px 0px 0px 0px;
+    padding:3px 3px 3px 3px;
+    text-align:left;
+}
+
+.table_options th
+{
+    margin:0px 0px 0px 0px;
+    padding:3px 16px 3px 3px;
+    font-weight:bold;
+    text-align:right;
+    border-bottom:1px solid gray;
+}
+
+
+/*
+-------------------------------------------------------------------------
+ Table
+-------------------------------------------------------------------------
+*/
+.table_item 
+{
+    background-color:transparent;
+    margin:8px;
+}
+
+.table_item td
+{
+    background-color:White;
+    margin:1px;
+    padding:10px;
+    vertical-align:middle;
+    text-align:center;
+    border:1px solid #5e90b3;
+}
+
+/*
+-------------------------------------------------------------------------
+ Table
+-------------------------------------------------------------------------
+*/
+table._clear_table
+{
+    padding:0px;
+    margin:0px;
+    vertical-align:top;
+}
+table._clear_table tr
+{
+    padding:0px;
+    margin:0px;
+    vertical-align:top;
+}
+table._clear_table tr td
+{
+    padding:0px;
+    margin:0px;
+    vertical-align:top;
+}

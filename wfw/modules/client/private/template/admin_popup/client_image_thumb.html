@@ -1,0 +1,724 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+    (C)2011-ID-Informatik
+
+    Permer de créé des miniatures d'images uploadé
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Création de miniature...</title>
+
+<meta http-equiv="wfw.page-id" content="client_image_thumb" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- wfw : upload -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-upload.js"></script>
+
+<!-- wfw : page scroll -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/page_scroll.js"></script>
+
+<!-- wfw : list -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<style name="head" type="text/css">
+    #image_content
+    {
+        background-color:white;
+        border:1px solid black;
+        margin-bottom:16px;
+        margin-top:16px;
+        position:relative;
+        padding:0px;
+        display:inline-block;
+    }
+    #image_content img
+    {
+      -moz-user-select: none;
+      -webkit-user-select: none;
+      /* this will work for QtWebKit in future */
+      -webkit-user-drag: none;
+    }
+    /*#image_select
+    {
+        background-color:transparent;
+        border:1px dashed red;
+        position:absolute;
+        top:0;
+        left:0;
+        display:block;
+        cursor:move;
+        margin-left:-1px;
+        margin-top:-1px;
+    }*/
+    #image_select /* rectangle de selection  (transparent) */
+    {
+        background-color:transparent;
+        border:none;
+        position:absolute;
+        top:0px;
+        left:0px;
+        display:block;
+        cursor:move;
+        margin:0px;
+        padding:0px;
+    }
+    #rect_border /* bordure du rectangle (enfant de #image_select) */
+    {
+        background-color:transparent;
+        border:2px dashed red;
+        position:absolute;
+        top:0px;
+        left:0px;
+        display:block;
+        cursor:move;
+        margin-left:-2px;
+        margin-top:-2px;
+        width:100%;
+        height:100%;
+    }
+</style>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+    var selection = [];
+    var cur_scale = 1.0;
+    var org_width, org_height;
+    var files = {};
+    //options par defaut
+    var opt = {
+        client_id: "public_upload", //identificateur du dossier client a lire
+        sel:"" //selection (nom de fichier)
+    };
+
+    /*
+    Initialise le document
+    */
+    wfw.event.SetCallback( // window
+        "wfw_window",
+        "load",
+        "onLoadDoc",
+        function () {
+            // obtient les options 
+            var uri_fields = wfw.utils.getURIFields();
+            if (uri_fields != null) {
+                for (opt_name in opt) {
+                    if (typeof (uri_fields[opt_name]) == "string")
+                        opt[opt_name] = uri_fields[opt_name];
+                }
+            }
+
+            // genere la liste des dossiers utilisateurs
+            UpdateClientList();
+            $value("client_list", opt.client_id);
+
+            // genere la liste des images
+            UpdateImageList();
+
+            //[change de fichier]
+            objSetEvent($doc("action"), "change", function (e) {
+                switch (this.value) {
+                    case "replace":
+                        objSetAtt($doc("dst_filename"), "disabled", "disabled");
+                        break;
+                    case "new":
+                        objRemoveAtt($doc("dst_filename"), "disabled");
+                        break;
+                }
+            });
+
+            //[change de fichier]
+            objSetEvent($doc("client_list"), "change", function (e) {
+                UpdateImageList();
+                ResetInterface();
+            });
+
+            //[change d'echelle]
+            objSetEvent($doc("size_percent"), "change", function (e) {
+                var img = $doc("image");
+                setScale((parseInt(this.value) / 100.0));
+                ajustRectSize($doc("image_select"), img.height, img.width, cur_scale);
+            });
+
+            //[selection d'une image]
+            objSetEvent($doc("image_selection"), "change", function (e) {
+
+                //reinitialise l'interface
+                ResetInterface();
+
+                //nouveau nom de fichier possible
+                var ext = fileext(this.value);
+                var name = filename(this.value);
+                $value("dst_filename", name.substr(0, name.length - (ext.length + 1)) + ".thumb." + ext);
+
+                //aucune selection ?
+                if (empty(this.value))
+                    return;
+
+                //insert l'image
+                var image_filename = "clients/data/" + $value("client_list") + "/" + this.value;
+                insertImage(image_filename);
+                objSetInnerText($doc("org_size"), byteToSize(files[this.value].size));
+            });
+
+            //[fabrique la miniature !]
+            objSetEvent($doc("make_thumb_btn"), "click", function (e) {
+                var pos = getRectPosition($doc("image_select"));
+
+                var new_size = parseInt($value("size"));
+
+                var param = {
+                    "onsuccess": function (obj, args) {
+                        $value("file_name", args.filename);
+                        wfw.ext.document.messageBox("Miniature créée dans le fichier : " + args.filename);
+                        //met a jour la liste est selectionne l'image créé
+                        UpdateImageList(args.filename);
+                    }
+                };
+                wfw.request.Add(null, "req/client/thumb_image.php", { wfw_form_name: "thumb_image", wfw_id: ($value("client_list")), posX: pos.x1, posY: pos.y1, posX2: pos.x2, posY2: pos.y2, size: (new_size), filename: $value("image_selection"), dst_filename: $value("dst_filename"), action: $value("action") }, wfw.utils.onCheckRequestResult_XARG, param, false);
+            });
+
+            //[upload!]
+            objSetEvent($doc("upload_btn"), "click", function (e) {
+                var fileObj = $doc("file");
+                var client_id = $value("client_list");
+                var upload_options = {
+                    form_id: "form",
+                    callback: onUploadState
+                };
+
+                //upload simple (I.E)
+                if (typeof (fileObj.files) == "undefined") {
+                    if (empty(fileObj.value)) {
+                        wfw.ext.document.messageBox("Veuillez selectionner un fichier");
+                        return false;
+                    }
+                    wfw.ext.upload.sendAsForm("form", client_id, upload_options);
+                }
+                //upload en paquets
+                else {
+                    if (!fileObj.files.length) {
+                        wfw.ext.document.messageBox("Veuillez selectionner un fichier");
+                        return false;
+                    }
+
+                    wfw.ext.upload.sendAsPacket(fileObj.files[0], 0, client_id, upload_options);
+                }
+            });
+
+
+            //selection
+            if (!empty(opt.sel))
+                selectImage(opt.sel);
+        },
+        false
+    );
+
+    var progressDlg_Id = null; // identificateur du dialogue de chargement
+
+    function onUploadState(args, upload_state, infos) {
+        switch (upload_state) {
+            //depart du transfer
+            case "begin":
+                $doc("progressDlg_bar").style.width = "0%";
+                wfw.ext.document.lockElement($doc("progressDlg"), { title: "Envoie du fichier...", onOK: function (element) { } });
+                progressDlg_Id = wfw.ext.document.getDialogID();
+                objSetAtt($doc(progressDlg_Id + "_ok"), "disabled", "disabled");
+                break;
+            //progression du transfer  
+            case "update":
+                $doc("progressDlg_bar").style.width = parseInt((100 / infos.part_count) * (infos.part_count - infos.part_remaining)) + "%";
+                break;
+            //ok le fichier est transféré
+            case "done":
+                UpdateImageList(args.filename);
+                $doc("progressDlg_bar").style.width = "100%";
+                objRemoveAtt($doc(progressDlg_Id + "_ok"), "disabled");
+                break;
+            //erreur du transfer
+            case "failed":
+            case "error":
+            case "update_failed":
+            case "update_error":
+                //active le bouton OK
+                objRemoveAtt($doc(progressDlg_Id + "_ok"), "disabled");
+                break;
+        }
+    }
+
+    //reinitialise l'interface
+    function ResetInterface() {
+        objRemoveChildNode($doc("image_content"), null, REMOVENODE_ALL);
+        setScale(0.75);
+        objSetInnerText($doc("org_size"), "-");
+        objSetInnerText($doc("org_width_height"), "-");
+    }
+
+    function UpdateClientList() {
+        //liste les dossiers d'upload
+        var param = {
+            "onsuccess": function (obj, args) {
+                //vide la liste
+                var olist = $doc("client_list");
+                objRemoveChildNode(olist, null, REMOVENODE_ALL);
+
+                //verifie les noms de fichiers
+                if (empty(args.name)) {
+                    return false;
+                }
+
+                //initialise la liste
+                var idList = strexplode(args.id, ";", true);
+                var typeList = strexplode(args.type, ";", true);
+                for (var i = 0; i < idList.length; i++) {
+                    var option = document.createElement("option");
+                    objInsertNode(option, $doc("client_list"), null, INSERTNODE_END);
+                    objSetAtt(option, "value", idList[i]);
+                    objSetInnerText(option, idList[i] + " (" + typeList[i] + ")");
+                    if (idList[i] == opt.client_id)
+                        objSetAtt(option, "selected", "selected");
+                }
+            }
+        };
+        wfw.request.Add(null, "req/client/listclient.php", null, wfw.utils.onCheckRequestResult_XARG, param, false);
+
+        return true;
+    }
+
+    function UpdateImageList(filename) {
+        var client_id = $value("client_list");
+        if (empty(client_id))
+            return;
+
+        var param = {
+            "onsuccess": function (obj, args) {
+                //vide la liste
+                var olist = $doc("image_selection");
+                objRemoveChildNode(olist, null, REMOVENODE_ALL);
+
+                //liste des fichiers
+                files = {};
+
+                //verifie la presence de noms de fichiers
+                if (empty(args.name)) {
+                    //wfw.ext.document.print("Aucun fichier n'a été ajouté a votre dossier.");
+                    return false;
+                }
+
+                //ajoute le choix par defaut
+                var option = document.createElement("option");
+                objInsertNode(option, $doc("image_selection"), null, INSERTNODE_END);
+                objSetAtt(option, "value", "");
+                objSetInnerText(option, "-- Choisir un fichier --");
+
+                //initialise la liste
+                var nameList = strexplode(args.name, ";", true);
+                var sizeList = strexplode(args.size, ";", true);
+                for (var i = 0; i < nameList.length; i++) {
+                    switch (fileext(nameList[i]).toLowerCase()) {
+                        case "jpg":
+                        case "jpeg":
+                        case "png":
+                        case "tiff":
+                        case "wbmp":
+                        case "bmp":
+                        case "gif":
+                            break;
+                        default:
+                            continue;
+                    }
+
+                    //ajoute a la liste des infos
+                    files[nameList[i]] = {
+                        size: sizeList[i]
+                    };
+
+                    //ajoute a la liste
+                    var option = document.createElement("option");
+                    objInsertNode(option, $doc("image_selection"), null, INSERTNODE_END);
+                    objSetAtt(option, "value", nameList[i]);
+                    objSetInnerText(option, nameList[i]);
+                }
+
+                //definit la selection
+                if(typeof(filename)=="string")
+                    selectImage(filename);
+            }
+        };
+
+        //envoie la requete
+        wfw.request.Add(null, "req/client/list.php", { wfw_id: (client_id) }, wfw.utils.onCheckRequestResult_XARG, param, false);
+
+        return true;
+    }
+
+    function setScale(value) {
+        cur_scale = parseFloat(value);
+
+        if (isNaN(cur_scale) || cur_scale > 1.0)
+            cur_scale = 1.0;
+        else if (cur_scale < 0.0)
+            cur_scale = 0.0;
+
+        $value("size_percent", parseInt(cur_scale * 100.0));
+    }
+
+    function onImgMouseMove(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        /*
+        ajustRectSize($doc("image_select"), this.height, this.width, cur_scale);*/
+
+        if (drag) {
+            var oRect = $doc("image_select");
+
+            var ox = (e.offsetX) ? e.offsetX : e.layerX;
+            var oy = (e.offsetY) ? e.offsetY : e.layerY;
+
+            var px = ox - start_x;
+            var py = oy - start_y;
+
+            objSetXY(oRect, px, py);
+        }
+
+        return false;
+    }
+
+    /*
+    change la position du rectangle
+    */
+    function onImgMouseClick(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        var offsetX = (e.offsetX) ? e.offsetX : e.layerX;
+        var offsetY = (e.offsetY) ? e.offsetY : e.layerY;
+
+        ajustRectPos($doc("image_select"), offsetX, offsetY, $doc("image").width, $doc("image").height);
+    }
+
+    var start_x = 0;
+    var start_y = 0;
+    var drag = false;
+    /*var borderWidth = 1;*/
+
+    /*
+    débute le deplacement du rectangle
+    */
+    function onSelectMousePress(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        start_x = (e.offsetX) ? e.offsetX : e.layerX;
+        start_y = (e.offsetY) ? e.offsetY : e.layerY;
+
+        drag = true;
+        return false;
+    }
+
+    /*
+    termine le deplacement du rectangle
+    */
+    function onSelectMouseRelease(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        getRectPosition(this);
+        drag = false;
+        return false;
+    }
+
+    /*
+    deplacement du rectangle
+    */
+    function onSelectMouseMove(e) {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        if (!e.which)
+            return;
+        if (!drag)
+            return;
+
+        var ox = (e.offsetX) ? e.offsetX : e.layerX;
+        var oy = (e.offsetY) ? e.offsetY : e.layerY;
+
+        var max_w = $doc("image").width;
+        var max_h = $doc("image").height;
+
+        var oRect = $doc("image_select");
+
+        var rect_x = objGetX(oRect);
+        var rect_y = objGetY(oRect);
+        var rect_width = objGetW(oRect);
+        var rect_height = objGetH(oRect);
+
+        var px = (rect_x + ox) - start_x;
+        var py = (rect_y + oy) - start_y;
+
+        //max right-bottom
+        if (px + rect_width > max_w)
+            px = max_w - rect_width;
+        if (py + rect_height > max_h)
+            py = max_h - rect_height;
+
+        //max right-bottom
+        if (px < 0)
+            px = 0;
+        if (py < 0)
+            py = 0;
+
+        objSetXY(oRect, px, py);
+        return false;
+    }
+
+    function fireEvent(element, event) {
+        if (document.createEventObject) {
+            // dispatch for IE
+            var evt = document.createEventObject();
+            return element.fireEvent('on' + event, evt)
+        }
+        else {
+            // dispatch for firefox + others
+            var evt = document.createEvent("HTMLEvents");
+            evt.initEvent(event, true, true); // event type,bubbling,cancelable
+            return !element.dispatchEvent(evt);
+        }
+    }
+
+    //selectionne une image de la liste
+    function selectImage(filename) {
+        var list = $doc("image_selection");
+
+        for (var i = 0; i < list.options.length; i++) {
+            if (list.options[i].value == filename) {
+                list.selectedIndex = i;
+                fireEvent(list,"change");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //inser l'image dans le document
+    //src = path ou données de l'image
+    function insertImage(src) {
+
+        //cree l'image
+        var img = document.createElement("img");
+        objInsertNode(img, $doc("image_content"), null, INSERTNODE_END);
+        objSetAtt(img, "id", "image");
+
+        //[onLoad]
+        objSetEvent(img, "load", function (e) {
+            //affiche l'image
+            wfw.style.removeClass(this, "wfw_hidden");
+            //enregistre la taille originale
+            org_width = this.width;
+            org_height = this.height;
+            objSetInnerText($doc("org_width_height"), org_width + " px / " + org_height + " px");
+
+            //limite la taille de l'image à l'ecran
+            if (this.height > 150) {
+                this.width = (150 / this.height) * this.width;
+                this.height = 150;
+            }
+            if (this.width > 350) {
+                this.height = (350 / this.width) * this.height;
+                this.width = 350;
+            }
+
+            //insert le selecteur
+            var oRect = document.createElement("span");
+            objSetAtt(oRect, "id", "image_select");
+            objInsertNode(oRect, $doc("image_content"), this, INSERTNODE_AFTER);
+            //ajuste le rectangle
+            var rect = ajustRectSize(oRect, this.height, this.width, cur_scale);
+            //
+            objSetEvent(oRect, "mousemove", onSelectMouseMove);
+            objSetEvent(oRect, "mousedown", onSelectMousePress);
+            objSetEvent(oRect, "mouseup", onSelectMouseRelease);
+
+            //insert la bordure
+            var oRect2 = document.createElement("span");
+            objSetAtt(oRect2, "id", "rect_border");
+            objInsertNode(oRect2, oRect, null, INSERTNODE_END);
+        });
+
+        //initialise le dragage
+        img.draggable = false;
+        objSetEvent(img, "mousedown", function (e) { e.preventDefault(); return false; });
+        objSetEvent(img, "mousemove", onImgMouseMove);
+        objSetEvent(img, "click", onImgMouseClick);
+        //cache l'image pendant le chargement
+        wfw.style.addClass(img, "wfw_hidden");
+        //charge l'image
+        objSetAtt(img, "src", src);
+    }
+
+    /*
+    ajuste la taille du rectangle à l'image
+        oRect : Element rectangle
+        width : largeur max de l'image
+        height: hauteur max de l'image
+        scale : facteur de mise a l'echelle (0~1)
+    Remarques :
+        La taille du rectangle est ajusté sur le petit coté de l'image
+    */
+    function ajustRectSize(oRect, width, height, scale) {
+        var rect = {
+            left: 0,
+            top: 0,
+            size: (((width < height) ? width : height) * scale)
+        };
+
+        objSetW(oRect, rect.size);
+        objSetH(oRect, rect.size);
+        objSetXY(oRect, rect.top, rect.left);
+
+        return rect;
+    }
+
+    /*
+        ajuste la position du rectangle dans l'image
+            oRect : Element rectangle
+            ox    : position dans l'image (centre du rectangle)
+            oy    : position dans l'image (centre du rectangle)
+            max_w : largeur max de l'image
+            max_h : hauteur max de l'image
+        Remarques :
+            Si le rectangle dépasse de l'image, sa position est automatiquement ajusté
+    */
+    function ajustRectPos(oRect, ox, oy, max_w, max_h) {
+        var rect_width = objGetW(oRect);
+        var rect_height = objGetH(oRect);
+
+        var px = ox - (rect_width / 2);
+        var py = oy - (rect_height / 2);
+
+        //max right-bottom
+        if (px + rect_width > max_w)
+            px = max_w - rect_width;
+        if (py + rect_height > max_h)
+            py = max_h - rect_height;
+
+        //max right-bottom
+        if (px < 0)
+            px = 0;
+        if (py < 0)
+            py = 0;
+
+        objSetXY(oRect, px, py);
+
+        return { x: px, y: py };
+    }
+
+    // obtient la positon du rectangle dans l'image (en pourcentage)
+    function getRectPosition(oRect) {
+        var rect_width  = objGetW(oRect);
+        var rect_height = objGetH(oRect);
+        var rect_x      = objGetX(oRect);
+        var rect_y      = objGetY(oRect);
+
+        var img_width  = objGetW($doc("image"));
+        var img_height = objGetH($doc("image"));
+
+        var pos={
+            x1:(1.0/img_width)*parseFloat(rect_x),
+            y1:(1.0/img_height)*parseFloat(rect_y),
+            x2:(1.0/img_width)*parseFloat(rect_x + rect_width),
+            y2:(1.0/img_height)*parseFloat(rect_y + rect_height)
+        };
+        /*debug
+        $value("x1", pos.x1);
+        $value("y1", pos.y1);
+        $value("x2", pos.x2);
+        $value("y2", pos.y2);*/
+
+        return pos;
+    }
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<input id="file_name" type="hidden" value="" />
+<input id="file_path" type="hidden" value="" />
+
+<form id="form" name="form" action="req/client/up.php" method="post" enctype="multipart/form-data">
+
+    <input id="form_xarg_result_1_invalid_id" type="hidden" value="Le dossier d'upload client n'existe pas" />
+    <input id="form_xarg_result_1_invalid_file" type="hidden" value="Le dossier d'upload est corrompu ou invalide" />
+    <input id="form_xarg_result_1_invalid_pwd" type="hidden" value="Le mot-de-passe est invalide" />
+    <!-- beginUpload -->
+    <input id="form_xarg_result_1_file_too_big" type="hidden" value="Le fichier que vous voulez uploder est trop gros" />
+    <input id="form_xarg_result_1_cant_create_folder" type="hidden" value="Le dossier d'upload ne peut pas être créé" />
+    <input id="form_xarg_result_1_max_file_count" type="hidden" value="Le maximum de fichier uploadable à été atteind" />
+    <input id="form_xarg_result_1_file_create" type="hidden" value="Le fichier ne peut pas être créé" />
+    <!-- packetUpload -->
+    <input id="form_xarg_result_1_invalid_size" type="hidden" value="La taille des données et de l'upload ne correspond pas" />
+    <input id="form_xarg_result_1_file_not_found" type="hidden" value="Le fichier d'upload n'existe pas" />
+    <input id="form_xarg_result_1_file_overflow" type="hidden" value="La taille des données dépasse les capacités du fichier d'upload" />
+    <input id="form_xarg_result_1_seek_error" type="hidden" value="Le fichier d'upload n'est pas accessible" />
+    <input id="form_xarg_result_1_write_error" type="hidden" value="Une erreur d'écriture est survenu" />
+    <input id="form_xarg_result_1_file_open" type="hidden" value="Le fichier d'upload ne peut pas être ouvert" />
+    <!-- finalizeUpload -->
+    <input id="form_xarg_result_1_output_file_exist" type="hidden" value="Le fichier existe déjà !" />
+
+    <fieldset>
+        <legend>Entrée :</legend>
+        <div class="wfw_static_field"><span>Envoyer un fichier<span id="upload_btn" class="wfw_button_icon"><span class="wfw_icon upload"></span></span></span><span><input id="file" name="file" type="file" /></span></div>
+        <div class="wfw_edit_field"><span>Image</span><span><select id="image_selection"></select></span></div>
+        <div class="wfw_edit_field"><span>Largeur / Hauteur</span><span><span id="org_width_height">0 px / 0 px</span></span></div>
+        <div class="wfw_edit_field"><span>Taille</span><span><span id="org_size">0 octet</span></span></div>
+    </fieldset>
+
+    <div style="text-align:center;"><div id="image_content" style="height:150px;"><span style="height:150px; width:200px; display:inline-block; text-align:center; margin:20px;">Selectionnez une image dans le champ 'image'...</span></div></div>
+
+    <fieldset>
+        <legend>Sortie :</legend>
+        <div class="wfw_edit_field"><span>Proportion (%)</span><span><input id="size_percent" type="text" value="100" /></span></div>
+        <div class="wfw_edit_field"><span>Largeur / Hauteur (px)</span><span><input id="size" type="text" value="256" /></span></div>
+        <div class="wfw_edit_field"><span>Dossier</span><span><select id="client_list"></select></span></div>
+        <div class="wfw_edit_field"><span>Action</span><span><select id="action"><option value="new" selected="selected">Crée un nouveau fichier</option><option value="replace">Remplacer le fichier existant</option></select></span></div>
+        <div class="wfw_edit_field"><span>Nom de fichier</span><span><input id="dst_filename" type="text" value="" /></span></div>
+        <center><div id="make_thumb_btn" class="wfw_button_text">Créer la miniature</div></center>
+    </fieldset>
+
+    <!--<fieldset>
+        <legend>Debug :</legend>
+        <div class="wfw_edit_field"><span>x1</span><span><input id="x1" type="text" value="" /></span></div>
+        <div class="wfw_edit_field"><span>y1</span><span><input id="y1" type="text" value="" /></span></div>
+        <div class="wfw_edit_field"><span>x2</span><span><input id="x2" type="text" value="" /></span></div>
+        <div class="wfw_edit_field"><span>y2</span><span><input id="y2" type="text" value="" /></span></div>
+    </fieldset>-->
+</form>
+
+<!-- TEMPLATES -->
+<div class="wfw_hidden">
+    <!-- progressDlg -->
+    <div id="progressDlg" style="text-align:left;">
+        <div style="border:1px solid black; height:20px;"><span id="progressDlg_bar" style="width:50%; height:20px; background-color:Blue; display:inline-block;"></span></div>
+    </div>
+</div>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

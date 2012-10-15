@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Editeur de champ</title>
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+
+//options par defaut
+var opt = {
+    wfw_id:"", //id client
+    field_name:"" //nom du champ
+};
+
+wfw.event.SetCallback( // window
+    "wfw_window",
+    "load",
+    "onLoadDoc",
+    function() {
+        // obtient les options 
+        var uri_fields = wfw.utils.getURIFields();
+        if(uri_fields != null)
+        {
+            for(opt_name in opt)
+            {
+                if(typeof(uri_fields[opt_name])=="string")
+                    opt[opt_name] = uri_fields[opt_name];
+            }
+        }
+
+        //initialise
+        loadData();
+    }
+);
+
+function loadData()
+{
+    var param = {
+        "onsuccess" : function(obj,args)
+        {
+            //charge les champs
+            objSetInnerText($doc("field"),args[opt.field_name]);
+        }
+    };
+    var fields = {
+        wfw_id:(opt.wfw_id)
+    };
+    fields[opt.field_name]="";
+
+    //envoie la requete
+    wfw.request.Add(null,"req/client/get.php",fields,wfw.utils.onCheckRequestResult_XARG,param,false);
+}
+
+function saveData()
+{
+    var param = {
+        "onsuccess" : function(obj,args)
+        {
+            window.close();
+        }
+    };
+    var fields = {
+        wfw_id:(opt.wfw_id)
+    };
+
+    var oText = docGetElement(document,"field");
+    //fields[opt.field_name]=objGetInnerText(oText); /* probleme google chrome */
+    fields[opt.field_name]=objGetAtt(oText,"value");
+    //envoie la requete
+    wfw.request.Add(null,"req/client/set.php",fields,wfw.utils.onCheckRequestResult_XARG,param,false);
+}
+
+// ]]>
+</script>  
+
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content" style="width:500px;">
+<center>
+<textarea id="field" style="font-family:Verdana; font-size:10px;" rows="12" cols="90"></textarea>
+</center>
+</div><!-- content -->
+
+</body>
+</html>

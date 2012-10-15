@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<album>
+  <title>Simple album photos</title>
+  <path>http://webframework.fr/samples/album/</path>
+  <images>
+    <image>
+      <filename>1.jpg</filename>
+      <title>Smile ;)</title>
+      <description>Souriez !</description>
+    </image>
+    <image>
+      <filename>2.jpg</filename>
+      <title>Hautes Cascades</title>
+    </image>
+    <image>
+      <filename>3.jpg</filename>
+      <title>L'Arbre Mort</title>
+    </image>
+    <image>
+      <filename>4.jpg</filename>
+      <title>Turquie 2020</title>
+      <description>Vue en image de synthèse d'une Turquie futuriste</description>
+    </image>
+    <image>
+      <filename>5.jpg</filename>
+      <title>4 Saisons</title>
+    </image>
+    <image>
+      <filename>6.jpg</filename>
+      <title>No Comment</title>
+    </image>
+    <image>
+      <filename>7.jpg</filename>
+      <title>Coeur noir</title>
+      <description>Représentation artistique de l'amour noir</description>
+    </image>
+  </images>
+</album>

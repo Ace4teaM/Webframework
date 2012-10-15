@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<data>
+	<wfw_id>photo_fields</wfw_id>
+	<wfw_type>datafield</wfw_type>
+	<wfw_readonly>false</wfw_readonly>
+	<wfw_remote_ip>192.168.1.20</wfw_remote_ip>
+	<wfw_timestamp>1330769802</wfw_timestamp>
+	<wfw_date>03/03/2012 11:16:42</wfw_date>
+	<wfw_filename>photo_fields.xml</wfw_filename>
+<view_longitude>Float</view_longitude><view_latitude>Float</view_latitude><wfw_note>Description de la photo</wfw_note></data>

@@ -1,0 +1,566 @@
+
+body {
+	background-color:white;
+}
+
+/*
+-------------------------------------------------------------------------
+    Additionnal Webframework specific
+-------------------------------------------------------------------------
+*/
+
+#wfw_ext_content{
+	
+	/* center into body */
+	position:relative;
+    margin: 0px;
+    padding:0px;
+    width:500px;
+	text-align:left;
+	background-color:white;
+    vertical-align:top;
+}
+
+/*
+-------------------------------------------------------------------------
+ Table
+-------------------------------------------------------------------------
+*/
+.table_view 
+{
+    background-color:White;
+    border:1px solid #5e90b3;
+    margin:6px 20px 6px 20px;
+    display:block;
+}
+
+.table_view tr
+{
+    background-color:White;
+}
+
+.table_view td
+{
+    background-color:White;
+    margin:1px;
+    vertical-align:top;
+}
+
+.table_view th, .table_view thead td
+{
+    font-family:Calibri;
+    font-weight:bolder;
+    font-size:larger;
+    letter-spacing:1px;
+    text-align:left;
+    color:#5e90b3;
+    vertical-align:top;
+    font-size:12pt;
+}
+
+.table_view h1,.table_view h2,.table_view h3,.table_view h4
+{
+	font-family:Calibri;
+    margin-bottom:0px;
+}
+
+
+/*
+-------------------------------------------------------------------------
+ Table
+-------------------------------------------------------------------------
+*/
+.table_options 
+{
+	font-family:Calibri;
+    background-color:White;
+    border:1px solid #5e90b3;
+    margin:6px 20px 6px 20px;
+}
+
+.table_options td
+{
+    background-color:White;
+    margin:0px 0px 0px 0px;
+    padding:3px 3px 3px 3px;
+    text-align:left;
+}
+
+.table_options th
+{
+    margin:0px 0px 0px 0px;
+    padding:3px 16px 3px 3px;
+    font-weight:bold;
+    text-align:right;
+    border-bottom:1px solid gray;
+}
+
+
+/*
+-------------------------------------------------------------------------
+ Table
+-------------------------------------------------------------------------
+*/
+.table_item 
+{
+    background-color:transparent;
+    margin:8px;
+}
+
+.table_item td
+{
+    background-color:White;
+    margin:1px;
+    padding:10px;
+    vertical-align:middle;
+    text-align:center;
+    border:1px solid #5e90b3;
+}
+
+/*
+-------------------------------------------------------------------------
+ Table
+-------------------------------------------------------------------------
+*/
+table._clear_table
+{
+    padding:0px;
+    margin:0px;
+    vertical-align:top;
+}
+table._clear_table tr
+{
+    padding:0px;
+    margin:0px;
+    vertical-align:top;
+}
+table._clear_table tr td
+{
+    padding:0px;
+    margin:0px;
+    vertical-align:top;
+}
+
+/*
+-------------------------------------------------------------------------
+ Charte
+-------------------------------------------------------------------------
+*/
+
+div#_bg_top_left
+{
+    padding:0px;
+    margin:0px;
+    overflow:hidden;
+    background-image:url("aceteam/left_bg_top.png");
+    background-position:top;
+    background-repeat:no-repeat;
+    background-color:transparent;
+    width:207px;
+    min-height:169px;
+ /*   display:block;
+    position:fixed;
+    left:0px;
+    top:0px;*/
+}
+
+div#_bg_left
+{
+    padding:0px;
+    margin:0px;
+    overflow:hidden;
+    background-image:url("aceteam/left_bg.png");
+    background-position:top;
+    background-repeat:no-repeat;
+    background-color:transparent;
+    width:207px;
+    min-height:428px;
+/*    display:inline-block;
+    position:fixed;
+    left:0px;
+    top:0px;*/
+}
+
+div#_bg_left_back
+{
+    background-image:url("aceteam/left_bg_y.png");
+    background-repeat:repeat-y;
+}
+
+div#_bg_left_content
+{
+    margin:40px 6px 6px 6px;
+    padding:0px;
+    text-align:center;
+}
+
+div#_bg_left_bottom
+{
+    padding:0px;
+    margin:0px;
+    background-image:url("aceteam/left_bottom.png");
+    background-position:top;
+    background-color:transparent;
+    width:207px;
+    height:11px;
+}
+
+div#_banner
+{
+    padding:0px;
+    margin:0px;
+    overflow:hidden;
+    background-image:url("aceteam/banniere.png");
+    background-position:top;
+    background-repeat:no-repeat;
+    background-color:transparent;
+    width:802px;
+    height:131px;
+/*    display:inline-block;
+    position:fixed;
+    left:207px;
+    top:0px;*/
+}
+div#_bg_menu
+{
+    padding:0px;
+    margin:0px;
+    overflow:hidden;
+    background-image:url("aceteam/bg_menu.png");
+    background-position:top;
+    background-repeat:no-repeat;
+    background-color:#dedede;
+    width:802px;
+    height:38px;
+ /*    display:inline-block;
+   position:fixed;
+    left:207px;
+    top:131px;*/
+}
+div#_bg
+{
+    padding:0px;
+    margin:0px;
+    overflow:hidden;
+    background-image:url("aceteam/bg_y.png");
+    background-repeat:repeat-y;
+    background-image:url("aceteam/bg.png");
+    background-position:top;
+    background-repeat:no-repeat;
+    background-color:transparent;
+    width:802px;
+    min-height:428px;
+/*    display:inline-block;
+    position:fixed;
+    left:207px;
+    top:169px;*/
+}
+div#_bg_back
+{
+    background-image:url("aceteam/bg_y.png");
+    background-repeat:repeat-y;
+}
+
+div#_bg_content
+{
+    padding:26px 6px 6px 6px;
+    margin:0px;
+    background-color:transparent;
+}
+
+div#_bg_bottom
+{
+    padding:0px;
+    margin:0px;
+    background-image:url("aceteam/bg_bottom.png");
+    background-position:top;
+    background-color:transparent;
+    height:11px;
+    width:802px;
+}
+
+div#_footer
+{
+    font-family:Verdana, Consolas, Calibri;
+    font-size:x-small;
+    font-weight:normal;
+    color:Blue;
+    text-align:center;
+    background-color:White;
+    border:1px solid #b5bfd9;
+    margin:2px 0px 2px 0px;
+    padding:3px;
+}
+
+/*
+-------------------------------------------------------------------------
+ Navigation menu
+-------------------------------------------------------------------------
+*/
+
+#_nav_bar
+{
+    padding:0px;
+    margin:0px;
+    background-image:url("aceteam/menu_bg.png");
+    background-repeat:repeat-x;
+    height:38px;
+    display:inline-block;
+    vertical-align:top;
+}
+#_nav_bar_return
+{
+    padding:0px;
+    margin:0px;
+    display:inline-block;
+    background-image:url("aceteam/menu_retour.png");
+    width:98px;
+    height:38px;
+    min-width:98px;
+    line-height:38px;
+    cursor:pointer;
+}
+#_nav_bar_left
+{
+    padding:0px;
+    margin:0px;
+    display:inline-block;
+    background-image:url("aceteam/menu_left.png");
+    width:10px;
+    height:38px;
+    min-width:10px;
+    line-height:38px;
+}
+#_nav_bar_right
+{
+    padding:0px;
+    margin:0px;
+    display:inline-block;
+    background-image:url("aceteam/menu_right.png");
+    width:8px;
+    height:38px;
+    min-width:8px;
+    line-height:38px;
+}
+
+#_nav_bar ul
+{
+    padding:0px;
+    margin:0px;
+    display:inline-block;
+    line-height:38px;
+    list-style-type:none;
+    list-style-image:none;
+}
+
+#_nav_bar ul li
+{
+    padding:0px 3px 0px 3px;
+    margin:0px 3px 0px 3px;
+    display:inline-block;
+    list-style-image:none;
+    line-height:38px;
+    text-align:left;
+    vertical-align:middle;
+}
+
+#_nav_bar ul li:hover
+{
+    background-image:url("aceteam/menu_bg_hover.png");
+    background-repeat:repeat-x;
+}
+
+#_nav_bar ul a
+{
+    font-family:Verdana;
+    font-size:8pt;
+    font-style:normal;
+    font-variant:normal;
+    font-weight:normal;
+}
+
+/*
+-------------------------------------------------------------------------
+ Others styles
+-------------------------------------------------------------------------
+*/
+.hidden
+{
+    display:none;
+}
+
+div.menu
+{
+    margin:6px;
+    padding:0px;
+    background-color:transparent;
+	font-family:Calibri;
+	font-size:small;
+}
+
+div.menu ul
+{
+    border:1px solid black;
+    padding:0px;
+    margin:0px;
+    display:block;
+}
+
+div.menu ul li
+{
+    display:block;
+    border-color:#939037;
+    background-color:#e6e02f;
+    color:black;
+    padding-left:4px;
+    padding-right:4px;
+}
+
+div.menu ul li:hover
+{
+    border-color:#939037;
+    background-color:#d5cf32;
+    color:black;
+}
+
+ul.menu_block
+{
+    padding:0px;
+    margin:0px;
+    display:block;
+    line-height:16px;
+}
+
+ul.menu_block li
+{
+    display:inline-block;
+    border-color:#939037;
+    background-color:#e6e02f;
+    color:black;
+    padding:0px 4px 0px 4px;
+    text-align:left;
+    line-height:16px;
+    vertical-align:top;
+}
+
+ul.menu_block li:hover
+{
+    border-color:#939037;
+    background-color:#d5cf32;
+    color:black;
+}
+
+.border
+{
+    border:0px solid black;
+}
+
+
+.docking_label
+{
+    border:1px solid black;
+    padding:0px;
+    margin:0px;
+    position:absolute;
+    background-color:White;
+    color:Black;
+}
+
+.purple
+{
+    border-color:#623793;
+    background-color:#7b4eae;
+    color:white;
+}
+
+.purple:hover
+{
+    border-color:#623793;
+    background-color:#70479e;
+    color:white;
+}
+
+.yellow
+{
+    border-color:#939037;
+    background-color:#e6e02f;
+    color:black;
+}
+
+a.yellow:hover
+{
+    border-color:#939037;
+    background-color:#d5cf32;
+    color:black;
+}
+
+.no_spacing
+{
+    padding:0px;
+    margin:0px;
+}
+
+.v_spacing
+{
+    padding-top:4px;
+    padding-bottom:4px;
+}
+
+.h_spacing
+{
+    padding-left:4px;
+    padding-right:4px;
+}
+
+.path
+{
+    font-family:Courier New;
+    padding-left:4px;
+    padding-right:4px;
+    font-weight:bold;
+}
+
+/*
+-------------------------------------------------------------------------
+ Table d'information
+-------------------------------------------------------------------------
+*/
+table.info 
+{
+    font:12px Tahoma;
+    background-color:#fffff5;
+    border:1px solid #aaa;
+    display:block;
+}
+
+table.info td
+{
+    margin:1px;
+    text-align:left;
+}
+
+table.info th
+{
+    font-weight:bold;
+    text-align:left;
+    color:#5e90b3;
+}
+
+table.info h1,table.info h2,table.info h3,table.info h4
+{
+	font-family:Calibri;
+    margin-bottom:0px;
+}
+
+table.info thead td, table.info thead th
+{
+    margin:1px;
+    text-align:left;
+    font-weight:bold;
+}
+
+table.info tbody td, table.info tbody th
+{
+    padding:8px;
+    text-align:left;
+}

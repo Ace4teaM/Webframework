@@ -1,0 +1,17 @@
+.ext_ui_env
+{
+    padding:0px;
+    margin:0px;
+	left:0px;
+	top:0px;
+	overflow:hidden;
+	position:relative;
+}
+.ext_ui_obj
+{
+    padding:0px;
+    margin:0px;
+	left:0px;
+	top:0px;
+	position:absolute;
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <config>
+    <module id="actu.sample" name="Exemples de contenu d'actualités" require="actu">
+      <name>Exemples Actualités</name>
+      <desc>Exemples de contenu</desc>
+      <img>data/pictures/modules/actu.png</img>
+    </module>
+  </config>
+</site>

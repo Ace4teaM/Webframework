@@ -1,0 +1,136 @@
+<?xml version="1.0"?>
+<data>
+  <name>Exemple de catalogue</name>
+  <desc>Catalogue de produits pour b&#xE9;b&#xE9;</desc>
+  <guid>456753159852479</guid>
+
+  <set>
+    <category>Cat&#xE9;gorie</category>
+    <price>Prix</price>
+    <label>Marque/Fabriquant</label>
+    <weight>Poids</weight>
+    <width>Largeur</width>
+    <height>Hauteur</height>
+    <depth>Profondeur</depth>
+    <color>Couleur</color>
+    <name>Nom</name>
+    <desc>Description</desc>
+    <web>Site-Web</web>
+  </set>
+
+  <item guid="157-445-866" id="label">
+    <template>_catalog_label.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>NICOTOY</name>
+      <desc>Les doudous de la marque Nicotoy sont irr&#xE9;sistiblement c&#xE2;lins</desc>
+      <long_desc>Les Doudous Nicotoy sont faits pour les b&#xE9;b&#xE9;s , ils sont de qualit&#xE9; sup&#xE9;rieure et pleins de tendresse. Si doux qu&#x2019;ils font craquer au premier regard. Les doudous Nicotoy se caract&#xE9;risent par des mat&#xE9;riaux de qualit&#xE9; , conformes aux normes europ&#xE9;ennes de s&#xE9;curit&#xE9; sur les doudous en peluche auxquels s&#x2019;ajoutent des d&#xE9;tails soign&#xE9;s, ce qui en fait rapidement des compagnons de pr&#xE9;dilection.</long_desc>
+      <image>nicotoy.jpg</image>
+    </set>
+  </item>
+
+  <item guid="467-854-426" id="label">
+    <template>_catalog_label.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>COTOONS</name>
+      <desc>Doudou pour enfants</desc>
+      <web>http://www.cotoons.com/</web>
+    </set>
+  </item>
+
+  <item guid="123-756-789" id="label">
+    <template>_catalog_label.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>B&#xE9;b&#xE9; 9</name>
+      <desc>Collections originales pour le b&#xE9;b&#xE9; et la maison</desc>
+      <web>http://www.bebe9.com/</web>
+    </set>
+  </item>
+
+  <item guid="764-541-487" id="category">
+    <template>_catalog_category.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>Enfants</name>
+      <desc>Jeux, jouets, doudou, etc...</desc>
+      <category>789-456-123</category>
+      <image>doudou.jpg</image>
+    </set>
+  </item>
+
+  <item guid="789-456-123" id="category">
+    <template>_catalog_category.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>Doudou</name>
+      <desc>Doudou pour enfants</desc>
+      <category>789-456-123</category>
+      <image>doudou.jpg</image>
+    </set>
+  </item>
+
+  <item guid="741-456-963" id="category">
+    <template>_catalog_category.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>Jouet</name>
+      <desc>Jouets pour enfants</desc>
+    </set>
+  </item>
+  
+  <item guid="789-764-159" id="product">
+    <template>_catalog_product.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>Doudou poup&#xE9;e</name>
+      <desc>D&#xE8;s la naissance - Gar&#xE7;on et Fille</desc>
+      <category>764-541-487 789-456-123</category>
+      <color>Bleu</color>
+      <price>3.89</price>
+      <image>4771069.jpg</image>
+      <image>4771069 (1).jpg</image>
+      <image>4771069 (2).jpg</image>
+      <label>COTOONS</label>
+      <weight>0,046</weight>
+      <width>14</width>
+      <height>7</height>
+      <depth>19</depth>
+      <color>Bleu</color>
+    </set>
+  </item>
+
+  <item guid="492-456-756" id="product">
+    <template>_catalog_product.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>Doudou Jeans</name>
+      <desc>Jeans - Doudou lapin - D&#xE8;s la naissance - Gar&#xE7;on et Fille</desc>
+      <long_desc>Joli doudou de forme plat &#xE0; qui b&#xE9;b&#xE9; adorera faire de gros c&#xE2;lins.</long_desc>
+      <category>764-541-487 789-456-123</category>
+      <color>Marine/Blanc</color>
+      <price>4.38</price>
+      <image>5790753.jpg</image>
+      <image>5790753 (1).jpg</image>
+      <image>5790753 (2).jpg</image>
+      <label>157-445-866</label>
+      <color>Marine/Blanc</color>
+    </set>
+  </item>
+
+  <item guid="745-554-546" id="product">
+    <template>_catalog_product.html</template>
+    <content_type>template</content_type>
+    <set>
+      <name>Jouet spirale Marguerite et ses amis</name>
+      <desc>S'enroule autour des barreaux du lit ou du parc.</desc>
+      <long_desc>Peluches d&#xE9;tachables : Moulin avec miroir et papier bruissant. Vache et lapin hochets.A accrocher au lit de b&#xE9;b&#xE9;.</long_desc>
+      <category>741-456-963</category>
+      <color>Marine/Blanc</color>
+      <price>24.90</price>
+      <label>123-756-789</label>
+    </set>
+  </item>
+
+<fields><test>12</test></fields></data>

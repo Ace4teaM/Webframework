@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<data>
+	<wfw_form_name>new_form</wfw_form_name>
+	<file>catalog.xml</file>
+	<wfw_type>catalog</wfw_type>
+	<parent_id>index</parent_id>
+	<template>_catalog_catalog_mooflow.html</template>
+	<out_dir>pages</out_dir>
+	<id>Media_gallery</id>
+	<page_id>catalog_Media_gallery</page_id>
+	<name>Media gallery</name>
+	<desc>Album photos</desc>
+	<wfw_id>Media_Gallery</wfw_id>
+	<wfw_type>catalog</wfw_type>
+	<wfw_remote_ip>192.168.1.20</wfw_remote_ip>
+	<wfw_timestamp>1330769575</wfw_timestamp>
+	<wfw_date>03/03/2012 11:12:55</wfw_date>
+	<wfw_filename>Media_Gallery.xml</wfw_filename>
+<wfw_max_upload>999</wfw_max_upload></data>

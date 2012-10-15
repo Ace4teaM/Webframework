@@ -1,0 +1,54 @@
+/*
+    Default CSS for mail styles
+    ID-Informatik
+*/
+
+body {
+    position:absolute;
+    padding:0px;
+	margin:12px;
+	bottom:0px;
+	top:0px;
+	font-size:10pt;
+	text-align:center;
+	background-color:White;
+}
+
+a,img
+{
+    border:none;
+}
+
+#wfw_ext_content{
+	/* center into body */
+	position:relative;
+    margin-left: auto; 
+	margin-right: auto;
+    padding:0px;
+    width:auto;
+}
+
+table #mail
+{
+    border:none;
+    background-color:White;
+}
+h1 
+{
+    text-decoration:underline;
+	font-weight: bold;
+	color: #2483A6;
+	margin-bottom:0px;
+	padding-bottom:0px;
+	
+}
+
+h1 {
+	font-size: 2em;
+}
+
+.subtitle
+{
+    font-family:Calibri, Verdana;
+    font-size:1em;
+}

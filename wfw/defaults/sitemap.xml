@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:template="http://www.webframework.fr/last/xmlns/template">
+  <url template:path=":default.xml:/site/index/page">
+    <loc>http://diskstation/default/index.html</loc>
+    <lastmod>2011-05-23</lastmod>
+  </url><url template:path=":default.xml:/site/index/page">
+    <loc>http://diskstation/default/contact.html</loc>
+    <lastmod>2011-05-23</lastmod>
+  </url>
+</urlset>

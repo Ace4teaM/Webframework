@@ -1,0 +1,272 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+    (C)2010-ID-Informatik
+
+    Popup de selection d'un dossier
+
+    INPUT Values:
+        sel      : Selection 
+        type     : type de dossier a filtrer, si vide tous les dossiers sont affichés
+        use_name : identificateur de l'argument à utiliser comme nom de dossier, si vide l'id de dossier est utilisé
+
+    OUTPUT Values:
+        id       : identificateur du dossier selectionné
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Selectionner un dossier ...</title>
+
+<meta name="description" content="Liste des articles" />
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- wfw : template -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_template.js"></script>
+
+<!-- wfw : page scroll -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/page_scroll.js"></script>
+
+<!-- wfw : list -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<style name="head" type="text/css">
+    a.list_item_text
+    {
+        color:#999999;
+    }
+    a.list_item_text:hover
+    {
+        color:#ee9999;
+    }
+    a.selected
+    {
+        color:#000099;
+    }
+    a.selected:hover
+    {
+        color:#eeee99;
+    }
+</style>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+
+var old_selection = null;
+
+//options par defaut
+var opt = {
+    sel:"", //selection en cours
+    type:"",
+    use_name:""
+};
+
+/*
+    Initialise le document
+*/
+wfw.event.SetCallback( // window
+    "wfw_window",
+    "load",
+    "onLoadDoc",
+    function()
+    {
+        // obtient les options 
+        var uri_fields = wfw.utils.getURIFields();
+        if(uri_fields != null)
+        {
+            for(opt_name in opt)
+            {
+                if(typeof(uri_fields[opt_name])=="string")
+                    opt[opt_name] = uri_fields[opt_name];
+            }
+        }
+            
+        // genere la liste
+        if(UpdateList())
+        {
+            // selection de base ?
+            if(!empty(opt.sel))
+            {
+                makeSingleSelection(opt.sel);
+            }
+        }
+        //si aucun fichier n'est dispo, avertie par un message
+        else
+        {
+            wfw.style.removeClass($doc("no_content"),"wfw_hidden");
+            wfw.style.addClass($doc("scroll_list"),"wfw_hidden");
+        }
+    }
+);
+
+/*
+    actualise la selection
+*/
+
+function makeSingleSelection(id)
+{
+    var x,i;
+    //recherche les items selectionnés dans la liste d'élément
+    var anchor = $doc("anchor_"+id);
+    if(anchor){
+        wfw.style.addClass(anchor,"selected");
+        //termine ici
+        old_selection = anchor;
+        return $value("id",id);
+    }
+    return false;
+}
+
+/*
+    Change de selection
+*/
+function onSelect(id,obj)
+{
+    // deselectionne ?
+    if(wfw.style.haveClass(obj,"selected"))
+    {
+        wfw.style.removeClass(obj,"selected");
+        $value("id","");
+        return;
+    }
+
+    // selectionne
+    if(old_selection!=null)
+        wfw.style.removeClass(old_selection,"selected");
+    wfw.style.addClass(obj,"selected");
+    old_selection = obj;
+    $value("id",id);
+
+    return false;
+}
+
+/*
+    Recharge la liste
+*/
+function UpdateList()
+{
+    var count = 0;
+
+    /*
+        genere la liste des dossiers clients
+    */
+    var param = {
+        "onsuccess" : function(obj,args)
+        {
+            var olist = $doc("list_content");
+            objRemoveChildNode(olist,null,REMOVENODE_ALL);
+
+            //ok ?
+            if(empty(args.id))
+                return;
+
+            //initialise la liste
+            var idList = strToArray(args.id,";");
+            var sizeList = strToArray(args.size,";");
+            var typeList = strToArray(args.type,";");
+            
+            for(var i=0; i<idList.length; i++)
+            {
+                if(empty(opt.type) || (typeList[i] == opt.type))
+                {
+                    wfw.request.Add(
+                        null,
+                        "req/client/getall.php",
+                        {
+                            wfw_id:(idList[i]),
+                            get_private:"1"
+                        },
+                        wfw.utils.onCheckRequestResult_XARG,
+                        {
+                            "onsuccess" : function(obj,args)
+                            {
+                                /* utilise un argument comme nom de dossier */
+                                if(!empty(opt.use_name) && (typeof(args[opt.use_name])=="string"))
+                                    args["_TITLE_"] = args[opt.use_name];
+                                else
+                                    args["_TITLE_"] = obj.args.wfw_id;
+
+                                /* fabrique le template */
+                                var item = nodeCloneNode($doc("list_item_template"),true);
+                                if(item!=null)
+                                {
+                                    objInsertNode(item,olist,null,INSERTNODE_END);
+                                    wfw.template.make(document,item,null,null,args);
+                                    wfw.style.removeClass(item,"wfw_hidden");
+
+                                    count++;
+                                }
+                            }
+                        },
+                        false
+                    );
+                }
+            }
+        }
+    };
+    wfw.request.Add(null,"req/client/listclient.php",null,wfw.utils.onCheckRequestResult_XARG,param,false);
+
+    
+    /*
+        tri la liste par date
+    */
+    wfw.ext.sort.sortElementsBy($doc('list_content'),'id',true);
+
+    return count;
+}
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<!-- **************************************************
+     Message liste vide
+*************************************************** -->
+<div id="no_content" class="wfw_hidden wfw_ext_adversing">Désolé, aucun dossier n'est disponible.</div>
+
+<!-- **************************************************
+     Liste des fichiers
+*************************************************** -->
+<div class="wfw_list_content" style="vertical-align:top;">
+    <!-- Item template -->
+    <table>
+    <tr class="wfw_hidden" template:action="ignore" id="list_item_template" style="margin-left:10px;">
+        <td>
+        <!-- sort fields -->
+        <input type="hidden" name="id" value="-{wfw_id}" />
+        <input type="hidden" name="size" value="-{size}" />
+        </td>
+        <!-- item -->
+        <td style="width:150px;">[-{wfw_type}]</td><td><a id="anchor_-{wfw_id}" class="list_item_text" href="javacript:void();" onclick="onSelect('-{wfw_id}',this); return false;">-{_TITLE_}</a></td>
+    </tr>
+    </table>
+    <!-- Item list -->
+    <table id="list_content"></table>
+</div>
+
+<!-- **************************************************
+     Selection...
+*************************************************** -->
+
+<div class="wfw_hidden">
+    <div>Nom <input id="id" type="hidden" value="" /></div>
+</div>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

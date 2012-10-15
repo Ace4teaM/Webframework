@@ -1,0 +1,362 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+    (C)2010-ID-Informatik
+
+    Gestionnaire d'upload simplifié
+
+    INPUT Values:
+        id       : identificateur du dossier client ('public_upload' par defaut)
+        multiple : si définit à 1, l'envoie de fichiers multiples est supporté
+        remove   : si définit à 1, la suppression de fichiers est supporté
+
+    OUTPUT Values:
+        ...
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Envoyer un fichier...</title>
+
+<meta http-equiv="wfw.page-id" content="client_file_upload" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-upload.js"></script>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+
+//options par defaut
+var opt = {
+    id:"", //identificateur du dossier client
+    multiple:"",//fichiers multiples
+    remove:"1"//autoriser la suppression des fichiers
+};
+
+/*
+    Initialise le document
+*/
+wfw.event.SetCallback( // window
+    "wfw_window",
+    "load",
+    "onLoadDoc",
+    function()
+    {
+        //
+        var preload = new Image;
+        preload.src = "wfw/css/wfw-extends/loading16.gif";
+
+        //
+        wfw.form.initFromURI("form","form");
+
+        // obtient les options 
+        var uri_fields = wfw.utils.getURIFields();
+        if(uri_fields != null)
+        {
+            for(opt_name in opt)
+            {
+                if(typeof(uri_fields[opt_name])=="string")
+                    opt[opt_name] = uri_fields[opt_name];
+            }
+        }
+
+        // pad d'id ?
+        if(!empty(opt.id))
+            $value("wfw_id",opt.id);
+
+        // obtient les limites de l'upload
+        var max_file_size = null;
+        var param = {
+            "onsuccess" : function(obj,args)
+            {
+                max_file_size = args.max_size;
+            }
+        };
+        wfw.request.Add(null,"../req/client/upinfo.php",null,wfw.utils.onCheckRequestResult_XARG,param,false);
+
+        // choix du fichier (EVENEMENT)
+        objSetEvent($doc("file"),"change",
+            function(e)
+            {
+                //vide la liste
+                var olist = $doc("file_descriptor");
+                objRemoveChildNode(olist,null,REMOVENODE_ALL);
+                    
+                var fields,template;
+
+                //File interface (HTML5 Extension)
+                if(window.File && window.FileList && window.FileReader)
+                {
+		            // obtient les infos sur le fichier
+		            var files = e.target.files || e.dataTransfer.files;
+
+                    if((max_file_size!=null) && (files[0].size>=max_file_size))
+                    {
+                        wfw.ext.document.messageBox("Ce fichier est trop volumineux pour être envoyé, merci de choisir un fichier de taille inférieur à "+byteToSize(max_file_size));
+                        return false;
+                    }
+
+                    //fabrique le template
+                    fields={
+                        file_id:(uniqid()),
+                        name:(files[0].name),
+                        size:(byteToSize(files[0].size)),
+                        type:(files[0].type),
+                        icon:(wfw.ext.document.extensionToClassName( fileext(files[0].name) ))
+                    };
+                    template = wfw.ext.listElement.insertFields($doc("file_descriptor_template"),olist,fields);
+                }
+                //pas d'interface avec les fichiers
+                else
+                {
+                    //fabrique le template
+                    fields={
+                        file_id:(uniqid()),
+                        name:(filename(this.value)),
+                        size:("??? octets"),
+                        type:(""),
+                        icon:("file_empty")
+                    };
+                    template = wfw.ext.listElement.insertFields($doc("file_descriptor_template"),olist,fields);
+                }
+                
+                objSetAtt(template,"id",fields.file_id);
+
+                //initialise l'action
+                objSetClassName($doc("action_icon_"+fields.file_id),"wfw_icon upload");
+                objSetClassName($doc("action_btn_"+fields.file_id),"wfw_button_icon");
+                //objSetEvent($doc("action_btn_"+fields.file_id),"click",function(e,file_id){ return onSubmit(file_id); },fields.file_id);
+                //objSetEvent($doc("action_icon_"+fields.file_id),"click",function(e,file_id){ return onSubmit(file_id); },fields.file_id);
+                
+
+                //[upload!]
+                objSetEvent($doc("action_icon_"+fields.file_id), "click", function (e,file_id) {
+                    var fileObj = $doc("file");
+                    var client_id = $value("wfw_id");
+                    var upload_options = {
+                        form_id: "form",
+                        callback: onUploadState
+                    };
+
+                    //upload simple (I.E)
+                    if (typeof (fileObj.files) == "undefined") {
+                        if (empty(fileObj.value)) {
+                            wfw.ext.document.messageBox("Veuillez selectionner un fichier");
+                            return false;
+                        }
+                        wfw.ext.upload.sendAsForm("form", client_id, upload_options);
+                    }
+                    //upload en paquets
+                    else {
+                        if (!fileObj.files.length) {
+                            wfw.ext.document.messageBox("Veuillez selectionner un fichier");
+                            return false;
+                        }
+
+                        wfw.ext.upload.sendAsPacket(fileObj.files[0], 0, client_id, upload_options);
+                    }
+                },fields.file_id);
+
+                //affiche le bouton "Envoyer tout"
+                if(opt.multiple)
+                    wfw.style.removeClass($doc("send_btn"),"wfw_hidden");
+            }
+        );
+
+        //liste les fichiers existants
+        list();
+
+    }
+);
+
+var progressDlg_Id=null; // identificateur du dialogue de chargement
+
+//callback upload
+function onUploadState(args, upload_state, infos) {
+    switch (upload_state) {
+        //depart du transfer
+        case "begin":
+            //initialise la barre de progression
+            $doc("progressDlg_bar").style.width = "0%";
+            //verouille le dialogue
+            wfw.ext.document.lockElement($doc("progressDlg"), { title : "Envoie du fichier...", onOK:function (element) { } });
+            progressDlg_Id = wfw.ext.document.getDialogID();
+            //desactive le bouton OK
+            objSetAtt($doc(progressDlg_Id + "_ok"), "disabled", "disabled");
+            break;
+        //progression du transfer  
+        case "update":
+            //actualise la barre de progression
+            $doc("progressDlg_bar").style.width = parseInt((100 / infos.part_count) * (infos.part_count - infos.part_remaining)) + "%";
+            break;
+        //ok le fichier est transféré
+        case "done":
+            //actualise la liste
+            list();
+            //termine la barre de progression
+            $doc("progressDlg_bar").style.width = "100%";
+            //active le bouton OK
+            objRemoveAtt($doc(progressDlg_Id + "_ok"), "disabled");
+            break;
+        //erreur du transfer
+        case "failed":
+        case "error":
+        case "update_failed":
+        case "update_error":
+            //active le bouton OK
+            objRemoveAtt($doc(progressDlg_Id + "_ok"), "disabled");
+            break;
+    }
+}
+
+//liste les fichiers existants
+function list()
+{
+    var param = {
+        "onsuccess" : function(obj,args)
+        {
+            //vide la liste
+            var olist = $doc("existing_file_descriptor");
+            objRemoveChildNode(olist,null,REMOVENODE_ALL);
+            
+            //aucun?
+            if(empty(args.name))
+                return false;
+
+            //initialise la liste
+            var nameList = strexplode(args.name,";",true);
+            var typeList = strexplode(args.type,";",true);
+            var sizeList = strexplode(args.size,";",true);
+            for(var i=0; i<nameList.length; i++){
+                //fabrique le template
+                var fields={
+                    file_id:(uniqid()),
+                    name:(nameList[i]),
+                    size:(byteToSize(sizeList[i])),
+                    type:(typeList[i]),
+                    icon:(wfw.ext.document.extensionToClassName( fileext(nameList[i]) )),
+                    data_path:(args.path)
+                };
+                var template = wfw.ext.listElement.insertFields($doc("file_descriptor_template"),olist,fields);
+
+                objSetAtt(template,"id",fields.file_id);
+
+                //initialise l'action
+                if(opt.remove=="1")
+                {
+                    objSetClassName($doc("action_icon_"+fields.file_id),"wfw_icon delete");
+                    objSetClassName($doc("action_btn_"+fields.file_id),"wfw_button_icon");
+                    //objSetEvent($doc("action_btn_"+fields.file_id),"click",function(e,file_id){ return onRemoveFile(file_id); },fields.file_id);
+                    objSetEvent($doc("action_icon_"+fields.file_id),"click",function(e,file_id){ return onRemoveFile(file_id); },fields.file_id);
+                }
+            }
+        }
+    };
+
+    //envoie la requete
+    wfw.request.Add(null,"req/client/list.php",{wfw_id:$value("wfw_id")},wfw.utils.onCheckRequestResult_XARG,param,false);
+}
+
+//supprime un fichier existant
+function onRemoveFile(file_id)
+{
+    var param = {
+        "onsuccess" : function(obj,args)
+        {
+            nodeRemoveNode($doc(file_id));
+        }
+    };
+
+    var fields={
+        wfw_id:($value("wfw_id")),
+        filename:($value("filename_"+file_id)),
+    };
+    //envoie la requete
+    wfw.request.Add(null,"../req/client/remove.php",fields,wfw.utils.onCheckRequestResult_XARG,param,false);
+}
+
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<form id="form" name="form" action="../req/client/up.php" target="result" method="post" enctype="multipart/form-data">
+    <!-- errors -->
+    <input type="hidden" id="form_xarg_result_2002_file" value="Aucun fichier n'a été reçu" />
+    <input type="hidden" id="form_xarg_result_1_UPLOAD_ERR_1" value="La taille du fichier dépasse la limite autorisée par le serveur" />
+    <input type="hidden" id="form_xarg_result_1_UPLOAD_ERR_2" value="La taille du fichier dépasse la limite autorisée par le formulaire" />
+    <input type="hidden" id="form_xarg_result_1_UPLOAD_ERR_3" value="L'envoi du fichier a été interrompu pendant le transfert" />
+    <input type="hidden" id="form_xarg_result_1_UPLOAD_ERR_4" value="Le fichier envoyé est vide" />
+    <input type="hidden" id="form_xarg_result_1_UPLOAD_ERR_6" value="Une erreur serveur c'est produite (Dossier temporaire manquant)" />
+    <input type="hidden" id="form_xarg_result_1_UPLOAD_ERR_7" value="Une erreur serveur c'est produite (Echec de l'écriture)" />
+    <input type="hidden" id="form_xarg_result_1_UPLOAD_ERR_8" value="Une erreur serveur c'est produite (Une extension PHP a arrété l'envoi de fichier)" />
+    <input type="hidden" id="form_xarg_result_1_invalid_id" value="Le dossier d'upload est inexistant" />
+    <input type="hidden" id="form_xarg_result_1_invalid_file" value="Le dossier d'upload est corrompue" />
+    <input type="hidden" id="form_xarg_result_1_invalid_pwd" value="Le dossier d'upload est protégé par mot de passe" />
+    <input type="hidden" id="form_xarg_result_1_cant_create_folder" value="Une erreur serveur c'est produite (Le dossier d'upload ne peut être créé)" />
+    <input type="hidden" id="form_xarg_result_1_max_file_count" value="Vous avez atteint le maximum de fichiers uploadable sur ce dossier" />
+    <input type="hidden" id="form_xarg_result_1_file_copy" value="Une erreur serveur c'est produite (Création/déplacement du fichier uploadé)" />
+    <!-- fields -->
+    <input type="hidden" id="wfw_id" name="wfw_id" value="public_upload" />
+    <center><input type="file" id="file" name="file" style="display:block; width:90%;" /></center>
+</form>
+
+<!-- fichier en queue -->
+<div id="file_descriptor"></div>
+<!-- fichiers existants -->
+<div id="send_btn" class="wfw_hidden wfw_bg_frame wfw_button_icon" onclick="onSubmit();" style="display:block; line-height:20px; height:20px; padding:0px 5px 0px 5px; vertical-align:middle;">Envoyer tout</div>
+<hr />
+<!-- fichiers existants -->
+<div id="existing_file_descriptor" style="height:200px; overflow-y:scroll;"></div>
+
+<!-- *******************************************************************
+        TEMPLATES
+******************************************************************** -->
+<div template:action="ignore" class="wfw_hidden">
+
+<!-- template fichier -->
+<div id="file_descriptor_template" class="wfw_bg_frame" style="vertical-align:middle;">
+
+    <!-- nom du fichier -->
+    <input id="filename_-{file_id}" type="hidden" value="-{name}" />
+    
+    <!-- upload/delete bouton -->
+    <div style="vertical-align:middle; display:inline-block;">
+        <span id="action_btn_-{file_id}" class="wfw_fixed_icon" style="min-height:40px;min-width:40px;"><span id="action_icon_-{file_id}" class="wfw_icon"></span></span>
+    </div>
+    <!-- file type icon -->
+    <div style="vertical-align:middle; display:inline-block;">
+        <span class="wfw_icon -{icon}"></span>
+    </div>
+    <!-- file infos -->
+    <div style="vertical-align:middle; display:inline-block;">
+        <div><a href="-{data_path}/-{name}" target="_blank">-{name}</a></div>
+        <div>[ -{size} ]</div>
+    </div>
+</div>
+
+<!-- upload progress -->
+<div id="progressDlg" style="text-align:left;">
+    <div style="border:1px solid black; height:20px;"><span id="progressDlg_bar" style="width:50%; height:20px; background-color:Blue; display:inline-block;"></span></div>
+</div>
+
+</div>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

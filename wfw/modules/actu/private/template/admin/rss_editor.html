@@ -1,0 +1,633 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Editeur d'actualités</title>
+
+<meta http-equiv="wfw.page-id" content="rss_editor" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- Add Includes -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_template.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/xml_default.js"></script>
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<style name="head" type="text/css">
+    .float_rightTop
+    {
+        position:absolute;
+        top:0;
+        right:0;
+        /*border:1px solid red;*/
+    }
+    .float_leftTop
+    {
+        position:absolute;
+        top:0;
+        left:0;
+        /*border:1px solid red;*/
+    }
+</style>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+
+    var rss_data_path = "data/var/rss/"; // path des fichiers rss
+    var rss_doc = null; //document XML RSS chargé
+    var rss_filename = null; //nom du document XML RSS chargé
+    
+    //options par defaut
+    var opt = {
+        file: "", //nom du fichier à charger
+        article: "" //GUID de l'article à charger
+    };
+
+    /*
+        Initialise le document
+    */
+
+    wfw.event.SetCallback( // window
+        "wfw_window",
+        "load",
+        "onLoadDoc",
+        function () {
+            // obtient les options 
+            var uri_fields = wfw.utils.getURIFields();
+            if (uri_fields != null) {
+                for (opt_name in opt) {
+                    if (typeof (uri_fields[opt_name]) == "string")
+                        opt[opt_name] = uri_fields[opt_name];
+                }
+            }
+            // charge la selection
+            if (!empty(opt.file)) {
+                if (loadRSSFile(opt.file)) {
+                    if(!empty(opt.article))
+                        editArticle(opt.article);
+                }
+            }
+        }
+    );
+
+
+    //ouvre un document RSS
+    function openRSS() {
+        wfw.ext.document.lockFrame(
+            'rss_list.html',
+            {
+                onOK: function (doc, wnd) //ok
+                {
+                    //recupere le nom du fichier selectionné
+                    var file_name = objGetAtt(docGetElement(doc, "id"), "value");
+
+                    return loadRSSFile(file_name);
+                },
+                onCancel: function (doc, wnd) //cancel
+                {
+                    //ne rien faire
+                }
+            }
+        );
+    }
+
+    //ouvre un document RSS
+    function loadRSSFile(file_name) {
+        var param = {
+            "onsuccess": function (obj, xml_doc) {
+                // sauve le nom de fichier en cours
+                rss_filename = file_name;
+
+                //sauve la reference sur le document
+                rss_doc = xml_doc;
+
+                //vide le contenu
+                objRemoveChildNode($doc("article_list"), null, REMOVENODE_ALL);
+                objRemoveChildNode($doc("article_editor"), null, REMOVENODE_ALL);
+
+                //fabrique le template
+                var args = {
+                    filename: (file_name)
+                };
+                var template = nodeCloneNode($doc("channel_template"), true);
+                objInsertNode(template, $doc("article_list"), null, INSERTNODE_END);
+                wfw.template.make(document, template, xml_doc, null, args);
+                wfw.style.removeClass(template, "wfw_hidden");
+
+                //affiche l'editeur
+                showEditor(true);
+            },
+            no_msg: true, // pas de message d'erreur
+            no_result: true // pas de resultat
+        };
+
+        wfw.request.Add(null, rss_data_path + file_name, null, wfw.utils.onCheckRequestResult_XML, param, false);
+
+        return true;
+    }
+
+    //edite un article
+    function editArticle(guid) {
+        //obtient le noeud de l'article dans le document
+        var articleNode = nodeEnumNodes(
+            docGetRootElement(rss_doc),
+            function (node, condition) {
+                if ((node.nodeType == XML_ELEMENT_NODE) && (node.tagName.toLowerCase() == "item")) {
+                    var guidNode = objGetChild(node, "guid");
+                    if ((guidNode != null) && (objGetInnerText(guidNode) == guid))
+                        return node;
+
+                    condition.ignore_child = 1; // inutile de scanner les enfants de ce noeud
+                }
+                return true; // continue l'énumération
+            },
+            false
+        );
+        if(articleNode == true)
+            return alert("impossible de trouver l'article");
+
+        //vide le contenu
+        objRemoveChildNode($doc("article_editor"), null, REMOVENODE_ALL);
+
+        //fabrique le template
+        var template = nodeCloneNode($doc("article_template"), true);
+        objInsertNode(template, $doc("article_editor"), null, INSERTNODE_END);
+        wfw.template.make(document, template, rss_doc, articleNode, null);
+        wfw.style.removeClass(template, "wfw_hidden");
+    }
+
+    function addChannel() {
+        //intialise le contenu
+        $value("edit_channel_title", "Nouveau canal de diffusion");
+        $value("edit_channel_desc", "Entrez une description");
+        $value("edit_channel_link", fileURI()); 
+        //verrouille l'element
+        wfw.ext.document.lockElement(
+            $doc("edit_channel"),
+            {
+                title : "Ajouter un nouveau canal RSS...",
+                //onOk
+                onOK : function (element) {
+                    var param = {
+                        "onsuccess": function (obj, args) {
+                            window.location = (window.location.origin + window.location.pathname + "?file=" + rss_filename);
+                        }
+                    };
+
+                    var args = wfw.form.get_fields("edit_channel");
+                    args.filename = rss_filename;
+                    wfw.request.Add(null, "req/rss/add_channel.php", args, wfw.utils.onCheckRequestResult_XARG, param, false);
+                },
+                //onCancel
+                onCancel : function (element) {
+                }
+            }
+        );
+    }
+
+    function editChannel(channel) {
+        //intialise le contenu
+        var fields = wfw.ext.listElement.getFields($doc("channel_" + channel));
+        $value("edit_channel_title", fields.title);
+        $value("edit_channel_desc", fields.description);
+        $value("edit_channel_link", fields.link);
+        //verrouille l'element
+        wfw.ext.document.lockElement(
+            $doc("edit_channel"),
+            {
+                title: "Modifier les informations de ce canal...",
+                //onOk
+                onOK: function (element) {
+                    var args = wfw.form.get_fields("edit_channel");
+                    args.filename = rss_filename;
+                    args.guid = channel;
+
+                    var param = {
+                        "onsuccess": function (obj, args) {
+                            window.location = (window.location.origin + window.location.pathname + "?file=" + rss_filename);
+                        }
+                    };
+                    wfw.request.Add(null, "req/rss/add_channel.php", args, wfw.utils.onCheckRequestResult_XARG, param, false);
+                },
+                //onCancel
+                onCancel: function (element) {
+                }
+            }
+        );
+    }
+
+    function addArticle(channel) {
+        //intialise le contenu
+        $value("edit_item_title", "Nouvel article");
+        $value("edit_item_link", $value("default_viewer_link") + "?file=" + rss_filename);
+        $value("edit_item_date", date(DATE_RFC822));
+        //verrouille l'element
+        wfw.ext.document.lockElement(
+            $doc("edit_item"),
+            {
+                title: "Ajouter un nouvel article...",
+                //onOk
+                onOK: function (element) {
+                    var args = wfw.form.get_fields("edit_item");
+                    args.filename = rss_filename;
+                    args.channel = channel;
+
+                    var param = {
+                        "onsuccess": function (obj, args) {
+                            window.location = (window.location.origin + window.location.pathname + "?file=" + rss_filename + "&article=" + args.guid);
+                        }
+                    };
+                    wfw.request.Add(null, "req/rss/add_item.php", args, wfw.utils.onCheckRequestResult_XARG, param, false);
+                },
+                //onCancel
+                onCancel: function (element) {
+                }
+            }
+        );
+    }
+
+    // supprime un article 
+    function saveArticle(guid) {
+        //intialise le contenu
+        var args = wfw.form.get_fields("article_editor");
+        args.filename = rss_filename;
+
+        var param = {
+            "onsuccess": function (obj, args) {
+                window.location = (window.location.origin + window.location.pathname + "?file=" + rss_filename + "&article=" + args.guid);
+            }
+        };
+        wfw.request.Add(null, "req/rss/add_item.php", args, wfw.utils.onCheckRequestResult_XARG, param, false);
+    }
+
+    // supprime un canal 
+    function removeChannel(guid) {
+        wfw.ext.document.confirm("Etes vous sur de vouloir supprimer ce canal ?",
+            function(){
+                var param = {
+                    "onsuccess": function (obj, xml_doc) {
+                        window.location = window.location;
+                    }
+                };
+
+                var args = {
+                    guid: (guid),
+                    filename: (rss_filename)
+                };
+
+                wfw.request.Add(null, "req/rss/remove_channel.php", args, wfw.utils.onCheckRequestResult_XARG, param, false);
+            },
+            function(){}
+        );
+    }
+
+    // supprime un article 
+    function removeArticle(guid) {
+        wfw.ext.document.confirm("Etes vous sur de vouloir supprimer cet article ?",
+            function () {
+                var param = {
+                    "onsuccess": function (obj, xml_doc) {
+                        window.location = (window.location.origin + window.location.pathname + "?file=" + rss_filename);
+                    }
+                };
+
+                var args = {
+                    guid: (guid),
+                    filename: (rss_filename)
+                };
+
+                wfw.request.Add(null, "req/rss/remove_item.php", args, wfw.utils.onCheckRequestResult_XARG, param, false);
+            },
+            function () { }
+        );
+    }
+
+    // cree un nouveau fichier 
+    function createFile() {
+        //verrouille l'element
+        wfw.ext.document.lockElement(
+            $doc("new_file"),
+            {
+                title: "Ajouter un fichier RSS...",
+                //onOk
+                onOK: function (element) {
+                    var args = wfw.form.get_fields("new_file");
+
+                    if (fileext(args.filename) != "xml")
+                        args.filename = set_fileext(args.filename, "xml");
+
+                    var param = {
+                        "onsuccess": function (obj, args) {
+                            window.location = (window.location.origin + window.location.pathname + "?file=" + args.name);
+                        }
+                    };
+                    wfw.request.Add(null, "req/rss/create.php", args, wfw.utils.onCheckRequestResult_XARG, param, false);
+                },
+                //onCancel
+                onCancel: function (element) {
+                }
+            }
+        );
+    }
+
+    // supprime le fichier
+    function removeFile() {
+        //confirmation
+        wfw.ext.document.lockElement(
+            $doc('delete_doc'),
+            {
+                title: "Supprimer ...",
+                //ok
+                onOK: function (e) {
+                    var request_list = [
+                        {
+                            url: "req/rss/remove_page.php",
+                            args: { filename: (rss_filename) },
+                            onsuccess: null,
+                            onfailed: null,
+                            continue_if_failed: true
+                        }
+                    ];
+                    //supprimer definitivement ?
+                    if ($doc("not_remove").checked == false) {
+                        request_list.push(
+                            {
+                                url: "req/rss/remove.php",
+                                args: { filename: (rss_filename) },
+                                onsuccess: function () {
+                                    window.location = (window.location.origin + window.location.pathname); //recharge le document
+                                },
+                                onfailed: null,
+                                continue_if_failed: true
+                            }
+                        );
+                    }
+
+                    wfw.ext.utils.callRequestListXARG(request_list);
+                },
+                //annuler
+                onCancel: function () { }
+            }
+        );
+
+        return false;
+    }
+
+    // publie le fichier HTML
+    function publishFile() {
+        $value("publish_title", "Actualités");
+        $value("publish_desc", "Actualités RSS");
+        //confirmation
+        wfw.ext.document.lockElement(
+            $doc('publish_doc'),
+            {
+                title: "Publier ...",
+                //ok
+                onOK: function (element) {
+                    //depublie le document en cours
+                    wfw.request.Add(
+                        null,
+                        "req/rss/remove_page.php",
+                        {
+                            filename: (rss_filename)
+                        },
+                        wfw.utils.onCheckRequestResult_XARG,
+                        {
+                            onsuccess: function (obj, args) {
+                                wfw.ext.document.print("Dépublication OK");
+                            }
+                        },
+                        false
+                    );
+
+                    //publie
+                    wfw.request.Add(
+                        null,
+                        "req/rss/add_page.php",
+                        {
+                            filename: (rss_filename),
+                            title: ($value("publish_title")),
+                            desc: ($value("publish_desc")),
+                            parent_id: "index"//fixé
+                        },
+                        wfw.utils.onCheckRequestResult_XARG,
+                        {
+                            onsuccess: function (obj, args) {
+                                wfw.ext.document.print("Publication OK");
+                            }
+                        },
+                        false
+                    );
+                },
+                //cancel
+                onCancel: function (element) { }
+            }
+        );
+        return false;
+    }
+
+    //affiche le document HTML
+    function viewFile() {
+        var def = new cXMLDefault();
+        if (def.Initialise("../default.xml")) {
+            var id = fileID();
+            var node;
+            if ((node = def.getIndexNode("page", id)) == null)
+                wfw.ext.document.messageBox("Cette page n'a pas encore été publiée");
+            else
+                window.open("../" + objGetInnerText(node), "_blank");
+        }
+    }
+
+    //ouvre le document XML
+    function viewXML() {
+        window.open(rss_data_path + rss_filename, "_blank");
+    }
+    
+
+    function fileURI() {
+        return ($value("base_uri") + fileID() + ".html");
+    }
+
+    function fileID() {
+        return "rss_" + rss_filename.substring(0, rss_filename.lastIndexOf('.'));
+    }
+
+    function showEditor(bshow) {
+        if(bshow) {
+            wfw.style.addClass($doc("welcome_screen"), "wfw_hidden");
+            wfw.style.removeClass($doc("edit_menu"), "wfw_hidden");
+            wfw.style.removeClass($doc("editor"), "wfw_hidden");
+        }
+        else {
+            wfw.style.addClass($doc("editor"), "wfw_hidden");
+            wfw.style.addClass($doc("edit_menu"), "wfw_hidden");
+            wfw.style.removeClass($doc("welcome_screen"), "wfw_hidden");
+        }
+    } 
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<input type="hidden" id="base_uri" value="-{__base_uri__}" />
+
+<!-- Header -->
+<div>
+    <h1>Actualités</h1>
+    <p>Editeur de flux RSS</p>
+    <!-- Menu -->
+    <div style="padding:10px;" class="float_rightTop">
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return wfw.ext.navigator.openPage('#index');"><span class="wfw_icon left"></span><span class="wfw_hidden_help-content">Retour à l'accueil</span></span>
+        <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return createFile();"><span class="wfw_icon new"></span><span class="wfw_hidden_help-content">Créer un nouveau fichier RSS</span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return openRSS();"><span class="wfw_icon open"></span><span class="wfw_hidden_help-content">Ouvrir un fichier RSS</span></span>
+        <span id="edit_menu" class="wfw_hidden">
+            <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return removeFile();"><span class="wfw_icon delete"></span><span class="wfw_hidden_help-content">Supprimer/Dépublier ce flux RSS</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return publishFile();"><span class="wfw_icon publish"></span><span class="wfw_hidden_help-content">Publier</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return viewFile();"><span class="wfw_icon view"></span><span class="wfw_hidden_help-content">Voir le document publié</span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return viewXML();"><span class="wfw_icon fmt_xml"></span><span class="wfw_hidden_help-content">Voir le document XML</span></span>
+        </span>
+    </div>
+</div>
+
+<hr />
+
+<!-- Articles template -->
+<div id="article_template" template:action="ignore" class="wfw_hidden">
+    <fieldset style="padding-top:50px; background-color:White; position:relative;">
+        <!-- menu -->
+        <div style="padding:10px;" class="float_rightTop">
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon delete" onclick="removeArticle('-{guid}');"></span><span class="wfw_hidden_help-content">Supprimer cet article</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon save" onclick="saveArticle();"></span><span class="wfw_hidden_help-content">Sauvegarder l'article</span></span>
+        </div>
+        <div style="padding:10px;" class="float_leftTop">
+            <h3>Article</h3>
+        </div>
+        <!-- desc -->
+        <div><span>Titre</span><input name="title" type="text" value="-{title}" style="width:100%;" /></div>
+        <div><span>Lien (URI)</span><input name="link" type="text" value="-{link}" style="width:100%;" /></div>
+        <div><span>Date (RFC822)</span><input name="date" type="text" value="-{pubDate}" style="width:100%;" /></div>
+        <div><span>GUID</span><input name="guid" disabled="disabled" value="-{guid}" type="text" style="width:100%;" /></div>
+        <div><span>Description</span></div><textarea name="desc" cols="1" rows="15" style="width:100%;">-{description}</textarea>
+    </fieldset>
+</div>
+
+<!-- File template -->
+<div id="channel_template" template:action="ignore" class="wfw_hidden">
+    <fieldset template:action="array" template:path="channel" id="channel_-{guid}" style="background-color:White; position:relative;">
+        <!-- menu -->
+        <div style="padding:10px;" class="float_rightTop">
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon delete" onclick="removeChannel('-{guid}');"></span><span class="wfw_hidden_help-content">Supprimer le canal RSS et tous les articles qu'il contient</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon edit" onclick="editChannel('-{guid}');"></span><span class="wfw_hidden_help-content">Editer</span></span>
+            <span class="wfw_button_icon wfw_hidden_help"><span class="wfw_icon add" onclick="addArticle('-{guid}');"></span><span class="wfw_hidden_help-content">Ajouter un article à ce canal RSS</span></span>
+        </div>
+        <!-- infos -->
+        <input type="hidden" name="title" value="-{title}" />
+        <input type="hidden" name="description" value="-{description}" />
+        <input type="hidden" name="link" value="-{link}" />
+        <input type="hidden" name="guid" value="-{guid}" />
+        <!-- desc -->
+        <div><strong>-{title}</strong></div>
+        <div>-{description}</div>
+        <ul>
+        <li template:action="array" template:path="item"><a href="javascript:editArticle('-{guid}');">-{title}</a></li>
+        </ul>
+    </fieldset>
+</div>
+
+<!-- Editeur -->
+<div id="editor" class="wfw_hidden" style="vertical-align:top;">
+    <span class="wfw_hidden_help"><span class="wfw_button_text" onclick="addChannel();"><span class="wfw_icon add" ></span> Ajouter un canal</span><span class="wfw_hidden_help-content">Ajoute un canal au fichier RSS</span></span>
+    <div>
+        <div id="article_list" style="width:48%; display:inline-block; vertical-align:top; text-align:left;"></div>
+        <div id="article_editor" style="width:48%; display:inline-block; vertical-align:top; text-align:right;"></div>
+    </div>
+</div>
+
+<!-- Page de bienvenue -->
+<div id="welcome_screen" style="vertical-align:top;">
+    <p>Editez vos flux d'actualités RSS en ligne et publiez les.</p>
+    <p style="text-decoration:underline;">Pour commencer créez ou ouvrez un fichier :</p>
+    <blockquote>
+        <div><span class="wfw_button_text" style="width:200px; margin:3px;" onclick="openRSS();"><span class="wfw_icon open"></span>Ouvrir un fichier existant</span></div>
+        <div><span class="wfw_button_text" style="width:200px; margin:3px;" onclick="createFile();"><span class="wfw_icon new"></span>Créer un nouveau fichier</span></div>
+    </blockquote>
+</div>
+
+<div class="wfw_hidden">
+    <!-- **************************************************
+         Formulaire: Nouveau canal / Editer canal
+    *************************************************** -->
+    <div id="edit_channel">
+        <input type="hidden" name="wfw_redirection" value="-{:rss_editor}" /><!-- redirection --> 
+        <input type="hidden" name="wfw_redirection_failed" value="-{:rss_editor}" /><!-- redirection --> 
+        <input type="hidden" name="wfw_form_name" value="edit_channel" /><!-- nom du formulaire -->
+        <div class="wfw_edit_field"><span>Titre</span><span><input type="text" name="title" id="edit_channel_title" /></span></div>
+        <div class="wfw_edit_field"><span>Description</span><span><input type="text" name="desc" id="edit_channel_desc" /></span></div>
+        <div class="wfw_edit_field"><span>URI <span class="wfw_icon refresh" onclick="return $value('edit_channel_link',fileURI());"></span></span><span><input type="text" name="link" id="edit_channel_link" /></span></div>
+    </div>
+
+    <!-- **************************************************
+         Formulaire: Nouvel Article
+    *************************************************** -->
+    <div id="edit_item">
+        <input type="hidden" name="wfw_redirection" value="-{:rss_editor}" /><!-- redirection --> 
+        <input type="hidden" name="wfw_redirection_failed" value="-{:rss_editor}" /><!-- redirection --> 
+        <input type="hidden" name="wfw_form_name" value="edit_item" /><!-- nom du formulaire -->
+        <div class="wfw_edit_field"><span>Titre</span><span><input type="text" name="title" id="edit_item_title" /></span></div>
+        <div class="wfw_edit_field"><span>URI</span><span><input type="text" name="link" id="edit_item_link" /></span></div>
+        <div class="wfw_edit_field"><span>Date</span><span><input type="text" name="date" id="edit_item_date" /></span></div>
+        <input type="hidden" name="desc" value="[Contenu de votre article]" /><!-- Contenu -->
+    </div>
+
+    <!-- **************************************************
+         Formulaire: Nouveau fichier
+    *************************************************** -->
+    <div id="new_file">
+        <input type="hidden" name="wfw_form_name" value="new_file" /><!-- nom du formulaire -->
+        <div class="wfw_edit_field"><span>Nom</span><span><input type="text" name="filename" /></span></div>
+        <hr />
+        <center class="wfw_information">Note: Le nom de fichier sera automatiquement ajusté avec l'extension '.xml' si besoin.</center>
+    </div>
+
+    <!-- **************************************************
+         Formulaire: Supprimer
+    *************************************************** -->
+    <div id="delete_doc">
+        <input type="hidden" name="wfw_form_name" value="delete_doc" /><!-- nom du formulaire -->
+        <center>
+        <div><input id="not_remove" type="checkbox" checked="checked" /> Dépublier seulement (ne pas supprimer le contenu XML)</div>
+        </center>
+    </div>
+
+    <!-- **************************************************
+         Formulaire: Publier
+    *************************************************** -->
+    <div id="publish_doc">
+        <input type="hidden" name="wfw_form_name" value="publish_doc" /><!-- nom du formulaire -->
+        <div class="wfw_edit_field"><span>Titre</span><span><input type="text" name="title" id="publish_title" /></span></div>
+        <div class="wfw_edit_field"><span>Description</span><span><input type="text" name="desc" id="publish_desc" /></span></div>
+    </div>
+</div>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

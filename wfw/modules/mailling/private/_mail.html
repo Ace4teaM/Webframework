@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>-{subject}</title>
+<base href="-{__base_uri__}" target="_blank" /><!-- important pour la resolution des path-->
+<link rel="stylesheet" href="-{__base_uri__}css/mailling/default.css" type="text/css" />
+</head>
+<!-- Document -->
+<body>
+<div id="wfw_ext_content">
+<table id="mail">
+    <tr>
+        <td align="left" style="text-align:left;">
+            <div style="padding-left:20px; float:left; text-align:left;"><a href="-{__base_uri__}"><img src="-{__base_uri__}-{image:logo}" height="64px;" alt="-{title:contact}" /></a></div>
+            <div style="padding-right:20px; float:right; text-align:right;"><h1>-{subject}</h1><div class="subtitle">-{fromname} le -{__date_w3c__}</div></div>
+            <div style="padding-top:20px; background-color:White; clear:both;">
+                <div template:action="exp" template:exp="^off$" template:target="html_mode"><div template:action="format" template:transform="true">-{msg}</div></div>
+                <div template:action="exp" template:exp="^on$" template:target="html_mode">-{!html_msg}</div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;">
+            <hr />
+            <div style="width:40%; float:right; text-align:right;">
+                <div><a href="mailto:-{mail:contact}">-{mail:contact}</a></div>
+                <div>-{title:contact}</div>
+                <div>-{address:contact}</div>
+                <div>-{zipcode:contact} -{city:contact}</div>
+            </div>
+        </td>
+    </tr>
+</table>
+</div>
+</body>
+</html>

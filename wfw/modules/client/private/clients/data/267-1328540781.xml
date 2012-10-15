@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<data>
+	<wfw_type>mail</wfw_type>
+	<html_mode>on</html_mode>
+	<msg>Contenu de votre mail</msg>
+	<html_msg></html_msg>
+	<use_template>on</use_template>
+	<template>_mail.html</template>
+	<server>smtp.sfr.fr</server>
+	<subject>R&#xE9;ponse &#xE0; votre message</subject>
+	<wfw_id>267-1328540781</wfw_id>
+	<wfw_type>mail</wfw_type>
+	<wfw_remote_ip>192.168.1.20</wfw_remote_ip>
+	<wfw_timestamp>1328540781</wfw_timestamp>
+	<wfw_date>06/02/2012 16:06:21</wfw_date>
+	<wfw_filename>267-1328540781.xml</wfw_filename>
+<to></to><from>contact@ubuntu.com</from><fromname>ForestAdventure</fromname><attachments></attachments><port>25</port><input></input><notify>off</notify></data>

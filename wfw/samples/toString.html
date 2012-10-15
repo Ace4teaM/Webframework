@@ -1,0 +1,36 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
+  <head> 
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
+    <title>ToString test</title>
+    <link rel="stylesheet" href="../css/wfw-extends.css" type="text/css" />
+    <link rel="stylesheet" href="../css/wfw-fieldbar.css" type="text/css" />
+    <!-- Includes -->
+    <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
+    <script type="text/javascript" language="javascript" src="../javascript/dom.js"></script>
+    <script type="text/javascript" language="javascript" src="../javascript/dom-func-compatible.js"></script>
+    <script type="text/javascript" language="javascript" src="../javascript/wfw.js"></script>
+    <script type="text/JavaScript" language="JavaScript">
+    // <![CDATA[
+      function onLoad(){
+        //affiche les membres de l'objet document
+        //document.write("Document object to string:\n"+wfw.toString(document,false));
+        
+        //cette objet est natif et ses membres ne sont pas enumerables
+        try{
+          var ie_obj = new ActiveXObject("Scripting.FileSystemObject");
+          alert(ie_obj.status);
+          document.write("ActiveXObject object to string:\n"+wfw.toString(ie_obj,false));
+        }
+        catch(e)
+        {
+          alert("Error creating the ActiveXObject('Microsoft.XMLHTTP') object."+e.message);
+        }
+
+      }
+    // ]]>
+    </script>
+  </head> 
+  <body onload="onLoad();">
+  </body>
+</html>

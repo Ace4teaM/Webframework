@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>-{subject}</title>
+<base href="-{__base_uri__}" target="_blank" /><!-- important pour la resolution des path-->
+</head>
+<!-- Document -->
+<body>
+<div id="wfw_ext_content" style="min-width:600px;">
+    <div template:action="exp" template:exp="^off$" template:target="html_mode"><div template:action="format" template:transform="true">-{msg}</div></div>
+    <div template:action="exp" template:exp="^on$" template:target="html_mode">-{!html_msg}</div>
+<hr />
+<div style="font-size:small;">
+    <div><a href="mailto:-{mail:contact}">-{mail:contact}</a></div>
+    <div>-{title:contact} -{address:contact} -{zipcode:contact} -{city:contact}</div>
+</div>
+</div>
+</body>
+</html>

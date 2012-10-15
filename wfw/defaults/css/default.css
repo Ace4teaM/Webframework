@@ -1,0 +1,11 @@
+/*
+    Default CSS for generic HTML styles
+    ID-Informatik
+*/
+
+body {
+	margin:0px;
+	width:100%;
+	font-size:10pt;
+	text-align:center;
+}

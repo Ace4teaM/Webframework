@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <index>
+    <page protocol="https" id="index" name="Administration">index.html</page>
+    <page protocol="https" id="task" name="Tâches">task.html</page>
+    <page protocol="https" id="log" name="Journal">log.html</page>
+    <page protocol="https" id="config" name="Configuration">config.html</page>
+    <page protocol="https" id="location" name="Location">update_location.html</page>
+  </index>
+
+  <tree>
+    <index>
+      <task />
+      <log />
+      <config />
+      <location />
+    </index>
+  </tree>
+</site>

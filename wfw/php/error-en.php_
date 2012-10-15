@@ -1,0 +1,29 @@
+<?php
+/*
+	(C)2012 ID-INFORMATIK. WebFrameWork(R)
+	PHP Code
+	
+	AUTHOR: Auguey Thomas
+	
+	Revisions:
+	 [22-10-2010] Inverse les codes d'erreurs ERR_OK et ERR_FAILED, pour concorder avec le "standard" des processus unix
+*/
+require_once 'error.php';
+
+// liste des codes et de leurs défintions
+global $_err_codes;
+$_err_codes=array(    
+	(ERR_SYSTEM)           =>"Server error",
+	(ERR_FAILED)           =>"Failed",
+	(ERR_OK)               =>"No error",
+	(ERR_TEXT)             =>"Text error",
+	(ERR_REQ)              =>"Request error",
+	(ERR_TEXT_EMPTY)       =>"Empty text specified",
+	(ERR_TEXT_INVALIDCHAR) =>"Invalids characters specified",  
+	(ERR_TEXT_INVALIDFORMAT) =>"Invalids characters format specified",
+	(ERR_REQ_OPEN_URL)     =>"Can't open URL",
+	(ERR_REQ_MISSING_ARG)  =>"Missing argument",
+	(ERR_REQ_INVALID_ARG)  =>"Invalid argument",
+);
+
+?>

@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+    (C)2010-ID-Informatik
+
+    Localise une adresse sur la carte de france
+
+    Input:
+        id          : Identificateur du dossier client
+        sel         : Nom du/des fichiers pré-selectionnés
+        sel_type    : Type de séléction ("multiple" ou "single"). Par défaut "single"
+        filter_type : Filtre les types MIME (voir l'utilisation de wfw.search )
+    Output:
+        file_name   : Nom du/des fichiers selectionnés
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Données de localisation</title>
+
+<meta http-equiv="wfw.page-id" content="location" /><!-- page identifier -->
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- mappy -->
+<script name="link" type="text/javascript" src="http://axe.mappy.com/1v1/init/get.aspx?auth=p91cMOH08tw/tEfNguh87M3LXpzUfDbm15+kSj+Y+BNqYevR97EXTHGRWTzv+WAZ5grk+MH1yvg=&amp;version=2.16&amp;solution=ajax"></script>
+
+<!-- Add Includes -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<script name="head" type="text/javascript">
+// <![CDATA[
+
+var selection = null;//element d'adresse selectionné
+
+//options par defaut
+var opt = {
+    sel: "" //adresse de base
+};
+
+wfw.event.SetCallback( // window
+    "wfw_window",
+    "load",
+    "onInit",
+    function () {
+        /* obtient les options */
+        opt = object_merge(opt, wfw.utils.getURIFields());
+
+        //initialise la carte
+        initMappy();
+
+        //charge
+        load();
+
+        //
+        objSetEvent($doc("address_locate"), "click", onLocateAddress, null);
+        if (!empty(opt.sel)) {
+            $value("address_field", opt.sel);
+            onChangeAddress.apply($doc("address_field"), [null, null]);
+        }
+    },
+    false
+);
+
+/*
+    MAPPY
+*/
+var map_element = null;
+var map = null;
+var location_layer = null;
+var location_layer_index = 10;
+
+function initMappy()
+{
+    //initialise la carte
+    map_element = $doc("map");
+    map = new Mappy.api.map.Map({
+        container: "#map"
+    });
+    location_layer = new Mappy.api.map.layer.MarkerLayer(location_layer_index);
+    map.addLayer(location_layer);
+    map.setCenter(new Mappy.api.geo.Coordinates(2.333, 48.833), 7);
+
+    //evenements utilisateurs
+    var listner = map.addListener("click",
+        function (e, coord) {
+            objRemoveChildNode($doc("address_list"), null, REMOVENODE_ALL);
+            var list = mappy_findAddressFromPosition(coord.x, coord.y, function (args) {
+                wfw.template.insert($doc("address_template"), $doc("address_list"), args);
+            });
+            setLocation(coord.x, coord.y);
+            centerToPoint(coord.x, coord.y, null, true);
+        }
+    );
+    listner.map = this;
+
+}
+
+function centerToPoint (long, lat, zoom, animate) {
+    var view = map.getViewMode();
+    //zoom sur la region
+    if (zoom!=null) {
+        map.setZoomAnimation(false);
+        map.setZoomLevel(parseInt(zoom * view.maxZoomLevel));
+    }
+    map.slideTo(new Mappy.api.geo.Coordinates(long, lat));
+}
+function setLocation(longitude, latitude) {
+    location_layer.clean();
+    var icon = new Mappy.api.ui.Icon(Mappy.api.ui.Icon.DEFAULT);
+    var marker = new Mappy.api.map.Marker(new Mappy.api.geo.Coordinates(longitude, latitude), icon);
+    marker.addToolTip("Votre adresse de contact");
+    location_layer.addMarker(marker);
+}
+
+function restoreAddress() {
+    var fields = wfw.form.get_fields("original_address_fields");
+    wfw.form.set_fields("address_fields", fields);
+    setLocation(fields.longitude, fields.latitude);
+    centerToPoint(fields.longitude, fields.latitude, null, true);
+    //
+    objRemoveChildNode($doc("address_list"), null, REMOVENODE_ALL);
+    var list = mappy_findAddressFromPosition(fields.longitude, fields.latitude, function (args) {
+        wfw.template.insert($doc("address_template"), $doc("address_list"), args);
+    });
+}
+
+//charge les champs du defaut
+function load() {
+    //liste des requêtes
+    var request_list = [];
+
+    var fields = wfw.form.get_fields("address_fields");
+
+    for (var key in fields) {
+        //requête 1
+        request_list.push(
+        {
+            name: "update "+key,
+            url: "req/get_default.php",
+            args: {
+                private:"true",
+                id:"contact",
+                name:key,
+                value:fields[key]
+            },
+            continue_if_failed: true
+        }
+        );
+    }
+
+    //execute les requetes
+    wfw.ext.utils.callRequestListXARG(request_list, 
+        {
+            onsuccess: function(reqList){
+                var fields = {};
+                for (var key in reqList) {
+                    var name = reqList[key].response.name;
+                    var value = reqList[key].response.value;
+                    fields[name]=value;
+                }
+                wfw.form.set_fields("address_fields",fields);
+                
+                updateFromAddress();
+                setLocation(fields.longitude, fields.latitude);
+                centerToPoint(fields.longitude, fields.latitude, 0.5, true);
+            },
+        }
+    );
+
+}
+
+//sauve les champs du defaut
+function save() {
+    //liste des requêtes
+    var request_list = [];
+
+    var fields = wfw.form.get_fields("address_fields");
+
+    for (var key in fields) {
+        //requête 1
+        request_list.push(
+        {
+            name: "update "+key,
+            url: "req/set_default.php",
+            args: {
+                private:"true",
+                id:"contact",
+                name:key,
+                value:fields[key]
+            },
+            continue_if_failed: true
+        }
+        );
+    }
+
+    //execute les requetes
+    wfw.ext.utils.callRequestListXARG(request_list, 
+        {
+            onsuccess: function(reqList){
+                wfw.ext.document.messageBox("Les informations on été actualisées avec succès");
+            },
+        }
+    );
+
+}
+
+/* [tente de localiser l'utilisateur] */
+function onLocateAddress(e, p) {
+    if (typeof (navigator.geolocation) != "undefined" && typeof (navigator.geolocation.getCurrentPosition) != "undefined") {
+        //test la localisation
+        navigator.geolocation.getCurrentPosition(
+            function LocationOK(position) {
+                objRemoveChildNode($doc("address_list"), null, REMOVENODE_ALL);
+                var list = mappy_findAddressFromPosition(position.coords.longitude, position.coords.latitude, function (args) {
+                    /*setLocation(args.longitude, args.latitude);*/
+                    centerToPoint(args.longitude, args.latitude, null, true);
+                    /*wfw.form.set_fields("address_fields", {
+                        address: args.address,
+                        zipcode: "",
+                        city: "",
+                        country: "",
+                        longitude: args.longitude,
+                        latitude: args.latitude
+                    });*/
+                    //
+                    wfw.template.insert($doc("address_template"), $doc("address_list"), args);
+                });
+            },
+            function () {
+                wfw.ext.document.messageBox("Désolé, nous n'avons pas réussit à vous localiser. Essayez en entrant votre adresse.");
+            }
+        );
+    }
+    }
+
+//recherche une localisation depuis une adresse
+function mappy_findAddress(addr, callback) {
+    var geo = new Mappy.api.geolocation.Geocoder();
+    var func = function (results) {
+        for (var i = 0; i < results.length; i += 1) {
+            var address = strexplode(results[i].Placemark.ExtendedData["mappy:address"],",",true);
+            var args = {
+                address: address[0],
+                latitude: results[i].getCoordinates().y,
+                longitude: results[i].getCoordinates().x,
+                zipcode: address[1],
+                city: address[2],
+                country: address[4]
+            };
+            /*var args = {
+                address: results[i].Placemark.name,
+                latitude: results[i].getCoordinates().y,
+                longitude: results[i].getCoordinates().x,
+                city: results[i].Placemark.AddressDetails.Country.AdministrativeArea.Locality.LocalityName,
+                country: results[i].Placemark.AddressDetails.Country.CountryName
+            };*/
+            callback(args);
+        }
+    };
+    var ret = geo.geocode(addr,
+        func,
+        function (error) {
+            // If the geocoding failed
+            wfw.puts("geocoding failed");
+        }
+    );
+}
+
+//recherche une localisation depuis des coordonnés
+function mappy_findAddressFromPosition(longitude, latitude, callback) {
+    return mappy_findAddress(new Mappy.api.geo.Coordinates(longitude, latitude), callback);
+}
+
+function useAddress(element) {
+    var args = wfw.form.get_elements(element, { getStaticNode: true });
+    if (selection != null) {
+        var old_args = wfw.form.get_elements(selection, { getStaticNode: true });
+        wfw.style.addClass(old_args.confirm, "wfw_hidden");
+    }
+    wfw.style.removeClass(args.confirm, "wfw_hidden");
+    selection = element;
+
+    //initialise les arguments
+    var fields = wfw.form.get_fields(element);
+    $value("address", fields.address);
+    $value("longitude", fields.longitude);
+    $value("latitude", fields.latitude);
+}
+
+/* [l'utilisateur change l'adresse] */
+function updateFromAddress() {
+    //reset content
+    selection = null;
+
+    var addr = wfw.form.get_fields("address_fields");
+
+    var complete_addr = addr.address + " " + addr.zipcode + " " + addr.city + ";" + addr.country;
+
+    //adresse?
+    if (empty(complete_addr))
+        return;
+
+    //insert les templates
+    objRemoveChildNode($doc("address_list"), null, REMOVENODE_ALL);
+    var list = mappy_findAddress(complete_addr, function (args) {
+        wfw.template.insert($doc("address_template"), $doc("address_list"), args);
+    });
+}
+
+/* [l'utilisateur choisit une adresse] */
+function onSelectAddress(AddressArgs) {
+    var fields={
+        address:AddressArgs.address,
+        longitude:AddressArgs.longitude,
+        latitude:AddressArgs.latitude
+    };
+    wfw.form.set_fields("address_fields",fields);
+    // centre la carte sur l'adresse
+    setLocation(AddressArgs.longitude, AddressArgs.latitude);
+    centerToPoint(AddressArgs.longitude, AddressArgs.latitude, 0.5, true);
+}
+
+// ]]>
+</script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+    
+    <!-- Header -->
+    <div>
+        <h1>Informations de localisation</h1>
+        <p>Actualisez vos informations de contact</p>
+        <!-- Menu -->
+        <div style="padding:10px;" class="float_rightTop">
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return wfw.ext.navigator.openPage('#index');"><span class="wfw_icon left"></span><span class="wfw_hidden_help-content">Retour à l'accueil</span></span>
+            <span class="wfw_fixed_icon"><span class="wfw_icon separator"></span></span>
+            <span class="wfw_hidden_help wfw_button_icon" onclick="return save();"><span class="wfw_icon save"></span><span class="wfw_hidden_help-content">Sauvegarder</span></span>
+        </div>
+    </div>
+
+    <hr />
+
+    <center>
+        <!-- (carte) -->
+        <div id="map2" style="float:left; border:6px solid #dddddd;"><div id="map" style="width:400px; height:480px;"></div></div>
+        <div style="float:right;">
+            <!-- (adresse) -->
+            <div id="original_address_fields">
+                <input type="hidden" name="address" value="-{address:contact}" />
+                <input type="hidden" name="zipcode" value="-{zipcode:contact}" />
+                <input type="hidden" name="city" value="-{city:contact}" />
+                <input type="hidden" name="country" value="-{country:contact}" />
+                <input type="hidden" name="longitude" value="-{longitude:contact}" />
+                <input type="hidden" name="latitude" value="-{latitude:contact}" />
+            </div>
+            <div id="address_fields">
+                <h2>Vos coordonnées de contact</h2>
+                <div class="wfw_edit_field"><span>Téléphone</span><span><input name="phone" type="text" value="" /></span></div>
+                <div class="wfw_edit_field"><span>Siret</span><span><input name="siret" type="text" value="" /></span></div>
+                <div class="wfw_edit_field"><span>eMail</span><span><input name="mail" type="text" value="" /></span></div>
+                <hr />
+                <div class="wfw_edit_field"><span>Adresse</span><span><input name="address" type="text" value="" onchange="updateFromAddress();" /></span></div>
+                <div class="wfw_edit_field"><span>Code Postal</span><span><input name="zipcode" type="text" value="" onchange="updateFromAddress();" /></span></div>
+                <div class="wfw_edit_field"><span>Ville</span><span><input name="city" type="text" value="" onchange="updateFromAddress();" /></span></div>
+                <div class="wfw_edit_field"><span>Pays</span><span><input name="country" type="text" value="" onchange="updateFromAddress();" /></span></div>
+                <div class="wfw_edit_field"><span>Longitude</span><span><input type="text" name="longitude" value="" /></span></div>
+                <div class="wfw_edit_field"><span>Latitude</span><span><input type="text" name="latitude" value="" /></span></div>
+            </div>
+            <div style="text-align:right;">
+                <span class="wfw_button_text" id="address_locate">Me localiser automatiquement</span>
+                <span class="wfw_button_text" id="address_current" onclick="restoreAddress();">Rétablir</span>
+            </div>
+            <!-- Liste des adresses -->
+            <div class="frame">
+                <h2>Lieux trouvés</h2>
+                <div id="address_list"></div>
+            </div>
+        </div>
+    </center>
+
+    <!-- Templates -->
+    <div id="hidden_content" class="wfw_hidden" template:action="ignore">
+        <!-- **************************************************
+             Template: Item en liste (event)
+        *************************************************** -->
+        <div id="address_template" class="wfw_button_text" onclick="onSelectAddress(wfw.form.get_fields(this));">
+            <div>-{address}, -{zipcode} -{city}</div>
+            <div name="confirm" class="wfw_hidden">Utiliser cette adresse</div>
+            <!-- champs -->
+            <input type="hidden" name="address" value="-{address}" />
+            <input type="hidden" name="longitude" value="-{longitude}" />
+            <input type="hidden" name="latitude" value="-{latitude}" />
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

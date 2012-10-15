@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <config>
+    <module id="client" name="Dossiers">
+      <name>Dossier</name>
+      <desc>Gestionnaire de données</desc>
+      <img>data/pictures/modules/client.png</img>
+      <errstr langage="fr">
+        <invalid_id>Le dossier n'existe pas</invalid_id>
+        <invalid_file>Le dossier ne peut pas être ouvert</invalid_file>
+        <cant_save>Le dossier ne peut pas être sauvegradé</cant_save>
+        <invalid_type>Le type de dossier ne correspond pas</invalid_type>
+        <invalid_pwd>Le mot-de-passe ne correspond pas</invalid_pwd>
+      </errstr>
+    </module>
+  </config>
+  
+</site>

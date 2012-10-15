@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <title>SITE_TITLE</title>
+  <name>SITE_NAME</name>
+  <base>webframework</base>
+  <description>An generic Webframework-based web site</description>
+
+  <config>
+  </config>
+
+  <index>
+    <!--pages-->
+    <page id="index" name="Accueil">index.html</page>
+    <page id="contact" name="Contact">contact.html</page>
+    <!--contact-->
+    <title id="contact">SITE_NAME</title>
+    <mail id="contact">contact@DOMAIN_NAME</mail>
+    <mail id="no-reply">noreply@DOMAIN_NAME</mail>
+    <!--graphic-->
+    <image id="logo">data/pictures/logo.png</image>
+    <image id="icon">data/pictures/icon.ico</image>
+    
+    <!-- LOCAL SERVER PATH (ubuntu) -->
+    <path_root id="HOSTNAME">SITE_DIR</path_root>
+    <path id="HOSTNAME">DOMAIN_DIR</path>
+    <base_path id="HOSTNAME">DOMAIN_DIR</base_path>
+    <domain id="HOSTNAME">DOMAIN_NAME</domain>
+    <smtp_server id="HOSTNAME">localhost</smtp_server>
+    <smtp_port id="HOSTNAME">25</smtp_port>
+    
+    <!-- autres -->
+  </index>
+
+  <!-- arbre de navigation -->
+  <tree>
+    <index />
+    <contact />
+  </tree>
+</site>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+  <config>
+    <module id="mailling" name="Mailling" require="client tiny_mce">
+      <name>Mailling</name>
+      <desc>Gestionnaire de courriers</desc>
+      <img>data/pictures/modules/mailling.png</img>
+    </module>
+  </config>
+</site>

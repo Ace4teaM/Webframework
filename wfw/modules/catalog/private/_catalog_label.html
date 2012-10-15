@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>-{_title_}</title>
+
+<meta http-equiv="wfw.page-id" content="-{_page_id_}" /><!-- page identifier -->
+<meta name="description" content="-{_desc_}" />
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content" template:action="select" template:path="set">
+    <h2>-{name}</h2>
+    <div>
+        <span template:action="select" template:path="image" style="float:left;"><img style="margin:8px;" src="-{__base_uri__}-{_data_path_}/-{__inner_text__}" alt="aperçu" /></span>
+        <p style="font-size:medium; font-weight:bold;">-{desc}</p>
+        <p style="font-size:small; font-weight:normal;">-{long_desc}</p>
+    </div>
+    <div style="clear:both;">
+        <h2>Produits de la marque -{name}</h2>
+        <div id="products_list">...</div>
+    </div>
+</div>
+
+</body>
+
+</html>

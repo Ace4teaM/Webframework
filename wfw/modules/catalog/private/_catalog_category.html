@@ -1,0 +1,207 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>-{_title_}</title>
+
+<meta http-equiv="wfw.page-id" content="-{_page_id_}" /><!-- page identifier -->
+<meta name="description" content="-{_desc_}" />
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- Add Includes -->
+<script name="link" type="text/javascript" language="javascript" src="wfw/javascript/wfw-list.js"></script>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+    var view = listView;
+
+    wfw.event.SetCallback("wfw_window", "load", "onInitPage",
+        function (e) {
+            updateView();
+        },
+        false// apres l'initialisation des modules
+    );
+
+    function updateView() {
+       view.call();
+    }
+
+    function listView() {
+        view = listView;
+        makeView(sort_product(), $doc("product_template_in_list"));
+    }
+
+    function thumbView() {
+        view = thumbView;
+        makeView(sort_product(), $doc("product_template_in_thumb"));
+    }
+
+    function makeView(fields,template) {
+        objRemoveChildNode($doc("product_show_list"), null, REMOVENODE_ALL);
+        for (var x in fields) {
+            fields[x]["_uri_"] = wfw.ext.navigator.getURI("catalog_" + $value("catalog_guid") + "_" + fields[x].guid);
+            fields[x]["_data_path_"] = $value("data_path");
+            wfw.ext.listElement.insertFields(template, $doc("product_show_list"), fields[x], null, null, null);
+        }
+    }
+
+    function sort_product() {
+        // initialise la liste des elements
+        var all = wfw.ext.sort.fieldsFromElement(objGetChild($doc("product_list")));
+
+        // filtre le critere 'marque'
+       // if ($doc("bouquet_only").checked)
+       //     all = wfw.ext.sort.filterValue(all, "bouquet", "yes");
+
+        // organise le tri
+        switch ($value("sort_type")) {
+            case "name":
+                all = wfw.ext.sort.sortFields(all, "name");
+                break;
+            case "low_price":
+                all = wfw.ext.sort.sortFields(all, "price");
+                break;
+            case "high_price":
+                all = wfw.ext.sort.sortFields(all, "price");
+                all.reverse();
+                break;
+        }
+        return all;
+    }
+
+// ]]>
+</script>
+
+<!-- style -->
+<style name="head" type="text/css">
+    
+    .float_content
+    {
+        position:relative;
+        /*border:1px solid black;
+        margin:40px;*/
+    }
+    .float_rightTop
+    {
+        position:absolute;
+        top:0;
+        right:0;
+        /*border:1px solid red;*/
+    }
+    .float_leftTop
+    {
+        position:absolute;
+        top:0;
+        left:0;
+        /*border:1px solid red;*/
+    }
+    .product_in_list .price
+    {
+        padding:8px;
+        font-size:larger;
+    }
+    .product_in_thumb
+    {
+        margin:8px;
+        padding:8px;
+        padding-bottom:18px;
+        display:inline-block;
+        width:60px;
+        height:60px;
+        background-color:#444444;
+        text-align:center;
+        vertical-align:middle;
+        border:1px solid black;
+    }
+    .product_in_thumb .price
+    {
+        font-weight:bold;
+        color:White;
+    }
+</style>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content" template:action="select" template:path="set" class="float_content">
+    <h2>Catégorie: -{name}</h2>
+    <p style="font-size:medium; font-weight:bold;">-{desc}</p>
+    
+    <!-- Global fields -->
+    <input id="catalog_guid" type="hidden" value="-{_catalog_guid_}" />
+    <input id="data_path" type="hidden" value="-{_data_path_}" />
+    
+    <!-- Liste des produits (templates) -->
+    <span class="float_rightTop">
+        <span>Trier:</span>
+        <select id="sort_type" onchange="updateView();"><option value="all">Afficher tout</option><option value="name">Nom</option><option value="low_price">Le moins cher</option><option value="high_price">Le plus cher</option></select>
+        <span>Vue:</span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return listView();"><span class="wfw_icon view_list"></span><span class="wfw_hidden_help-content">Afficher en liste</span></span>
+        <span class="wfw_hidden_help wfw_button_icon" onclick="return thumbView();"><span class="wfw_icon view_thumbs"></span><span class="wfw_hidden_help-content">Afficher en miniature</span></span>
+    </span>
+    <div id="product_show_list"></div>
+
+    <!-- Liste des produits (fields) -->
+    <div id="product_list" class="wfw_hidden">
+    <template:container template:action="select" template:path="/data">
+        <template:container template:action="array" template:path="item" template:condition="id='product';">
+            <template:container template:action="exp" template:exp="-{_cur_guid_}" template:target="set/category">
+                <fieldset>
+                    <input type="hidden" name="guid" value="-{@guid}" />
+                    <template:container template:action="each" template:path="set">
+                        <input type="hidden" name="-{__selection_name__}" value="-{__inner_text__}" />
+                    </template:container>
+                </fieldset>
+            </template:container>
+        </template:container>
+    </template:container>
+    </div>
+    
+    <!-- Liste des categories (fields) -->
+    <div id="category_list" class="wfw_hidden">
+        <template:container template:action="array" template:path="/data/item" template:condition="id='category';">
+            <fieldset>
+                <input type="hidden" name="guid" value="-{@guid}" />
+                <template:container template:action="each" template:path="set">
+                    <input type="hidden" name="-{__selection_name__}" value="-{__inner_text__}" />
+                </template:container>
+            </fieldset>
+        </template:container>
+    </div>
+
+    <!-- Templates -->
+    <div id="hidden_content" class="wfw_hidden" template:action="ignore">
+        <!-- **************************************************
+             Template: Product list
+        *************************************************** -->
+        <fieldset class="product_in_list float_content" template:action="ignore" id="product_template_in_list">
+            <a href="-{_uri_}"><img style="float:left; padding:8px;" height="60" src="-{_data_path_}/-{image|'no_pic.jpg'}" alt="" /></a>
+            <span class="price float_rightTop">-{price} €</span>
+            <p><a href="-{_uri_}">-{name}</a></p>
+            <p><a href="-{_uri_}" template:action="format">-{desc}</a></p>
+        </fieldset>
+        <!-- **************************************************
+             Template: Product thumb
+        *************************************************** -->
+        <div class="product_in_thumb" template:action="ignore" id="product_template_in_thumb">
+            <a href="-{_uri_}" class="wfw_hidden_help"><img style="border:1px solid gray;" height="60" src="-{_data_path_}/-{image|'no_pic.jpg'}" alt="" /><span class="wfw_hidden_help-content">-{name}<br />-{desc}</span></a>
+             <div class="price">-{price} €</div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+
+</html>

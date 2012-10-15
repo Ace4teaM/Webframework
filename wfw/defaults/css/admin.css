@@ -1,0 +1,31 @@
+
+/*
+-------------------------------------------------------------------------
+    Additionnal Webframework specific
+-------------------------------------------------------------------------
+*/
+
+/*
+    Usage: wfw.ext.document
+*/
+#wfw_ext_content{
+    border:2px solid #8C922B;
+    margin:0px;
+    padding:2px;
+	overflow:hidden;
+    color:#474249;
+	font-family:Verdana;
+	font-size:8pt;
+	
+	background-color:#ffffff;
+	
+    position:relative;
+    margin-left:auto; 
+	margin-right:auto;
+	margin-top:20px;
+	padding-bottom:30px;/*footer*/
+	text-align:left;
+	width:800px;
+	min-height:100%;
+	
+}

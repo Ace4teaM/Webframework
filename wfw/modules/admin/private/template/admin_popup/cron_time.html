@@ -1,0 +1,130 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--
+    (C)2011-ID-Informatik
+
+    Popup de selection d'une frequence de temps cron
+
+    INPUT Values:
+        time     : temps cron par défaut
+        use_min  : Si "1", les minutes sont selectionnable
+
+    OUTPUT Values:
+        time      : temps cron ("x x x x x")
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Selectionnez une fréquence d'execution...</title>
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- Includes -->
+<script name="link" type="text/javascript" language="javascript" src="js/cron_time.js"></script>
+
+<!-- Fonctions -->
+<script name="head" type="text/javascript" language="javascript">
+// <![CDATA[
+
+var old_selection = null;
+
+//options par defaut
+var opt = {
+    time:"", //selection en cours (temps cron)
+};
+
+/*
+    Initialise le document
+*/
+wfw.event.SetCallback( // window
+    "wfw_window",
+    "load",
+    "onLoadDoc",
+    function()
+    {
+        // obtient les options 
+        var uri_fields = wfw.utils.getURIFields();
+        if(uri_fields != null)
+        {
+            for(opt_name in opt)
+            {
+                if(typeof(uri_fields[opt_name])=="string")
+                    opt[opt_name] = uri_fields[opt_name];
+            }
+        }
+
+        //initialise les champs
+        initTimes();
+
+        // input...
+        if(!empty(opt.time))
+            setTime(opt.time);
+        else
+            updateTime();
+
+        //evenements
+        objSetEvent($doc("shortcut"),"change",onSelectFrequency);
+    }
+);
+
+// ]]>
+</script>
+
+<style name="head" type="text/css" >
+    
+.title{
+    width:150px;
+    display:inline-block;
+    font-weight:bold;
+}
+ 
+.value{
+    width:200px;
+    display:inline-block;
+}
+
+.value select{
+    width:100%;
+}
+</style>
+</head>
+
+<!-- Document -->
+<body>
+
+<div name="content">
+
+<!-- output -->
+<input id="time" type="hidden" value="" /><!-- temps cron -->
+<fieldset>
+    <span class="title">Fréquence</span>
+    <span class="value"><select id="shortcut">
+        <option value="">[ Définir manuellement ]</option>
+        <option value="* * * * *">Toutes les minutes</option>
+        <option value="0 * * * *">Toutes les heures</option>
+        <option value="0 0 * * *">Tous les jours</option>
+        <option value="0 0 * * 0">Toutes les semaines</option>
+        <option value="0 0 1 * *">Tous les mois</option>
+        <option value="0 0 1 1 *">Tous les ans</option>
+    </select></span>
+</fieldset>
+
+<fieldset id="custom_field">
+    <div><span class="title">Minute</span><span class="value"><select id="min"></select></span></div>
+    <div><span class="title">Heure</span><span class="value"><select id="hour"></select></span></div>
+    <div><span class="title">Jour</span><span class="value"><select id="day"></select></span></div>
+    <div><span class="title">Mois</span><span class="value"><select id="month"></select></span></div>
+    <div><span class="title">Jour de la semaine</span><span class="value"><select id="day_of_week"></select></span></div>
+</fieldset>
+
+</div><!-- content -->
+
+</body>
+
+
+</html>

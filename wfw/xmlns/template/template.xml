@@ -1,0 +1,5 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:attribute name="action" use="optional" type="xs:anyURI"/>
+<xs:attribute name="path" use="optional" type="xs:anyURI"/>
+<xs:attribute name="name" use="optional" type="xs:anyURI"/>
+</xs:schema>
