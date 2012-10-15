@@ -3,7 +3,7 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
     Warning this script is protected by copyright, if you want to use this code you must ask permission:
     Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        MR AUGUEY THOMAS
+        Author: AUGUEY THOMAS
         dev@aceteam.org
     ---------------------------------------------------------------------------------------------------------------------------------------
 
