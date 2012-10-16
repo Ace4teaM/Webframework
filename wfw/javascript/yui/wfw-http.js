@@ -83,12 +83,12 @@ YUI.add('http', function (Y, NAME) {
                 wfw.puts("Error creating the XMLHttpRequest object.");
                 return false;
             }
-            else{
-                // assigne l'interface a l'objet WebFrameWork
-                this.httpRequest = http;
-                this.http_user = "";
-                this.http_pwd = "";
-            }
+            
+            // assigne l'interface a l'objet WebFrameWork
+            this.httpRequest = http;
+            this.http_user = "";
+            this.http_pwd = "";
+            
             
             return true;
         },
@@ -314,7 +314,11 @@ YUI.add('http', function (Y, NAME) {
             this.httpRequest.send(params);
             return true;
         }
-	}
+    };
+    
+    //initialise
+    Y.HTTP.init();
+    
 }, '1.0', {
       requires:['base','node','uri']
 });

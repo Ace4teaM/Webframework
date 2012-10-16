@@ -18,7 +18,6 @@
 
 YUI.add('fieldbar', function (Y, NAME) {
 	Y.FieldBar = {
-		
 	    /*
 	        Objet FIELD_BAR
 	        Membres:

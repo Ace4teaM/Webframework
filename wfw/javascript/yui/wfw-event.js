@@ -100,6 +100,7 @@ YUI.add('event', function (Y, NAME) {
             [bool] true en cas de succès, false en cas d'échec
         */
         RemoveTo: function (obj, list_name) {
+            obj = obj.getDOMNode();
             if (typeof (obj._wfw_events) == "undefined")
                 return false;
             delete obj._wfw_events;
@@ -119,6 +120,7 @@ YUI.add('event', function (Y, NAME) {
             [bool] true en cas de succès, false en cas d'échec
         */
         ApplyTo: function (obj, list_name) {
+            obj = obj.getDOMNode();
             if (typeof (this.list[list_name]) == "undefined")
                 return false;
 

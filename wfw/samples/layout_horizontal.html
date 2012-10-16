@@ -14,96 +14,97 @@
     <script type="text/javascript" language="javascript" src="../javascript/wfw-extends.js"></script>
     <script type="text/javascript" language="javascript" src="../javascript/wfw-layout.js"></script>
     <script type="text/javascript" language="javascript">
-		//initialise le contenu
-		function onInit()
-		{
-			/*
-			 * ---------------------------------------------------------------
-			 * Initialise le formulaire
-			 * ---------------------------------------------------------------
-			 */
-			
-			//intialise le formulaire 'form1'
-			//wfw.form.initFromURI("form1","form1");
-			
-			/*
-			 * ---------------------------------------------------------------
-			 * Initialise le layout 2
-			 * ---------------------------------------------------------------
-			 */
-		    //Initialise une barre de champs depuis un élément INPUT
-		    wfw.ext.layout.initElement("my_layout2",{stretch:"x", w:600, h:3000});
-			
-			wfw.ext.layout.setElement("my_layout2","north2",null,"top");
-			wfw.ext.layout.setElement("my_layout2","west2",null,"left");
-			wfw.ext.layout.setElement("my_layout2","center2",null,"middle");
-			
-			wfw.ext.layout.setPlacement("my_layout2");
-		}
-		
-		// intialise les extensions
-		wfw.ext.initAll();
-		
-		// intialise les evenements
-		wfw.event.SetCallback("wfw_window","load","onInit",onInit,false);
-		
-		// assigne les evenements
-		wfw.event.ApplyTo(window, "wfw_window");
+        // <![CDATA[
+            //initialise le contenu
+            function onInit()
+            {
+                /*
+                    * ---------------------------------------------------------------
+                    * Initialise le formulaire
+                    * ---------------------------------------------------------------
+                    */
 
+                //intialise le formulaire 'form1'
+                //wfw.form.initFromURI("form1","form1");
+
+                /*
+                    * ---------------------------------------------------------------
+                    * Initialise le layout 2
+                    * ---------------------------------------------------------------
+                    */
+                //Initialise une barre de champs depuis un élément INPUT
+                wfw.ext.layout.initElement("my_layout2",{stretch:"x", w:600, h:3000});
+
+                    wfw.ext.layout.setElement("my_layout2","north2",null,"top");
+                    wfw.ext.layout.setElement("my_layout2","west2",null,"left");
+                    wfw.ext.layout.setElement("my_layout2","center2",null,"middle");
+
+                    wfw.ext.layout.setPlacement("my_layout2");
+            }
+
+            // intialise les extensions
+            wfw.ext.initAll();
+
+            // intialise les evenements
+            wfw.event.SetCallback("wfw_window","load","onInit",onInit,false);
+
+            // assigne les evenements
+            wfw.event.ApplyTo(window, "wfw_window");
+        // ]]>
     </script>
-	<style type="text/css">
-		body {
-			margin:0px;
-			padding:0px;
-		}
-		/*#my_layout {
-			position:absolute;
-			margin:0px;
-			bottom:0;
-			top:0;
-			left:0;
-			right:0;
-			width:100%;
-			height:100%;
-		}
-		#my_layout2 {
-			position:absolute;
-			margin:0px;
-			bottom:0;
-			top:0;
-			left:0;
-			right:0;
-			width:100%;
-			height:100%;
-		}
-		body {
-			margin:0px;
-			padding:0px;
-			width:100%;
-			text-align:center;
-			border:1px solid black;
-		}*/
-		h3{
-			text-align:center;
-		}
-		input[type="button"]{
-			width:120px;
-		}
-		p{
-			text-align:justify;
-		}
-	</style>
+    <style type="text/css">
+            body {
+                    margin:0px;
+                    padding:0px;
+            }
+            /*#my_layout {
+                    position:absolute;
+                    margin:0px;
+                    bottom:0;
+                    top:0;
+                    left:0;
+                    right:0;
+                    width:100%;
+                    height:100%;
+            }
+            #my_layout2 {
+                    position:absolute;
+                    margin:0px;
+                    bottom:0;
+                    top:0;
+                    left:0;
+                    right:0;
+                    width:100%;
+                    height:100%;
+            }
+            body {
+                    margin:0px;
+                    padding:0px;
+                    width:100%;
+                    text-align:center;
+                    border:1px solid black;
+            }*/
+            h3{
+                    text-align:center;
+            }
+            input[type="button"]{
+                    width:120px;
+            }
+            p{
+                    text-align:justify;
+            }
+    </style>
   </head>
   <body>
 	<div id="my_layout2">
 		<div id="north2"><h3>Coucou les enfants</h3></div>
 		<div id="west2">
-			<div style="margin:16px;">
-				<input type="button" onclick="wfw.ext.layout.stretch($doc('my_layout2'))" value="Stretch" /><br/>
-				<input type="button" onclick="wfw.ext.layout.stretch_x($doc('my_layout2'))" value="Stretch X" /><br/>
-				<input type="button" onclick="wfw.ext.layout.stretch_y($doc('my_layout2'))" value="Stretch Y" /><br/>
-				<input type="button" onclick="wfw.ext.layout.unstretch($doc('my_layout2'))" value="Unstretch" />
-			</div>
+                    <div style="margin:16px;">
+                        <input type="button" onclick="wfw.ext.layout.stretch($doc('my_layout2'))" value="Stretch" /><br/>
+                        <input type="button" onclick="wfw.ext.layout.stretch_x($doc('my_layout2'))" value="Stretch X" /><br/>
+                        <input type="button" onclick="wfw.ext.layout.stretch_y($doc('my_layout2'))" value="Stretch Y" /><br/>
+                        <input type="button" onclick="wfw.ext.layout.unstretch($doc('my_layout2'))" value="Unstretch" />
+                    </div>
 		</div>
 		<div id="center2">
 			<div style="margin:16px;">
