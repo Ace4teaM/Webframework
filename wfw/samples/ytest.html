@@ -5,6 +5,14 @@
     <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
     <script type="text/javascript" language="javascript" src="../yui/loader/loader-min.js"></script>
     <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-base.js"></script>
+    <style type="text/css">
+        .a{
+            background-color: white;
+        }
+        .b{
+            background-color: red;
+        }
+    </style>
     <title>YUI Test</title>
     <!-- Includes -->
     <script type="text/javascript" language="javascript">
@@ -36,11 +44,17 @@
                     //var node = Y.Node.create("<span>E</span>");
                     //Y.one("#listB").insert(node,'after');
 
-                    var parse =  "<fieldset><legend>Informations sur la requête</legend>"+
-                                    '<div class="wfw_edit_field"><span>URI</span><span>URL</span></div>' +
-                                    "</fieldset>";
-                    Y.Node.one("#list").append(Y.Node.create(parse));
+                    //var parse =  "<fieldset><legend>Informations sur la requête</legend>"+
+                    //                '<div class="wfw_edit_field"><span>URI</span><span>URL</span></div>' +
+                    //                "</fieldset>";
+                    //Y.Node.one("#list").append(Y.Node.create(parse));
                     
+                    //Y.Node.all("#list > *").each(function(n){
+                    //    alert(n);
+                    //});
+
+                    alert(Y.Node.one("document").one("body").get("clientWidth"));
+
             });
         }
         // ]]>
@@ -48,14 +62,14 @@
   </head> 
   <body onload="onLoad();">
 	<form id="form1">
-    	<input id="my_field2" type="text" value="item1;item2;" wfw_fieldbar="on" />
-    	<input id="my_field3" type="text" value="item1;item2;" wfw_fieldbar="on" />
-    	<input id="my_field4" type="text" value="item1;item2;" wfw_fieldbar="on" />
-    	<input id="my_field5" type="text" value="item1;item2;" wfw_fieldbar="on" />
-    	<input id="check" type="checkbox" checked="checked" />
+            <input id="my_field2" type="text" value="item1;item2;" wfw_fieldbar="on" />
+            <input id="my_field3" type="text" value="item1;item2;" wfw_fieldbar="on" />
+            <input id="my_field4" type="text" value="item1;item2;" wfw_fieldbar="on" />
+            <input id="my_field5" type="text" value="item1;item2;" wfw_fieldbar="on" />
+            <input id="check" type="checkbox" checked="checked" />
 	</form>
-	<div id="list" style="border:1px solid black;">
-    	<span>A</span><span id="listB">B</span><span>C</span><span>D</span>
+	<div class="a" id="list" style="border:1px solid black;">
+            <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
 	</div>
       <textarea id="text">Hello World</textarea>
   </body>

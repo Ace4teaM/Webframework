@@ -11,7 +11,7 @@
     Verification des formats de données
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, request, event
+    YUI Dependences: base, node, wfw, request, event
 
     Revisions:
         [16-10-2012] Implementation
@@ -47,5 +47,5 @@ YUI.add('datatype', function (Y, NAME) {
     Y.DataType.init();
     
 }, '1.0', {
-      requires:['base', 'node', 'request', 'event']
+      requires:['base', 'node','wfw', 'request', 'event']
 });

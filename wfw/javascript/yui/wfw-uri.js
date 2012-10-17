@@ -482,8 +482,122 @@ YUI.add('uri', function (Y, NAME) {
 	//        Y.WFW.puts(string);
 	
 	        return string;
-	    }
+	    },
+            
+            /*
+            Obtient l'URI en cours
+            Retourne:
+                [string] URI de la fenetre en cours
+            */
+            getCurURI: function () {
+                return Y.Node.one("window").get("location.href");
+            },
+            
+            
+            /*
+            Re-Fabrique une URI
+            Parametres:
+                [string] uri               : URI à transformer. Si null, l'URI en cours est utilisé 
+                [string/object] add_fields : Champs à insérer 
+                [string] att               : Si 0x1 les champs présent sont remplacés, sinon, les nouveaux champs sont associés aux champs présent (les nouveaux champs remplacent les anciens)
+                [string] anchor            : Optionnel, Ancre à insérer
+            Retourne:
+                [string] Nouvelle URI. null est retourné si l'URI ou un des paramétres est invalide
+            */
+            remakeURI: function (uri, add_fields, att, anchor) {
+                //
+                if (typeof (add_fields) == "number")
+                    add_fields = add_fields.toString();
+                
+                //uri par défaut
+                if (typeof (uri) != "string")
+                    uri = this.getCurURI();
+                
+                //decompose l'uri
+                var uri_obj;
+                if ((uri_obj = this.cut(uri)) == null)
+                    return null;
+                
+                //remplace les champs actuel
+                if (att & 0x1) {
+                    if (typeof (add_fields) == "object")
+                        uri_obj.query = this.object_to_query(add_fields, true);
+                    else if (typeof (add_fields) == "string")
+                        uri_obj.query = add_fields;
+                    else {
+                        Y.WFW.puts("wfw.uri.remakeURI(): invalid argument type 'add_fields' = (" + typeof (add_fields) + ")");
+                        return null;
+                    }
+                }
+                //ajoute aux champs actuel
+                else {
+                    var fields = new Object();
+                    if (!empty(uri_obj.query)) {
+                        fields = this.query_to_object(uri_obj.query, true);
+                    }
+                    if (typeof (add_fields) == "string") {
+                        fields = this.query_to_object(add_fields, true);
+                    }
+                    uri_obj.query = this.object_to_query(object_merge(fields, add_fields));
+                }
+                //ancre
+                if (typeof (anchor) == "string")
+                    uri_obj.fragment = anchor;
+
+                //reforme l'URI
+                return this.paste(uri_obj);
+            },
+        
+            /*
+            Obtient le nom de domaine de l'URI en cours
+            Retourne:
+                [string] Nom de domaine, si introuvable
+            */
+            getDomainName: function () {
+                var uri = this.cut(this.getCurURI());
+                if (uri == null)
+                    return null;
+                return uri.authority;
+            },
+            
+            /*
+            Obtient l'ancre de l'URI en cours
+            Retourne:
+                [string] L'Ancre, null si introuvable
+            */
+            getURIAnchor: function () {
+                var uri = this.cut(this.getCurURI());
+                if (uri == null)
+                    return null;
+                return uri.fragment;
+            },
+            
+            /*
+            Obtient les champs du query pour l'URI en cours
+            Retourne:
+                [object] Tableau associatif des champs, null si introuvable
+            */
+            getURIFields: function () {
+                var uri = this.cut(this.getCurURI());
+                return ((uri != null && !empty(uri.query)) ? this.query_to_object(uri.query, true) : null);
+            },
+            
+            /*
+            Obtient un champs du query pour l'URI en cours
+            Parametres:
+                [string] name : Nom du champs à retourner 
+            Retourne:
+                [string] Valeur du champs, null si introuvable
+            */
+            getURIField: function (name) {
+                var fields = this.getURIFields();
+                if (fields != null && (typeof (fields[name]) == 'string')) {
+                    return fields[name];
+                }
+                return null;
+            }
 	}
+
 }, '1.0', {
       requires:['base','wfw','math']
 });

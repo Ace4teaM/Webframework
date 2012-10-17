@@ -10,7 +10,7 @@
     Barre de champs
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, states
+    YUI Dependences: base, node, wfw, states
 
     Revisions:
         [11-10-2012] Implementation
@@ -318,5 +318,5 @@ YUI.add('fieldbar', function (Y, NAME) {
 	    }
 	}
 }, '1.0', {
-      requires:['base','node','states']
+      requires:['base','node', 'wfw','states']
 });

@@ -10,7 +10,7 @@
     [16-10-2012] Formulaires HTML
 
     JS  Dependences: base.js
-    YUI Dependences: base, request, uri, event, style, xarg, document
+    YUI Dependences: base, wfw, request, uri, event, style, xarg, document
 
     Revisions:
         [16-10-2012] Implementation
@@ -18,11 +18,19 @@
 
 YUI.add('form', function (Y, NAME) {
 	Y.Form = {
-            /*onShowRequestResult_XARG*/
+            /*
+                Vérifie et traite le résultat d'une requête de formulaire
+                Arguments:
+                    [string]          form_name : Nom de l'élément <FORM>
+                    [Result.RESULT]   result    : L'Objet résultat
+                    [Request.REQUEST] req_obj   : L'Objet requête
+                Retourne:
+                    [void]
+             **/
             onFormResult: function (form_name, result, req_obj) {
 
                 var title = result.error;
-                var msg = result.error_str;
+                var msg   = result.error_str;
 
                 //options du dialogue
                 var options = object_merge({
@@ -78,6 +86,48 @@ YUI.add('form', function (Y, NAME) {
                 }
                 else
                     Y.WFW.puts(title+"\n"+msg);
+            },
+            
+            /*
+                Vérifie et traite le résultat d'une requête de formulaire (DEBUG version)
+                Paramètres:
+                    [string]          form_name : Nom de l'élément <FORM>
+                    [Result.RESULT]   result    : L'Objet résultat
+                    [Request.REQUEST] req_obj   : L'Objet requête
+                Retourne:
+                    [void]
+             **/
+            onFormResultDebug: function (form_name, result, req_obj) {
+                
+                //par défaut, affiche les messages dans la console
+                var func = Y.WFW.puts;
+                var inst = Y.WFW;
+                
+                //si possible, affiche les messages dans une boite de dialogue
+                if (typeof (Y.Document) != "undefined") {
+                    func = Y.Document.print;
+                    inst = Y.Document;
+                }
+                
+                //liste les arguments de la requête
+                if (typeof (req_obj) != "undefined")
+                {
+                    for (var i in req_obj.args)
+                        func.call(inst,i+": " + req_obj.args[i]);
+                    func.call(inst,"-------------------------------");
+                }
+                
+                //liste les arguments du resultat
+                for (var i in result)
+                    func.call(inst,i+": " + result[i]);
+                
+                //affiche l'url
+                if (typeof (req_obj) != "undefined")
+                {
+                    func.call(inst,"-------------------------------");
+                    func.call(inst,"[" + req_obj.url + "]");
+                }
+                func.call(inst,"-------------------------------");
             },
             
             /*
@@ -747,5 +797,5 @@ YUI.add('form', function (Y, NAME) {
             }
 	}
 }, '1.0', {
-      requires:['base','request','uri','event','style','xarg']
+      requires:['base', 'wfw','request','uri','event','style','xarg']
 });

@@ -37,7 +37,7 @@ YUI.add('style', function (Y, NAME) {
 	            [object]   obj       : L'Elément
 	            [string]   className : Nom de classe
 	        Retourne:
-	            [string] chaine original comportant les noms de classes présent avant changement
+	            [string] chaine comportant le(s) nom(s) de classe(s) avant modification
 	    */
 	    addClass : function(obj,className){
 	        var orgClass = obj.get('className');
@@ -45,6 +45,22 @@ YUI.add('style', function (Y, NAME) {
 	            return obj.set("className",orgClass+" "+className);
 	        return orgClass;
 	    },
+	    /*
+	        Définit la classe de l'élément
+	            [YUI.Node] obj       : L'Elément
+	            [string]   className : Nom de la classe CSS
+	        Retourne:
+	            [string] chaine comportant le(s) nom(s) de classe(s) avant modification
+	    */
+	    setClass : function(obj,className){
+	        var orgClass = obj.get('className');
+                if(empty(orgClass))
+                    orgClass = obj.get('class');
+	        obj.set('className',className);
+	        obj.set('class',className);
+                return orgClass;
+	    },
+            
 	    /*
 	        Obtient les classes de l'élément
 	            [YUI.Node]   obj       : L'Elément

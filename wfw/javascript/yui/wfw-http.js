@@ -152,7 +152,7 @@ YUI.add('http', function (Y, NAME) {
             //Ceci est l'unique solution trouvé pour actualiser le cache sous I.E
             //Cette solution doit être provisoire.
             //En effet, l'ajout d'un argument à l'uri peut provoquer un comportement inattendu dans un script serveur
-            //(ne pas utiliser wfw.utils.remakeURI, qui ne prend pas encharge les chemins sans nom de domaine)
+            //(ne pas utiliser URI.remakeURI, qui ne prend pas encharge les chemins sans nom de domaine)
             url += ((url.indexOf('?')!=-1) ? "&" : "?")+"random="+(parseInt(Math.random()*1000).toString());
             //
             this.httpRequest.onreadystatechange = null;//pas de callback (important)
@@ -283,7 +283,7 @@ YUI.add('http', function (Y, NAME) {
             //Ceci est l'unique solution trouvé pour actualiser le cache sous I.E
             //Cette solution doit être provisoire.
             //En effet, l'ajout d'un argument a l'uri peut provoquer un comportement inattendu dans un script serveur
-            //(ne pas utiliser wfw.utils.remakeURI, qui ne prend pas encharge les chemins sans nom de domaine)
+            //(ne pas utiliser URI.remakeURI, qui ne prend pas encharge les chemins sans nom de domaine)
             url += ((url.indexOf('?')!=-1) ? "&" : "?")+"random="+(parseInt(Math.random()*1000).toString());
             //
             this.httpRequest.onreadystatechange = callback;

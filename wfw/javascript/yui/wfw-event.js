@@ -10,7 +10,7 @@
     Gestionnaire d'evenement
 
     JS  Dependences: base.js
-    YUI Dependences: base, node
+    YUI Dependences: base, node, wfw
 
     Revisions:
         [11-10-2012] Implementation
@@ -199,5 +199,5 @@ YUI.add('event', function (Y, NAME) {
 
 	}
 }, '1.0', {
-      requires:['base']
+      requires:['base','wfw']
 });
