@@ -34,7 +34,7 @@ YUI.add('datatype', function (Y, NAME) {
                     if(data_type==null)
                         return;
                     //post la requete
-                    Y.Request.Add(null,wfw.request_path('input_check.php'),{type:data_type,value:this.value},Y.DataType.onReqCheckDataType,{input:this});
+                    Y.Request.Add(null,Y.WFW.request_path('input_check.php'),{type:data_type,value:this.value},Y.DataType.onReqCheckDataType,{input:this});
                 }
             );
 

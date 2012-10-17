@@ -10,7 +10,7 @@
     HTTP Request Interface
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, uri
+    YUI Dependences: base, node, wfw, uri
 
     Revisions:
         [11-10-2012] Implementation
@@ -71,16 +71,16 @@ YUI.add('http', function (Y, NAME) {
                 }
                 catch(e2)
                 {
-                    wfw.puts("Error creating the ActiveXObject('Microsoft.XMLHTTP') object.");
-                    wfw.checkError(e1);
-                    wfw.checkError(e2);
+                    Y.WFW.puts("Error creating the ActiveXObject('Microsoft.XMLHTTP') object.");
+                    Y.WFW.checkError(e1);
+                    Y.WFW.checkError(e2);
                 }
                 
             }
 
             //debug
             if (http==null){
-                wfw.puts("Error creating the XMLHttpRequest object.");
+                Y.WFW.puts("Error creating the XMLHttpRequest object.");
                 return false;
             }
             
@@ -123,8 +123,8 @@ YUI.add('http', function (Y, NAME) {
                 [string] Corps de la requête
         */
         getResponse : function(){
-            //wfw.request.print();
-            //wfw.puts('this.getResponse: '+this.httpRequest.status);
+            //Y.Request.print();
+            //Y.WFW.puts('this.getResponse: '+this.httpRequest.status);
             if(this.httpRequest.status != 200)
                 return null;
             //attention a ne pas utiliser this.httpRequest.responseText avec un contenu autre que du texte, ceci engendre un bug
@@ -264,8 +264,8 @@ YUI.add('http', function (Y, NAME) {
             // fin
             body += "--" + boundary_keyword + "--" + crlf;
             /*
-            wfw.puts("body=\n");
-            wfw.puts(body);
+            Y.WFW.puts("body=\n");
+            Y.WFW.puts(body);
             */
             this.httpRequest.send(body);
             return true;
@@ -320,5 +320,5 @@ YUI.add('http', function (Y, NAME) {
     Y.HTTP.init();
     
 }, '1.0', {
-      requires:['base','node','uri']
+      requires:['base','node','wfw','uri']
 });

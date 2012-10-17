@@ -10,7 +10,7 @@
     X-Arguments
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, uri, request
+    YUI Dependences: base, node, wfw, uri, request
 
     Revisions:
         [11-10-2012] Implementation
@@ -38,35 +38,35 @@ YUI.add('xarg', function (Y, NAME) {
 	        if(typeof(text)!='string')
 	            return null;
 	
-		    var rslt = new Object();
-		    var begin_pos = 0;
-		    var pos;
-		    var separator = this.XARG_START_OF_TEXT_CHAR;
-		    var end       = this.XARG_END_OF_TEXT_CHAR;
+                var rslt = new Object();
+                var begin_pos = 0;
+                var pos;
+                var separator = this.XARG_START_OF_TEXT_CHAR;
+                var end       = this.XARG_END_OF_TEXT_CHAR;
 	
 	        if(bencoded){
-		        separator = this.XARG_START_OF_TEXT_URI;//STX
-		        end       = this.XARG_END_OF_TEXT_URI;//ETX
+                    separator = this.XARG_START_OF_TEXT_URI;//STX
+                    end       = this.XARG_END_OF_TEXT_URI;//ETX
 	        }
 	
-		    while((pos=text.indexOf(separator,begin_pos)) != -1)
-		    {
-			    var pos2  = text.indexOf(end,pos);
-			    if(pos2 == -1){ // fin anticipe
-	                wfw.puts("wfw.xarg.to_object(), attention: fin anormale de requete!");
-				    return rslt;
-	            }
+                while((pos=text.indexOf(separator,begin_pos)) != -1)
+                {
+                    var pos2  = text.indexOf(end,pos);
+                    if(pos2 == -1){ // fin anticipe
+                        Y.WFW.puts("wfw.xarg.to_object(), attention: fin anormale de requete!");
+                        return rslt;
+                    }
 	
-			    //alert(begin_pos+"->"+pos+"\n"+pos+"->"+pos2);
-	
-			    var name  = text.substr(begin_pos,pos-begin_pos);
-			    var value = text.substr(pos+separator.length,pos2-(pos+separator.length));
-	
-			    begin_pos = pos2+end.length; //prochaine position de depart
-	
-			    rslt[name]=value;
-		    }
-		    return rslt;
+                    //alert(begin_pos+"->"+pos+"\n"+pos+"->"+pos2);
+
+                    var name  = text.substr(begin_pos,pos-begin_pos);
+                    var value = text.substr(pos+separator.length,pos2-(pos+separator.length));
+
+                    begin_pos = pos2+end.length; //prochaine position de depart
+
+                    rslt[name]=value;
+                }
+                return rslt;
 	    },
             
             /*
@@ -190,5 +190,5 @@ YUI.add('xarg', function (Y, NAME) {
             }
 	}
 }, '1.0', {
-      requires:['base','node','uri','request']
+      requires:['base','node','wfw','uri','request']
 });

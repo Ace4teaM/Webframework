@@ -10,7 +10,7 @@
     [16-10-2012] Formulaires HTML
 
     JS  Dependences: base.js
-    YUI Dependences: base, request, uri, event, style, xarg
+    YUI Dependences: base, request, uri, event, style, xarg, document
 
     Revisions:
         [16-10-2012] Implementation
@@ -18,7 +18,6 @@
 
 YUI.add('form', function (Y, NAME) {
 	Y.Form = {
-
             /*onShowRequestResult_XARG*/
             onFormResult: function (form_name, result, req_obj) {
 
@@ -33,8 +32,8 @@ YUI.add('form', function (Y, NAME) {
                 }, req_obj.user);
 
                 //affiche le msg
-                if ($if("wfw.ext.document")){
-                    var dlg = $new(wfw.ext.document.DIALOG_BOX, {
+                if (typeof Y.Document != "undefined"){
+                    var dlg = $new(Y.Document.DIALOG_BOX, {
                         title:title,
                         onOK : {
                             buttonText : "Fermer"
@@ -72,31 +71,31 @@ YUI.add('form', function (Y, NAME) {
                                 if(!empty(parse))
                                     this.print(Y.Node.create("<fieldset><legend>Arguments en entrée</legend>"+parse+"</fieldset>"));
                             }
-                            wfw.ext.document.printOK(this,"wfw_ext_dialog_content",options);
+                            Y.Document.printOK(this,"wfw_ext_dialog_content",options);
                         }
                     });
-                    wfw.ext.document.insertDialog(dlg,null,"visible");
+                    Y.Document.insertDialog(dlg,null,"visible");
                 }
                 else
-                    wfw.puts(title+"\n"+msg);
+                    Y.WFW.puts(title+"\n"+msg);
             },
             
             /*
             Initialise un formulaire depuis un résulat de requête
             Arguments:
-            [string/YUI.Node]   name     : Identifiant de la requête (voir wfw.request.Add())
-            [string]            formId   : Identifiant de l'élément FORM
-            [object]            args     : Tableau associatif des champs retourné par une requête XARG
+                [string/YUI.Node]   name     : Identifiant de la requête (voir wfw.request.Add())
+                [string]            formId   : Identifiant de l'élément FORM
+                [object]            args     : Tableau associatif des champs retourné par une requête XARG
             Remarques:
-            initFromArg affiche les messages d'erreurs (wfw.stdEvent.onFormResult)
+                initFromArg() affiche les messages d'erreurs avec la fonction onFormResult()
             Retourne:
-            [bool] true en cas de succès, sinon false
+                [bool] true en cas de succès, sinon false
             */
             initFromArg: function (name, formId, args) {
                 //obtient l'element form
                 var form = (typeof(formId)=="string" ? Y.Node.one("#"+formId) : formId);
                 if (!form) {
-                    wfw.puts("wfw.form.initFromArg: can't get form " + formId);
+                    Y.WFW.puts("wfw.form.initFromArg: can't get form " + formId);
                     return false;
                 }
 
@@ -132,7 +131,7 @@ YUI.add('form', function (Y, NAME) {
                 //obtient l'element form
                 var form = (typeof(formId)=="string" ? Y.Node.one("#"+formId) : formId);
                 if (!form) {
-                    wfw.puts("wfw.form.initFromURI(): can't get form " + formId);
+                    Y.WFW.puts("wfw.form.initFromURI(): can't get form " + formId);
                     return false;
                 }
                 if (typeof (callback) != "function")
@@ -181,7 +180,7 @@ YUI.add('form', function (Y, NAME) {
                 //obtient l'element form
                 var form = (typeof(formId)=="string" ? Y.Node.one("#"+formId) : formId);
                 if (!form) {
-                    wfw.puts("wfw.form.initFromFields(): can't get form " + formId);
+                    Y.WFW.puts("wfw.form.initFromFields(): can't get form " + formId);
                     return false;
                 }
 
@@ -230,44 +229,44 @@ YUI.add('form', function (Y, NAME) {
                                 Y.Event.ApplyTo(node, "wfw_datatype_check");
 
                             //
-                            // liste de champs ? (wfw.ext)
+                            // liste de champs ? (FieldList)
                             //
                             var wfw_form_element = node.get('wfw_fieldlist');
-                            if (wfw_form_element != null && $if("wfw.ext"))
-                                wfw.ext.fieldlist.initElement(node.getDOMNode());
+                            if (wfw_form_element != null && (typeof Y.FieldList != "undefined"))
+                                Y.FieldList.initElement(node.getDOMNode());
 
                             //
-                            // barre de champs ? (wfw.ext)
+                            // barre de champs ? (FieldBar)
                             //
                             var wfw_fieldbar_element = node.get('wfw_fieldbar');
-                            if (wfw_fieldbar_element != null && $if("wfw.ext.fieldbar"))
-                                wfw.ext.fieldbar.initElement(node.getDOMNode());
+                            if (wfw_fieldbar_element != null && (typeof Y.FieldBar != "undefined"))
+                                Y.FieldBar.initElement(node.getDOMNode());
 
                             //
-                            // liste de données ? (wfw.ext)
+                            // liste de données ? (DataList)
                             //
                             var wfw_datalist = node.get('wfw_datalist');
-                            if (wfw_datalist != null && $if("wfw.ext")) {
+                            if (wfw_datalist != null && (typeof Y.DataList != "undefined")) {
                                 switch (node.tagName.toLowerCase()) {
                                     case "input":
-                                        wfw.ext.datalist.attachToInput(wfw_datalist, node.getDOMNode());
+                                        Y.DataList.attachToInput(wfw_datalist, node.getDOMNode());
                                         break;
                                     case "select":
-                                        wfw.ext.datalist.attachToSelect(wfw_datalist, node.getDOMNode());
+                                        Y.DataList.attachToSelect(wfw_datalist, node.getDOMNode());
                                         break;
                                 }
                             }
 
                             //
-                            // module requis ? (wfw.ext)
+                            // module requis ? (Navigator)
                             //
                             var wfw_require_module = node.get('wfw_require_module');
-                            if (wfw_require_module != null && $if("wfw.ext")) {
-                                var module = wfw.ext.navigator.getModule(wfw_require_module);
+                            if (wfw_require_module != null && (typeof Y.Navigator != "undefined")) {
+                                var module = Y.Navigator.getModule(wfw_require_module);
                                 switch (node.get("tagName").toLowerCase()) {
                                     /*case "input":
                                     node.disabled = (module==null) ? "disabled" : "";
-                                    wfw.ext.bubble.insertTextToElement(node,"Requière le module "+wfw_require_module);
+                                    Y.Bubble.insertTextToElement(node,"Requière le module "+wfw_require_module);
                                     break;*/ 
                                     default:
                                         if (module == null)
@@ -282,7 +281,7 @@ YUI.add('form', function (Y, NAME) {
                             // active/desactive un contenu
                             //
                             var wfw_enabled = node.get('wfw_enabled');
-                            if (wfw_enabled != null) {
+                            if (wfw_enabled != null && (typeof Y.Utils != "undefined")) {
                                 //[change]
                                 node.on("click",function(e){
                                     var enabled_element_id = this.get('wfw_enabled');
@@ -290,11 +289,11 @@ YUI.add('form', function (Y, NAME) {
                                         return;
                                     var enabled_element_node = Y.Node.one('#'+enabled_element_id);
                                     if(enabled_element_node!=null)
-                                        wfw.utils.enabledContent(enabled_element_node,this.get("checked"));
+                                        Y.Utils.enabledContent(enabled_element_node,this.get("checked"));
                                 },null);
 
                                 //premiere initialisation
-                                wfw.utils.enabledContent(Y.Node.one('#'+wfw_enabled).getDOMNode(),node.get("checked"));
+                                Y.Utils.enabledContent(Y.Node.one('#'+wfw_enabled),node.get("checked"));
                             }
                         }
                     }
@@ -336,7 +335,7 @@ YUI.add('form', function (Y, NAME) {
 
                             // element name ?
                             if (empty(element_name = node.get('name')))
-                                return true; //continue
+                                return; //continue
 
                             //element_name = element_name.toLowerCase();
                             var field_value = ((fields != null) && (typeof fields[element_name] != "undefined")) ? ""+fields[element_name] : null;//assume le type string
@@ -479,7 +478,7 @@ YUI.add('form', function (Y, NAME) {
                                             fields[element_name] = (node.get("checked") ? "on" : "off");
                                             break;
                                         case 'file':
-                                            wfw.puts("wfw.form.get_fields: file input not supported!");
+                                            Y.WFW.puts("wfw.form.get_fields: file input not supported!");
                                             break;
                                     }
                                     break;
@@ -588,7 +587,6 @@ YUI.add('form', function (Y, NAME) {
             send: function (formId, callback, uri, target) {
 
                 //dynamique?
-                //if(typeof(wfw.request))
                 if (typeof (callback) != "function")
                     callback = this.onFormResult;
 
@@ -619,7 +617,7 @@ YUI.add('form', function (Y, NAME) {
                 [string]   formId    : Identifiant de l'élément FORM
                 [string]   [uri]     : Optionnel, URI
                 [bool]     [async]   : Optionnel, asynchrone ?
-                [function] [callback]: Optionnel, callback passé à wfw.request.Add Si non spécifié 'wfw.stdEvent.onFormResult' est utilisé
+                [function] [callback]: Optionnel, callback passé à wfw.request.Add Si non spécifié 'onFormResult()' est utilisé
                 [object]   [param]   : Optionnel, paramètres passés au callback
             Remarques:
                 sendReq, Initilise une nouvelle requête avec les champs du formulaire

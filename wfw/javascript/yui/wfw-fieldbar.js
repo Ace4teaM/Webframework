@@ -50,7 +50,7 @@ YUI.add('fieldbar', function (Y, NAME) {
 	    */
 	    onInputChange : function(e)
 	    {
-			var fieldbar = Y.FieldBar.getStates(this);
+		var fieldbar = Y.FieldBar.getStates(this);
 	     	Y.FieldBar.updateView(this);
 	    },
 		
@@ -87,7 +87,7 @@ YUI.add('fieldbar', function (Y, NAME) {
 				fieldbar.onCreateBar(contener);
 	        }
 	        catch(e){
-	            wfw.checkError(e);
+	            Y.WFW.checkError(e);
 	            return false;
 	        }
 			
@@ -100,7 +100,7 @@ YUI.add('fieldbar', function (Y, NAME) {
 	            fieldbar.item_contener = item_contener;
 	        }
 	        catch(e){
-	            wfw.checkError(e);
+	            Y.WFW.checkError(e);
 	            return false;
 	        }
 			
@@ -130,7 +130,7 @@ YUI.add('fieldbar', function (Y, NAME) {
 	            return this.pushItem(element,text);
 	        //position valide
 	        if(typeof(itemList[pos]) == "undefined"){
-	            wfw.puts("wfw.ext.fieldbar.insertItem: Position invalide");
+	            Y.WFW.puts("wfw.ext.fieldbar.insertItem: Position invalide");
 	            return false;
 	        }
 	        //supprime l'item
@@ -162,7 +162,7 @@ YUI.add('fieldbar', function (Y, NAME) {
 //	            objInsertNode(item,fieldbar.contener,null,INSERTNODE_END);
 	        }
 	        catch(e){
-	            wfw.checkError(e);
+	            Y.WFW.checkError(e);
 	            return false;
 	        }
 	
@@ -283,7 +283,7 @@ YUI.add('fieldbar', function (Y, NAME) {
 	            pos = itemList.length-1;
 	        //position valide
 	        if(typeof(itemList[pos]) == "undefined"){
-	            wfw.puts("wfw.ext.fieldbar.removeItem: Position invalide");
+	            Y.WFW.puts("wfw.ext.fieldbar.removeItem: Position invalide");
 	            return false;
 	        }
 	        //supprime l'item

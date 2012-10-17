@@ -10,7 +10,7 @@
     Gestionnaire de temps
 
     JS  Dependences: base.js
-    YUI Dependences: base
+    YUI Dependences: base, wfw
 
     Revisions:
         [11-10-2012] Implementation
@@ -66,7 +66,7 @@ YUI.add('timer', function (Y, NAME) {
             }
             //supprime le dernier element
             this.timers.pop();*/
-    //        wfw.puts('wfw.timer.remove: '+id);
+    //        Y.WFW.puts('wfw.timer.remove: '+id);
             return true;
         },
         
@@ -141,7 +141,7 @@ YUI.add('timer', function (Y, NAME) {
                 // genere l'id et ajoute à la liste
                 obj.id = Y.Timer.insert(obj);
                 obj.timers = [];
-                wfw.puts('new wfw.timer.TICKS_TIMER_LIST: id='+obj.id);
+                Y.WFW.puts('new wfw.timer.TICKS_TIMER_LIST: id='+obj.id);
             },
             auto_update    : function(){
                 var time=getTimeMS();
@@ -177,7 +177,7 @@ YUI.add('timer', function (Y, NAME) {
                 obj.tickCount = 0;
                 // genere l'id et ajoute à la liste
                 obj.id = Y.Timer.insert(obj);
-                wfw.puts('new wfw.timer.TICKS_TIMER: id='+obj.id);
+                Y.WFW.puts('new wfw.timer.TICKS_TIMER: id='+obj.id);
             },
             
             /*
@@ -282,7 +282,7 @@ YUI.add('timer', function (Y, NAME) {
             _construct : function(obj){
                 // genere l'id et ajoute à la liste
                 obj.id = Y.Timer.insert(obj);
-    //            wfw.puts('new wfw.timer.FREQUENCY_TIMER: id='+obj.id);
+    //            Y.WFW.puts('new wfw.timer.FREQUENCY_TIMER: id='+obj.id);
             },
             /*
                 Démarre le décomptage du timer (asynchrone)
@@ -313,7 +313,7 @@ YUI.add('timer', function (Y, NAME) {
                 this.end=this.begin+this.duration;
                 this.max_frame = parseInt(this.frame_per_second*(this.duration/1000));
                 this.onStart();
-                wfw.puts("max_frame:"+this.max_frame);
+                Y.WFW.puts("max_frame:"+this.max_frame);
                 for(var i=0;i<this.max_frame+1;i++){
                     this.frame_update();
                     this.current_frame++;
@@ -384,11 +384,11 @@ YUI.add('timer', function (Y, NAME) {
                 [07-10-2010], appel this.stop() lors de la fin d'execution
             */
             frame_update : function(){
-                wfw.puts("current_frame:"+this.current_frame);
+                Y.WFW.puts("current_frame:"+this.current_frame);
                 var cur = ((this.end-this.begin)/this.max_frame)*this.current_frame;
                 if(cur>this.end)
                     cur=this.end;
-                wfw.puts("cur time:"+cur);
+                Y.WFW.puts("cur time:"+cur);
                 this.set_frame(this.current_frame); // calcule le temps normalise actuel
 
                 this.onUpdateFrame(cur,this.current_time,this.current_frame);
@@ -426,5 +426,5 @@ YUI.add('timer', function (Y, NAME) {
         
 	}
 }, '1.0', {
-      requires:['base']
+      requires:['base','wfw']
 });

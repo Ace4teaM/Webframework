@@ -124,7 +124,7 @@ YUI.add('states', function (Y, NAME) {
 			//l'objet existe ?
 			if (typeof this.user_data[id] == "undefined") {
 				if (options.exists) {
-					//               wfw.puts("l'objet existe pas :"+id+", sub="+options.name);
+					//Y.WFW.puts("l'objet existe pas :"+id+", sub="+options.name);
 					return null;
 				}
 				this.user_data[id] = {};
@@ -132,7 +132,7 @@ YUI.add('states', function (Y, NAME) {
 			
 			//le sous objet existe ?
 			if (options.exists && typeof this.user_data[id][options.name] == "undefined") {
-				//           wfw.puts("le sous objet existe pas :"+id+", sub="+options.name);
+				//Y.WFW.puts("le sous objet existe pas :"+id+", sub="+options.name);
 				return null;
 			}
 			//assigne ou copie le pointeur ?

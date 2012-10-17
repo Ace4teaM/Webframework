@@ -34,14 +34,13 @@ YUI.add('document', function (Y, NAME) {
         showRequestMsg : function (obj, msg, debug) {
             var bMsg = (obj.user != null && typeof (obj.user["no_msg"]) == "undefined") ? 1 : 0;
 
-            if (bMsg && (typeof (wfw.ext) == "object")) {
+            if (bMsg)
                 this.messageBox(msg);
-            }
 
             //debug
-            wfw.puts("[" + obj.url + "] " + msg);
+            Y.WFW.puts("[" + obj.url + "] " + msg);
             if (typeof (debug) == "string")
-                wfw.puts(debug);
+                Y.WFW.puts(debug);
 
             return true;
         }

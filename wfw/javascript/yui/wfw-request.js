@@ -10,7 +10,7 @@
     Gestionnaire de requetes HTTP
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, http
+    YUI Dependences: base, node, wfw, http
 
     Revisions:
         [11-10-2012] Implementation
@@ -74,7 +74,7 @@ YUI.add('request', function (Y, NAME) {
             Exemple:
                 //exemple d'intialisation d'arguments
                 my_request.args={
-                    param_1 : $new( wfw.HTTP_REQUEST_PART, {
+                    param_1 : $new( Y.WFW.HTTP_REQUEST_PART, {
                         headers: [
                             'Content-Disposition: form-data; name="param_1"',
                             'Content-Type: text/plain'
@@ -125,22 +125,22 @@ YUI.add('request', function (Y, NAME) {
 
         onStart: function () {
             //affiche une boite chargement si les requetes depasses un certain délais d'attente
-            if(Y.Request.loading_box_delay){
+            if(Y.Request.loading_box_delay && (typeof Y.Document != "undefined")){
                 setTimeout(function () {
                     var loadingBox = Y.States.fromId("wfw_ext_document_LoadingBox", null, {exists:true});
                     if (Y.Request.working && !loadingBox){
-                        wfw.ext.document.openLoadingBox();
-                        //wfw.puts("start");
+                        Y.Document.openLoadingBox();
+                        //Y.WFW.puts("start");
                     }
                     var refreshIntervalId = setInterval(function () {
                         var loadingBox = Y.States.fromId("wfw_ext_document_LoadingBox", null, {exists:true});
                         if (!Y.Request.working && loadingBox){
-                            wfw.ext.document.closeLoadingBox();
-                            //wfw.puts("end");
+                            Y.Document.closeLoadingBox();
+                            //Y.WFW.puts("end");
                         }
                         if (!Y.Request.working && !loadingBox){
                             clearInterval(refreshIntervalId);
-                            //wfw.puts("stop");
+                            //Y.WFW.puts("stop");
                         }
                     }, 1000);
                 }, Y.Request.loading_box_delay);
@@ -151,7 +151,7 @@ YUI.add('request', function (Y, NAME) {
         },
         onFinish: function () {
             //   var loadingBox = $doc("&wfw_ext_document_LoadingBox");
-            //   if(loadingBox) wfw.ext.document.closeDialog(loadingBox);
+            //   if(loadingBox) Y.Document.closeDialog(loadingBox);
 
             this.working = false;
             this.user.onFinish();
@@ -171,15 +171,15 @@ YUI.add('request', function (Y, NAME) {
             // la requete existe ?
             var i_old_action = this.GetIndice(action.name);
             if (i_old_action < 0) {
-                // wfw.puts("add action: "+name);
+                // Y.WFW.puts("add action: "+name);
                 this.exec_list.push(action);
             }
             else {
-                // wfw.puts('replace action('+i_old_action+'): '+name);
+                // Y.WFW.puts('replace action('+i_old_action+'): '+name);
                 this.exec_list[i_old_action] = action;
             }
 
-            wfw.puts("wfw.request.Insert: " + action.name + ", " + action.url);
+            Y.WFW.puts("wfw.request.Insert: " + action.name + ", " + action.url);
 
             //appel du callback callback
             if (action.callback != null)
@@ -245,8 +245,8 @@ YUI.add('request', function (Y, NAME) {
                 var req = this.exec_list[i];
                 if (req.name == name) {
                     if (req.status == "wait")
-                        wfw.puts("Remove Request: warning! request " + name + " is currently executed");
-                    wfw.puts("Remove Request: " + name + ", " + this.exec_list[i].url);
+                        Y.WFW.puts("Remove Request: warning! request " + name + " is currently executed");
+                    Y.WFW.puts("Remove Request: " + name + ", " + this.exec_list[i].url);
                     this.exec_list.splice(i, 1);
                     return true;
                 }
@@ -338,7 +338,7 @@ YUI.add('request', function (Y, NAME) {
         */
         print: function () {
             for (var i = 0; i < this.exec_list.length; i++) {
-                wfw.puts(i+":"+this.exec_list[i].name+" ["+this.exec_list[i].status+"]");
+                Y.WFW.puts(i+":"+this.exec_list[i].name+" ["+this.exec_list[i].status+"]");
             }
         },
 
@@ -377,12 +377,12 @@ YUI.add('request', function (Y, NAME) {
                 return -1;
             //recherche la prochaine requête non exécuté
             for (var i = start; i < this.exec_list.length; i++) {
-                //wfw.puts('FindNextExecution: find['+i+'/'+this.exec_list.length+']'+this.Get(i).status+"; "+this.Get(i).url);
+                //Y.WFW.puts('FindNextExecution: find['+i+'/'+this.exec_list.length+']'+this.Get(i).status+"; "+this.Get(i).url);
                 if (this.Get(i).status == 'wait') {
                     return i;
                 }
             }
-            //wfw.puts('FindNextExecution: no find');
+            //Y.WFW.puts('FindNextExecution: no find');
             return -1;
         },
 
@@ -396,7 +396,7 @@ YUI.add('request', function (Y, NAME) {
         */
         Start: function (async) {
             //if(this.loading_box_delay){
-            //    wfw.puts("Start openLoadingBox");
+            //    Y.WFW.puts("Start openLoadingBox");
             //}
             this.async = async;
             this.onStart();
@@ -414,14 +414,14 @@ YUI.add('request', function (Y, NAME) {
         ExecuteNext: function () {
             // recherche la prochaine action à executer
             this.cur_action = this.FindNextExecution(0);
-            //wfw.puts("ExecuteNext: "+this.cur_action);
+            //Y.WFW.puts("ExecuteNext: "+this.cur_action);
             if (this.cur_action < 0) {//si aucune, termine ici
                 this.onFinish();
                 return false;
             }
 
             var action = this.CurrentAction();
-    //        wfw.puts("Execute Request: " + action.name + ", " + action.url);
+    //        Y.WFW.puts("Execute Request: " + action.name + ", " + action.url);
             action["status"] = "exec";
             //callback
             var callback = action["callback"];
@@ -519,7 +519,7 @@ YUI.add('request', function (Y, NAME) {
         {
             var action = Y.Request.CurrentAction();
             if (action == null) {
-                wfw.puts("wfw.request.onResult: This request has already been deleted from the list. ID:" + Y.Request.cur_action);
+                Y.WFW.puts("wfw.request.onResult: This request has already been deleted from the list. ID:" + Y.Request.cur_action);
                 return;
             }
 
@@ -528,24 +528,24 @@ YUI.add('request', function (Y, NAME) {
 
             switch (Y.HTTP.httpRequest.readyState) {
                 case Y.Request.READYSTATE_UNSENT:
-                    //wfw.puts(action.name+' READYSTATE_UNSENT '+Y.HTTP.httpRequest.readyState);
+                    //Y.WFW.puts(action.name+' READYSTATE_UNSENT '+Y.HTTP.httpRequest.readyState);
                     break;
 
                 case Y.Request.READYSTATE_OPENED:
-                    //wfw.puts(action.name+' READYSTATE_OPENED '+Y.HTTP.httpRequest.readyState);
+                    //Y.WFW.puts(action.name+' READYSTATE_OPENED '+Y.HTTP.httpRequest.readyState);
                     break;
 
                 case Y.Request.READYSTATE_HEADERS_RECEIVED:
-                    //wfw.puts(action.name+' READYSTATE_HEADERS_RECEIVED '+Y.HTTP.httpRequest.readyState);
+                    //Y.WFW.puts(action.name+' READYSTATE_HEADERS_RECEIVED '+Y.HTTP.httpRequest.readyState);
                     break;
 
                 case Y.Request.READYSTATE_LOADING:
-                    //wfw.puts(action.name+' READYSTATE_LOADING '+Y.HTTP.httpRequest.readyState);
+                    //Y.WFW.puts(action.name+' READYSTATE_LOADING '+Y.HTTP.httpRequest.readyState);
                     break;
 
                 case Y.Request.READYSTATE_DONE:
                     {
-                        //wfw.puts(action.name+' READYSTATE_DONE '+Y.HTTP.httpRequest.readyState);
+                        //Y.WFW.puts(action.name+' READYSTATE_DONE '+Y.HTTP.httpRequest.readyState);
                         action["status"] = Y.HTTP.httpRequest.status; //met a jour l'etat
                         action["response_header"] = Y.HTTP.httpRequest.getAllResponseHeaders();
                         action["response"] = Y.HTTP.getResponse();
@@ -570,7 +570,7 @@ YUI.add('request', function (Y, NAME) {
                         if (action.remove_after_exec == true)
                             Y.Request.Remove(action.name);
                         else
-                            wfw.puts("wfw.request.onResult: can't remove request object");
+                            Y.WFW.puts("wfw.request.onResult: can't remove request object");
 
                         //passe a l'action suivante (non-bloquante)
                         //window.setTimeout("wfw.request.ExecuteNext();",0);
@@ -578,7 +578,7 @@ YUI.add('request', function (Y, NAME) {
                     }
                     break;
                 default:
-                    wfw.puts("wfw.request.onResult: '"+action.name+"' unknown state: "+Y.HTTP.httpRequest.readyState);
+                    Y.WFW.puts("wfw.request.onResult: '"+action.name+"' unknown state: "+Y.HTTP.httpRequest.readyState);
                     break;
             }
         },
@@ -613,5 +613,5 @@ YUI.add('request', function (Y, NAME) {
         }
     };
 }, '1.0', {
-      requires:['base','node','http']
+      requires:['base','node','wfw','http']
 });

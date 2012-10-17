@@ -10,7 +10,7 @@
     X-Arguments
 
     JS  Dependences: base.js
-    YUI Dependences: base, math
+    YUI Dependences: base, wfw, math
 
     Revisions:
         [11-10-2012] Implementation
@@ -102,7 +102,7 @@ YUI.add('uri', function (Y, NAME) {
 	        rslt = exp.exec(uri);
 	        if (rslt[1] == undefined) // domaine obligatoire dans l'URI
 	        {
-	            wfw.puts("wfw.uri.cut: Invalid URI, domain not found in: " + uri);
+	            Y.WFW.puts("wfw.uri.cut: Invalid URI, domain not found in: " + uri);
 	            return null;
 	        }
 	        obj.authority = rslt[1];
@@ -269,7 +269,7 @@ YUI.add('uri', function (Y, NAME) {
 	                //ignore...
 	            }
 	            else */if (c > 0xFF) { //+ bytes
-	                wfw.puts("wfw.uri.encode: unsuported up to 1 byte caracters encoding");
+	                Y.WFW.puts("wfw.uri.encode: unsuported up to 1 byte caracters encoding");
 	                //ignore...
 	            }
 	            else if (c < 0x30) { //+ bytes
@@ -384,7 +384,7 @@ YUI.add('uri', function (Y, NAME) {
 	                }
 	            }
 	            else { //+ bytes
-	                wfw.puts("wfw.uri.encodeUTF8: unsuported up to 4 bytes caracters encoding");
+	                Y.WFW.puts("wfw.uri.encodeUTF8: unsuported up to 4 bytes caracters encoding");
 	                //ignore...
 	            }
 	            i++;
@@ -423,14 +423,14 @@ YUI.add('uri', function (Y, NAME) {
 	                    var byte1 = Y.Math.hex2_to_int(text.substr(i + 1, 2));
 	                    // UNICODE codé sur 1 byte
 	                    if (byte1 <= 0x7F) {
-	//                        wfw.puts("codé sur 1 octets");
+	//                        Y.WFW.puts("codé sur 1 octets");
 	                        c = String.fromCharCode(byte1);
 	                        string += c;
 	                        i += 2;
 	                    }
 	                    // UNICODE codé sur 2 octets (11000000b+)
 	                    else if (byte1 > 0x7F && byte1 < 0xE0) {
-	//                        wfw.puts("codé sur 2 octets");
+	//                        Y.WFW.puts("codé sur 2 octets");
 	                        var byte2 = Y.Math.hex2_to_int(text.substr(i + 4, 2));
 	                        if (byte2 >= 0x80)//10b de poid fort?
 	                        {
@@ -441,7 +441,7 @@ YUI.add('uri', function (Y, NAME) {
 	                    }
 	                    // UNICODE codé sur 3 octets (11100000b+)
 	                    else if (byte1 >= 0xE0 && byte1 < 0xF0) {
-	//                        wfw.puts("codé sur 3 octets");
+	//                        Y.WFW.puts("codé sur 3 octets");
 	                        var byte2 = Y.Math.hex2_to_int(text.substr(i + 4, 2));
 	                        var byte3 = Y.Math.hex2_to_int(text.substr(i + 7, 2));
 	                        if (byte2 >= 0x80 && byte3 >= 0x80)//10b de poid fort?
@@ -453,7 +453,7 @@ YUI.add('uri', function (Y, NAME) {
 	                    }
 	                    // UNICODE codé sur 4 octets (11110000b+)
 	                    else if (byte1 >= 0xF0) {
-	//                        wfw.puts("codé sur 4 octets");
+	//                        Y.WFW.puts("codé sur 4 octets");
 	                        var byte2 = Y.Math.hex2_to_int(text.substr(i + 4, 2));
 	                        var byte3 = Y.Math.hex2_to_int(text.substr(i + 7, 2));
 	                        var byte4 = Y.Math.hex2_to_int(text.substr(i + 10, 2));
@@ -466,7 +466,7 @@ YUI.add('uri', function (Y, NAME) {
 	                    }
 	                    //pas trouvé?
 	                    if (c == 0x25) {
-	                        wfw.puts(byte1 + " pas trouvé");
+	                        Y.WFW.puts(byte1 + " pas trouvé");
 	                        c = "?"; //illegal encoding
 	                        i += 2;
 	                    }
@@ -477,13 +477,13 @@ YUI.add('uri', function (Y, NAME) {
 	                    break;
 	            }
 	            i++; //caractere lu
-	//            wfw.puts(text.substring(0,i));
+	//            Y.WFW.puts(text.substring(0,i));
 	        }
-	//        wfw.puts(string);
+	//        Y.WFW.puts(string);
 	
 	        return string;
 	    }
 	}
 }, '1.0', {
-      requires:['base','math']
+      requires:['base','wfw','math']
 });

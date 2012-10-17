@@ -126,7 +126,7 @@ YUI.add('event', function (Y, NAME) {
 
             //assigne chacun des evenements a l'objet
             for (var eventType in this.list[list_name])
-                objSetEvent(obj, eventType, wfw.event.onEventCall, this.list[list_name]);
+                objSetEvent(obj, eventType, this.onEventCall, this.list[list_name]);
 
             //assigne tout les types d'evenements à la liste (pas dispo avec tout les navigateurs!)
             /*   //var text="";
@@ -135,7 +135,7 @@ YUI.add('event', function (Y, NAME) {
             if(att.substr(0,2) == 'on') // event?
             {
             // text+=(att.substr(2,att.length-2)+"\n");
-            objSetEvent(obj,att.substr(2,att.length-2),wfw.event.onEventCall);
+            objSetEvent(obj,att.substr(2,att.length-2),this.onEventCall);
             }
             }
             //alert("apply to:\n"+text);*/
@@ -164,7 +164,7 @@ YUI.add('event', function (Y, NAME) {
                     var ret = eFunc.func.apply(this,[e,eFunc.param]);
                     //supprime la fonction de la pile d'appel ?
                     if (ret == false) {
-                        wfw.puts("wfw.event.onEventCall : removing callback " + e.type + "->" + name);
+                        Y.WFW.puts("wfw.event.onEventCall : removing callback " + e.type + "->" + name);
                         delete list[name];
                     }
                 }
@@ -190,7 +190,7 @@ YUI.add('event', function (Y, NAME) {
                     var ret = eFunc.func.apply(event_obj,[null,eFunc.param]);
                     //supprime la fonction de la pile d'appel ?
                     if (ret == false) {
-                        wfw.puts("wfw.event.onEventCall : removing callback " + e.type + "->" + name);
+                        Y.WFW.puts("wfw.event.onEventCall : removing callback " + e.type + "->" + name);
                         delete list[name];
                     }
                 }

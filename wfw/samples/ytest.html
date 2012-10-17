@@ -3,13 +3,34 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
     <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
+    <script type="text/javascript" language="javascript" src="../yui/loader/loader-min.js"></script>
+    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-base.js"></script>
     <title>YUI Test</title>
     <!-- Includes -->
     <script type="text/javascript" language="javascript">
         // <![CDATA[
         function onLoad(){
+            //dynamic load test
+            /*var config = {
+                combine: false,    // <---- CHANGE THIS TO FALSE AND LIBRARY WILL LOAD
+                groups: {
+                    js: {
+                        base: '../javascript/yui/',            
+                        modules: {
+                            'wfw': {
+                                path: 'wfw-base.js'   // load from jsfiddle.net so no x-domain issues
+                            }
+                        }
+                    }
+                }
+            };
+            YUI(config).use('wfw', function (Y)
+            {
+                alert(Y.WFW.puts({foo:"bar"}));
+            });*/
+            
             //initialise le contenu
-            YUI().use('node', 'event', 'dom', function (Y)
+            YUI().use('node', 'event', 'dom', 'wfw', function (Y)
             {
                     //var div = Y.one("#list");
                     //var node = Y.Node.create("<span>E</span>");
@@ -19,6 +40,7 @@
                                     '<div class="wfw_edit_field"><span>URI</span><span>URL</span></div>' +
                                     "</fieldset>";
                     Y.Node.one("#list").append(Y.Node.create(parse));
+                    
             });
         }
         // ]]>
