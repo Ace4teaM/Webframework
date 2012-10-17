@@ -1,0 +1,31 @@
+----------------------------------------------------------------------------------------------------------
+ Note sur les modifications apportées à la librairie Javascript 'wfw' lors de son portage sur YahooUI.
+----------------------------------------------------------------------------------------------------------
+
+-- URI / utils
+La methode 'wfw.utils.makeURI' à été supprimée
+La methode 'wfw.utils.remakeURI' à été déplacée dans l'extension 'Y.URI'
+La methode 'wfw.utils.getDomainName' à été déplacée dans l'extension 'Y.URI'
+La methode 'wfw.utils.getURIAnchor' à été déplacée dans l'extension 'Y.URI'
+La methode 'wfw.utils.getURIFields' à été e dans l'extension 'Y.URI'
+La methode 'wfw.utils.getURIField' à été déplacée dans l'extension 'Y.URI'
+La methode 'Y.URI.getCurURI' à été ajoutée
+
+
+-- XArg / stdEvent
+La methode 'wfw.stdEvent.onCheckRequestResult_XARG' à été déplacée dans l'extension 'Y.XArg'
+
+
+-- Form / stdEvent
+La methode 'wfw.stdEvent.onFormResult' à été déplacée dans l'extension 'Y.Form'
+La methode 'wfw.stdEvent.onFormResultDebug' à été déplacée dans l'extension 'Y.Form'
+
+-- Document / stdEvent
+La methode 'wfw.stdEvent.onRequestMsg' à été déplacée dans l'extension 'Y.Document.showRequestMsg'
+
+----------------------------------------------------------------------------------------------------------
+ Note importantes sur l'implentation du code
+----------------------------------------------------------------------------------------------------------
+Verifier la fonction $new() et l'heritage d'objet parent (notamment l'objet wfw.REF)
+Verifier une eventuelle erreur de l'utilisation de Y.Node.get("#...") au lieu de Y.Node.one("#...")
+Remplacer les objSetEvent(o,e,p) par o.on(e,null,p)

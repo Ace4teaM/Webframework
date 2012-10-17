@@ -36,9 +36,64 @@
             {
                 alert(Y.WFW.puts({foo:"bar"}));
             });*/
+            YUI().use("node", function(Y) {
+                // This method is in the 'oop' module.  Since we require 'node'
+                // for this example, and 'node' requires 'oop', the 'oop' module
+                // will be loaded automatically.
+
+                var Bird = function (name) {
+                    this.name = name;
+                };
+
+                Bird.prototype.flighted   = true;  // Default for all Birds
+                Bird.prototype.isFlighted = function () { return this.flighted };
+                Bird.prototype.getName    = function () { return this.name };
+
+                Chicken = function (name) {
+                    // Chain the constructors
+                    Chicken.superclass.constructor.call(this, name);
+                };
+
+                // Chickens are birds
+                Y.extend(Chicken, Bird);
+
+                // Define the Chicken prototype methods/members
+                Chicken.prototype.flighted = false; // Override default for all Chickens
+
+                showInheritance = function () {
+                    var chicken = new Chicken('Little'),
+                        results = Y.one('#demo');
+
+                    results.set('innerHTML', results.get('innerHTML') +
+                        ((chicken instanceof Object) ?
+                            "<p>chicken IS an instance of Object.</p>" :
+                            "<p>chicken IS NOT an instance of Object.</p>"));
+
+                    results.set('innerHTML', results.get('innerHTML') + 
+                        ((chicken instanceof Bird) ?
+                            "<p>chicken IS an instance of Y.example.Bird.</p>" :
+                            "<p>chicken IS NOT an instance of Y.example.Bird.</p>"));
+
+                    results.set('innerHTML', results.get('innerHTML') + 
+                        ((chicken instanceof Chicken) ?
+                            "<p>chicken IS an instance of Y.example.Chicken.</p>" :
+                            "<p>chicken IS NOT an instance of Y.example.Chicken.</p>"));
+
+                    // Chicken instances inherit Bird methods and members
+                    results.set('innerHTML', results.get('innerHTML') + 
+                        ((chicken.isFlighted()) ?
+                            "<p>chicken CAN fly.</p>" :
+                            "<p>chicken CAN NOT fly.</p>"));
+
+                    results.set('innerHTML', results.get('innerHTML') + 
+                        "<p>chicken's name is " + chicken.getName() + ".</p>");
+                }
+
+                Y.on('click', showInheritance, '#demo_btn');
+            });
             
             //initialise le contenu
-            YUI().use('node', 'event', 'dom', 'wfw', function (Y)
+            /*YUI().use('node', 'event', 'dom', 'wfw', function (Y)
             {
                     //var div = Y.one("#list");
                     //var node = Y.Node.create("<span>E</span>");
@@ -52,10 +107,16 @@
                     //Y.Node.all("#list > *").each(function(n){
                     //    alert(n);
                     //});
+                    var i=0;
+                    Y.Node.all("#list > *").some(function(n){
+                        i++;
+                        if(i==2)
+                            return false;
+                        return true;
+                    });
+                    alert(i);
 
-                    alert(Y.Node.one("document").one("body").get("clientWidth"));
-
-            });
+            });*/
         }
         // ]]>
     </script>
@@ -72,5 +133,7 @@
             <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
 	</div>
       <textarea id="text">Hello World</textarea>
+      <input type="button" id="demo_btn" value="test" />
+      <div id="demo"></div>
   </body>
 </html>

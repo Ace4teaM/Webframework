@@ -11,7 +11,7 @@
     Verification des formats de données
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, wfw, request
+    YUI Dependences: base, node, wfw, style, request, states
 
     Revisions:
         [16-10-2012] Implementation
@@ -124,44 +124,45 @@ YUI.add('document', function (Y, NAME) {
             Membres Privés:
                 [HTMLElement] parent_node   : Reçoit l'élément parent du dialogue
         */
-        DIALOG : {
-            user            : {},
-            _base           : "wfw.REF",
-            name            : "wfw.ext.document.DIALOG",//wfw.REF: object base name
-            parent_node     : null,
-            center          : true,
-            cssClass        : "wfw_ext_dialog-content wfw_ext_unselectable",
-            onInit          : function(){ },
-            onPrint         : function(){ },
-            onPop           : function(){
+        DIALOG : function(){
+            this.user            = {},
+            this.parent_node     = null;
+            this.center          = true;
+            this.cssClass        = "wfw_ext_dialog-content wfw_ext_unselectable";
+            this.onInit          = function(){ };
+            this.onPrint         = function(){ };
+            this.onPop           = function(){
                 if(this.center == true){
                     this.centerDialog();
                 }
-            },
-            onPush         : function(){
+            };
+            this.onPush         = function(){
                 //Experimentale: centre verticalement le dialogue
                 //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
                 if(this.center == true){
                     this.uncenterDialog();
                 }
-            },
+            };
             
-            //constructeur
-            _construct : function(obj){
-                if(empty(obj.parent_node == null))
-                    obj.parent_node = Y.Node.create("<div>");
+            /*
+             * Constructeur
+             */
+            //Y.extend(Y.Document.DIALOG,Y.WFW.REF);
+            
+            if(this.parent_node == null)
+                this.parent_node = Y.Node.create("<div>");
 
-                obj.parent_node.set("id",obj.id);
-                if(!empty(obj.cssClass))
-                    Y.Style.addClass(obj.parent_node,obj.cssClass);
-            },
+            this.parent_node.set("id",this.id);
+            if(!empty(this.cssClass))
+                Y.Style.addClass(this.parent_node,this.cssClass);
+
 
             /*
              * Initialise le dialogue
              * Retourne:
-             *  [void]
+             *  [bool] false si la fonction à échouée, sinon true.
              * */
-            init : function(){
+            this.init = function(){
                 //insert le contenu
                 this.dlg_content = Y.Node.create("<div>");
                 if(this.dlg_content==null)
@@ -170,14 +171,16 @@ YUI.add('document', function (Y, NAME) {
                 
                 this.dlg_content.set("id",this.id+"_content");
                 Y.Style.addClass(this.dlg_content,"wfw_ext_dialog_content");
-            },
+                
+                return true;
+            };
 
             /*
              * Ecrit du contenu
              * Retourne:
              *  [void]
              * */
-            print : function(content){
+            this.print = function(content){
                 this.dlg_content.append(content);
                 /*
                 switch(typeof(content))
@@ -196,7 +199,7 @@ YUI.add('document', function (Y, NAME) {
                         break;
                 }
                 return null;*/
-            },
+            };
 
             /*
                 Recherche un élément de contenu
@@ -205,24 +208,28 @@ YUI.add('document', function (Y, NAME) {
                 Retourne:
                     [YIU.Element] L'Elément DIV, parent du contenu dialogue. Si null, aucun dialogue n'est visible
             */
-            findContent : function(find_class)
+            this.findContent = function(find_class)
             {
                 //par defaut obtient l'element de contenu
                 if(typeof(find_class)=="undefined")
                     find_class = this.content_class;
 
                 //recherche le contenu
-                this.parent_node.all("> *").each(function(cur){
-                    if(Y.Style.haveClass(cur,find_class))
-                        return cur;
+                var cur = null;
+                this.parent_node.all("> *").some(function(node){
+                    if(Y.Style.haveClass(node,find_class)){
+                        cur = node;
+                        return false;
+                    }
+                    return true;
                 });
 
-                return null;
-            },
+                return cur;
+            };
 
             //Experimentale: centre verticalement le dialogue
             //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
-            centerDialog : function(){
+            this.centerDialog = function(){
                 var container = Y.Node.one("#wfw_ext_dialog");
                 var height = Y.Utils.getHeight(this.parent_node);
                 var demi_height = height/2;
@@ -230,15 +237,15 @@ YUI.add('document', function (Y, NAME) {
                     container.set("style.marginTop","-"+demi_height+"px");
                     container.set("style.top","50%");
                 }
-            },
+            };
 
             //Experimentale: centre verticalement le dialogue
             //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
-            uncenterDialog : function(){
+            this.uncenterDialog = function(){
                 var container = Y.Node.one("#wfw_ext_dialog");
                 container.set("style.marginTop","0px");
                 container.set("style.top","0px");
-            }
+            };
         },
 
         /*
@@ -250,24 +257,30 @@ YUI.add('document', function (Y, NAME) {
                 [function/object] onOK     : Callback appelé lors l'utilisateur clique sur "OK" / Options de la fonction "printOK()"
                 [function/object] onCancel : Callback appelé lors l'utilisateur clique sur "Annuler" / Options de la fonction "printCancel()"
         */
-        DIALOG_BOX : {
-            _base      : "wfw.ext.document.DIALOG",
+        DIALOG_BOX : function(){
+            
             //REF options
-            name       : "wfw.ext.document.DIALOG_BOX",
+            this.name       = "wfw.ext.document.DIALOG_BOX";
             //DIALOG options
-            cssClass   : "wfw_ext_dialog-content wfw_ext_dialog_fixed_size wfw_ext_unselectable",
+            this.cssClass   = "wfw_ext_dialog-content wfw_ext_dialog_fixed_size wfw_ext_unselectable";
             //Membres
-            title      : "",
-            onPop      : function(){},
-            onPush     : function(){},
+            this.title      = "";
+            this.onPop      = function(){};
+            this.onPush     = function(){};
             //dialog button callback/options
-            onOK       : null,
-            onCancel   : null,
-            //constructeur
-            _construct : function(obj){
-            },
-            /*initialize*/
-            init: function () {
+            this.onOK       = null;
+            this.onCancel   = null;
+
+            /*
+             * Constructeur
+             */
+            Y.extend(Y.Document.DIALOG_BOX,Y.Document.DIALOG);
+            
+            
+            /*
+             * Initialize
+             */
+            this.init = function () {
                 //insert l'header
                 this.dlg_header = Y.Node.create('<div>');
                 if(this.dlg_header==null)
@@ -330,9 +343,10 @@ YUI.add('document', function (Y, NAME) {
                         this
                     );
                 }
-            },
+            }
+            
             /*print content*/
-            print: function (content) {
+            this.print = function (content) {
                 this.dlg_content.append(content);
             }
         },
@@ -1267,5 +1281,5 @@ YUI.add('document', function (Y, NAME) {
     Y.Document.init();
     
 }, '1.0', {
-      requires:['base', 'node', 'wfw', 'request']
+      requires:['base', 'node', 'wfw', 'style', 'request', 'states']
 });
