@@ -40,7 +40,7 @@ function cXMLDefault()
             //charge le document
             if(typeof(doc)=="string")
             {
-                wfw.http_get(doc);
+                wfw.HTTP.get(doc);
         
                 if((wfw.nav.httpRequest.readyState == wfw.request.READYSTATE_DONE) && (wfw.nav.httpRequest.status == 200))
                     this.doc = xml_parse(wfw.http_getResponse());
