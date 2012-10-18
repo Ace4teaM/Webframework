@@ -16,22 +16,30 @@
         [11-10-2012] Implementation
 */
 
-YUI.add('request', function (Y, NAME) {
+YUI.add('request', function (Y) {
     Y.Request = {
-        exec_list: new Array(), // tableau des actions
-        cur_action: 0,          // indice de l'action en cours
-        async: true,
-        auto_start: true,
-        working: false,
-        loading_box_delay: 0,//temps disponible avant que la boite de chargement s'affiche à l'ecran
-        READYSTATE_UNSENT: 0,
-        READYSTATE_OPENED: 1,
-        READYSTATE_HEADERS_RECEIVED: 2,
-        READYSTATE_LOADING: 3,
-        READYSTATE_DONE: 4,
+        
+        /*
+            Données Membres
+        */
+        exec_list         : new Array(), // tableau des actions
+        cur_action        : 0,          // indice de l'action en cours
+        async             : true,
+        auto_start        : true,
+        working           : false,
+        loading_box_delay : 0,//temps disponible avant que la boite de chargement s'affiche à l'ecran
+       
+        READYSTATE_UNSENT           : 0,
+        READYSTATE_OPENED           : 1,
+        READYSTATE_HEADERS_RECEIVED : 2,
+        READYSTATE_LOADING          : 3,
+        READYSTATE_DONE             : 4,
 
         /**
-            Objet de requête
+            Classe Requête
+        
+            Implémente:
+                WFW.OBJECT
             Membres:
                 [string] name              : Identificateur de la requête
                 [string] url               : URL cible de la requête
@@ -85,37 +93,34 @@ YUI.add('request', function (Y, NAME) {
                     param_n : "value"
                 };
         */
-        REQUEST : {
-            name              : null,
-            url               : "",
-            args              : null,
-            response_header   : null,
-            response          : null,
-            response_obj      : null,
-            callback          : null,
-            user              : {},
-            status            : "wait",
-            remove_after_exec : true,
-            async             : true,
+        REQUEST : function(att){
+            this.name              = null;
+            this.url               = "";
+            this.args              = null;
+            this.response_header   = null;
+            this.response          = null;
+            this.response_obj      = null;
+            this.callback          = null;
+            this.user              = {};
+            this.status            = "wait";
+            this.remove_after_exec = true;
+            this.async             = true;
 
-            //constructeur
-            _construct : function(obj){
-                // genere le nom ?
-                if ((typeof (obj.name) != 'string') || empty(obj.name) || obj.name===null)
-                    obj.newName();
-                //transforme les arguments
-                if(typeof (obj.args) == "string")
-                    obj.args = Y.URI.query_to_object(obj.args);
-                //transforme les arguments
-                if(typeof (obj.async) == "undefined")
-                    obj.async = true;
-            },
+            /*
+             * Constructeur
+             */
+            Y.Request.REQUEST.superclass.constructor.call(this, att);
+            
+            // genere le nom ?
+            if ((typeof (this.name) != 'string') || empty(this.name) || this.name===null)
+                this.newName();
+            //transforme les arguments
+            if(typeof (this.args) == "string")
+                this.args = Y.URI.query_to_object(this.args);
+            //transforme les arguments
+            if(typeof (this.async) == "undefined")
+                this.async = true;
 
-            //génére un nom unique
-            newName : function(){
-                this.name = "_" + getTimeMS();
-                while ("_" + getTimeMS() == this.name); ; //retarde le temps d'execution pour garantir que le nom soit unique
-            }
         },
 
         user: {
@@ -192,7 +197,7 @@ YUI.add('request', function (Y, NAME) {
 
             return action;
         },
-            insert : this.Insert,//naming convention
+        insert : this.Insert,//naming convention
 
         /**
         * Ajoute une requête
@@ -612,6 +617,24 @@ YUI.add('request', function (Y, NAME) {
             return true;
         }
     };
+    
+    
+    /*-----------------------------------------------------------------------------------------------------------------------
+     * REQUEST Class Implementation
+     *-----------------------------------------------------------------------------------------------------------------------*/
+    
+    Y.extend(Y.Request.REQUEST,Y.WFW.OBJECT);
+
+    /*
+    * Génére un nom unique dans le membre 'name'
+    * Retourne:
+    *  [void]
+    * */
+    this.newName = function(){
+        this.name = "_" + getTimeMS();
+        while ("_" + getTimeMS() == this.name); ; //retarde le temps d'execution pour garantir que le nom soit unique
+    };
+
 }, '1.0', {
       requires:['base','node','wfw','http']
 });

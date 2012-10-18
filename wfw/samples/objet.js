@@ -19,11 +19,27 @@ YUI().use('node', 'document', function (Y)
 {
 	var onLoad = function(e){
             Y.one("#demo_btn").on("click",function(){
-                //initialise avec valeurs
-                var obj1 = new Y.Document.DIALOG_BOX({center:false,onPop:function(){alert("cou");}});
-                //initialise avec etat
-                var obj2 = new Y.Document.DIALOG_BOX("my_data");
-                //Y.WFW.puts(obj,false);
+                //initialise avec des valeurs passés en argument
+                var obj = new Y.Document.DIALOG_BOX({
+                    center:false,
+                    onPop:function(){
+                        alert("cou");
+                    }
+                });
+                
+                Y.one("#demo").set("text",Y.WFW.toString(obj,false));
+            });
+                
+            Y.one("#demo_btn2").on("click",function(){
+                //initialise avec des données existantes
+                Y.States.fromId("my_data", {
+                    center:false, // membre de Y.Document.DIALOG_BOX
+                    foo:"bar"     // obj2 accepte des données supplémentaires
+                });
+                
+                var obj = new Y.Document.DIALOG_BOX("my_data");
+                
+                Y.one("#demo").set("text",Y.WFW.toString(obj,false));
             });
 	};
 

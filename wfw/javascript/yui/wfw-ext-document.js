@@ -13,20 +13,90 @@
     JS  Dependences: base.js
     YUI Dependences: base, node, wfw, style, request, states
 
-    Revisions:
-        [16-10-2012] Implementation
+    Implementation: 16-10-2012
 */
 
-YUI.add('document', function (Y, NAME) {
+YUI.add('document', function (Y) {
     Y.Document = {
-
-        use : true,
-        contentElement : "wfw_ext_content",
-        center : false,
-        copyright : false,
-        onUnlockScreen : null,//evenement callback pour le dialogue...
-        dialogStack : [],
+        /*
+            Données Membres
+        */
+        contentElement    : "wfw_ext_content",
+        center            : false,
+        copyright         : false,
+        onUnlockScreen    : null,//evenement callback pour le dialogue...
+        dialogStack       : [],
         waitForCloseEvent : false,//indique si le dialogue affiché est en cours de fermeture (si un dialogue est créé durant cette periode, il sera mit en file d'attente)
+
+        /*
+            Classe Dialogue
+        
+            Implémente:
+                WFW.OBJECT
+            
+            Membres:
+                [object]   user     : Données utilisateur
+                [bool]     center   : Experimentale. Si true, le dialogue est centré sur l'écran
+                [string]   cssClass : Class CSS du dialogue
+                [function] onInit   : Callback appelé lors de la création du dialogue
+                [function] onPrint  : Callback appelé à chaque affichage du dialogue
+                [function] onPop    : Callback appelé lors du dépilement du dialogue vers l'écran (utilisé pour centrer le dialogue)
+                [function] onPush   : Callback appelé lors de l'empilement du dialogue en queue (utilisé pour centrer le dialogue)
+            Membres Privés:
+                [HTMLElement] parent_node   : Reçoit l'élément parent du dialogue
+        */
+        DIALOG : function(att){
+            this.user            = {};
+            this.parent_node     = null;
+            this.center          = true;
+            this.cssClass        = "wfw_ext_dialog-content wfw_ext_unselectable";
+            this.onInit          = function(){ };
+            this.onPrint         = function(){ };
+            this.onPop           = function(){ };
+            this.onPush          = function(){ };
+
+            /*
+             * Constructeur
+             */
+            Y.Document.DIALOG.superclass.constructor.call(this, att);
+              
+            if(this.parent_node == null)
+                this.parent_node = Y.Node.create("<div>");
+
+            this.parent_node.set("id",this.id);
+            if(!empty(this.cssClass))
+                Y.Style.addClass(this.parent_node,this.cssClass);
+        },
+
+        /*
+            Dialogue étendu, avec en-tête et pied de page
+        
+            Implémente:
+                Document.DIALOG
+            Membres:
+                [string]          title    : Texte affiché dans la barre de titre
+                [function/object] onOK     : Callback appelé lors l'utilisateur clique sur "OK" / Options de la fonction "printOK()"
+                [function/object] onCancel : Callback appelé lors l'utilisateur clique sur "Annuler" / Options de la fonction "printCancel()"
+        */
+        DIALOG_BOX : function(att){
+            //REF options
+            this.name       = "wfw.ext.document.DIALOG_BOX";
+            //DIALOG options
+            this.cssClass   = "wfw_ext_dialog-content wfw_ext_dialog_fixed_size wfw_ext_unselectable";
+            //Membres
+            this.title      = "";
+            this.onPop      = function(){};
+            this.onPush     = function(){};
+            //dialog button callback/options
+            this.onOK       = null;
+            this.onCancel   = null;
+            
+            /*
+             * Constructeur
+             */
+            Y.Document.DIALOG_BOX.superclass.constructor.call(this, att);
+              
+        },
 
         /*
             Initialise l'extension
@@ -111,71 +181,6 @@ YUI.add('document', function (Y, NAME) {
                     return "fmt_"+ext;
             }
             return "file_empty";
-        },
-
-        /*
-            Dialogue simple
-            Membres:
-                [object]   user     : Données utilisateur
-                [bool]     center   : Experimentale. Si true, le dialogue est centré sur l'écran
-                [string]   cssClass : Class CSS du dialogue
-                [function] onInit   : Callback appelé lors de la création du dialogue
-                [function] onPrint  : Callback appelé à chaque affichage du dialogue
-                [function] onPop    : Callback appelé lors du dépilement du dialogue vers l'écran (utilisé pour centrer le dialogue)
-                [function] onPush   : Callback appelé lors de l'empilement du dialogue en queue (utilisé pour centrer le dialogue)
-            Membres Privés:
-                [HTMLElement] parent_node   : Reçoit l'élément parent du dialogue
-        */
-        DIALOG : function(att){
-            this.user            = {};
-            this.parent_node     = null;
-            this.center          = true;
-            this.cssClass        = "wfw_ext_dialog-content wfw_ext_unselectable";
-            this.onInit          = function(){ };
-            this.onPrint         = function(){ };
-            this.onPop           = function(){ };
-            this.onPush          = function(){ };
-
-            /*
-             * Constructeur
-             */
-            Y.Document.DIALOG.superclass.constructor.call(this, att);
-              
-            if(this.parent_node == null)
-                this.parent_node = Y.Node.create("<div>");
-
-            this.parent_node.set("id",this.id);
-            if(!empty(this.cssClass))
-                Y.Style.addClass(this.parent_node,this.cssClass);
-        },
-
-        /*
-            Dialogue étendu, avec en-tete et pied de page
-            Base:
-                DIALOG
-            Membres:
-                [string]          title    : Texte affiché dans la barre de titre
-                [function/object] onOK     : Callback appelé lors l'utilisateur clique sur "OK" / Options de la fonction "printOK()"
-                [function/object] onCancel : Callback appelé lors l'utilisateur clique sur "Annuler" / Options de la fonction "printCancel()"
-        */
-        DIALOG_BOX : function(att){
-            //REF options
-            this.name       = "wfw.ext.document.DIALOG_BOX";
-            //DIALOG options
-            this.cssClass   = "wfw_ext_dialog-content wfw_ext_dialog_fixed_size wfw_ext_unselectable";
-            //Membres
-            this.title      = "";
-            this.onPop      = function(){};
-            this.onPush     = function(){};
-            //dialog button callback/options
-            this.onOK       = null;
-            this.onCancel   = null;
-            
-            /*
-             * Constructeur
-             */
-            Y.Document.DIALOG_BOX.superclass.constructor.call(this, att);
-              
         },
 
         /*
@@ -1285,9 +1290,9 @@ YUI.add('document', function (Y, NAME) {
         this.dlg_content.append(content);
     };
     
-    /*
+    /*-----------------------------------------------------------------------------------------------------------------------
      * Initialise
-     */
+     -----------------------------------------------------------------------------------------------------------------------*/
     Y.Document.init();
     
 }, '1.0', {

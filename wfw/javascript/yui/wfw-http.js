@@ -16,24 +16,32 @@
         [11-10-2012] Implementation
 */
 
-YUI.add('http', function (Y, NAME) {
-	Y.HTTP = {
+YUI.add('http', function (Y) {
+    Y.HTTP = {
         /*
-         *Globals
+         * Globals
          */
-        httpRequest : null, // l'objet HttpRequest
-        http_user : "",
-        http_pwd : "",
+        httpRequest  : null, // l'objet HttpRequest
+        http_user    : "",
+        http_pwd     : "",
         
         /*
-            Objet: Part de requête
+            Classe Part de requête
+            Implémente:
+                WFW.OBJECT
             Membres:
                 [array]  headers  : Tableau associatif des en-têtes HTTP
                 [string] data     : Données
         */
-        HTTP_REQUEST_PART : {
-            headers  : [],
-            data     : ""
+        HTTP_REQUEST_PART : function(att) {
+            this.headers  = [];
+            this.data     = "";
+            
+            /*
+             * Constructeur
+             */
+            Y.HTTP.HTTP_REQUEST_PART.superclass.constructor.call(this, att);
+            
         },
 
         /*
@@ -316,7 +324,16 @@ YUI.add('http', function (Y, NAME) {
         }
     };
     
-    //initialise
+    
+    /*-----------------------------------------------------------------------------------------------------------------------
+     * HTTP_REQUEST_PART Class Implementation
+     *-----------------------------------------------------------------------------------------------------------------------*/
+    
+    Y.extend(Y.HTTP.HTTP_REQUEST_PART, Y.WFW.OBJECT);
+
+    /*-----------------------------------------------------------------------------------------------------------------------
+     * Initialise
+     -----------------------------------------------------------------------------------------------------------------------*/
     Y.HTTP.init();
     
 }, '1.0', {
