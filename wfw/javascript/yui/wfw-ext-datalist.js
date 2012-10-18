@@ -11,21 +11,23 @@
     Verification des formats de données
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, wfw, request, event
+    YUI Dependences: base, node, wfw, wfw-request, wfw-event
 
     Revisions:
         [16-10-2012] Implementation
 */
 
-YUI.add('datatype', function (Y, NAME) {
-    Y.DataType = {
+YUI.add('wfw-datatype', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    wfw.DataType = {
 
         /*
             Initialise l'extension
         */
         init: function () {
 
-            Y.Event.SetCallback(
+            wfw.Event.SetCallback(
                 "wfw_datatype_check",
                 "change",
                 "eventCheckDataType",
@@ -34,7 +36,7 @@ YUI.add('datatype', function (Y, NAME) {
                     if(data_type==null)
                         return;
                     //post la requete
-                    Y.Request.Add(null,Y.WFW.request_path('input_check.php'),{type:data_type,value:this.value},Y.DataType.onReqCheckDataType,{input:this});
+                    wfw.Request.Add(null,wfw.request_path('input_check.php'),{type:data_type,value:this.value},wfw.DataType.onReqCheckDataType,{input:this});
                 }
             );
 
@@ -44,8 +46,8 @@ YUI.add('datatype', function (Y, NAME) {
     };
     
     //initialise
-    Y.DataType.init();
+    wfw.DataType.init();
     
 }, '1.0', {
-      requires:['base', 'node','wfw', 'request', 'event']
+      requires:['base', 'node','wfw', 'wfw-request', 'wfw-event']
 });

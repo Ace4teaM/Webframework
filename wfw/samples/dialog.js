@@ -15,38 +15,46 @@ Revisions:
 */
 
 //initialise le contenu
-YUI().use('node', 'document', function (Y)
+YUI().use('node', 'wfw-document', function (Y)
 {
-	var onLoad = function(e){
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
         //direct print "Nouveau dialogue"
-        var dlg = Y.Document.print("First content");
-        dlg.parent_node.on("click", function (e, p) { Y.Document.closeDialog(); }, null, dlg);
+        var dlg = wfw.Document.print("First content");
+        dlg.parent_node.on("click", function (e, p) {
+            wfw.Document.closeDialog();
+        }, null, dlg);
 
         ///dialog 1 "Classe CSS personnalisée"
-        var dlg = $new(Y.Document.DIALOG, {
+        var dlg =  new wfw.Document.DIALOG( {
             cssClass: "wfw_ext_dialog-content test_dialog",
             onInit: function () {
                 this.print("print");
-                this.parent_node.on("click", function (e, p) { Y.Document.closeDialog(); }, null, dlg);
+                this.parent_node.on("click", function (e, p) {
+                    wfw.Document.closeDialog();
+                }, null, dlg);
             }
         });
-        Y.Document.insertDialog(dlg,null,"visible");
+        wfw.Document.insertDialog(dlg,null,"visible");
 
         ///dialog 2 "Simple"
-        var dlg = $new(Y.Document.DIALOG, {
+        var dlg = new wfw.Document.DIALOG( {
             onInit: function () {
                 this.print("world");
                 this.print("hello");
-                this.parent_node.on("click", function (e, p) { Y.Document.closeDialog(); }, null, dlg);
+                this.parent_node.on("click", function (e, p) {
+                    wfw.Document.closeDialog();
+                }, null, dlg);
             }
         });
-        Y.Document.insertDialog(dlg, null, "visible");
+        wfw.Document.insertDialog(dlg, null, "visible");
 
         //direct print "Dialogue existant"
-        Y.Document.print("Additional content");
+        wfw.Document.print("Additional content");
 
         ///dialog 3 "Titre + boutons de choix"
-        var dlg = $new(Y.Document.DIALOG_BOX, {
+        var dlg = new wfw.Document.DIALOG_BOX( {
             title: "Pile des dialogues",
             onInit: function () {
                 this.print("world");
@@ -55,25 +63,29 @@ YUI().use('node', 'document', function (Y)
             },
             onOK: {
                 clickEvent: function (e, dlg) {
-                    for (var x in Y.Document.dialogStack)
-                        dlg.print(x + "=" + objGetAtt(Y.Document.dialogStack[x], "id"));
+                    for (var x in wfw.Document.dialogStack)
+                        dlg.print(x + "=" + objGetAtt(wfw.Document.dialogStack[x], "id"));
                 },
                 buttonText: "Actualiser",
                 autoClose: false
             },
             onCancel: {
                 clickEvent: function (e, dlg) {
-                    Y.Document.confirm("Sur ?",
-                        function (e, dlg) { Y.Document.messageBox("ok"); },
-                        function (e, dlg) { Y.Document.messageBox("humm..."); }
-                    );
+                    wfw.Document.confirm("Sur ?",
+                        function (e, dlg) {
+                            wfw.Document.messageBox("ok");
+                        },
+                        function (e, dlg) {
+                            wfw.Document.messageBox("humm...");
+                        }
+                        );
                 },
                 buttonText: "Fermer"
             }
         });
-        Y.Document.insertDialog(dlg, null, "visible");
-	};
+        wfw.Document.insertDialog(dlg, null, "visible");
+    };
     
-	Y.one('window').on('load', onLoad);
+    Y.one('window').on('load', onLoad);
 });
 

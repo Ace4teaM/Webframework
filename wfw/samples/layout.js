@@ -10,44 +10,37 @@ contact@id-informatik.com
 
 Script lié au document "layout.html"
 
-Revisions:
-    [04-10-2012] Implentation
+Implentation: [18-10-2012]
 */
 
 //initialise le contenu
-function onInit()
+YUI().use('node', 'wfw', 'wfw-layout', function (Y)
 {
-	/*
-	 * ---------------------------------------------------------------
-	 * Initialise une FieldBar standard
-	 * ---------------------------------------------------------------
-	 */
-	
-	//intialise le formulaire 'form1'
-	//wfw.form.initFromURI("form1","form1");
-	
-	/*
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
+
+        /*
 	 * ---------------------------------------------------------------
 	 * Initialise une FieldBar personnalisé
 	 * ---------------------------------------------------------------
 	 */
-    //Initialise une barre de champs depuis un élément INPUT
-    wfw.ext.layout.initElement("my_layout", {w:320,h:240});
+        var layout = Y.Node.one("#my_layout");
+        
+        //Initialise une barre de champs depuis un élément INPUT
+        wfw.Layout.initElement(layout, {
+            w:320,
+            h:240
+        });
 	
-	wfw.ext.layout.setElement("my_layout","north",50,"top");
-	wfw.ext.layout.setElement("my_layout","west",50,"left");
-	wfw.ext.layout.setElement("my_layout","east",50,"right");
-	wfw.ext.layout.setElement("my_layout","sud",50,"bottom");
-	wfw.ext.layout.setElement("my_layout","center",null,"middle");
+        wfw.Layout.setElement(layout,Y.Node.one("#north"),50,"top");
+        wfw.Layout.setElement(layout,Y.Node.one("#west"),50,"left");
+        wfw.Layout.setElement(layout,Y.Node.one("#east"),50,"right");
+        wfw.Layout.setElement(layout,Y.Node.one("#sud"),50,"bottom");
+        wfw.Layout.setElement(layout,Y.Node.one("#center"),null,"middle");
 	
-	wfw.ext.layout.setPlacement("my_layout");
-}
-
-// intialise les extensions
-wfw.ext.initAll();
-
-// intialise les evenements
-wfw.event.SetCallback("wfw_window","load","onInit",onInit,false);
-
-// assigne les evenements
-wfw.event.ApplyTo(window, "wfw_window");
+        wfw.Layout.setPlacement(layout);
+    };
+    
+    Y.one('window').on('load', onLoad);
+});

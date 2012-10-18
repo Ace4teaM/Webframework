@@ -29,3 +29,5 @@ La methode 'wfw.stdEvent.onRequestMsg' à été déplacée dans l'extension 'Y.D
 Verifier la fonction $new() et l'heritage d'objet parent (notamment l'objet wfw.REF)
 Verifier une eventuelle erreur de l'utilisation de Y.Node.get("#...") au lieu de Y.Node.one("#...")
 Remplacer les objSetEvent(o,e,p) par o.on(e,null,p)
+Nettoyer les membres '_name' dans les classes d'objet (si inutilisé)
+verifier les setTimeOut()

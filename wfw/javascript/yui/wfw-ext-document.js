@@ -11,13 +11,15 @@
     Verification des formats de données
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, wfw, style, request, states
+    YUI Dependences: base, node, wfw, wfw-style, wfw-request, wfw-states
 
     Implementation: 16-10-2012
 */
 
-YUI.add('document', function (Y) {
-    Y.Document = {
+YUI.add('wfw-document', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    wfw.Document = {
         /*
             Données Membres
         */
@@ -58,14 +60,14 @@ YUI.add('document', function (Y) {
             /*
              * Constructeur
              */
-            Y.Document.DIALOG.superclass.constructor.call(this, att);
+            wfw.Document.DIALOG.superclass.constructor.call(this, att);
               
             if(this.parent_node == null)
                 this.parent_node = Y.Node.create("<div>");
 
             this.parent_node.set("id",this.id);
             if(!empty(this.cssClass))
-                Y.Style.addClass(this.parent_node,this.cssClass);
+                wfw.Style.addClass(this.parent_node,this.cssClass);
         },
 
         /*
@@ -94,7 +96,7 @@ YUI.add('document', function (Y) {
             /*
              * Constructeur
              */
-            Y.Document.DIALOG_BOX.superclass.constructor.call(this, att);
+            wfw.Document.DIALOG_BOX.superclass.constructor.call(this, att);
               
         },
 
@@ -111,14 +113,14 @@ YUI.add('document', function (Y) {
             //centre automatiquement le contenu
             if(this.contentElement && this.center)
             {
-                Y.Event.SetCallback( // window
+                wfw.Event.SetCallback( // window
                     "wfw_window",
                     "resize",
                     "eventCenterBodyContent",
                     this.eventCenterContent
                 );
 
-            /*  Y.Event.SetCallback( // window
+            /*  wfw.Event.SetCallback( // window
                     "wfw_window",
                     "load",
                     "eventCenterBodyContent",
@@ -129,7 +131,7 @@ YUI.add('document', function (Y) {
             //ajoute un copyright à la fin du document
             if(this.contentElement && this.copyright)
             {
-                Y.Event.SetCallback( // window
+                wfw.Event.SetCallback( // window
                     "wfw_window",
                     "load",
                     "eventCreateCopyright",
@@ -148,9 +150,9 @@ YUI.add('document', function (Y) {
                 this.messageBox(msg);
 
             //debug
-            Y.WFW.puts("[" + obj.url + "] " + msg);
+            wfw.puts("[" + obj.url + "] " + msg);
             if (typeof (debug) == "string")
-                Y.WFW.puts(debug);
+                wfw.puts(debug);
 
             return true;
         },
@@ -191,7 +193,7 @@ YUI.add('document', function (Y) {
         */
         adversing : function(text,link){
             var copydiv = Y.Node.create('<div>');
-            Y.Style.setClass(copydiv,"wfw_ext_adversing");
+            wfw.Style.setClass(copydiv,"wfw_ext_adversing");
             copydiv.set("text",text);
             if(link)
                 copydiv.on("click",function(e){window.open(link);})
@@ -208,7 +210,7 @@ YUI.add('document', function (Y) {
             var dlg = this.getDialogElement();
 
             if(dlg)
-                return Y.States.fromElement(dlg);
+                return wfw.States.fromElement(dlg);
 
             return null;
         },
@@ -225,7 +227,7 @@ YUI.add('document', function (Y) {
             if(dlg = Y.Node.one("#wfw_ext_dialog"))
             {
                 var dlg_content = dlg.one("> div");
-                if(!dlg_content || Y.Style.haveClass(dlg_content,"wfw_hidden"))
+                if(!dlg_content || wfw.Style.haveClass(dlg_content,"wfw_hidden"))
                     return null;
                 return dlg_content;
             }
@@ -248,13 +250,13 @@ YUI.add('document', function (Y) {
             {
                 //obtient le premier dialogue
                 var dlg_content = dlg.one("> div");
-                if(!dlg_content || Y.Style.haveClass(dlg_content,"wfw_hidden"))
+                if(!dlg_content || wfw.Style.haveClass(dlg_content,"wfw_hidden"))
                     return null;
                 
                 //recherche dans le contenu
                 var cur = dlg_content.one("> div");
                 while(cur){
-                    if(Y.Style.haveClass(cur,find_class))
+                    if(wfw.Style.haveClass(cur,find_class))
                         return cur;
                     cur = objGetNext(cur);
                 }
@@ -293,7 +295,7 @@ YUI.add('document', function (Y) {
                 if((cur_dialog != null) && (this.waitForCloseEvent==false))
                 {
                     this.pushDialog();
-                    Y.WFW.puts("wfw.ext.document.newDialog: Pousse le dialogue existant");
+                    wfw.puts("wfw.ext.document.newDialog: Pousse le dialogue existant");
                 }
                 //si en cours de fermeture, place le dialogue en attente
                 if(this.waitForCloseEvent){
@@ -304,7 +306,7 @@ YUI.add('document', function (Y) {
                 position = "visible";
 
             //obtient l'objet du dialogue
-            var states = Y.States.fromId(dialog.id);
+            var states = wfw.States.fromId(dialog.id);
 
             //initialise l'id
             dialog.parent_node.set("id",dialog.id);
@@ -320,7 +322,7 @@ YUI.add('document', function (Y) {
                 dialog.onPush();
 
             //cache l'élément
-            Y.Style.addClass(dialog.parent_node,"wfw_hidden");
+            wfw.Style.addClass(dialog.parent_node,"wfw_hidden");
 
             //repositionne le dialogue dans la pile
             switch(position){
@@ -374,10 +376,10 @@ YUI.add('document', function (Y) {
                 if(!dlg_content)
                     return false;
                 this.dialogStack.push(dlg_content);
-                Y.Style.addClass(dlg_content,"wfw_hidden");
+                wfw.Style.addClass(dlg_content,"wfw_hidden");
 
                 //callback
-                var states = Y.States.fromElement(dlg_content);
+                var states = wfw.States.fromElement(dlg_content);
                 if(typeof(states.onPush) == "function")
                     states.onPush();
 
@@ -399,24 +401,24 @@ YUI.add('document', function (Y) {
             var cur = this.getDialogElement();
             if(cur){
                 //objet et callback
-                var states = Y.States.fromElement(cur);
+                var states = wfw.States.fromElement(cur);
                 if(typeof(states.onPop) == "function")
                     states.onPop();
                 //noeud HTML
                 cur.remove();
                 //objet
                 states.remove();
-                //Y.States.remove(cur.get("id"));
+                //wfw.States.remove(cur.get("id"));
             }
 
             //affiche le dialogue suivant
             if(this.dialogStack.length)
             {
                 var element = this.dialogStack[this.dialogStack.length-1];
-                Y.Style.removeClass(element,"wfw_hidden");
+                wfw.Style.removeClass(element,"wfw_hidden");
                 this.dialogStack.pop();
                 //initialise le contenu
-                var dialog = Y.States.fromElement(element);
+                var dialog = wfw.States.fromElement(element);
                 if(typeof(dialog.onPrint)=="function")
                     dialog.onPrint();
                 //callback
@@ -510,7 +512,7 @@ YUI.add('document', function (Y) {
         */
         lockElement : function(element,options)
         {
-            var dlg = $new(Y.Document.DIALOG_BOX, object_merge(options,{
+            var dlg = new wfw.Document.DIALOG_BOX(object_merge(options,{
                 user:{
                     element : element,
                     old_parent : element.ancestor()//obtient l'ancien parent de l'element
@@ -520,10 +522,10 @@ YUI.add('document', function (Y) {
                     //insert les boutons
                     if(typeof(this.onOK)=="function")
                     {
-                        Y.Event.SetCallback(this.id+"_ok","click","onOK",//remplace le callback par defaut de DIALOG_BOX.init()
+                        wfw.Event.SetCallback(this.id+"_ok","click","onOK",//remplace le callback par defaut de DIALOG_BOX.init()
                             function(e,dlg)
                             {
-                                Y.Document.waitForCloseEvent = true;
+                                wfw.Document.waitForCloseEvent = true;
                                 //callback...
                                 dlg.onOK(dlg.user.element);
                                 //restore l'element à son emplacement d'orginie
@@ -538,10 +540,10 @@ YUI.add('document', function (Y) {
 
                     if(typeof(this.onCancel)=="function")
                     {
-                        Y.Event.SetCallback(this.id+"_cancel","click","onCancel",//remplace le callback par defaut de DIALOG_BOX.init()
+                        wfw.Event.SetCallback(this.id+"_cancel","click","onCancel",//remplace le callback par defaut de DIALOG_BOX.init()
                             function(e,dlg)
                             {
-                                Y.Document.waitForCloseEvent = true;
+                                wfw.Document.waitForCloseEvent = true;
                                 //callback...
                                 dlg.onCancel(dlg.user.element);
                                 //restore l'element a son emplacement d'orginie
@@ -561,7 +563,7 @@ YUI.add('document', function (Y) {
                 }
             }));
 
-            return Y.Document.insertDialog(dlg,null,"visible");
+            return wfw.Document.insertDialog(dlg,null,"visible");
         },
 
         /*
@@ -579,7 +581,7 @@ YUI.add('document', function (Y) {
         */
         lockFrame : function(file_name,options)
         {
-            var dlg = $new(Y.Document.DIALOG_BOX, object_merge(options,{
+            var dlg = new wfw.Document.DIALOG_BOX(object_merge(options,{
                 user:{
                     file_name : file_name,
                     doc_frame : null,
@@ -592,13 +594,13 @@ YUI.add('document', function (Y) {
 
                     if(frame_obj==null)
                     {
-                        Y.WFW.puts("wfw.ext.document.lockFrame : iframe element creation failed !");
+                        wfw.puts("wfw.ext.document.lockFrame : iframe element creation failed !");
                         return false;
                     }
                     frame_obj.set("src",this.user.file_name);
                     frame_obj.set("id",this.id+"_frame");
                     frame_obj.set("name",filename(this.user.file_name));
-                    Y.Style.addClass(frame_obj,"wfw_ext_dialog_frame");
+                    wfw.Style.addClass(frame_obj,"wfw_ext_dialog_frame");
 
                     //insert le contenu
                     this.print(frame_obj);
@@ -606,11 +608,11 @@ YUI.add('document', function (Y) {
                     //insert les boutons
                     if(typeof(this.onOK)=="function")
                     {
-                        Y.Event.SetCallback(this.id+"_ok","click","onOK",
+                        wfw.Event.SetCallback(this.id+"_ok","click","onOK",
                             function(e,dlg)
                             {
                                 //callback...
-                                Y.Document.waitForCloseEvent = true; //utilisé par newDialog
+                                wfw.Document.waitForCloseEvent = true; //utilisé par newDialog
                                 dlg.onOK(dlg.user.doc_frame, dlg.user.wnd_frame);
 
                                 return false;//ne conserve pas ce callback
@@ -622,11 +624,11 @@ YUI.add('document', function (Y) {
 
                     if(typeof(this.onCancel)=="function")
                     {
-                        Y.Event.SetCallback(this.id+"_cancel","click","onCancel",
+                        wfw.Event.SetCallback(this.id+"_cancel","click","onCancel",
                             function(e,dlg)
                             {
                                 //callback...
-                                Y.Document.waitForCloseEvent = true;
+                                wfw.Document.waitForCloseEvent = true;
                                 dlg.onCancel(dlg.user.doc_frame, dlg.user.wnd_frame);
 
                                 return false;//ne conserve pas ce callback
@@ -645,13 +647,13 @@ YUI.add('document', function (Y) {
                         {
                             //utilise l'element 'wfw_ext_content'
                             var h;
-                            if(h = Y.Utils.getHeight(frame_content))
-                                Y.Utils.setHeight(dlg.user.frame_obj,h);
+                            if(h = wfw.Utils.getHeight(frame_content))
+                                wfw.Utils.setHeight(dlg.user.frame_obj,h);
                         }
                         else
                         {
                             //utilise les dimentions du 'body' 
-                            Y.Utils.setHeight(dlg.user.frame_obj, dlg.user.doc_frame.one("body").get("scrollHeight"));
+                            wfw.Utils.setHeight(dlg.user.frame_obj, dlg.user.doc_frame.one("body").get("scrollHeight"));
                         }
                     };
 
@@ -683,7 +685,7 @@ YUI.add('document', function (Y) {
                 }
             }));
 
-            return Y.Document.insertDialog(dlg,null,"visible");
+            return wfw.Document.insertDialog(dlg,null,"visible");
         },
 
         /*
@@ -691,8 +693,8 @@ YUI.add('document', function (Y) {
         */
         lockImage : function(image_path,options){
 
-            var dlg = $new(Y.Document.DIALOG, object_merge(options,{
-            center:true,
+            var dlg = new wfw.Document.DIALOG( object_merge(options,{
+                center:true,
                 onInit: function () {
                     var dlg = this;
 
@@ -703,7 +705,7 @@ YUI.add('document', function (Y) {
 
                     var resize = function(image){
 
-                        var timer = Y.Timer.CreateFrequencyTimer({
+                        var timer = wfw.Timer.CreateFrequencyTimer({
                             frame_per_second : 24,
                             duration: 500,
                             bAutoRemove : true,
@@ -713,14 +715,14 @@ YUI.add('document', function (Y) {
                                 org_width : 0,  // Largeur originale
                                 org_height : 0, // Hauteur originale
                                 // Largeur et Hauteur maximale
-                                max_h : Y.Utils.getHeight(Y.Node.one("#wfw_ext_lock"))-10,
-                                max_w : Y.Utils.getWidth(Y.Node.one("#wfw_ext_lock"))-10
+                                max_h : wfw.Utils.getHeight(Y.Node.one("#wfw_ext_lock"))-10,
+                                max_w : wfw.Utils.getWidth(Y.Node.one("#wfw_ext_lock"))-10
                             },
                             onStart    : function(){
                                 this.user.org_width = this.user.image.get("width");
                                 this.user.org_height = this.user.image.get("height");
-    //                            Y.WFW.puts("org_width="+this.user.org_width);
-    //                            Y.WFW.puts("org_height="+this.user.org_height);
+    //                            wfw.puts("org_width="+this.user.org_width);
+    //                            wfw.puts("org_height="+this.user.org_height);
                             },
                             onUpdateFrame    : function(time,normTime,frame){
                                 var w = this.user.org_width;
@@ -751,22 +753,22 @@ YUI.add('document', function (Y) {
 
                     //[chargement]
                     image.on("error",function(e){
-                        Y.WFW.puts("Can't load image");
+                        wfw.puts("Can't load image");
                     });
 
                     //wfw_ext_lock [click]
                     image.on("click",function(e){
-                        Y.Document.unlockScreen();
+                        wfw.Document.unlockScreen();
                     });
 
                     //wfw_ext_lock [click]
                     Y.Node.one("#wfw_ext_lock").on("click",function(e){
-                        Y.Document.unlockScreen();
+                        wfw.Document.unlockScreen();
                     });
                 }
             }));
 
-            return Y.Document.insertDialog(dlg,null,"visible");
+            return wfw.Document.insertDialog(dlg,null,"visible");
         },
 
         /*
@@ -810,7 +812,7 @@ YUI.add('document', function (Y) {
         print : function(obj)
         {
             var dlg = this.getDialog();
-            if(!dlg && !(dlg = Y.Document.insertDialog($new(Y.Document.DIALOG),null,"visible"))){
+            if(!dlg && !(dlg = wfw.Document.insertDialog(new wfw.Document.DIALOG(),null,"visible"))){
                 return false;
             }
 
@@ -878,7 +880,7 @@ YUI.add('document', function (Y) {
             var button_obj;
             var content = dialog.findContent(insertIntoClassName);
             if(!content){
-                Y.WFW.puts("printOK can't found content with class :"+insertIntoClassName);
+                wfw.puts("printOK can't found content with class :"+insertIntoClassName);
                 return null;
             }
 
@@ -894,19 +896,19 @@ YUI.add('document', function (Y) {
             button_obj.set("id",btn_id);
             button_obj.set("type","button");
             button_obj.set("value",options.buttonText);
-            Y.Style.addClass(button_obj,options.classCSS);
+            wfw.Style.addClass(button_obj,options.classCSS);
 
             //[clickEvent]
             if(typeof options.clickEvent == "function")
-                Y.Event.SetCallback(btn_id,"click","clickEvent",options.clickEvent,false,dialog);
+                wfw.Event.SetCallback(btn_id,"click","clickEvent",options.clickEvent,false,dialog);
 
             //[Fermeture du dialogue]
             if(options.autoClose)
-                Y.Event.SetCallback(btn_id,"click","unlock_screen",
+                wfw.Event.SetCallback(btn_id,"click","unlock_screen",
                     function(e,dlg)
                     {
-                        Y.WFW.puts("printOK: fermeture...");
-                        Y.Document.closeDialog();
+                        wfw.puts("printOK: fermeture...");
+                        wfw.Document.closeDialog();
 
                         return false;//ne pas conserver pas ce callback
                     },
@@ -914,7 +916,7 @@ YUI.add('document', function (Y) {
                     dialog
                 );
 
-            Y.Event.ApplyTo(button_obj,btn_id);
+            wfw.Event.ApplyTo(button_obj,btn_id);
 
             //insert a la fin
             return content.append(button_obj);
@@ -963,19 +965,19 @@ YUI.add('document', function (Y) {
             button_obj.set("id",btn_id);
             button_obj.set("type","button");
             button_obj.set("value",options.buttonText);
-            Y.Style.addClass(button_obj,options.classCSS);
+            wfw.Style.addClass(button_obj,options.classCSS);
 
             //[clickEvent]
             if(typeof options.clickEvent == "function")
-                Y.Event.SetCallback(btn_id,"click","clickEvent",options.clickEvent,false,dialog);
+                wfw.Event.SetCallback(btn_id,"click","clickEvent",options.clickEvent,false,dialog);
 
             //[Fermeture du dialogue]
             if(options.autoClose)
-                Y.Event.SetCallback(btn_id,"click","unlock_screen",
+                wfw.Event.SetCallback(btn_id,"click","unlock_screen",
                     function(e,dlg)
                     {
-                        Y.WFW.puts("printCancel: fermeture...");
-                        Y.Document.closeDialog();
+                        wfw.puts("printCancel: fermeture...");
+                        wfw.Document.closeDialog();
 
                         return false;//ne pas conserver pas ce callback
                     },
@@ -983,7 +985,7 @@ YUI.add('document', function (Y) {
                     dialog
                 );
 
-            Y.Event.ApplyTo(button_obj,btn_id);
+            wfw.Event.ApplyTo(button_obj,btn_id);
 
             //insert a la fin
             return content.append(button_obj);
@@ -1019,7 +1021,7 @@ YUI.add('document', function (Y) {
                 Les boutons 'OK' et 'Annuler' sont ajoutés
         */
         confirm : function(text,onOK,onCancel,options){
-            var dlg = $new(Y.Document.DIALOG_BOX, object_merge({
+            var dlg =  new wfw.Document.DIALOG_BOX( object_merge({
                 title : text,
                 onOK : {
                     clickEvent : onOK,
@@ -1030,7 +1032,7 @@ YUI.add('document', function (Y) {
                     buttonText : "Non"
                 }
             },options, false));
-            return Y.Document.insertDialog(dlg,null,"visible");
+            return wfw.Document.insertDialog(dlg,null,"visible");
         },
 
 
@@ -1041,71 +1043,71 @@ YUI.add('document', function (Y) {
                 [object]               options : Paramétres du dialogue
         */
         messageBox : function(content,options){
-            var dlg = $new(Y.Document.DIALOG, object_merge({
+            var dlg = new wfw.Document.DIALOG( object_merge({
                 onInit: function () {
                     this.print(content);
-                    Y.Document.printOK(this,"wfw_ext_dialog_content",options);
+                    wfw.Document.printOK(this,"wfw_ext_dialog_content",options);
                 }
             },options));
-            return Y.Document.insertDialog(dlg,null,"visible");
+            return wfw.Document.insertDialog(dlg,null,"visible");
         },
 
         /*
             Ouvre le dialogue de chargement
         */
         openLoadingBox : function(options){
-            var dialog = Y.States.fromId("wfw_ext_document_LoadingBox",null,{exists:true});
+            var dialog = wfw.States.fromId("wfw_ext_document_LoadingBox",null,{exists:true});
             if(dialog != null)
                 return null;
-            var dlg = $new(Y.Document.DIALOG_BOX, object_merge({
+            var dlg = new wfw.Document.DIALOG_BOX( object_merge({
                 title  : "Merci de patienter",
                 id     : "wfw_ext_document_LoadingBox",
                 onInit : function(){
                     var image = Y.Node.create('<span>');
                     if(image!=null)
                     {
-                        Y.Style.addClass(image,"wfw_icon_loading");
+                        wfw.Style.addClass(image,"wfw_icon_loading");
                         //insert
                         this.print(image);
                     }
                 }
             },options, false));
-            return Y.Document.insertDialog(dlg,null,"visible");
+            return wfw.Document.insertDialog(dlg,null,"visible");
         },
 
         /*
             Ouvre le dialogue de chargement
         */
         closeLoadingBox : function(){
-            var dialog = Y.States.fromId("wfw_ext_document_LoadingBox",null,{exists:true});
+            var dialog = wfw.States.fromId("wfw_ext_document_LoadingBox",null,{exists:true});
             if(dialog == null)
                 return;
-            Y.Document.removeDialog(dialog);
+            wfw.Document.removeDialog(dialog);
         },
 
         // Evenements
         eventCenterContent : function(e){
-            if(Y.Document.contentElement){
-                var win_width  = Y.Utils.getClientWidth();
-                var body_width = Y.Utils.getWidth(Y.Document.contentElement);
+            if(wfw.Document.contentElement){
+                var win_width  = wfw.Utils.getClientWidth();
+                var body_width = wfw.Utils.getWidth(wfw.Document.contentElement);
                 if(win_width>body_width)
-                    Y.Document.contentElement.set("style.marginLeft",((win_width - body_width) / 2)+'px');
+                    wfw.Document.contentElement.set("style.marginLeft",((win_width - body_width) / 2)+'px');
                 else
-                    Y.Document.contentElement.set("style.marginLeft", '0px');
+                    wfw.Document.contentElement.set("style.marginLeft", '0px');
             }
         },
 
         eventCreateCopyright : function(e){
             var copydiv = Y.Node.create('<div>');
 
-            Y.Style.setClass(copydiv,"wfw_ext_copyright");
-            copydiv.set("text",Y.WFW.copyright);
-            copydiv.on("click",Y.Document.eventOpenIDInformatik);
+            wfw.Style.setClass(copydiv,"wfw_ext_copyright");
+            copydiv.set("text",wfw.copyright);
+            copydiv.on("click",wfw.Document.eventOpenIDInformatik);
             Y.Node.one("document").one("body").appendChild(copydiv);
         },
 
         eventOpenIDInformatik : function(e){
-            window.open(Y.WFW.url);
+            window.open(wfw.url);
         }
     };
     
@@ -1114,19 +1116,19 @@ YUI.add('document', function (Y) {
      *-----------------------------------------------------------------------------------------------------------------------*/
     
     // heritages
-    Y.extend(Y.Document.DIALOG,Y.WFW.OBJECT);
+    Y.extend(wfw.Document.DIALOG,wfw.OBJECT);
 
-    Y.Document.DIALOG.prototype.onInit          = function(){ };
+    wfw.Document.DIALOG.prototype.onInit          = function(){ };
     
-    Y.Document.DIALOG.prototype.onPrint         = function(){ };
+    wfw.Document.DIALOG.prototype.onPrint         = function(){ };
     
-    Y.Document.DIALOG.prototype.onPop           = function(){
+    wfw.Document.DIALOG.prototype.onPop           = function(){
         if(this.center == true){
             this.centerDialog();
         }
     };
     
-    Y.Document.DIALOG.prototype.onPush         = function(){
+    wfw.Document.DIALOG.prototype.onPush         = function(){
         //Experimentale: centre verticalement le dialogue
         //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
         if(this.center == true){
@@ -1139,7 +1141,7 @@ YUI.add('document', function (Y) {
         * Retourne:
         *  [bool] false si la fonction à échouée, sinon true.
         * */
-    Y.Document.DIALOG.prototype.init = function(){
+    wfw.Document.DIALOG.prototype.init = function(){
         //insert le contenu
         this.dlg_content = Y.Node.create("<div>");
         if(this.dlg_content==null)
@@ -1147,7 +1149,7 @@ YUI.add('document', function (Y) {
         this.parent_node.append(this.dlg_content);
 
         this.dlg_content.set("id",this.id+"_content");
-        Y.Style.addClass(this.dlg_content,"wfw_ext_dialog_content");
+        wfw.Style.addClass(this.dlg_content,"wfw_ext_dialog_content");
 
         return true;
     };
@@ -1157,7 +1159,7 @@ YUI.add('document', function (Y) {
         * Retourne:
         *  [void]
         * */
-    Y.Document.DIALOG.prototype.print = function(content){
+    wfw.Document.DIALOG.prototype.print = function(content){
         this.dlg_content.append(content);
     };
 
@@ -1168,7 +1170,7 @@ YUI.add('document', function (Y) {
         Retourne:
             [YIU.Element] L'Elément DIV, parent du contenu dialogue. Si null, aucun dialogue n'est visible
     */
-    Y.Document.DIALOG.prototype.findContent = function(find_class)
+    wfw.Document.DIALOG.prototype.findContent = function(find_class)
     {
         //par defaut obtient l'element de contenu
         if(typeof(find_class)=="undefined")
@@ -1177,7 +1179,7 @@ YUI.add('document', function (Y) {
         //recherche le contenu
         var cur = null;
         this.parent_node.all("> *").some(function(node){
-            if(Y.Style.haveClass(node,find_class)){
+            if(wfw.Style.haveClass(node,find_class)){
                 cur = node;
                 return false;
             }
@@ -1189,9 +1191,9 @@ YUI.add('document', function (Y) {
 
     //Experimentale: centre verticalement le dialogue
     //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
-    Y.Document.DIALOG.prototype.centerDialog = function(){
+    wfw.Document.DIALOG.prototype.centerDialog = function(){
         var container = Y.Node.one("#wfw_ext_dialog");
-        var height = Y.Utils.getHeight(this.parent_node);
+        var height = wfw.Utils.getHeight(this.parent_node);
         var demi_height = height/2;
         if(demi_height){
             container.set("style.marginTop","-"+demi_height+"px");
@@ -1201,7 +1203,7 @@ YUI.add('document', function (Y) {
 
     //Experimentale: centre verticalement le dialogue
     //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
-    Y.Document.DIALOG.prototype.uncenterDialog = function(){
+    wfw.Document.DIALOG.prototype.uncenterDialog = function(){
         var container = Y.Node.one("#wfw_ext_dialog");
         container.set("style.marginTop","0px");
         container.set("style.top","0px");
@@ -1213,19 +1215,19 @@ YUI.add('document', function (Y) {
      * DIALOG_BOX Class Implementation
      *-----------------------------------------------------------------------------------------------------------------------*/
     
-    Y.extend(Y.Document.DIALOG_BOX,Y.Document.DIALOG);
+    Y.extend(wfw.Document.DIALOG_BOX,wfw.Document.DIALOG);
 
     /*
     * Initialize
     */
-    Y.Document.DIALOG_BOX.prototype.init = function () {
+    wfw.Document.DIALOG_BOX.prototype.init = function () {
         //insert l'header
         this.dlg_header = Y.Node.create('<div>');
         if(this.dlg_header==null)
             return false;
         this.parent_node.append(this.dlg_header);
         this.dlg_header.set("id",this.id+"_header");
-        Y.Style.addClass(this.dlg_header,"wfw_ext_dialog_box_header");
+        wfw.Style.addClass(this.dlg_header,"wfw_ext_dialog_box_header");
         this.dlg_header.set("text",this.title);
 
         //insert le contenu
@@ -1234,7 +1236,7 @@ YUI.add('document', function (Y) {
             return false;
         this.parent_node.append(this.dlg_content);
         this.dlg_content.set("id",this.id+"_content");
-        Y.Style.addClass(this.dlg_content,"wfw_ext_dialog_box_content");
+        wfw.Style.addClass(this.dlg_content,"wfw_ext_dialog_box_content");
 
         //insert le footer
         this.dlg_footer = Y.Node.create('<div>');
@@ -1242,20 +1244,20 @@ YUI.add('document', function (Y) {
             return false;
         this.parent_node.append(this.dlg_footer);
         this.dlg_footer.set("id",this.id+"_footer");
-        Y.Style.addClass(this.dlg_footer,"wfw_ext_dialog_box_footer");
+        wfw.Style.addClass(this.dlg_footer,"wfw_ext_dialog_box_footer");
 
         //insert le bouton OK
         if(this.onOK == "function")
             this.onOK = {clickEvent: this.onOK};
         if(this.onOK)
         {
-            Y.Document.printOK(this,"wfw_ext_dialog_box_footer",this.onOK);
+            wfw.Document.printOK(this,"wfw_ext_dialog_box_footer",this.onOK);
 
-            Y.Event.SetCallback(this.id+"_ok","click","onOK",
+            wfw.Event.SetCallback(this.id+"_ok","click","onOK",
                 function(e,dlg)
                 {
                     //callback...
-                    Y.Document.waitForCloseEvent = true; //insert les dialogues après la fermeture de celui-ci (utilisé par insertDialog)
+                    wfw.Document.waitForCloseEvent = true; //insert les dialogues après la fermeture de celui-ci (utilisé par insertDialog)
                     return false;//ne conserve pas ce callback
                 },
                 true, // exécuter avant 'unlock_screen' (permet la création de dialogues pendant l'événement onOk)
@@ -1268,13 +1270,13 @@ YUI.add('document', function (Y) {
             this.onCancel = {clickEvent: this.onCancel};
         if(this.onCancel)
         {
-            Y.Document.printCancel(this,"wfw_ext_dialog_box_footer",this.onCancel);
+            wfw.Document.printCancel(this,"wfw_ext_dialog_box_footer",this.onCancel);
 
-            Y.Event.SetCallback(this.id+"_cancel","click","onCancel",
+            wfw.Event.SetCallback(this.id+"_cancel","click","onCancel",
                 function(e,dlg)
                 {
                     //callback...
-                    Y.Document.waitForCloseEvent = true; //insert les dialogues après la fermeture de celui-ci (utilisé par insertDialog)
+                    wfw.Document.waitForCloseEvent = true; //insert les dialogues après la fermeture de celui-ci (utilisé par insertDialog)
                     return false;//ne conserve pas ce callback
                 },
                 true, // exécuter avant 'unlock_screen' (permet la création de dialogues pendant l'événement onCancel)
@@ -1286,15 +1288,15 @@ YUI.add('document', function (Y) {
     /*
      * Print content
      **/
-    Y.Document.DIALOG_BOX.prototype.print = function (content) {
+    wfw.Document.DIALOG_BOX.prototype.print = function (content) {
         this.dlg_content.append(content);
     };
     
     /*-----------------------------------------------------------------------------------------------------------------------
      * Initialise
      -----------------------------------------------------------------------------------------------------------------------*/
-    Y.Document.init();
+    wfw.Document.init();
     
 }, '1.0', {
-      requires:['base', 'node', 'wfw', 'style', 'request', 'states']
+      requires:['base', 'node', 'wfw', 'wfw-style', 'wfw-request', 'wfw-states']
 });

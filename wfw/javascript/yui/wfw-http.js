@@ -10,14 +10,16 @@
     HTTP Request Interface
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, wfw, uri
+    YUI Dependences: base, node, wfw, wfw-uri
 
     Revisions:
         [11-10-2012] Implementation
 */
 
-YUI.add('http', function (Y) {
-    Y.HTTP = {
+YUI.add('wfw-http', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    wfw.HTTP = {
         /*
          * Globals
          */
@@ -40,7 +42,7 @@ YUI.add('http', function (Y) {
             /*
              * Constructeur
              */
-            Y.HTTP.HTTP_REQUEST_PART.superclass.constructor.call(this, att);
+            wfw.HTTP.HTTP_REQUEST_PART.superclass.constructor.call(this, att);
             
         },
 
@@ -79,16 +81,16 @@ YUI.add('http', function (Y) {
                 }
                 catch(e2)
                 {
-                    Y.WFW.puts("Error creating the ActiveXObject('Microsoft.XMLHTTP') object.");
-                    Y.WFW.checkError(e1);
-                    Y.WFW.checkError(e2);
+                    wfw.puts("Error creating the ActiveXObject('Microsoft.XMLHTTP') object.");
+                    wfw.checkError(e1);
+                    wfw.checkError(e2);
                 }
                 
             }
 
             //debug
             if (http==null){
-                Y.WFW.puts("Error creating the XMLHttpRequest object.");
+                wfw.puts("Error creating the XMLHttpRequest object.");
                 return false;
             }
             
@@ -131,8 +133,8 @@ YUI.add('http', function (Y) {
                 [string] Corps de la requête
         */
         getResponse : function(){
-            //Y.Request.print();
-            //Y.WFW.puts('this.getResponse: '+this.httpRequest.status);
+            //wfw.Request.print();
+            //wfw.puts('this.getResponse: '+this.httpRequest.status);
             if(this.httpRequest.status != 200)
                 return null;
             //attention a ne pas utiliser this.httpRequest.responseText avec un contenu autre que du texte, ceci engendre un bug
@@ -181,7 +183,7 @@ YUI.add('http', function (Y) {
         */
         post : function(url, params) {
             if(typeof(params)=='object')
-                params = Y.URI.object_to_query(params/*,true*/);//encode l'UTF 8
+                params = wfw.URI.object_to_query(params/*,true*/);//encode l'UTF 8
             this.httpRequest.onreadystatechange = null;//pas de callback (important)
             this.httpRequest.open('POST', url, false, this.http_user, this.http_pwd);
             this.httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -272,8 +274,8 @@ YUI.add('http', function (Y) {
             // fin
             body += "--" + boundary_keyword + "--" + crlf;
             /*
-            Y.WFW.puts("body=\n");
-            Y.WFW.puts(body);
+            wfw.puts("body=\n");
+            wfw.puts(body);
             */
             this.httpRequest.send(body);
             return true;
@@ -312,7 +314,7 @@ YUI.add('http', function (Y) {
         */
         post_async : function(url, params, callback) {
             if(typeof(params)=='object')
-                params = Y.URI.object_to_query(params/*,true*/);//encode l'UTF 8
+                params = wfw.URI.object_to_query(params/*,true*/);//encode l'UTF 8
             this.httpRequest.onreadystatechange = callback;
             this.httpRequest.open('POST', url, true, this.http_user, this.http_pwd);
             this.httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -329,13 +331,13 @@ YUI.add('http', function (Y) {
      * HTTP_REQUEST_PART Class Implementation
      *-----------------------------------------------------------------------------------------------------------------------*/
     
-    Y.extend(Y.HTTP.HTTP_REQUEST_PART, Y.WFW.OBJECT);
+    Y.extend(wfw.HTTP.HTTP_REQUEST_PART, wfw.OBJECT);
 
     /*-----------------------------------------------------------------------------------------------------------------------
      * Initialise
      -----------------------------------------------------------------------------------------------------------------------*/
-    Y.HTTP.init();
+    wfw.HTTP.init();
     
 }, '1.0', {
-      requires:['base','node','wfw','uri']
+      requires:['base','node','wfw','wfw-uri']
 });

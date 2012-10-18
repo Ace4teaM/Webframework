@@ -10,59 +10,69 @@ contact@id-informatik.com
 
 Script lié au document "layout.html"
 
-Revisions:
-    [04-10-2012] Implentation
+Implentation: [04-10-2012]
 */
 
 //initialise le contenu
-function onInit()
+YUI().use('node', 'wfw', 'wfw-layout', function (Y)
 {
-	/*
-	 * ---------------------------------------------------------------
-	 * Initialise le formulaire
-	 * ---------------------------------------------------------------
-	 */
-	
-	//intialise le formulaire 'form1'
-	//wfw.form.initFromURI("form1","form1");
-	
-	/*
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
+
+        /*
 	 * ---------------------------------------------------------------
 	 * Initialise une layout
 	 * ---------------------------------------------------------------
 	 */
-    //Initialise une barre de champs depuis un élément INPUT
-    wfw.ext.layout.initElement("my_layout", {stretch:true, w:800, h:600});
+        var layout = Y.Node.one("#my_layout");
+        
+        //Initialise une barre de champs depuis un élément INPUT
+        wfw.Layout.initElement(layout, {
+            stretch:true, 
+            w:600, 
+            h:400
+        });
 	
-	wfw.ext.layout.setElement("my_layout","north",50,"top");
-	wfw.ext.layout.setElement("my_layout","west",50,"left");
-	wfw.ext.layout.setElement("my_layout","east",50,"right");
-	wfw.ext.layout.setElement("my_layout","sud",50,"bottom");
-	wfw.ext.layout.setElement("my_layout","center",null,"middle");
+        wfw.Layout.setElement(layout,Y.Node.one("#north"),50,"top");
+        wfw.Layout.setElement(layout,Y.Node.one("#west"),50,"left");
+        wfw.Layout.setElement(layout,Y.Node.one("#east"),50,"right");
+        wfw.Layout.setElement(layout,Y.Node.one("#sud"),50,"bottom");
+        wfw.Layout.setElement(layout,Y.Node.one("#center"),null,"middle");
 	
-	wfw.ext.layout.setPlacement("my_layout");
+        wfw.Layout.setPlacement(layout);
 	
 	
-	/*
+        /*
 	 * ---------------------------------------------------------------
 	 * Initialise le layout 2
 	 * ---------------------------------------------------------------
 	 */
-    //Initialise une barre de champs depuis un élément INPUT
-    wfw.ext.layout.initElement("my_layout2",{stretch:true, w:400, h:300});
+        var layout2 = Y.Node.one("#my_layout2");
+        
+        //Initialise une barre de champs depuis un élément INPUT
+        wfw.Layout.initElement(layout2,{
+            stretch:true, 
+            w:400, 
+            h:300
+        });
 	
-	wfw.ext.layout.setElement("my_layout2","north2",null,"top");
-	wfw.ext.layout.setElement("my_layout2","west2",null,"left");
-	wfw.ext.layout.setElement("my_layout2","center2",null,"middle");
+        wfw.Layout.setElement(layout2,Y.Node.one("#north2"),null,"top");
+        wfw.Layout.setElement(layout2,Y.Node.one("#west2"),null,"left");
+        wfw.Layout.setElement(layout2,Y.Node.one("#center2"),null,"middle");
 	
-	wfw.ext.layout.setPlacement("my_layout2");
-}
-
-// intialise les extensions
-wfw.ext.initAll();
-
-// intialise les evenements
-wfw.event.SetCallback("wfw_window","load","onInit",onInit,false);
-
-// assigne les evenements
-wfw.event.ApplyTo(window, "wfw_window");
+        wfw.Layout.setPlacement(layout2);
+    };
+    
+    Y.one('window').on('load', onLoad);
+    
+    /*
+     *Evenements
+     **/
+    
+    Y.one('#stretch').on('click', function(){wfw.Layout.stretch(Y.Node.one('#my_layout')); } );
+    Y.one('#stretch_x').on('click', function(){wfw.Layout.stretch_x(Y.Node.one('#my_layout')); } );
+    Y.one('#stretch_y').on('click', function(){wfw.Layout.stretch_y(Y.Node.one('#my_layout')); } );
+    Y.one('#unstretch').on('click', function(){wfw.Layout.unstretch(Y.Node.one('#my_layout')); } );
+    
+});

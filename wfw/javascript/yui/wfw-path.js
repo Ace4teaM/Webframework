@@ -13,14 +13,13 @@
     JS  Dependences: base.js
     YUI Dependences: base
 
-    Revisions:
-        [17-10-2012] Implementation
+    Implementation: [17-10-2012]
 */
 
-//YUI.namespace("wfw");
-
-YUI.add('path', function (Y, NAME) {
-    Y.Path = {
+YUI.add('wfw-path', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    wfw.Path = {
 
         /*
             Retourne le nom de fichier d'un chemin
@@ -33,7 +32,7 @@ YUI.add('path', function (Y, NAME) {
             var exp = new RegExp('^([/]?)('+name+'/)*('+name+')$','g');
             rslt = exp.exec(path);
             if(rslt != null){
-    //            objAlertMembers(rslt);
+                //            objAlertMembers(rslt);
                 var point_pos = rslt[3].lastIndexOf('.');
                 if(!point_pos)
                     return "";
@@ -41,7 +40,7 @@ YUI.add('path', function (Y, NAME) {
             }
             return null;
         }
-    }
+    };
 }, '1.0', {
-      requires:['base']
+    requires:['base']
 });

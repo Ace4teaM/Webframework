@@ -13,14 +13,13 @@
     JS  Dependences: base.js
     YUI Dependences: base, wfw
 
-    Revisions:
-        [17-10-2012] Implementation
+    Implementation: [17-10-2012] 
 */
 
-//YUI.namespace("wfw");
-
-YUI.add('utils', function (Y, NAME) {
-    Y.Utils = {
+YUI.add('wfw-utils', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    wfw.Utils = {
 
         /*
             Obtient la largeur du client
@@ -82,6 +81,49 @@ YUI.add('utils', function (Y, NAME) {
             
             return s;
         },
+        
+        /*
+         * Retourne la hauteur originale d'un élément
+         */
+        getOrgHeight: function (element, options)
+        {
+            //place l'élément en premier plan avec sa taille automatique 
+            var last_position = element.get("style.position");
+            var last_height = element.get("style.height");
+            element.set("style.position", "absolute");
+            element.set("style.height", "auto");
+            
+            //sauvegarde la taille
+            var original_height = element.get("clientHeight");
+            
+            //restore la position original 
+            element.set("style.height",last_height);
+            element.set("style.position",last_position);
+            
+            return original_height;
+        },
+        
+        /*
+         * Retourne la hauteur d'un élément
+         */
+        getOrgWidth: function (element, options)
+        {
+            //place l'élément en premier plan avec sa taille automatique 
+            var last_position = element.get("style.position");
+            var last_width = element.get("style.width");
+            element.set("style.position", "absolute");
+            element.set("style.width","auto");
+            
+            //sauvegarde la taille 
+            var original_width = element.get("clientWidth");
+            
+            //restore la position original 
+            element.set("style.width",last_width);
+            element.set("style.position",last_position);
+            
+            return original_width;
+        },
+        
         /*
          * Active/Desactive un groupe d'éléments
          * Paramètres:
@@ -107,7 +149,7 @@ YUI.add('utils', function (Y, NAME) {
                         }
                     }
                 }
-            );
+                );
         },
         /*
         Callback : wfw.request.Add
@@ -126,7 +168,7 @@ YUI.add('utils', function (Y, NAME) {
         La variable xml_doc des callbacks onsuccess et onfailed passe le document XML en objet 
         onCheckRequestResult_XML reçoit un format XML en reponse, il convertie en objet puis traite le résultat
         En cas d'erreur, l'erreur est traité et affiché par la fonction wfw.utils.onRequestMsg (voir documentation)
-        En cas d'echec, l'erreur est traité et affiché par la fonction wfw.stdEvent.onFormResult (voir documentation)
+        En cas d'echec, l'erreur est traité et affiché par la fonction wfw.form.onFormResult (voir documentation)
             [Le nom de la form utilisé pour le résultat est définit par l'argument 'wfw_form_name' (si définit) sinon le nom de l'objet de requête]
         */
         onCheckRequestResult_XML: function (obj) {
@@ -167,7 +209,7 @@ YUI.add('utils', function (Y, NAME) {
                     if (parseInt(args.result) != ERR_OK) {
                         //message
                         var result_form_id = ((typeof obj.args["wfw_form_name"] == "string") ? obj.args.wfw_form_name : obj.name);
-                        wfw.stdEvent.onFormResult(result_form_id, args, obj);
+                        wfw.form.onFormResult(result_form_id, args, obj);
 
                         //failed callback
                         if (bFailedFunc)
@@ -273,7 +315,7 @@ YUI.add('utils', function (Y, NAME) {
             text = text.replace(/(\r\n|\n|\r)/gm, "<br />");
             return text;
         }
-    }
+    };
 }, '1.0', {
-      requires:['base','wfw']
+    requires:['base','wfw']
 });

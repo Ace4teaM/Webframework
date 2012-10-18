@@ -11,7 +11,7 @@
     Fonctions de base
 
     JS  Dependences: base.js
-    YUI Dependences: base, states
+    YUI Dependences: base, wfw-states
 
     Revisions:
         [17-10-2012] Implementation
@@ -19,34 +19,42 @@
 
 //YUI.namespace("wfw");
 
-YUI.add('wfw', function (Y, NAME) {
-    Y.WFW = {
+YUI.add('wfw', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    object_merge(wfw, {
 
         /*
-            Object webframework
+            Classe Objet
         */
         OBJECT : function(att){
-
-            if(att != null){
-                //obtient les données depuis l'objet 'States'
-                if(typeof att == "string" && typeof Y.States != "undefined")
-                    object_merge(this,Y.States.fromId(att, null, {exists:true}),false);
+            // initialise les données ?
+            if(att != null)
+            {
+                //depuis l'objet 'States' ?
+                if(typeof att == "string" && typeof wfw.States != "undefined"){
+                    // 'global' namespace
+                    if(att.indexOf(':') == -1) 
+                        object_merge(this,wfw.States.fromId(att, null, {
+                            exists:true
+                        }),false);
+                    // named namespace
+                    else{
+                        var id = strexplode(att);
+                        object_merge(this,wfw.States.fromId(id[0], null, {
+                            exists:true, 
+                            name:id[1]
+                            }),false);
+                    }
+                }
                 
-                //merge les données passées
+                //depuis l'objet 'att' ?
                 if(typeof att == "object" && att != null)
                     object_merge(this,att,false);
             }
             
         },
         
-        /*
-            Initialise l'extension
-        */
-        init: function () {
-
-            return true;
-        },
-
         /*
             Traitement dune exception Javascript
             Parametres:
@@ -78,7 +86,7 @@ YUI.add('wfw', function (Y, NAME) {
                 +'-------------------!! Error Occurred !!---------------------\n'
                 +txt+"\n"
                 +'============================================================'
-            );
+                );
         },
         
         /*
@@ -94,11 +102,11 @@ YUI.add('wfw', function (Y, NAME) {
             if (typeof (console) == 'object')
                 console.log(text);
             else {
-                // alert(text);
-                //if(this.consoleWindow == null)
-                //this.consoleWindow = window.open('about:blank','consoleWindow');
-                //if(this.consoleWindow == null)
-                //this.consoleWindow.document.write(text+"\n");
+            // alert(text);
+            //if(this.consoleWindow == null)
+            //this.consoleWindow = window.open('about:blank','consoleWindow');
+            //if(this.consoleWindow == null)
+            //this.consoleWindow.document.write(text+"\n");
             }
             return text;
         },
@@ -152,8 +160,12 @@ YUI.add('wfw', function (Y, NAME) {
         /*
         variables
         */
-        path: function (request_name) { return 'wfw/' + request_name; }, // symbolik link
-        request_path: function (request_name) { return 'wfw/req/' + request_name; }, // symbolik link
+        path: function (request_name) {
+            return 'wfw/' + request_name;
+        }, // symbolik link
+        request_path: function (request_name) {
+            return 'wfw/req/' + request_name;
+        }, // symbolik link
         //request_path: function(request_name){ return 'req:'+request_name; }, // url rewriting
 
         nav: new Object(), // navigator dependent-interfaces instances
@@ -162,13 +174,8 @@ YUI.add('wfw', function (Y, NAME) {
         copyright: "(C)2010-2012 AceTeaM. All rights reserved.", // empty function
         url: "http://www.aceteam.org"
 
-    };
-
-    /* 
-     * Initialise
-     */
-    Y.WFW.init();
+    },false);
 
 }, '1.0', {
-      requires:['base','states']
+    requires:['base','wfw-states']
 });

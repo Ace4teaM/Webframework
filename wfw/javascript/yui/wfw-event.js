@@ -14,14 +14,12 @@
 
     Revisions:
         [11-10-2012] Implementation
-
-    Previsions:
-        Associer les données de l'objet à l'extension State
-        Trouver une solution pour remplacerla fonction objSetEvent() par obj.on(...) avec passage de parametre
 */
 
-YUI.add('event', function (Y, NAME) {
-	Y.Event = {
+YUI.add('wfw-event', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    wfw.Event = {
         /*
         Tableaux des listes d'événements
 
@@ -80,8 +78,8 @@ YUI.add('event', function (Y, NAME) {
         */
         UnSetCallback: function (list_name, event_type, func_name) {
             if ((typeof (this.list[list_name]) != 'undefined') &&
-                    (typeof (this.list[list_name][event_type]) != 'undefined') &&
-                    (typeof (this.list[list_name][event_type][func_name]) != 'undefined')) {
+                (typeof (this.list[list_name][event_type]) != 'undefined') &&
+                (typeof (this.list[list_name][event_type][func_name]) != 'undefined')) {
                 delete this.list[list_name][event_type][func_name];
                 return true;
             }
@@ -126,7 +124,7 @@ YUI.add('event', function (Y, NAME) {
 
             //assigne chacun des evenements a l'objet
             for (var eventType in this.list[list_name])
-                objSetEvent(obj, eventType, this.onEventCall, this.list[list_name]);
+                obj.on(eventType, this.onEventCall, null, this.list[list_name]);
 
             //assigne tout les types d'evenements à la liste (pas dispo avec tout les navigateurs!)
             /*   //var text="";
@@ -164,7 +162,7 @@ YUI.add('event', function (Y, NAME) {
                     var ret = eFunc.func.apply(this,[e,eFunc.param]);
                     //supprime la fonction de la pile d'appel ?
                     if (ret == false) {
-                        Y.WFW.puts("wfw.event.onEventCall : removing callback " + e.type + "->" + name);
+                        wfw.puts("wfw.event.onEventCall : removing callback " + e.type + "->" + name);
                         delete list[name];
                     }
                 }
@@ -190,14 +188,14 @@ YUI.add('event', function (Y, NAME) {
                     var ret = eFunc.func.apply(event_obj,[null,eFunc.param]);
                     //supprime la fonction de la pile d'appel ?
                     if (ret == false) {
-                        Y.WFW.puts("wfw.event.onEventCall : removing callback " + e.type + "->" + name);
+                        wfw.puts("wfw.event.onEventCall : removing callback " + e.type + "->" + name);
                         delete list[name];
                     }
                 }
             }
         }
 
-	}
+    };
 }, '1.0', {
-      requires:['base','wfw']
+    requires:['base','wfw']
 });

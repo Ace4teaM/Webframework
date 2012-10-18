@@ -10,14 +10,15 @@
     Gestionnaire de requetes HTTP
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, wfw, http
+    YUI Dependences: base, node, wfw, wfw-http
 
-    Revisions:
-        [11-10-2012] Implementation
+    Implementation: [11-10-2012] 
 */
 
-YUI.add('request', function (Y) {
-    Y.Request = {
+YUI.add('wfw-request', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    wfw.Request = {
         
         /*
             Données Membres
@@ -82,7 +83,7 @@ YUI.add('request', function (Y) {
             Exemple:
                 //exemple d'intialisation d'arguments
                 my_request.args={
-                    param_1 : $new( Y.WFW.HTTP_REQUEST_PART, {
+                    param_1 : new wfw.HTTP_REQUEST_PART( {
                         headers: [
                             'Content-Disposition: form-data; name="param_1"',
                             'Content-Type: text/plain'
@@ -109,14 +110,14 @@ YUI.add('request', function (Y) {
             /*
              * Constructeur
              */
-            Y.Request.REQUEST.superclass.constructor.call(this, att);
+            wfw.Request.REQUEST.superclass.constructor.call(this, att);
             
             // genere le nom ?
             if ((typeof (this.name) != 'string') || empty(this.name) || this.name===null)
                 this.newName();
             //transforme les arguments
             if(typeof (this.args) == "string")
-                this.args = Y.URI.query_to_object(this.args);
+                this.args = wfw.URI.query_to_object(this.args);
             //transforme les arguments
             if(typeof (this.async) == "undefined")
                 this.async = true;
@@ -130,25 +131,29 @@ YUI.add('request', function (Y) {
 
         onStart: function () {
             //affiche une boite chargement si les requetes depasses un certain délais d'attente
-            if(Y.Request.loading_box_delay && (typeof Y.Document != "undefined")){
+            if(wfw.Request.loading_box_delay && (typeof wfw.Document != "undefined")){
                 setTimeout(function () {
-                    var loadingBox = Y.States.fromId("wfw_ext_document_LoadingBox", null, {exists:true});
-                    if (Y.Request.working && !loadingBox){
-                        Y.Document.openLoadingBox();
-                        //Y.WFW.puts("start");
+                    var loadingBox = wfw.States.fromId("wfw_ext_document_LoadingBox", null, {
+                        exists:true
+                    });
+                    if (wfw.Request.working && !loadingBox){
+                        wfw.Document.openLoadingBox();
+                    //wfw.puts("start");
                     }
                     var refreshIntervalId = setInterval(function () {
-                        var loadingBox = Y.States.fromId("wfw_ext_document_LoadingBox", null, {exists:true});
-                        if (!Y.Request.working && loadingBox){
-                            Y.Document.closeLoadingBox();
-                            //Y.WFW.puts("end");
+                        var loadingBox = wfw.States.fromId("wfw_ext_document_LoadingBox", null, {
+                            exists:true
+                        });
+                        if (!wfw.Request.working && loadingBox){
+                            wfw.Document.closeLoadingBox();
+                        //wfw.puts("end");
                         }
-                        if (!Y.Request.working && !loadingBox){
+                        if (!wfw.Request.working && !loadingBox){
                             clearInterval(refreshIntervalId);
-                            //Y.WFW.puts("stop");
+                        //wfw.puts("stop");
                         }
                     }, 1000);
-                }, Y.Request.loading_box_delay);
+                }, wfw.Request.loading_box_delay);
             }
             //debute
             this.working = true;
@@ -156,7 +161,7 @@ YUI.add('request', function (Y) {
         },
         onFinish: function () {
             //   var loadingBox = $doc("&wfw_ext_document_LoadingBox");
-            //   if(loadingBox) Y.Document.closeDialog(loadingBox);
+            //   if(loadingBox) wfw.Document.closeDialog(loadingBox);
 
             this.working = false;
             this.user.onFinish();
@@ -176,15 +181,15 @@ YUI.add('request', function (Y) {
             // la requete existe ?
             var i_old_action = this.GetIndice(action.name);
             if (i_old_action < 0) {
-                // Y.WFW.puts("add action: "+name);
+                // wfw.puts("add action: "+name);
                 this.exec_list.push(action);
             }
             else {
-                // Y.WFW.puts('replace action('+i_old_action+'): '+name);
+                // wfw.puts('replace action('+i_old_action+'): '+name);
                 this.exec_list[i_old_action] = action;
             }
 
-            Y.WFW.puts("wfw.request.Insert: " + action.name + ", " + action.url);
+            wfw.puts("wfw.request.Insert: " + action.name + ", " + action.url);
 
             //appel du callback callback
             if (action.callback != null)
@@ -222,7 +227,7 @@ YUI.add('request', function (Y) {
         Add: function (name, url, arg, callback, user_data, async) {
 
             // fabrique l'objet
-            var action = $new( this.REQUEST, {
+            var action = new wfw.Request.REQUEST( {
                 name              : name,
                 url               : url,
                 args              : copy(arg),
@@ -235,7 +240,7 @@ YUI.add('request', function (Y) {
 
             return this.Insert(action);
         },
-            add : this.Add,//naming convention
+        add : this.Add,//naming convention
 
         /*
         Supprime une requête
@@ -250,15 +255,15 @@ YUI.add('request', function (Y) {
                 var req = this.exec_list[i];
                 if (req.name == name) {
                     if (req.status == "wait")
-                        Y.WFW.puts("Remove Request: warning! request " + name + " is currently executed");
-                    Y.WFW.puts("Remove Request: " + name + ", " + this.exec_list[i].url);
+                        wfw.puts("Remove Request: warning! request " + name + " is currently executed");
+                    wfw.puts("Remove Request: " + name + ", " + this.exec_list[i].url);
                     this.exec_list.splice(i, 1);
                     return true;
                 }
             }
             return false;
         },
-            remove : this.Remove,//naming convention
+        remove : this.Remove,//naming convention
 
         /*
         Retourne le nombre de requêtes en liste
@@ -343,7 +348,7 @@ YUI.add('request', function (Y) {
         */
         print: function () {
             for (var i = 0; i < this.exec_list.length; i++) {
-                Y.WFW.puts(i+":"+this.exec_list[i].name+" ["+this.exec_list[i].status+"]");
+                wfw.puts(i+":"+this.exec_list[i].name+" ["+this.exec_list[i].status+"]");
             }
         },
 
@@ -382,12 +387,12 @@ YUI.add('request', function (Y) {
                 return -1;
             //recherche la prochaine requête non exécuté
             for (var i = start; i < this.exec_list.length; i++) {
-                //Y.WFW.puts('FindNextExecution: find['+i+'/'+this.exec_list.length+']'+this.Get(i).status+"; "+this.Get(i).url);
+                //wfw.puts('FindNextExecution: find['+i+'/'+this.exec_list.length+']'+this.Get(i).status+"; "+this.Get(i).url);
                 if (this.Get(i).status == 'wait') {
                     return i;
                 }
             }
-            //Y.WFW.puts('FindNextExecution: no find');
+            //wfw.puts('FindNextExecution: no find');
             return -1;
         },
 
@@ -401,7 +406,7 @@ YUI.add('request', function (Y) {
         */
         Start: function (async) {
             //if(this.loading_box_delay){
-            //    Y.WFW.puts("Start openLoadingBox");
+            //    wfw.puts("Start openLoadingBox");
             //}
             this.async = async;
             this.onStart();
@@ -419,14 +424,14 @@ YUI.add('request', function (Y) {
         ExecuteNext: function () {
             // recherche la prochaine action à executer
             this.cur_action = this.FindNextExecution(0);
-            //Y.WFW.puts("ExecuteNext: "+this.cur_action);
+            //wfw.puts("ExecuteNext: "+this.cur_action);
             if (this.cur_action < 0) {//si aucune, termine ici
                 this.onFinish();
                 return false;
             }
 
             var action = this.CurrentAction();
-    //        Y.WFW.puts("Execute Request: " + action.name + ", " + action.url);
+            //        wfw.puts("Execute Request: " + action.name + ", " + action.url);
             action["status"] = "exec";
             //callback
             var callback = action["callback"];
@@ -443,13 +448,13 @@ YUI.add('request', function (Y) {
                         case "string":
                             //passe une chaine
                             multipart_args.push(
-                                {
-                                    headers: [
-                                        'Content-Disposition: form-data; name="' + x + '"',
-                                        'Content-Type: text/plain'
-                                    ],
-                                    data: (user_arg)
-                                }
+                            {
+                                headers: [
+                                'Content-Disposition: form-data; name="' + x + '"',
+                                'Content-Type: text/plain'
+                                ],
+                                data: (user_arg)
+                            }
                             );
                             break;
                         case "object":
@@ -462,18 +467,18 @@ YUI.add('request', function (Y) {
             //asynchrone
             if (action["async"] == true) {
                 if (action["args"] == null)
-                    Y.HTTP.get_async(action["url"], this.onResult);
+                    wfw.HTTP.get_async(action["url"], this.onResult);
                 else
-                    Y.HTTP.post_multipart_async(action["url"], multipart_args, "form-data", this.onResult);
+                    wfw.HTTP.post_multipart_async(action["url"], multipart_args, "form-data", this.onResult);
             }
             //synchrone
             else {
                 if (action["args"] == null)
-                    Y.HTTP.get(action["url"]);
+                    wfw.HTTP.get(action["url"]);
                 else
-                    Y.HTTP.post_multipart(action["url"], multipart_args, "form-data");
+                    wfw.HTTP.post_multipart(action["url"], multipart_args, "form-data");
 
-                Y.Request.onResult(null);
+                wfw.Request.onResult(null);
             }
 
             return true;
@@ -522,42 +527,42 @@ YUI.add('request', function (Y) {
         */
         onResult: function (e)// attention! executé dans le context global (pas de this)
         {
-            var action = Y.Request.CurrentAction();
+            var action = wfw.Request.CurrentAction();
             if (action == null) {
-                Y.WFW.puts("wfw.request.onResult: This request has already been deleted from the list. ID:" + Y.Request.cur_action);
+                wfw.puts("wfw.request.onResult: This request has already been deleted from the list. ID:" + wfw.Request.cur_action);
                 return;
             }
 
             //met a jour le status
-            action["status"] = Y.HTTP.httpRequest.readyState; //met a jour l'etat
+            action["status"] = wfw.HTTP.httpRequest.readyState; //met a jour l'etat
 
-            switch (Y.HTTP.httpRequest.readyState) {
-                case Y.Request.READYSTATE_UNSENT:
-                    //Y.WFW.puts(action.name+' READYSTATE_UNSENT '+Y.HTTP.httpRequest.readyState);
+            switch (wfw.HTTP.httpRequest.readyState) {
+                case wfw.Request.READYSTATE_UNSENT:
+                    //wfw.puts(action.name+' READYSTATE_UNSENT '+wfw.HTTP.httpRequest.readyState);
                     break;
 
-                case Y.Request.READYSTATE_OPENED:
-                    //Y.WFW.puts(action.name+' READYSTATE_OPENED '+Y.HTTP.httpRequest.readyState);
+                case wfw.Request.READYSTATE_OPENED:
+                    //wfw.puts(action.name+' READYSTATE_OPENED '+wfw.HTTP.httpRequest.readyState);
                     break;
 
-                case Y.Request.READYSTATE_HEADERS_RECEIVED:
-                    //Y.WFW.puts(action.name+' READYSTATE_HEADERS_RECEIVED '+Y.HTTP.httpRequest.readyState);
+                case wfw.Request.READYSTATE_HEADERS_RECEIVED:
+                    //wfw.puts(action.name+' READYSTATE_HEADERS_RECEIVED '+wfw.HTTP.httpRequest.readyState);
                     break;
 
-                case Y.Request.READYSTATE_LOADING:
-                    //Y.WFW.puts(action.name+' READYSTATE_LOADING '+Y.HTTP.httpRequest.readyState);
+                case wfw.Request.READYSTATE_LOADING:
+                    //wfw.puts(action.name+' READYSTATE_LOADING '+wfw.HTTP.httpRequest.readyState);
                     break;
 
-                case Y.Request.READYSTATE_DONE:
-                    {
-                        //Y.WFW.puts(action.name+' READYSTATE_DONE '+Y.HTTP.httpRequest.readyState);
-                        action["status"] = Y.HTTP.httpRequest.status; //met a jour l'etat
-                        action["response_header"] = Y.HTTP.httpRequest.getAllResponseHeaders();
-                        action["response"] = Y.HTTP.getResponse();
-                        action["response_obj"] = null;
+                case wfw.Request.READYSTATE_DONE:
+                {
+                    //wfw.puts(action.name+' READYSTATE_DONE '+wfw.HTTP.httpRequest.readyState);
+                    action["status"] = wfw.HTTP.httpRequest.status; //met a jour l'etat
+                    action["response_header"] = wfw.HTTP.httpRequest.getAllResponseHeaders();
+                    action["response"] = wfw.HTTP.getResponse();
+                    action["response_obj"] = null;
 
-                        //cree l'objet associe si possible
-                        /* switch(Y.HTTP.httpRequest.getResponseHeader('Content-Type')){
+                    //cree l'objet associe si possible
+                    /* switch(wfw.HTTP.httpRequest.getResponseHeader('Content-Type')){
                         case "text/wfw.xra": // non officiel: webframework x-request arguments
                         action["response_obj"] = x_request_arguments_parse(action["response"],false);
                         break;
@@ -567,23 +572,23 @@ YUI.add('request', function (Y) {
                         break;
                         }*/
 
-                        //callback
-                        var callback = action["callback"];
-                        if (callback != null)
-                            callback(action);
+                    //callback
+                    var callback = action["callback"];
+                    if (callback != null)
+                        callback(action);
 
-                        if (action.remove_after_exec == true)
-                            Y.Request.Remove(action.name);
-                        else
-                            Y.WFW.puts("wfw.request.onResult: can't remove request object");
+                    if (action.remove_after_exec == true)
+                        wfw.Request.Remove(action.name);
+                    else
+                        wfw.puts("wfw.request.onResult: can't remove request object");
 
-                        //passe a l'action suivante (non-bloquante)
-                        //window.setTimeout("wfw.request.ExecuteNext();",0);
-                        Y.Request.ExecuteNext();
-                    }
-                    break;
+                    //passe a l'action suivante (non-bloquante)
+                    //window.setTimeout("wfw.request.ExecuteNext();",0);
+                    wfw.Request.ExecuteNext();
+                }
+                break;
                 default:
-                    Y.WFW.puts("wfw.request.onResult: '"+action.name+"' unknown state: "+Y.HTTP.httpRequest.readyState);
+                    wfw.puts("wfw.request.onResult: '"+action.name+"' unknown state: "+wfw.HTTP.httpRequest.readyState);
                     break;
             }
         },
@@ -599,13 +604,13 @@ YUI.add('request', function (Y) {
             [bool] true si la requête est terminé, false en cas de traitement ou d'erreur
         Remarques:
             onCheckRequestStatus retourne true si la reponse est prête à être utilisé
-            En cas d'echec, l'erreur est traité et affiché par la fonction Y.Document.showRequestMsg (voir documentation)
+            En cas d'echec, l'erreur est traité et affiché par la fonction wfw.Document.showRequestMsg (voir documentation)
         */
         onCheckRequestStatus: function (obj) {
             var bErrorFunc = (obj.user != null && typeof (obj.user["onerror"]) == "function") ? 1 : 0;
 
             if (obj.status == 404) {
-                Y.Document.showRequestMsg(obj, "Requête indisponible (erreur 404)");
+                wfw.Document.showRequestMsg(obj, "Requête indisponible (erreur 404)");
                 if (bErrorFunc)
                     obj.user.onerror(obj);
                 return false;
@@ -623,7 +628,7 @@ YUI.add('request', function (Y) {
      * REQUEST Class Implementation
      *-----------------------------------------------------------------------------------------------------------------------*/
     
-    Y.extend(Y.Request.REQUEST,Y.WFW.OBJECT);
+    Y.extend(wfw.Request.REQUEST,wfw.OBJECT);
 
     /*
     * Génére un nom unique dans le membre 'name'
@@ -636,5 +641,5 @@ YUI.add('request', function (Y) {
     };
 
 }, '1.0', {
-      requires:['base','node','wfw','http']
+    requires:['base','node','wfw','wfw-http']
 });

@@ -10,14 +10,16 @@
     Barre de champs
 
     JS  Dependences: base.js
-    YUI Dependences: base, node, wfw, states
+    YUI Dependences: base, node, wfw, wfw-states
 
     Revisions:
         [11-10-2012] Implementation
 */
 
-YUI.add('fieldbar', function (Y, NAME) {
-    Y.FieldBar = {
+YUI.add('wfw-fieldbar', function (Y) {
+    var wfw = Y.namespace('wfw');
+    
+    wfw.FieldBar = {
         /*
             Classe FIELD_BAR
         
@@ -47,7 +49,7 @@ YUI.add('fieldbar', function (Y, NAME) {
             /*
             * Constructeur
             */
-            Y.FieldBar.FIELD_BAR.superclass.constructor.call(this, att);
+            wfw.FieldBar.FIELD_BAR.superclass.constructor.call(this, att);
 
         },
 
@@ -56,8 +58,8 @@ YUI.add('fieldbar', function (Y, NAME) {
         */
         onInputChange : function(e)
         {
-            var fieldbar = Y.FieldBar.getStates(this);
-            Y.FieldBar.updateView(this);
+            var fieldbar = wfw.FieldBar.getStates(this);
+            wfw.FieldBar.updateView(this);
         },
 
         /*
@@ -71,9 +73,9 @@ YUI.add('fieldbar', function (Y, NAME) {
         initElement : function(element,args) {
 
             //obtient l'objet FIELD_BAR
-            var fieldbar = Y.States.fromId(
+            var fieldbar = wfw.States.fromId(
                 element.get('id'),
-                $new(Y.FieldBar.FIELD_BAR,args),
+                new wfw.FieldBar.FIELD_BAR(args),
                 { name:"wfw.ext.fieldbar" }
             );
 
@@ -93,7 +95,7 @@ YUI.add('fieldbar', function (Y, NAME) {
                             fieldbar.onCreateBar(contener);
             }
             catch(e){
-                Y.WFW.checkError(e);
+                wfw.checkError(e);
                 return false;
             }
 
@@ -106,7 +108,7 @@ YUI.add('fieldbar', function (Y, NAME) {
                 fieldbar.item_contener = item_contener;
             }
             catch(e){
-                Y.WFW.checkError(e);
+                wfw.checkError(e);
                 return false;
             }
 
@@ -136,7 +138,7 @@ YUI.add('fieldbar', function (Y, NAME) {
                 return this.pushItem(element,text);
             //position valide
             if(typeof(itemList[pos]) == "undefined"){
-                Y.WFW.puts("wfw.ext.fieldbar.insertItem: Position invalide");
+                wfw.puts("wfw.ext.fieldbar.insertItem: Position invalide");
                 return false;
             }
             //supprime l'item
@@ -168,7 +170,7 @@ YUI.add('fieldbar', function (Y, NAME) {
 //	            objInsertNode(item,fieldbar.contener,null,INSERTNODE_END);
             }
             catch(e){
-                Y.WFW.checkError(e);
+                wfw.checkError(e);
                 return false;
             }
 
@@ -289,7 +291,7 @@ YUI.add('fieldbar', function (Y, NAME) {
                 pos = itemList.length-1;
             //position valide
             if(typeof(itemList[pos]) == "undefined"){
-                Y.WFW.puts("wfw.ext.fieldbar.removeItem: Position invalide");
+                wfw.puts("wfw.ext.fieldbar.removeItem: Position invalide");
                 return false;
             }
             //supprime l'item
@@ -320,7 +322,7 @@ YUI.add('fieldbar', function (Y, NAME) {
             [FIELD_BAR] Objet de données.
         */
         getStates: function (element) {
-            return Y.States.fromId(element.get('id'), null, {name:"wfw.ext.fieldbar"});
+            return wfw.States.fromId(element.get('id'), null, {name:"wfw.ext.fieldbar"});
         }
     };
 
@@ -328,9 +330,9 @@ YUI.add('fieldbar', function (Y, NAME) {
     * FIELD_BAR Class Implementation
     *-----------------------------------------------------------------------------------------------------------------------*/
 
-    Y.extend(Y.FieldBar.FIELD_BAR, Y.WFW.OBJECT);
+    Y.extend(wfw.FieldBar.FIELD_BAR, wfw.OBJECT);
 
         
 }, '1.0', {
-      requires:['base','node', 'wfw','states']
+      requires:['base','node', 'wfw','wfw-states']
 });

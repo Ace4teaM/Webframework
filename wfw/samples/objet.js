@@ -15,34 +15,36 @@ Revisions:
 */
 
 //initialise le contenu
-YUI().use('node', 'document', function (Y)
+YUI().use('node', 'wfw-document', function (Y)
 {
-	var onLoad = function(e){
-            Y.one("#demo_btn").on("click",function(){
-                //initialise avec des valeurs passés en argument
-                var obj = new Y.Document.DIALOG_BOX({
-                    center:false,
-                    onPop:function(){
-                        alert("cou");
-                    }
-                });
-                
-                Y.one("#demo").set("text",Y.WFW.toString(obj,false));
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
+        Y.one("#demo_btn").on("click",function(){
+            //initialise avec des valeurs passés en argument
+            var obj = new wfw.Document.DIALOG_BOX({
+                center:false,
+                onPop:function(){
+                    alert("cou");
+                }
             });
                 
-            Y.one("#demo_btn2").on("click",function(){
-                //initialise avec des données existantes
-                Y.States.fromId("my_data", {
-                    center:false, // membre de Y.Document.DIALOG_BOX
-                    foo:"bar"     // obj2 accepte des données supplémentaires
-                });
+            Y.one("#demo").set("text",wfw.toString(obj,false));
+        });
                 
-                var obj = new Y.Document.DIALOG_BOX("my_data");
-                
-                Y.one("#demo").set("text",Y.WFW.toString(obj,false));
+        Y.one("#demo_btn2").on("click",function(){
+            //initialise avec des données existantes
+            wfw.States.fromId("my_data", {
+                center:false, // membre de wfw.Document.DIALOG_BOX
+                foo:"bar"     // obj2 accepte des données supplémentaires
             });
-	};
+                
+            var obj = new wfw.Document.DIALOG_BOX("my_data");
+                
+            Y.one("#demo").set("text",wfw.toString(obj,false));
+        });
+    };
 
-	Y.one('window').on('load', onLoad);
+    Y.one('window').on('load', onLoad);
 });
 
