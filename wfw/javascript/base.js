@@ -819,8 +819,9 @@ function object_pop(obj,key_array) {
 /**
     Associe deux objets dans une nouvelle instance
     Arguments:
-        [Object] obj1  : Le première objet
-        [Object] obj2  : Le deuxième objet
+        [object] obj1   : Le première objet
+        [object] obj2   : Le deuxième objet
+        [bool]   bcopy  : Si true, crée une copie de l'objet sinon 'obj1' reçoit les données de 'obj2'
     Remarques:
         Si obj1 et/ou obj2 n'est pas de type 'object', le type est forcé.
         Si deux champs porte la même clé, la valeur de 'ar2' écrase la valeur de 'ar1'

@@ -11,7 +11,7 @@
     Fonctions de base
 
     JS  Dependences: base.js
-    YUI Dependences: base
+    YUI Dependences: base, states
 
     Revisions:
         [17-10-2012] Implementation
@@ -22,6 +22,23 @@
 YUI.add('wfw', function (Y, NAME) {
     Y.WFW = {
 
+        /*
+            Object webframework
+        */
+        OBJECT : function(att){
+
+            if(att != null){
+                //obtient les données depuis l'objet 'States'
+                if(typeof att == "string" && typeof Y.States != "undefined")
+                    object_merge(this,Y.States.fromId(att, null, {exists:true}),false);
+                
+                //merge les données passées
+                if(typeof att == "object" && att != null)
+                    object_merge(this,att,false);
+            }
+            
+        },
+        
         /*
             Initialise l'extension
         */
@@ -147,9 +164,11 @@ YUI.add('wfw', function (Y, NAME) {
 
     };
 
-    //initialise
+    /* 
+     * Initialise
+     */
     Y.WFW.init();
 
 }, '1.0', {
-      requires:['base']
+      requires:['base','states']
 });

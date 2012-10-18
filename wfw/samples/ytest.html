@@ -54,8 +54,10 @@
                     Chicken.superclass.constructor.call(this, name);
                 };
 
-                // Chickens are birds
                 Y.extend(Chicken, Bird);
+                
+                // Chickens are birds
+                //Y.extend(Chicken, Bird);
 
                 // Define the Chicken prototype methods/members
                 Chicken.prototype.flighted = false; // Override default for all Chickens

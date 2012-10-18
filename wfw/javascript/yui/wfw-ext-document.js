@@ -33,6 +33,8 @@ YUI.add('document', function (Y, NAME) {
         */
         init : function()
         {
+            
+            /**/
             if("string"==typeof(this.contentElement))
                 this.contentElement = Y.Node.one("#"+this.contentElement);
 
@@ -124,128 +126,27 @@ YUI.add('document', function (Y, NAME) {
             Membres Privés:
                 [HTMLElement] parent_node   : Reçoit l'élément parent du dialogue
         */
-        DIALOG : function(){
-            this.user            = {},
+        DIALOG : function(att){
+            this.user            = {};
             this.parent_node     = null;
             this.center          = true;
             this.cssClass        = "wfw_ext_dialog-content wfw_ext_unselectable";
             this.onInit          = function(){ };
             this.onPrint         = function(){ };
-            this.onPop           = function(){
-                if(this.center == true){
-                    this.centerDialog();
-                }
-            };
-            this.onPush         = function(){
-                //Experimentale: centre verticalement le dialogue
-                //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
-                if(this.center == true){
-                    this.uncenterDialog();
-                }
-            };
-            
+            this.onPop           = function(){ };
+            this.onPush          = function(){ };
+
             /*
              * Constructeur
              */
-            //Y.extend(Y.Document.DIALOG,Y.WFW.REF);
-            
+            Y.Document.DIALOG.superclass.constructor.call(this, att);
+              
             if(this.parent_node == null)
                 this.parent_node = Y.Node.create("<div>");
 
             this.parent_node.set("id",this.id);
             if(!empty(this.cssClass))
                 Y.Style.addClass(this.parent_node,this.cssClass);
-
-
-            /*
-             * Initialise le dialogue
-             * Retourne:
-             *  [bool] false si la fonction à échouée, sinon true.
-             * */
-            this.init = function(){
-                //insert le contenu
-                this.dlg_content = Y.Node.create("<div>");
-                if(this.dlg_content==null)
-                    return false;
-                this.parent_node.append(this.dlg_content);
-                
-                this.dlg_content.set("id",this.id+"_content");
-                Y.Style.addClass(this.dlg_content,"wfw_ext_dialog_content");
-                
-                return true;
-            };
-
-            /*
-             * Ecrit du contenu
-             * Retourne:
-             *  [void]
-             * */
-            this.print = function(content){
-                this.dlg_content.append(content);
-                /*
-                switch(typeof(content))
-                {
-                    case "string":
-                        var text = Y.Node.create("<div>");
-                        text.set("text",content);
-                        this.dlg_content.append(text);
-                        return text;
-                    case "object":
-                        if((typeof content.get != "undefined") && (typeof content.get("tagName") != "undefined"))//element
-                        {
-                            this.dlg_content.append(content);
-                            return content;
-                        }
-                        break;
-                }
-                return null;*/
-            };
-
-            /*
-                Recherche un élément de contenu
-                Arguments:
-                    [string]    find_class : Optionel, nom de la classe à rechercher, par défaut "wfw_ext_dialog_content"
-                Retourne:
-                    [YIU.Element] L'Elément DIV, parent du contenu dialogue. Si null, aucun dialogue n'est visible
-            */
-            this.findContent = function(find_class)
-            {
-                //par defaut obtient l'element de contenu
-                if(typeof(find_class)=="undefined")
-                    find_class = this.content_class;
-
-                //recherche le contenu
-                var cur = null;
-                this.parent_node.all("> *").some(function(node){
-                    if(Y.Style.haveClass(node,find_class)){
-                        cur = node;
-                        return false;
-                    }
-                    return true;
-                });
-
-                return cur;
-            };
-
-            //Experimentale: centre verticalement le dialogue
-            //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
-            this.centerDialog = function(){
-                var container = Y.Node.one("#wfw_ext_dialog");
-                var height = Y.Utils.getHeight(this.parent_node);
-                var demi_height = height/2;
-                if(demi_height){
-                    container.set("style.marginTop","-"+demi_height+"px");
-                    container.set("style.top","50%");
-                }
-            };
-
-            //Experimentale: centre verticalement le dialogue
-            //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
-            this.uncenterDialog = function(){
-                var container = Y.Node.one("#wfw_ext_dialog");
-                container.set("style.marginTop","0px");
-                container.set("style.top","0px");
-            };
         },
 
         /*
@@ -257,8 +158,7 @@ YUI.add('document', function (Y, NAME) {
                 [function/object] onOK     : Callback appelé lors l'utilisateur clique sur "OK" / Options de la fonction "printOK()"
                 [function/object] onCancel : Callback appelé lors l'utilisateur clique sur "Annuler" / Options de la fonction "printCancel()"
         */
-        DIALOG_BOX : function(){
-            
+        DIALOG_BOX : function(att){
             //REF options
             this.name       = "wfw.ext.document.DIALOG_BOX";
             //DIALOG options
@@ -270,85 +170,12 @@ YUI.add('document', function (Y, NAME) {
             //dialog button callback/options
             this.onOK       = null;
             this.onCancel   = null;
-
+            
             /*
              * Constructeur
              */
-            Y.extend(Y.Document.DIALOG_BOX,Y.Document.DIALOG);
-            
-            
-            /*
-             * Initialize
-             */
-            this.init = function () {
-                //insert l'header
-                this.dlg_header = Y.Node.create('<div>');
-                if(this.dlg_header==null)
-                    return false;
-                this.parent_node.append(this.dlg_header);
-                this.dlg_header.set("id",this.id+"_header");
-                Y.Style.addClass(this.dlg_header,"wfw_ext_dialog_box_header");
-                this.dlg_header.set("text",this.title);
-
-                //insert le contenu
-                this.dlg_content = Y.Node.create('<div>');
-                if(this.dlg_content==null)
-                    return false;
-                this.parent_node.append(this.dlg_content);
-                this.dlg_content.set("id",this.id+"_content");
-                Y.Style.addClass(this.dlg_content,"wfw_ext_dialog_box_content");
-
-                //insert le footer
-                this.dlg_footer = Y.Node.create('<div>');
-                if(this.dlg_footer==null)
-                    return false;
-                this.parent_node.append(this.dlg_footer);
-                this.dlg_footer.set("id",this.id+"_footer");
-                Y.Style.addClass(this.dlg_footer,"wfw_ext_dialog_box_footer");
-
-                //insert le bouton OK
-                if(this.onOK == "function")
-                    this.onOK = {clickEvent: this.onOK};
-                if(this.onOK)
-                {
-                    Y.Document.printOK(this,"wfw_ext_dialog_box_footer",this.onOK);
-
-                    Y.Event.SetCallback(this.id+"_ok","click","onOK",
-                        function(e,dlg)
-                        {
-                            //callback...
-                            Y.Document.waitForCloseEvent = true; //insert les dialogues après la fermeture de celui-ci (utilisé par insertDialog)
-                            return false;//ne conserve pas ce callback
-                        },
-                        true, // exécuter avant 'unlock_screen' (permet la création de dialogues pendant l'événement onOk)
-                        this
-                    );
-                }
-
-                //insert le bouton Cancel
-                if(this.onCancel == "function")
-                    this.onCancel = {clickEvent: this.onCancel};
-                if(this.onCancel)
-                {
-                    Y.Document.printCancel(this,"wfw_ext_dialog_box_footer",this.onCancel);
-
-                    Y.Event.SetCallback(this.id+"_cancel","click","onCancel",
-                        function(e,dlg)
-                        {
-                            //callback...
-                            Y.Document.waitForCloseEvent = true; //insert les dialogues après la fermeture de celui-ci (utilisé par insertDialog)
-                            return false;//ne conserve pas ce callback
-                        },
-                        true, // exécuter avant 'unlock_screen' (permet la création de dialogues pendant l'événement onCancel)
-                        this
-                    );
-                }
-            }
-            
-            /*print content*/
-            this.print = function (content) {
-                this.dlg_content.append(content);
-            }
+            Y.Document.DIALOG_BOX.superclass.constructor.call(this, att);
+              
         },
 
         /*
@@ -1276,8 +1103,191 @@ YUI.add('document', function (Y, NAME) {
             window.open(Y.WFW.url);
         }
     };
-        
-    //initialise
+    
+    /*-----------------------------------------------------------------------------------------------------------------------
+     * DIALOG Class Implementation
+     *-----------------------------------------------------------------------------------------------------------------------*/
+    
+    // heritages
+    Y.extend(Y.Document.DIALOG,Y.WFW.OBJECT);
+
+    Y.Document.DIALOG.prototype.onInit          = function(){ };
+    
+    Y.Document.DIALOG.prototype.onPrint         = function(){ };
+    
+    Y.Document.DIALOG.prototype.onPop           = function(){
+        if(this.center == true){
+            this.centerDialog();
+        }
+    };
+    
+    Y.Document.DIALOG.prototype.onPush         = function(){
+        //Experimentale: centre verticalement le dialogue
+        //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
+        if(this.center == true){
+            this.uncenterDialog();
+        }
+    };
+    
+    /*
+        * Initialise le dialogue
+        * Retourne:
+        *  [bool] false si la fonction à échouée, sinon true.
+        * */
+    Y.Document.DIALOG.prototype.init = function(){
+        //insert le contenu
+        this.dlg_content = Y.Node.create("<div>");
+        if(this.dlg_content==null)
+            return false;
+        this.parent_node.append(this.dlg_content);
+
+        this.dlg_content.set("id",this.id+"_content");
+        Y.Style.addClass(this.dlg_content,"wfw_ext_dialog_content");
+
+        return true;
+    };
+
+    /*
+        * Ecrit du contenu
+        * Retourne:
+        *  [void]
+        * */
+    Y.Document.DIALOG.prototype.print = function(content){
+        this.dlg_content.append(content);
+    };
+
+    /*
+        Recherche un élément de contenu
+        Arguments:
+            [string]    find_class : Optionel, nom de la classe à rechercher, par défaut "wfw_ext_dialog_content"
+        Retourne:
+            [YIU.Element] L'Elément DIV, parent du contenu dialogue. Si null, aucun dialogue n'est visible
+    */
+    Y.Document.DIALOG.prototype.findContent = function(find_class)
+    {
+        //par defaut obtient l'element de contenu
+        if(typeof(find_class)=="undefined")
+            find_class = this.content_class;
+
+        //recherche le contenu
+        var cur = null;
+        this.parent_node.all("> *").some(function(node){
+            if(Y.Style.haveClass(node,find_class)){
+                cur = node;
+                return false;
+            }
+            return true;
+        });
+
+        return cur;
+    };
+
+    //Experimentale: centre verticalement le dialogue
+    //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
+    Y.Document.DIALOG.prototype.centerDialog = function(){
+        var container = Y.Node.one("#wfw_ext_dialog");
+        var height = Y.Utils.getHeight(this.parent_node);
+        var demi_height = height/2;
+        if(demi_height){
+            container.set("style.marginTop","-"+demi_height+"px");
+            container.set("style.top","50%");
+        }
+    };
+
+    //Experimentale: centre verticalement le dialogue
+    //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
+    Y.Document.DIALOG.prototype.uncenterDialog = function(){
+        var container = Y.Node.one("#wfw_ext_dialog");
+        container.set("style.marginTop","0px");
+        container.set("style.top","0px");
+    };
+
+
+
+    /*-----------------------------------------------------------------------------------------------------------------------
+     * DIALOG_BOX Class Implementation
+     *-----------------------------------------------------------------------------------------------------------------------*/
+    
+    Y.extend(Y.Document.DIALOG_BOX,Y.Document.DIALOG);
+
+    /*
+    * Initialize
+    */
+    Y.Document.DIALOG_BOX.prototype.init = function () {
+        //insert l'header
+        this.dlg_header = Y.Node.create('<div>');
+        if(this.dlg_header==null)
+            return false;
+        this.parent_node.append(this.dlg_header);
+        this.dlg_header.set("id",this.id+"_header");
+        Y.Style.addClass(this.dlg_header,"wfw_ext_dialog_box_header");
+        this.dlg_header.set("text",this.title);
+
+        //insert le contenu
+        this.dlg_content = Y.Node.create('<div>');
+        if(this.dlg_content==null)
+            return false;
+        this.parent_node.append(this.dlg_content);
+        this.dlg_content.set("id",this.id+"_content");
+        Y.Style.addClass(this.dlg_content,"wfw_ext_dialog_box_content");
+
+        //insert le footer
+        this.dlg_footer = Y.Node.create('<div>');
+        if(this.dlg_footer==null)
+            return false;
+        this.parent_node.append(this.dlg_footer);
+        this.dlg_footer.set("id",this.id+"_footer");
+        Y.Style.addClass(this.dlg_footer,"wfw_ext_dialog_box_footer");
+
+        //insert le bouton OK
+        if(this.onOK == "function")
+            this.onOK = {clickEvent: this.onOK};
+        if(this.onOK)
+        {
+            Y.Document.printOK(this,"wfw_ext_dialog_box_footer",this.onOK);
+
+            Y.Event.SetCallback(this.id+"_ok","click","onOK",
+                function(e,dlg)
+                {
+                    //callback...
+                    Y.Document.waitForCloseEvent = true; //insert les dialogues après la fermeture de celui-ci (utilisé par insertDialog)
+                    return false;//ne conserve pas ce callback
+                },
+                true, // exécuter avant 'unlock_screen' (permet la création de dialogues pendant l'événement onOk)
+                this
+            );
+        }
+
+        //insert le bouton Cancel
+        if(this.onCancel == "function")
+            this.onCancel = {clickEvent: this.onCancel};
+        if(this.onCancel)
+        {
+            Y.Document.printCancel(this,"wfw_ext_dialog_box_footer",this.onCancel);
+
+            Y.Event.SetCallback(this.id+"_cancel","click","onCancel",
+                function(e,dlg)
+                {
+                    //callback...
+                    Y.Document.waitForCloseEvent = true; //insert les dialogues après la fermeture de celui-ci (utilisé par insertDialog)
+                    return false;//ne conserve pas ce callback
+                },
+                true, // exécuter avant 'unlock_screen' (permet la création de dialogues pendant l'événement onCancel)
+                this
+            );
+        }
+    };
+
+    /*
+     * Print content
+     **/
+    Y.Document.DIALOG_BOX.prototype.print = function (content) {
+        this.dlg_content.append(content);
+    };
+    
+    /*
+     * Initialise
+     */
     Y.Document.init();
     
 }, '1.0', {
