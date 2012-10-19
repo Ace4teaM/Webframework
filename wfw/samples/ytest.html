@@ -25,38 +25,11 @@
             //initialise le contenu
             YUI().use('base', 'wfw', 'wfw-states', 'wfw-http','node', 'event', 'dom', function (Y)
             {
-                    //var div = Y.one("#list");
-                    //var node = Y.Node.create("<span>E</span>");
-                    //Y.one("#listB").insert(node,'after');
-
-                    //var parse =  "<fieldset><legend>Informations sur la requête</legend>"+
-                    //                '<div class="wfw_edit_field"><span>URI</span><span>URL</span></div>' +
-                    //                "</fieldset>";
-                    //Y.Node.one("#list").append(Y.Node.create(parse));
-                    
-                    //Y.Node.all("#list > *").each(function(n){
-                    //    alert(n);
-                    //});
-                    
                     var wfw = Y.namespace("wfw");
- /*
-                    var doc = wfw.HTTP.get("default.xml");
-                    if(!doc){
-                        wfw.puts("can't load navigation doc: "+wfw.HTTP.getResponseStatus());
-                        return false;
-                    }
-                    if(!(doc = xml_parse(doc))){
-                        wfw.puts("can't parse xml navigation doc: ");
-                        return false;
-                    }
-                    */
-                    var meta_tag = Y.Node.one("meta[http-equiv='wfw.pagse-id']");
-                    if(!meta_tag){
-                        wfw.puts("this page as not meta-tag: wfw.page-id");
-                        return;
-                    }
-                    alert(meta_tag);
-                    alert(meta_tag.get("content"));
+                    
+                    var new_element = Y.Node.one("#listB");
+                    var parent = new_element.ancestor("#list");
+                    alert(parent);
             });
         }
 

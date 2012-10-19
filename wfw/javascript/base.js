@@ -865,6 +865,30 @@ function array_merge(ar1,ar2,bcopy){
 }
 
 /**
+    Recherche un champs dans un tableau
+    Arguments:
+        [array/object]  array  : Tableau de la recherche
+        [function]      func   : Callback(value,key,index), voir remarques
+    Remarques:
+        array_find() enumére toutes les clés/valeurs du tableau 'array'.
+        Tant que le callback 'func' ne retourne rien, la recherche continue.
+        Si au contraire, un retour est detecté, la recherche s'interrompt et la valeur est retournée.
+    Retourne:
+        [mixed] Valeur retourné par le callback, 'undefined' si la recherche n'a rien donnée.
+*/
+function array_find(array,func){
+    var i=0;
+    for(key in array){
+        ret = func(array[key],key,i);
+        if(typeof(ret)!=="undefined")
+            return ret;
+        i++;
+    }
+    
+    //retourne "undefined", permet les appels imbriqué 
+};
+
+/**
     Inverse les clés d'un objet avec leurs valeurs
     Arguments:
         [Object] ar1   : L'objet

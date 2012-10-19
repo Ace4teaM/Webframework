@@ -3,7 +3,7 @@
     <title>Webframework Exemples</title>
     <name>Webframework</name>
     <base>webframework</base>
-    <description>Webframework Exemples HTML/Javascripts</description>
+    <description>Webframework Exemples HTML/Javascript</description>
 
     <index>
         <page id="index" name="Accueil">index.html</page>
@@ -20,6 +20,7 @@
         <page id="states" name="Données locales">states.html</page>
         <page id="uri" name="Adresse (URI)">uri.html</page>
         <page id="xarg" name="X-Argument (Format d'échange de données)">xarg.html</page>
+        <page id="default_file" name="Fichier Défaut">default_file.html</page>
     <!--contact-->
         <title id="contact">AceTeaM</title>
         <mail id="contact">dev@aceteam.org</mail>
@@ -44,6 +45,7 @@
             <states/>
             <uri/>
             <xarg/>
+            <default_file/>
         </index>
     </tree>
 

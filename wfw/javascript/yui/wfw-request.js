@@ -554,39 +554,39 @@ YUI.add('wfw-request', function (Y) {
                     break;
 
                 case wfw.Request.READYSTATE_DONE:
-                {
-                    //wfw.puts(action.name+' READYSTATE_DONE '+wfw.HTTP.httpRequest.readyState);
-                    action["status"] = wfw.HTTP.httpRequest.status; //met a jour l'etat
-                    action["response_header"] = wfw.HTTP.httpRequest.getAllResponseHeaders();
-                    action["response"] = wfw.HTTP.getResponse();
-                    action["response_obj"] = null;
+                    {
+                        //wfw.puts(action.name+' READYSTATE_DONE '+wfw.HTTP.httpRequest.readyState);
+                        action["status"] = wfw.HTTP.httpRequest.status; //met a jour l'etat
+                        action["response_header"] = wfw.HTTP.httpRequest.getAllResponseHeaders();
+                        action["response"] = wfw.HTTP.getResponse();
+                        action["response_obj"] = null;
 
-                    //cree l'objet associe si possible
-                    /* switch(wfw.HTTP.httpRequest.getResponseHeader('Content-Type')){
-                        case "text/wfw.xra": // non officiel: webframework x-request arguments
-                        action["response_obj"] = x_request_arguments_parse(action["response"],false);
-                        break;
-                        case "text/html":
-                        case "text/xml":
-                        //action["response_obj"] = xml_parse(action["response"]); // ??!!
-                        break;
-                        }*/
+                        //cree l'objet associe si possible
+                        /* switch(wfw.HTTP.httpRequest.getResponseHeader('Content-Type')){
+                            case "text/wfw.xra": // non officiel: webframework x-request arguments
+                            action["response_obj"] = x_request_arguments_parse(action["response"],false);
+                            break;
+                            case "text/html":
+                            case "text/xml":
+                            //action["response_obj"] = xml_parse(action["response"]); // ??!!
+                            break;
+                            }*/
 
-                    //callback
-                    var callback = action["callback"];
-                    if (callback != null)
-                        callback(action);
+                        //callback
+                        var callback = action["callback"];
+                        if (callback != null)
+                            callback(action);
 
-                    if (action.remove_after_exec == true)
-                        wfw.Request.Remove(action.name);
-                    else
-                        wfw.puts("wfw.request.onResult: can't remove request object");
+                        if (action.remove_after_exec == true)
+                            wfw.Request.Remove(action.name);
+                        else
+                            wfw.puts("wfw.request.onResult: can't remove request object");
 
-                    //passe a l'action suivante (non-bloquante)
-                    //window.setTimeout("wfw.request.ExecuteNext();",0);
-                    wfw.Request.ExecuteNext();
-                }
-                break;
+                        //passe a l'action suivante (non-bloquante)
+                        //window.setTimeout("wfw.request.ExecuteNext();",0);
+                        wfw.Request.ExecuteNext();
+                    }
+                    break;
                 default:
                     wfw.puts("wfw.request.onResult: '"+action.name+"' unknown state: "+wfw.HTTP.httpRequest.readyState);
                     break;
