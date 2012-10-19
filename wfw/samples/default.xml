@@ -1,340 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-  <title>AceTeaM</title>
-  <name>aceteam</name>
-  <base>webframework</base>
-  <description> - AceTeaM - Developper web site</description>
+    <title>Webframework Exemples</title>
+    <name>Webframework</name>
+    <base>webframework</base>
+    <description>Webframework Exemples HTML/Javascripts</description>
 
-  <index>
-    <page id="index" name="Accueil">index.html</page>
-    <page id="help" name="Informations">help.html</page>
-    <page id="contact" name="Nous contacter">contact.html</page>
-    <page id="doc" name="Documentation et références">doc.html</page>
-    <page id="lib" name="Librairies">lib.html</page>
-    <page id="articles" name="Articles">articles.html</page>
-    <!--projets-->
-    <page id="projets" name="Projets">projets.html</page>
-    <page id="projet_noyauportable" name="NoyauPortable">projet_noyauportable.html</page>
-    <page id="projet_webframework" name="WebFrameWork [1.4]">projet_webframework.html</page>
-    <page id="projet_id-informatik" name="ID-Informatik">projet_id-informatik.html</page>
-    <page id="projet_webframework_intro" name="Introduction">projet_webframework_intro.html</page>
-    <page id="projet_webframework_dom" name="DOM librairie">projet_webframework_dom.html</page>
-    <page id="projet_webframework_base_lib" name="Base librairie">projet_webframework_base_lib.html</page>
-    <page id="projet_webframework_extended_lib" name="Librairie étendu">projet_webframework_extended_lib.html</page>
-    <page id="projet_webframework_request" name="Requêtes">projet_webframework_request.html</page>
-    <page id="projet_webframework_xarg" name="X-ARG Format">projet_webframework_xarg.html</page>
-    <!-- proc -->
-    <page id="proc" name="Procédures ID-Informatik">proc.html</page>
-    <page id="ubuntu_install" name="Installation Ubuntu">ubuntu_install.html</page>
-    <page id="lighttpd_install" name="Installation du serveur HTTP (Lighttpd)">lighttpd_install.html</page>
-    <page id="vsftpd_install" name="Installation du serveur FTP">vsftpd_install.html</page>
-    <page id="postfix_install" name="Installation du serveur SMTP">postfix_install.html</page>
-    <page id="mysql_install" name="Installation du serveur de base de données">mysql_install.html</page>
-    <page id="wfw_web_install" name="Installation d'un site basé WFW">wfw_web_install.html</page>
-    <page id="add_web_mutualise" name="Ajouter un site mutualisé">add_web_mutualise.html</page>
-    <page id="set_web_ssl" name="Installer un certificat SSL (Lighttpd)">set_web_ssl.html</page>
-    <page id="referencement" name="Référencement">referencement.html</page>
-    <page id="samba_install" name="Installation du serveur SAMBA (Réseau Windows)">samba_install.html</page>
-    <page id="apache2_install" name="Installation du serveur HTTP (Apache)">apache2_install.html</page>
-    <!-- doc (np) -->
-    <page id="np" name="Guide utilisateur">np.html</page>
-    <page id="lib-sys1" name="Librairies">lib-np-sys1.html</page>
-    <page id="np-pff" name="Portable File Format">np-pff.html</page>
-    <page id="np-ebd" name="Edianness Byte Descriptor">np-ebd.html</page>
-    <page id="np-lib" name="Noyau Portable librairie">np-lib.html</page>
-    <!-- doc (wfw) -->
-    <page id="wfw" name="Guide utilisateur">wfw.html</page>
-    <page id="wfw-fieldlist" name="Listes de champs">wfw-fieldlist.html</page>
-    <page id="wfw-datalist" name="Listes de données">wfw-datalist.html</page>
-    <page id="wfw-datatype" name="Filtrages des données">wfw-datatype.html</page>
-    <page id="wfw-tab" name="Contenu à onglet">wfw-tab.html</page>
-    <page id="wfw-listelement" name="Listes d'éléments">wfw-listelement.html</page>
-    <page id="wfw-sort" name="Tri d'éléments">wfw-sort.html</page>
-    <page id="wfw-template" name="Template">wfw-template.html</page>
-    <page id="wfw-template_actions" name="Actions">wfw-template_actions.html</page>
-    <page id="wfw-template_markers" name="Marqueurs">wfw-template_markers.html</page>
-    <page id="wfw-template-select" name="Select">wfw-template-select.html</page>
-    <page id="wfw-template-exp" name="Exp">wfw-template-exp.html</page>
-    <page id="wfw-template-each" name="Each">wfw-template-each.html</page>
-    <page id="wfw-template-parse" name="Parse">wfw-template-parse.html</page>
-    <page id="wfw-template-ignore" name="Ignore">wfw-template-ignore.html</page>
-    <page id="wfw-template-format" name="Format">wfw-template-format.html</page>
-    <page id="wfw-lib" name="Librairies">wfw-lib.html</page>
-    <page id="wfw-script" name="Shell Scripts">wfw-script.html</page>
-    <page id="wfw-request" name="Requêtes">wfw-request.html</page>
-    <page id="wfw-guide" name="Guide du programmeur">wfw-guide.html</page>
-    <page id="wfw-base" name="Fonctions de base">wfw-base.html</page>
-    <page id="wfw-dom" name="Document Object Model - Compatible">wfw-dom.html</page>
-    <page id="wfw-extended-lib" name="WebFrameWork extended">wfw-extended-lib.html</page>
-    <page id="web_dev" name="Développement web">web_dev.html</page>
-    <page id="wfw_dev_note" name="Pratiques de programmation">wfw_dev_note.html</page>
-    <page id="web_probleme" name="Problèmes lié au développement web">web_probleme.html</page>
-    <page id="wfw-form" name="Formulaires">wfw-form.html</page>
-    <page id="wfw_web_arborescence" name="Arborescence d'un site Webframework">wfw_web_arborescence.html</page>
-    <page id="wfw-navigator" name="Gestionnaire de navigation">wfw-navigator.html</page>
-    <page id="wfw-modules" name="Modules">wfw-modules.html</page>
-    <page id="wfw-module-client" name="Base de données (client)">wfw-module-client.html</page>
-    <page id="wfw-module-mailling" name="Courriers (mailling)">wfw-module-mailling.html</page>
-    <page id="wfw-module-catalog" name="Catalogue (catalog)">wfw-module-catalog.html</page>
-    <page id="wfw-bug" name="BUG">wfw-bug.html</page>
-    <page id="Dialogues" name="Dialogues">Dialogues.html</page>
-    <page id="wfw-object" name="Objets (Javascript)">wfw-object.html</page>
-    <page id="wfw-default" name="Site-File">wfw-default.html</page>
-    <page id="wfw-event" name="Evénements DHTML">wfw-event.html</page>
-    <page id="wfw-lang" name="Multi-Langages">wfw-lang.html</page>
-    <page id="wfw-timer" name="Temps et compteurs">wfw-timer.html</page>
-    <!-- lib wfw-req -->
-    <page id="lib-req-client" name="client">lib-req-client.html</page>
-    <page id="lib-req-template" name="template">lib-req-template.html</page>
-    <!-- lib  -->
-    <page id="lib-base" name="Base Javascript">lib-wfw-base.html</page>
-    <page id="lib-dom" name="DOM-Compatible">lib-wfw-dom.html</page>
-    <page id="lib-wfw" name="wfw">lib-wfw-wfw.html</page>
-    <page id="lib-wfw.request" name="wfw.request">lib-wfw-wfw.request.html</page>
-    <page id="lib-wfw.form" name="wfw.form">lib-wfw-wfw.form.html</page>
-    <page id="lib-wfw.event" name="wfw.event">lib-wfw-wfw.event.html</page>
-    <page id="lib-wfw.style" name="wfw.style">lib-wfw-wfw.style.html</page>
-    <page id="lib-wfw.uri" name="wfw.uri">lib-wfw-wfw.uri.html</page>
-    <page id="lib-wfw.template" name="wfw.template">lib-wfw-wfw.template.html</page>
-    <page id="lib-wfw.timer" name="wfw.timer">lib-wfw-wfw.timer.html</page>
-    <page id="lib-wfw.ext.document" name="wfw.ext.document">lib-wfw-wfw.ext.document.html</page>
-    <page id="lib-wfw.ext.datalist" name="wfw.ext.datalist">lib-wfw-wfw.ext.datalist.html</page>
-    <page id="lib-wfw.ext.fieldlist" name="wfw.ext.fieldlist">lib-wfw-wfw.ext.fieldlist.html</page>
-    <page id="lib-wfw.ext.listElement" name="wfw.ext.listElement">lib-wfw-wfw.ext.listElement.html</page>
-    <page id="lib-wfw.ext.sort" name="wfw.ext.sort">lib-wfw-wfw.ext.sort.html</page>
-    <page id="lib-wfw.ext.navigator" name="wfw.ext.navigator">lib-wfw-wfw.ext.navigator.html</page>
-    <page id="lib-wfw.ext.tabMenu" name="wfw.ext.tabMenu">lib-wfw-wfw.ext.tabMenu.html</page>
-    <page id="lib-script-wfw" name="Scripts Webframework">lib-script-wfw.html</page>
-    <page id="lib-script-wfw_default" name="Scripts de configurations">lib-script-wfw_default.html</page>
-    <!--contact-->
-    <title id="contact">AceTeaM</title>
-    <mail id="contact">dev@aceteam.org</mail>
-    <mail id="no-reply">no-reply@aceteam.org</mail>
-    <!--autres-->
-    <image id="logo">data/pictures/aceteam.png</image>
-    <image id="icon">data/pictures/icon.ico</image>
-    <!-- ONLINE SERVER PATH (AceTeaM) -->
-    <path_root id="aceteam">/srv/www/aceteam/1.25</path_root>
-    <path id="aceteam"/>
-    <base_path id="aceteam"/>
-    <domain id="aceteam">www.aceteam.org</domain>
-    <smtp_server id="aceteam">localhost</smtp_server>
-    <smtp_port id="aceteam">25</smtp_port>
-    <!-- LOCAL SERVER PATH (ubuntu) -->
-    <path_root id="ubuntu">/var/www/aceteam-1.25</path_root>
-    <path id="ubuntu">/aceteam</path>
-    <base_path id="ubuntu">/aceteam</base_path>
-    <domain id="ubuntu">ubuntu</domain>
-    <smtp_server id="ubuntu">smtp.sfr.fr</smtp_server>
-    <smtp_port id="ubuntu">25</smtp_port>
-    <!--others-->
-    <page id="Nicedit_bug_dans_Google_chrome" name="Nicedit bug dans Google chrome">Nicedit_bug_dans_Google_chrome.html</page>
-    <page id="Hobby_Kit_en_import" name="Hobby Kit en import">Hobby_Kit_en_import.html</page>
-    <page id="portabilite_du_c" name="Portabilité des données en C">limite_portabilite_en_c_et_cpp.html</page>
-    <page id="full_height_html" name="100% height en HTML/CSS avec scrooling">full_height_html.html</page>
-    <page id="Integrer_google_analytic" name="Intégrer google analytic">Integrer_google_analytic.html</page>
-    <page id="Autoriser_luser_www-data" name="Autoriser l'user www-data">Autoriser_luser_www-data.html</page>
-    <page id="Fonction_speciales" name="Fonction spécales">Fonction_specales.html</page>
-    <page id="Creation_dun_site_Webframework" name="Création d'un site Webframework">Creation_dun_site_Webframework.html</page>
-    <page id="Erreur_Template_HTML_EntityRef_expecting_" name="Erreur Template HTML EntityRef: expecting ';'">Erreur_Template_HTML_EntityRef_expecting_.html</page>
-    <page id="Changer_la_cle_de_produit_de_Windows_XP_sans_reinstaller" name="Changer la clé de produit de Windows XP sans réinstaller">Changer_la_cle_de_produit_de_Windows_XP_sans_reinstaller.html</page>
-    <page id="arts" name="arts">arts.html</page>
-    <page id="wfw-req" name="Requêtes">wfw-req.html</page>
-    
-    <page id="rss_simple" name="Actualités">rss_simple.html</page>
-    <page id="Utilisation_du_module_ArticleWriter" name="Module ArticleWriter">Utilisation_du_module_ArticleWriter.html</page>
-    <page id="Probleme_de_compilation_MAXSDK_sous_VisualStudio" name="Problème de compilation MAXSDK sous VisualStudio">Probleme_de_compilation_MAXSDK_sous_VisualStudio.html</page>
-    <page id="Note_sur_lencodage_des_caracteres" name="Encodage des fichiers">Note_sur_lencodage_des_caracteres.html</page>
-    <page id="catalog_456753159852479_157-445-866" name="NICOTOY">catalog_456753159852479_157-445-866.html</page>
-    <page id="catalog_456753159852479_492-456-756" name="Doudou Jeans">catalog_456753159852479_492-456-756.html</page>
-    <page id="catalog_456753159852479_789-764-159" name="Doudou poupée">catalog_456753159852479_789-764-159.html</page>
-    <page id="catalog_456753159852479_467-854-426" name="COTOONS">catalog_456753159852479_467-854-426.html</page>
-    <page id="catalog_456753159852479_764-541-487" name="Enfants">catalog_456753159852479_764-541-487.html</page>
-    <page id="catalog_456753159852479_789-456-123" name="Doudou">catalog_456753159852479_789-456-123.html</page>
-    <page id="catalog_456753159852479_741-456-963" name="Jouet">catalog_456753159852479_741-456-963.html</page>
-    <page id="Monter_une_partition_sur_le_dossier_www" name="Monter une partition sur le dossier www">Monter_une_partition_sur_le_dossier_www.html</page>
-    
-    <page id="Projet_Arcade" name="Projet Arcade">Projet_Arcade.html</page>
-    <page id="wfw-ie9_get_request_cache_control" name="BUG IE9 Problème de cache du navigateur">wfw-ie9_get_request_cache_control.html</page>
-    <page id="wfw-IE9_Attribut_vide_dans_un_template_xml" name="BUG IE9 Attribut vide dans un template xml">wfw-IE9_Attribut_vide_dans_un_template_xml.html</page>
-  <page id="Editer_les_Zones_DNS" name="Editer les Zones DNS">Editer_les_Zones_DNS.html</page><page id="Creer_un_module" name="Créer un module">Creer_un_module.html</page><page id="Supprimer_un_site_mutualise" name="Supprimer un site mutualisé">Supprimer_un_site_mutualise.html</page><page id="Installation_serveur_de_base_de_donnees_PostgreSQL" name="Installation serveur de base de données (PostgreSQL)">Installation_serveur_de_base_de_donnees_PostgreSQL.html</page><page id="Format_de_donnees" name="Format de données">Format_de_donnees.html</page><page id="Configurer_un_nouveau_site" name="Configurer un nouveau site">Configurer_un_nouveau_site.html</page></index>
-
-  <tree>
     <index>
-      <doc>
-        <projets>
-          <projet_webframework>
-            <wfw>
-              <wfw_web_install/>
-              <wfw_web_arborescence/>
-              <wfw_dev_note/>
-              <Autoriser_luser_www-data/>
-              <Creation_dun_site_Webframework/>
-              <Utilisation_du_module_ArticleWriter/>
-              <Note_sur_lencodage_des_caracteres/>
-            <Creer_un_module/></wfw>
-
-            <wfw-guide>
-              <wfw-base/>
-              <wfw-dom/>
-              <wfw-object/>
-              <wfw-default/>
-              <wfw-event/>
-              <wfw-timer/>
-              <wfw-template>
-                <wfw-template_actions>
-                  <wfw-template-select/>
-                  <wfw-template-exp/>
-                  <wfw-template-each/>
-                  <wfw-template-ignore/>
-                  <wfw-template-format/>
-                </wfw-template_actions>
-                <wfw-template_markers>
-                  <wfw-template-parse/>
-                </wfw-template_markers>
-              </wfw-template>
-              <Dialogues/>
-              <wfw-datatype/>
-              <wfw-datalist/>
-              <wfw-tab/>
-              <wfw-fieldlist/>
-              <wfw-sort/>
-              <wfw-form/>
-              <wfw-listelement/>
-              <wfw-navigator/>
-              <wfw-modules>
-                <wfw-module-client/>
-                <wfw-module-mailling/>
-                <wfw-module-catalog/>
-              </wfw-modules>
-              <Fonction_specales/>
-              <wfw-req/>
-              <wfw-lang/>
-            <Format_de_donnees/></wfw-guide>
-            
-            <wfw-lib>
-              <lib-base/>
-              <lib-dom/>
-              <lib-wfw/>
-              <lib-wfw.timer/>
-              <lib-wfw.request/>
-              <lib-wfw.form/>
-              <lib-wfw.event/>
-              <lib-wfw.style/>
-              <lib-wfw.uri/>
-              <lib-wfw.template/>
-              <lib-wfw.ext.document/>
-              <lib-wfw.ext.datalist/>
-              <lib-wfw.ext.fieldlist/>
-              <lib-wfw.ext.sort/>
-              <lib-wfw.ext.listElement/>
-              <lib-wfw.ext.navigator/>
-              <lib-wfw.ext.tabMenu/>
-            </wfw-lib>
-            <wfw-script>
-              <lib-script-wfw/>
-              <lib-script-wfw_default/>
-            </wfw-script>
-            <wfw-request>
-              <lib-req-client/>
-              <lib-req-template/>
-            </wfw-request>
-            <wfw-bug>
-              <wfw-ie9_get_request_cache_control/>
-              <wfw-IE9_Attribut_vide_dans_un_template_xml/>
-            </wfw-bug>
-          </projet_webframework>
-
-          <projet_noyauportable>
-            <np/>
-            <np-lib>
-              <lib-sys1/>
-            </np-lib>
-          </projet_noyauportable>
-
-          <projet_id-informatik>
-            <proc>
-              <ubuntu_install/>
-              <lighttpd_install/>
-              <apache2_install/>
-              <samba_install/>
-              <vsftpd_install/>
-              <postfix_install/>
-              <mysql_install/>
-              <add_web_mutualise/>
-              <set_web_ssl/>
-              <referencement/>
-              <Monter_une_partition_sur_le_dossier_www/>
-            <Editer_les_Zones_DNS/><Supprimer_un_site_mutualise/><Installation_serveur_de_base_de_donnees_PostgreSQL/><Configurer_un_nouveau_site/></proc>
-          </projet_id-informatik>
-          <Projet_Arcade/>
-        </projets>
-
-        <articles>
-          <portabilite_du_c/>
-          <full_height_html/>
-          <Nicedit_bug_dans_Google_chrome/>
-          <Integrer_google_analytic/>
-          <Hobby_Kit_en_import/>
-          <Erreur_Template_HTML_EntityRef_expecting_/>
-          <Changer_la_cle_de_produit_de_Windows_XP_sans_reinstaller/>
-          <Probleme_de_compilation_MAXSDK_sous_VisualStudio/>
-        </articles>
-      </doc>
-      <help/>
-      <contact/>
-      <arts/>
-
-
-
-      <rss_simple/>
-
-      <catalog_456753159852479_157-445-866/>
-      <catalog_456753159852479_467-854-426/>
-      <catalog_456753159852479_492-456-756/>
-      <catalog_456753159852479_789-764-159/>
-      <catalog_456753159852479_789-456-123/>
-      <catalog_456753159852479_764-541-487/>
-      <catalog_456753159852479_741-456-963/>
-
-      
-      
+        <page id="index" name="Accueil">index.html</page>
+        <page id="base" name="Fonctions de base">base.html</page>
+        <page id="css" name="Styles de bases (CSS)">css.html</page>
+        <page id="style" name="Styles (CSS)">style.html</page>
+        <page id="dialog" name="Dialogue">dialog.html</page>
+        <page id="dialog_messageBox" name="Dialogues (boite de message)">dialog-messageBox.html</page>
+        <page id="fieldbar" name="Barre de champs">fieldbar.html</page>
+        <page id="form" name="Formulaire">form.html</page>
+        <page id="layout" name="Positionnement (Layout)">layout.html</page>
+        <page id="layout_full" name="Positionnement encré (Layout)">layout_full.html</page>
+        <page id="request" name="Requête HTTP">request.html</page>
+        <page id="states" name="Données locales">states.html</page>
+        <page id="uri" name="Adresse (URI)">uri.html</page>
+        <page id="xarg" name="X-Argument (Format d'échange de données)">xarg.html</page>
+    <!--contact-->
+        <title id="contact">AceTeaM</title>
+        <mail id="contact">dev@aceteam.org</mail>
+        <mail id="no-reply">no-reply@aceteam.org</mail>
+    <!--autres-->
+        <image id="logo">bin/pictures/logo.png</image>
+        <image id="icon">bin/pictures/logo.ico</image>
     </index>
-  </tree>
 
-  <config>
-    <module id="client" name="Dossiers">
-      <name>Dossier</name>
-      <desc>Gestionnaire de données</desc>
-      <img>data/pictures/modules/client.png</img>
-      <errstr langage="fr">
-        <invalid_id>Le dossier n'existe pas</invalid_id>
-        <invalid_file>Le dossier ne peut pas être ouvert</invalid_file>
-        <cant_save>Le dossier ne peut pas être sauvegradé</cant_save>
-        <invalid_type>Le type de dossier ne correspond pas</invalid_type>
-        <invalid_pwd>Le mot-de-passe ne correspond pas</invalid_pwd>
-      </errstr>
-    </module>
-    <module id="article_writer" name="Editeur d'article">
-      <name>Editeur d'article</name>
-      <desc>Ecrivez/modifiez vos articles en ligne</desc>
-      <img>data/pictures/modules/article_writer.png</img>
-    </module>
-    <module id="mailling" name="Mailling">
-      <name>Mailling</name>
-      <desc>Gestionnaire de courriers</desc>
-      <img>data/pictures/modules/mailling.png</img>
-    </module>
-    <module id="actu" name="Actualités">
-      <name>Actualités</name>
-      <desc>Flux RSS et actualités en ligne</desc>
-      <img>data/pictures/modules/actu.png</img>
-    </module>
-    <module id="catalog" name="Catalogue">
-      <name>Catalogue</name>
-      <desc>Gestionnaire de produits</desc>
-      <img>data/pictures/modules/catalog.png</img>
-    </module>
-  </config>
+    <tree>
+        <index>
+            <base/>
+            <css/>
+            <style/>
+            <dialog/>
+            <dialog_messageBox/>
+            <fieldbar/>
+            <form/>
+            <layout/>
+            <layout_full/>
+            <request/>
+            <states/>
+            <uri/>
+            <xarg/>
+        </index>
+    </tree>
 
 </site>

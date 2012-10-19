@@ -76,23 +76,26 @@ YUI.add('wfw-fieldbar', function (Y) {
             var fieldbar = wfw.States.fromId(
                 element.get('id'),
                 new wfw.FieldBar.FIELD_BAR(args),
-                { name:"wfw.ext.fieldbar" }
-            );
+                {
+                    name:"wfw.ext.fieldbar"
+                }
+                );
 
             //intialise l'input
-                    element.on("change", this.onInputChange);
+            element.on("change", this.onInputChange);
             element.addClass(fieldbar.inputClass);
 
             //initialise le conteneur prinipale
             try{
-                var contener = Y.Node.create("<div>");
-                            contener.set('id',uniqid());
+                var contener = fieldbar.contener;
+                if(contener == null)
+                    contener = Y.Node.create("<div>");
+                contener.set('id',uniqid());
                 contener.addClass(fieldbar.barClass);
-                            element.insert(contener,'after');
-        //           objInsertNode(contener,objGetParent(element),element,INSERTNODE_AFTER);
+                element.insert(contener,'after');
                 fieldbar.contener = contener;
-                            //evenement
-                            fieldbar.onCreateBar(contener);
+                //evenement
+                fieldbar.onCreateBar(contener);
             }
             catch(e){
                 wfw.checkError(e);
@@ -102,9 +105,8 @@ YUI.add('wfw-fieldbar', function (Y) {
             //initialise le conteneur d'item
             try{
                 var item_contener = Y.Node.create("<span>");
-                            item_contener.set('id',uniqid());
-                            fieldbar.contener.append(item_contener);
-    //            objInsertNode(item_contener,fieldbar.contener,null,INSERTNODE_END);
+                item_contener.set('id',uniqid());
+                fieldbar.contener.append(item_contener);
                 fieldbar.item_contener = item_contener;
             }
             catch(e){
@@ -144,7 +146,7 @@ YUI.add('wfw-fieldbar', function (Y) {
             //supprime l'item
             itemList = insert_key(itemList,pos,text);
             //definit l'input
-                    element.set('value',strimplode(itemList,";",false));
+            element.set('value',strimplode(itemList,";",false));
             //actualise la vue
             this.updateView(element);
 
@@ -166,8 +168,8 @@ YUI.add('wfw-fieldbar', function (Y) {
             //insert l'item à la fin de la liste
             try{
                 var item = this.makeItemElement(element, text);
-                            fieldbar.contener.append(item);
-//	            objInsertNode(item,fieldbar.contener,null,INSERTNODE_END);
+                fieldbar.contener.append(item);
+            //	            objInsertNode(item,fieldbar.contener,null,INSERTNODE_END);
             }
             catch(e){
                 wfw.checkError(e);
@@ -175,7 +177,7 @@ YUI.add('wfw-fieldbar', function (Y) {
             }
 
             //ajoute à la fin de l'input
-                    element.set('value',element.get('value')+text+";");
+            element.set('value',element.get('value')+text+";");
 
             return true;
         },
@@ -192,34 +194,34 @@ YUI.add('wfw-fieldbar', function (Y) {
         */
         makeItemElement: function (element, text) {
 
-                    if(typeof text != "string")
-                            text = ""+text;
+            if(typeof text != "string")
+                text = ""+text;
 
             //obtient l'objet FIELD_BAR
             var fieldbar = this.getStates(element);
 
-                    //tronque le texte
-                    if(fieldbar.maxItemChar && strlen(text)>fieldbar.maxItemChar)
-                            text = text.substr(0,fieldbar.maxItemChar-3)+"...";
+            //tronque le texte
+            if(fieldbar.maxItemChar && strlen(text)>fieldbar.maxItemChar)
+                text = text.substr(0,fieldbar.maxItemChar-3)+"...";
 
             //initialise l'item
             var item = Y.Node.create("<span>");
-                    item.set('id',uniqid());
-                    if(typeof(fieldbar.itemClass) == "string")
-                    item.addClass(fieldbar.itemClass);
+            item.set('id',uniqid());
+            if(typeof(fieldbar.itemClass) == "string")
+                item.addClass(fieldbar.itemClass);
 
-                    //insert le texte de l'item
+            //insert le texte de l'item
             var label = Y.Node.create("<label>");
-                    var txt = Y.Node.create("<label>"+text+"</label>");
-                    label.insert(txt);
-                    item.insert(label);
-//	        var txt = document.createTextNode(text);
-//			objInsertNode(txt,label,null,INSERTNODE_END);
-//			objInsertNode(label,item,null,INSERTNODE_END);
+            var txt = Y.Node.create("<label>"+text+"</label>");
+            label.insert(txt);
+            item.insert(label);
+            //	        var txt = document.createTextNode(text);
+            //			objInsertNode(txt,label,null,INSERTNODE_END);
+            //			objInsertNode(label,item,null,INSERTNODE_END);
 
-                    //event
-                    if(typeof(fieldbar.onCreateItem) == "function")
-                            fieldbar.onCreateItem(item,label);
+            //event
+            if(typeof(fieldbar.onCreateItem) == "function")
+                fieldbar.onCreateItem(item,label);
 
             return item;
         },
@@ -235,15 +237,15 @@ YUI.add('wfw-fieldbar', function (Y) {
             //obtient l'objet FIELD_BAR
             var fieldbar = this.getStates(element);
             //supprime le contenu existant
-                    fieldbar.item_contener.get('childNodes').remove();
-//	        objRemoveChildNode(fieldbar.item_contener,null,REMOVENODE_ALL);
+            fieldbar.item_contener.get('childNodes').remove();
+            //	        objRemoveChildNode(fieldbar.item_contener,null,REMOVENODE_ALL);
             //obtient la liste des items
             var itemList = this.getItemTextList(element);
             //insert les items
             for(var i in itemList){
                 var item = this.makeItemElement(element,itemList[i]);
-                            fieldbar.item_contener.append(item);
-//	            objInsertNode(item,fieldbar.item_contener,null,INSERTNODE_END);
+                fieldbar.item_contener.append(item);
+            //	            objInsertNode(item,fieldbar.item_contener,null,INSERTNODE_END);
             }
             return true;
         },
@@ -263,8 +265,8 @@ YUI.add('wfw-fieldbar', function (Y) {
             //scan la liste des items
             fieldbar.contener.all("span").each(function(item) {
                 input_str += item.get('innerText')+";";
-                    });
-/*	        var item = objGetChild(fieldbar.contener,"span");
+            });
+            /*	        var item = objGetChild(fieldbar.contener,"span");
             while(item != null){
                 input_str += objGetInnerText(item)+";";
                 item = objGetNext(item,"span");
@@ -297,7 +299,7 @@ YUI.add('wfw-fieldbar', function (Y) {
             //supprime l'item
             remove_key(itemList,pos);
             //definit l'input
-                    element.set('value',strimplode(itemList,";",false));
+            element.set('value',strimplode(itemList,";",false));
             //actualise la vue
             this.updateView(element);
 
@@ -322,7 +324,9 @@ YUI.add('wfw-fieldbar', function (Y) {
             [FIELD_BAR] Objet de données.
         */
         getStates: function (element) {
-            return wfw.States.fromId(element.get('id'), null, {name:"wfw.ext.fieldbar"});
+            return wfw.States.fromId(element.get('id'), null, {
+                name:"wfw.ext.fieldbar"
+            });
         }
     };
 
@@ -334,5 +338,5 @@ YUI.add('wfw-fieldbar', function (Y) {
 
         
 }, '1.0', {
-      requires:['base','node', 'wfw','wfw-states']
+    requires:['base','node', 'wfw','wfw-states']
 });

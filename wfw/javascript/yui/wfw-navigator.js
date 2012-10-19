@@ -10,7 +10,7 @@
     Navigation
 
     JS  Dependences: base.js
-    YUI Dependences: base, wfw, wfw-event
+    YUI Dependences: base, wfw, wfw-event, wfw-xml
 
     Implementation: [18-10-2012]
 */
@@ -20,7 +20,7 @@ YUI.add('wfw-navigator', function (Y) {
     
     wfw.Navigator = {
         use         : true,
-        doc         : null,//instance de cXMLDefault
+        doc         : null,//instance de wfw.Xml.DEFAULT_FILE
         navDoc      : "default.xml",
         navNode     : "> index", // noeud parent de l'index
         cfgNode     : "> config", // noeud parent de la configuration
@@ -43,14 +43,9 @@ YUI.add('wfw-navigator', function (Y) {
                 this.probablyMobileNavigator = true;
             }
 		
-            //
-            if(class_exists("cXMLDefault"))
-            {
-                this.doc = new cXMLDefault();
-                this.doc.Initialise("default.xml");
-            }
-            else
-                wfw.puts("warning cXMLDefault class not exists");
+            // Initialise le document xml
+            this.doc = new wfw.Xml.DEFAULT_FILE();
+            this.doc.Initialise("default.xml");
 
             //charge le sitemap "default.xml"
             if("string"==typeof(this.navDoc)){
@@ -58,7 +53,7 @@ YUI.add('wfw-navigator', function (Y) {
                 try{
                     var doc = wfw.HTTP.get(this.navDoc);
                     if(!doc){
-                        wfw.puts("can't load navigation doc: "+this.navDoc+" ("+wfw.HTTP.getResponseStatus()+")");
+                        wfw.puts("can't load navigation doc: "+this.navDoc+" (HTTP Status: "+wfw.HTTP.getResponseStatus()+")");
                         return false;
                     }
                     if(!(doc = xml_parse(doc))){
@@ -405,5 +400,5 @@ YUI.add('wfw-navigator', function (Y) {
     wfw.Navigator.init();
     
 }, '1.0', {
-    requires:['base','wfw','wfw-event']
+    requires:['base','wfw','wfw-event','wfw-xml']
 });

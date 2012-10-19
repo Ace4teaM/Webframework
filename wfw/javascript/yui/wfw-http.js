@@ -26,7 +26,7 @@ YUI.add('wfw-http', function (Y) {
         httpRequest  : null, // l'objet HttpRequest
         http_user    : "",
         http_pwd     : "",
-        
+
         /*
             Classe Part de requête
             Implémente:

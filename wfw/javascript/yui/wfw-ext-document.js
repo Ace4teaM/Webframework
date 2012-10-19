@@ -18,7 +18,7 @@
 
 YUI.add('wfw-document', function (Y) {
     var wfw = Y.namespace('wfw');
-    
+
     wfw.Document = {
         /*
             Données Membres

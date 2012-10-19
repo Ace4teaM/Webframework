@@ -1,17 +1,15 @@
 /*
-(C)2012 ID-Informatik. WebFrameWork(R) All rights reserved.
+(C)2012 AceTeaM. WebFrameWork(R) All rights reserved.
 ---------------------------------------------------------------------------------------------------------------------------------------
 Warning this script is protected by copyright, if you want to use this code you must ask permission:
 Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-ID-Informatik
-MR AUGUEY THOMAS
-contact@id-informatik.com
+Auteur : AUGUEY THOMAS
+Mail   : dev@aceteam.org
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 Script lié au document "dialog.html"
 
-Revisions:
-    [17-10-2012] Implentation
+Implentation: [17-10-2012]
 */
 
 //initialise le contenu

@@ -2,16 +2,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>WebFrameWork - Test</title>
+        <title>WebFrameWork - Exemples</title>
 
         <!-- Navigator Page Id -->
-        <meta http-equiv="wfw.page-id" content="samples_index" /> 
+        <meta http-equiv="wfw.page-id" content="index" /> 
         
         <!-- Internet explorer CSS compatible -->
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
 
         <!-- Styles -->
         <link rel="stylesheet" href="../css/wfw-extends.css" type="text/css" />
+        <link rel="stylesheet" href="../css/wfw-fieldbar.css" type="text/css" />
+        <link rel="stylesheet" href="fieldbar_menu.css" type="text/css" />
 
         <!-- Includes -->
         <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
@@ -30,16 +32,25 @@
         <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-request.js"></script>
         <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-event.js"></script>
         <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-navigator.js"></script>
+        <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-ext-fieldbar.js"></script>
+        <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-xml.js"></script>
         <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-ext-document.js"></script>
 
         <!-- Fonctions -->
-        <script type="text/javascript" language="javascript" src="navigator.js"></script>
+        <script type="text/javascript" language="javascript" src="index.js"></script>
 
     </head>
 
     <!-- Document -->
     <body>
-        <h1>Exemples de navigation sous webframework</h1>
+        <h1>Exemples Webframework (HTML/JS)</h1>
+        <!-- Navigation bar -->
+        <div>
+            <input type="hidden" id="nav_input" />
+            <div id="nav_bar"></div>
+        </div>
+        <hr/>
+        <!-- Content -->
         <p>Le document en cours posséde l'identifiant: <span id="page_id"></span></p>
         <p>Voici la liste des exemples disponibles:</p>
         <ul id="sample_list"></ul>
