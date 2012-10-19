@@ -75,12 +75,12 @@ YUI.add('wfw-fieldlist', function (Y) {
         },
     
         /*
-        Obtient les valeurs de champs d'une liste
-        Arguments:
-            [string] element_id : Identificateur de la liste (l'élément parent)
-        Retourne:
-            [object] Tableau des valeurs de champs triés par nom. Le tableau est vide si aucun champs n'est trouvé
-    */
+            Obtient les valeurs de champs d'une liste
+            Arguments:
+                [string] element_id : Identificateur de la liste (l'élément parent)
+            Retourne:
+                [object] Tableau des valeurs de champs triés par nom. Le tableau est vide si aucun champs n'est trouvé
+        */
         getValues : function(element_id){
             wfw.puts("getValues:"+element_id);
             var list = this.getFields(element_id);
@@ -148,15 +148,15 @@ YUI.add('wfw-fieldlist', function (Y) {
         },
     
         /*
-        Supprime un champ de la liste
-        Arguments:
-            [Y.Node] element : L'Elément parent de la liste
-            [string] name    : Nom du champ à supprimer
-        Retourne:
-            [bool] true si l'élément est supprimé. false si introuvable
-        Remarques:
-            deleteField supprime un champ de la liste, le champ est définitivement supprimé de la liste.
-    */
+            Supprime un champ de la liste
+            Arguments:
+                [Y.Node] element : L'Elément parent de la liste
+                [string] name    : Nom du champ à supprimer
+            Retourne:
+                [bool] true si l'élément est supprimé. false si introuvable
+            Remarques:
+                deleteField supprime un champ de la liste, le champ est définitivement supprimé de la liste.
+        */
         deleteField : function(element,name)
         {
             var id = element.get("id");
@@ -180,14 +180,14 @@ YUI.add('wfw-fieldlist', function (Y) {
         },
     
         /*
-        Efface tous les champs d'une liste
-        Arguments:
-            [Y.Node] element : L'Elément parent de la liste
-        Retourne:
-            [bool] true en cas de succès. false en cas d'échec
-        Remarques:
-            clearList efface tous les champs de la liste, les champs restes utilisables
-    */
+            Efface tous les champs d'une liste
+            Arguments:
+                [Y.Node] element : L'Elément parent de la liste
+            Retourne:
+                [bool] true en cas de succès. false en cas d'échec
+            Remarques:
+                clearList efface tous les champs de la liste, les champs restes utilisables
+        */
         clearList : function(element)
         {
             var id = element.get("id");
@@ -210,14 +210,14 @@ YUI.add('wfw-fieldlist', function (Y) {
         },
     
         /*
-        Supprime une liste et tous ses champs
-        Arguments:
-            [Y.Node] element : L'Elément parent de la liste
-        Retourne:
-            [bool] true en cas de succès. false en cas d'échec
-        Remarques:
-            deleteList supprime définitevement la liste et tous ses champs. Le noeud de l'élément est supprimé.
-    */
+            Supprime une liste et tous ses champs
+            Arguments:
+                [Y.Node] element : L'Elément parent de la liste
+            Retourne:
+                [bool] true en cas de succès. false en cas d'échec
+            Remarques:
+                deleteList supprime définitevement la liste et tous ses champs. Le noeud de l'élément est supprimé.
+        */
         deleteList : function(element)
         {
             var id = element.get("id");
@@ -239,24 +239,24 @@ YUI.add('wfw-fieldlist', function (Y) {
         },
     
         /*
-        Insert un élément à la liste
-        Arguments:
-            [HTMLElement]         element      : L'Elément parent de la liste
-            [HTMLFieldSetElement] template     : L'Elément template
-            [string]              name         : Nom du champ
-            [string]              value        : Valeur a insérer
-            [bool]                bInsertLegend: Insert la zone d'édition au champ
-        Retourne:
-            [HTMLElement] L'Elément INPUT nouvellement initialisé.
-            En cas d'erreur:
-                [int]  null  : Aucun champ libre
-                [int]  false : l'argument 'element' n'est pas un élément valide
-                [int]  0     : l'argument 'value' est une chaine vide
-                [int]  1     : la liste ne possède pas d'identificateur
-                [int]  2     : le template ne possède pas de champs input
-                [int]  3     : element n'est pas de type FIELDSET
-                [int]  4     : name n'est pas un identificateur valide
-    */
+            Insert un élément à la liste
+            Arguments:
+                [HTMLElement]         element      : L'Elément parent de la liste
+                [HTMLFieldSetElement] template     : L'Elément template
+                [string]              name         : Nom du champ
+                [string]              value        : Valeur a insérer
+                [bool]                bInsertLegend: Insert la zone d'édition au champ
+            Retourne:
+                [HTMLElement] L'Elément INPUT nouvellement initialisé.
+                En cas d'erreur:
+                    [int]  null  : Aucun champ libre
+                    [int]  false : l'argument 'element' n'est pas un élément valide
+                    [int]  0     : l'argument 'value' est une chaine vide
+                    [int]  1     : la liste ne possède pas d'identificateur
+                    [int]  2     : le template ne possède pas de champs input
+                    [int]  3     : element n'est pas de type FIELDSET
+                    [int]  4     : name n'est pas un identificateur valide
+        */
         insertNew : function(element,template,name,value,bInsertLegend)
         {
             //nom valide ?
@@ -330,24 +330,24 @@ YUI.add('wfw-fieldlist', function (Y) {
             return new_element;
         },
         /*
-        Insert une valeur à la liste
-        Arguments:
-            [HTMLElement]   element : L'Elément parent de la liste
-            [string]        value   : Valeur a insérer
-            [string]        options : Options additionnels, voir remarques
-        Retourne:
-            [HTMLElement] L'Elément INPUT nouvellement initialisé
-            En cas d'erreur:
-                null         : Aucun champ libre
-                false        : L'Argument 'element' n'est n'est pas un élément valide
-                "empty"      : L'Argument 'value' est une chaine vide
-                "duplicated" : La valeur existe dèjà (uniquement si 'options.uniq_value' est définit à 'true')
-        Remarques:
-            Arguments additionnels:
-                [object] add_fields  = null   : Champs supplémentaires à initiliser dans l'élément
-                [string] insert_into = null   : Définit le nom de l'élément qui reçoit la valeur
-                [bool]   uniq_value  = false  : Insert la valeur uniquement si elle n'existe pas déja
-    */
+            Insert une valeur à la liste
+            Arguments:
+                [HTMLElement]   element : L'Elément parent de la liste
+                [string]        value   : Valeur a insérer
+                [string]        options : Options additionnels, voir remarques
+            Retourne:
+                [HTMLElement] L'Elément INPUT nouvellement initialisé
+                En cas d'erreur:
+                    null         : Aucun champ libre
+                    false        : L'Argument 'element' n'est n'est pas un élément valide
+                    "empty"      : L'Argument 'value' est une chaine vide
+                    "duplicated" : La valeur existe dèjà (uniquement si 'options.uniq_value' est définit à 'true')
+            Remarques:
+                Arguments additionnels:
+                    [object] add_fields  = null   : Champs supplémentaires à initiliser dans l'élément
+                    [string] insert_into = null   : Définit le nom de l'élément qui reçoit la valeur
+                    [bool]   uniq_value  = false  : Insert la valeur uniquement si elle n'existe pas déja
+        */
         insert : function(element,value,options)
         {
             var current;
@@ -406,14 +406,14 @@ YUI.add('wfw-fieldlist', function (Y) {
             return null;
         },
         /*
-        Liste les champs d'un élément
-        Arguments:
-            [HTMLElement] element : L'Elément parent de la liste
-        Retourne:
-            [object] Tableau indexé des champs (FIELD type)
-        Remarques:
-            Les éléments enfants doivent être de types FIELDSET
-    */
+            Liste les champs d'un élément
+            Arguments:
+                [HTMLElement] element : L'Elément parent de la liste
+            Retourne:
+                [object] Tableau indexé des champs (FIELD type)
+            Remarques:
+                Les éléments enfants doivent être de types FIELDSET
+        */
         list : function(element)
         {
             var value;
