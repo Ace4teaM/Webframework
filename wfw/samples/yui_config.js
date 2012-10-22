@@ -29,8 +29,8 @@ var wfw_yiu_config = {
                     path: 'wfw-event.js',
                     requires: [ 'base', 'wfw' ]
                 },
-                'wfw-datalist': {
-                    path: 'wfw-ext-datalist.js',
+                'wfw-datatype': {
+                    path: 'wfw-ext-datatype.js',
                     requires: [ 'base', 'node', 'wfw', 'wfw-request', 'wfw-event' ]
                 },
                 'wfw-document': {
