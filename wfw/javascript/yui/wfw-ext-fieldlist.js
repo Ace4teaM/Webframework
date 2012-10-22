@@ -15,7 +15,7 @@
     Revisions:
         [19-10-2012] Implementation
 */
-
+            
 YUI.add('wfw-fieldlist', function (Y) {
     var wfw = Y.namespace('wfw');
     
@@ -359,12 +359,12 @@ YUI.add('wfw-fieldlist', function (Y) {
                 uniq_value:false
             };
             if(typeof(options)!="undefined")
-                att=object_merge(att,options);
+                att = object_merge(att,options);
 
             //check la valeur
             if(empty(value))
                 return "empty";
-
+            
             var id = element.get("id");
 
             // liste les elements
@@ -505,10 +505,10 @@ YUI.add('wfw-fieldlist', function (Y) {
                         input :node,//input
                         name  :name
                     });
-                }
                 
-                //
-                this.initField(new_fields,bInsertLegend);
+                    //
+                    wfw.FieldList.initField(fields[name],bInsertLegend);
+                }
             });
         
             return true;

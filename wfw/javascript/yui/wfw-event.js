@@ -24,9 +24,26 @@ YUI.add('wfw-event', function (Y) {
         Tableaux des listes d'événements
 
         list[ListName][EventType][FuncName] = {
-        [function] func  : callback
-        [mixed]    param : callback param
+            [function] func  : callback
+            [mixed]    param : callback param
         }
+        
+        Exemple:
+        
+        list["checkValueEvents"] = {
+            click : {
+                controleFocus : {
+                    func  : function(e, p){
+                        this.set("text", p.foo);
+                    },
+                    param : {
+                        foo : "bar"
+                    }
+                },
+                ...
+           },
+           ...
+        };
         */
         list: new Object(),
 
@@ -98,7 +115,7 @@ YUI.add('wfw-event', function (Y) {
             [bool] true en cas de succès, false en cas d'échec
         */
         RemoveTo: function (obj, list_name) {
-            obj = obj.getDOMNode();
+            //var states = new wfw.Event.CALL_LIST(obj.get("id")+":wfw_event");
             if (typeof (obj._wfw_events) == "undefined")
                 return false;
             delete obj._wfw_events;
@@ -118,7 +135,8 @@ YUI.add('wfw-event', function (Y) {
             [bool] true en cas de succès, false en cas d'échec
         */
         ApplyTo: function (obj, list_name) {
-            obj = obj.getDOMNode();
+            //var states = new wfw.Event.CALL_LIST(obj.get("id")+":wfw_event");
+
             if (typeof (this.list[list_name]) == "undefined")
                 return false;
 

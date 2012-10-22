@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
+  <head>
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
+    <title>Field List</title>
+    <link rel="stylesheet" href="../css/wfw-extends.css" type="text/css" />
+    <!-- Includes -->
+    <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
+    <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
+    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-base.js"></script>
+    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-ext-fieldlist.js"></script>
+    <script type="text/javascript" language="javascript" src="yui_config.js"></script>
+    <script type="text/javascript" language="javascript" src="fieldlist.js"></script>
+  </head>
+  <body>
+    <!-- insertion de champs -->
+    <div>
+        <fieldset style="vertical-align:middle;">
+            <div>
+                Ajouter un champ: <input type="text" id="add_field" style="width:250px;" />
+                <a id="newFieldBtn"><span class="wfw_icon add"></span></a>
+            </div>
+         </fieldset>
+    </div>
+    <!-- list des champs -->
+    <div id="list" wfw_fieldlist="list">
+        <fieldset style="vertical-align:middle;">
+            <div>Champ 1 : <input type="text" style="width:250px;" name="champ_1" value="Ce champ est visible puisque initialisé" /></div>
+        </fieldset>
+        <fieldset style="vertical-align:middle;">
+            <div>Champ 2 : <input type="text" style="width:250px;" name="champ_2" value="" /></div>
+        </fieldset>
+        <fieldset style="vertical-align:middle;">
+            <div>Champ 3 : <input type="text" style="width:250px;" name="champ_3" value="" /></div>
+        </fieldset>
+        <fieldset style="vertical-align:middle;">
+            <div>Champ 4 : <input type="text" style="width:250px;" name="champ_4" value="" /></div>
+        </fieldset>
+        <fieldset style="vertical-align:middle;">
+            <div>Champ 5 : <input type="text" style="width:250px;" name="champ_5" value="" /></div>
+        </fieldset>
+    </div>
+  </body>
+</html>

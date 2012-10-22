@@ -17,6 +17,8 @@ Revisions:
 //initialise le contenu
 YUI().use('node', 'event', 'fieldbar', function (Y)
 {
+    var wfw = Y.namespace("wfw");
+    
 	var onLoad = function(e){
 		/*
 		 * ---------------------------------------------------------------
