@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>WebFrameWork - Test</title>
+
+        <!-- Internet explorer CSS compatible -->
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="../css/wfw-extends.css" type="text/css" />
+
+        <!-- Includes -->
+        <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
+        <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
+        <script type="text/javascript" language="javascript" src="yui_config.js"></script>
+        <script type="text/javascript" language="javascript" src="timer.js"></script>
+        
+    </head>
+
+    <!-- Document -->
+    <body>
+        <h2>Frequency timer test</h2>
+        Duration <input type="text" id="duration" value="1000" />
+        Frame/Seconde <input type="text" id="frame_sec" value="24" />
+        <span id="createBtn" onclick="create($value('duration'),$value('frame_sec'));" class="wfw_button_text">Create</span>
+        
+        <hr />
+        
+        <div id="timer_list"></div>
+        <!-- template -->
+        <fieldset id="timer_template" class="wfw_hidden">
+            <legend>FREQUENCY_TIMER object</legend>
+            <inpu type="hidden" name="timer_id" value="-{id}" />
+            <div class="wfw_static_field" style="width:550px;"><span>id</span><span>-{id}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>begin</span><span name="begin"> -{begin}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>end</span><span name="end"> -{end}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>duration</span><span name="duration"> -{duration}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>bAutoRemove</span><span name="bAutoRemove"> -{bAutoRemove}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>state</span><span name="state"> -{state}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>current_time</span><span name="current_time"> -{current_time}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>max_frame</span><span name="max_frame"> -{max_frame}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>current_frame</span><span name="current_frame"> -{current_frame}</span></div>
+            <div class="wfw_static_field" style="width:550px;"><span>ACTIONS</span><span>
+                <span name="startBtn" class="wfw_button_text">Start</span>
+                <span name="stopBtn" class="wfw_button_text">Stop</span>
+                <span name="removeBtn" class="wfw_button_text">Remove</span>
+            </span></div>
+        </fieldset>
+    </body>
+</html>

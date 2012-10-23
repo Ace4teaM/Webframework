@@ -135,7 +135,7 @@ YUI.add('wfw-timer', function (Y) {
         */
         TICKS_TIMER_LIST : function(att){
             //OBJECT
-            this.ns        = "wfw_timer";
+            this.ns        = "wfw_timer_ticks_timer_list";
             //
             this.id        = null;
             this.timers    = null;//TICKS_TIMER array
@@ -163,7 +163,7 @@ YUI.add('wfw-timer', function (Y) {
         */
         TICKS_TIMER : function(att){
             //OBJECT
-            this.ns          = "wfw_timer";
+            this.ns          = "wfw_timer_ticks_timer";
             //
             this.id          = null;
             this.onUpdate    = function(elapsedTime,tickCount){ };
@@ -218,7 +218,7 @@ YUI.add('wfw-timer', function (Y) {
         */
         FREQUENCY_TIMER : function(att){
             //OBJECT
-            this.ns               = "wfw_timer";
+            this.ns               = "wfw_timer_frequency_timer";
             //
             this.id               = null;
             this.begin            = null;
