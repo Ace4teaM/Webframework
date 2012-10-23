@@ -36,6 +36,9 @@ YUI.add('wfw-http', function (Y) {
                 [string] data     : Données
         */
         HTTP_REQUEST_PART : function(att) {
+            //OBJECT
+            this.ns         = "wfw_http";
+            //HTTP_REQUEST_PART
             this.headers  = [];
             this.data     = "";
             

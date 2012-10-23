@@ -15,7 +15,7 @@ Revisions:
     [22-10-2012] Implentation
 */
 
-var wfw_yiu_config = {
+var wfw_yui_config = {
     combine: false,    // <---- CHANGE THIS TO FALSE AND LIBRARY WILL LOAD
     groups: {
         js: {

@@ -33,7 +33,9 @@ YUI.add('wfw-uri', function (Y) {
                 [string] fragment  : Ancre (sans "#" au début). Si aucun, une chaine vide
         */
         ADDRESS : function(att){
-            this._name     = "wfw.uri.ADDRESS";
+            //OBJECT
+            this.ns        = "wfw_uri_address";
+            //
             this.addr      = "";
             this.scheme    = "";
             this.authority = "";

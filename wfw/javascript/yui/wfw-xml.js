@@ -21,6 +21,8 @@ YUI.add('wfw-xml', function (Y) {
     wfw.Xml = {
         DEFAULT_FILE : function()
         {
+            //OBJECT
+            this.ns      = "wfw_xml_default_file";
             //le document "default.xml"
             this.doc     = null; // xml document interface
             this.docRoot = null; // root element

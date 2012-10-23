@@ -20,6 +20,9 @@ YUI.add('wfw-layout', function (Y) {
     
     wfw.Layout = {
         LAYOUT : function(att){
+            //OBJECT
+            this.ns        = "wfw_layout";
+            //
             this.position  = "middle";
             this.offset_t  = 0;
             this.offset_l  = 0;

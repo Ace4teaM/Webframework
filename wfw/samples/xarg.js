@@ -9,31 +9,32 @@ contact@id-informatik.com
 
 Script lié au document "xarg.html"
 
-Revisions:
-    [11-10-2012] Implentation
+Implentation: [11-10-2012]
 */
 
 //initialise le contenu
-YUI().use('node', 'event', 'xarg', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw-event', 'wfw-xarg', function (Y)
 {
-	var onLoad = function(e){
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
 		
-		//convertie un objet en texte
-		var object = {
-			foo : "bar",
-			hello : "world"
-		};
+        //convertie un objet en texte
+        var object = {
+            foo : "bar",
+            hello : "world"
+        };
 		
-		var text = Y.XArg.to_string(object);
+        var text = wfw.XArg.to_string(object);
 
-		Y.one("#text").append(text);
+        Y.one("#text").append(text);
 		
-		//convertie un texte en objet
-		object = Y.XArg.to_object(text);
+        //convertie un texte en objet
+        object = wfw.XArg.to_object(text);
 
-		Y.one("#obj").append(wfw.toString(object));
-	};
+        Y.one("#obj").append(wfw.toString(object));
+    };
 
-	//onload event
-	Y.one('window').on('load', onLoad);
+    //onload event
+    Y.one('window').on('load', onLoad);
 });

@@ -14,44 +14,48 @@ Revisions:
 */
 
 //initialise le contenu
-YUI().use('node', 'event', 'states', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw-event', 'wfw-states', function (Y)
 {
-	var onLoad = function(e){
-		//Assigne des données a l'élément '#e1'
-		Y.States.fromElement(Y.one("#e1"), {
-			foo : "hello",
-			bar : "world"
-		});
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
+        //Assigne des données a l'élément '#e1'
+        wfw.States.fromElement(Y.one("#e1"), {
+            foo : "hello",
+            bar : "world"
+        });
 		
-		//Assigne des données a l'élément '#e2'
-		Y.States.fromElement(Y.one("#e2"), {
-			foo : "papa",
-			bar : "maman"
-		});
+        //Assigne des données a l'élément '#e2'
+        wfw.States.fromElement(Y.one("#e2"), {
+            foo : "papa",
+            bar : "maman"
+        });
 		
-		//Assigne des données a l'élément 'p'
-		Y.States.fromElement(Y.one("p"), {
-			type : "paragraphe"
-		});
+        //Assigne des données a l'élément 'p'
+        wfw.States.fromElement(Y.one("p"), {
+            type : "paragraphe"
+        });
 		
-		//affiche la liste des données liées aux elements du document
-		Y.one("#showElementStates").on("click",function(e){
+        //affiche la liste des données liées aux elements du document
+        Y.one("#showElementStates").on("click",function(e){
 			
-			//prepare le noeud d'affichage
-			var showNode = Y.one("#states");
-			showNode.all("*").remove();
+            //prepare le noeud d'affichage
+            var showNode = Y.one("#states");
+            showNode.all("*").remove();
 			
-			//recherche puis affiche les données trouvées pour chacun des éléments
-			Y.all("*").each(function(node){
-				var state = Y.States.fromElement(node,null,{exists:true});
-				if (state != null) {
-					showNode.append("<p>" + node.get("tagName") + " (Id = '" + node.get("id") + "'):</p>");
-					showNode.append("<p>" + wfw.toString(state) + "</p>");
-				}
-			});
-		});
-	};
+            //recherche puis affiche les données trouvées pour chacun des éléments
+            Y.all("*").each(function(node){
+                var state = wfw.States.fromElement(node,null,{
+                    exists:true
+                });
+                if (state != null) {
+                    showNode.append("<p>" + node.get("tagName") + " (Id = '" + node.get("id") + "'):</p>");
+                    showNode.append("<p>" + wfw.toString(state) + "</p>");
+                }
+            });
+        });
+    };
 	
-	//onload event
-	Y.one('window').on('load', onLoad);
+    //onload event
+    Y.one('window').on('load', onLoad);
 });

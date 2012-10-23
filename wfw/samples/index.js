@@ -13,7 +13,7 @@ Implentation: [18-10-2012]
 */
 
 //initialise le contenu
-YUI().use('node', 'wfw-navigator', 'wfw-fieldbar', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw-navigator', 'wfw-fieldbar', function (Y)
 {
     var wfw = Y.namespace("wfw");
     

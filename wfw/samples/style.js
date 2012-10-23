@@ -14,36 +14,38 @@ Revisions:
 */
 
 //initialise le contenu
-YUI().use('node', 'event', 'style', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw-event', 'wfw-style', function (Y)
 {
-	var onLoad = function(e){
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
 		
-		//[Ajoute la classe]
-		Y.Node.one("#add_btn").on("click",function(e){
-			var element = Y.Node.one("#e1");
+        //[Ajoute la classe]
+        Y.Node.one("#add_btn").on("click",function(e){
+            var element = Y.Node.one("#e1");
 			
-			var className = Y.Node.one("#style_selector").get('value');
-			Y.Style.addClass(element,className);
-			element.set("text","Element: "+Y.Style.getClass(element));
-		});
+            var className = Y.Node.one("#style_selector").get('value');
+            wfw.Style.addClass(element,className);
+            element.set("text","Element: "+wfw.Style.getClass(element));
+        });
 		
-		//[Supprime la classe]
-		Y.Node.one("#rem_btn").on("click",function(e){
-			var element = Y.Node.one("#e1");
+        //[Supprime la classe]
+        Y.Node.one("#rem_btn").on("click",function(e){
+            var element = Y.Node.one("#e1");
 			
-			var className = Y.Node.one("#style_selector").get('value');
-			Y.Style.removeClass(element,className);
-			element.set("text","Element: "+Y.Style.getClass(element));
-		});
+            var className = Y.Node.one("#style_selector").get('value');
+            wfw.Style.removeClass(element,className);
+            element.set("text","Element: "+wfw.Style.getClass(element));
+        });
 		
-		//[Possède la classe ?]
-		Y.Node.one("#have_btn").on("click",function(e){
-			var element = Y.Node.one("#e1");
-			var className = Y.Node.one("#style_selector").get('value');
-			alert(Y.Style.haveClass(element,className));
-		});
-	};
+        //[Possède la classe ?]
+        Y.Node.one("#have_btn").on("click",function(e){
+            var element = Y.Node.one("#e1");
+            var className = Y.Node.one("#style_selector").get('value');
+            alert(wfw.Style.haveClass(element,className));
+        });
+    };
 
-	//onload event
-	Y.one('window').on('load', onLoad);
+    //onload event
+    Y.one('window').on('load', onLoad);
 });

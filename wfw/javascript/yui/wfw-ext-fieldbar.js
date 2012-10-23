@@ -31,6 +31,8 @@ YUI.add('wfw-fieldbar', function (Y) {
                 [function/object] onCancel : Callback appelé lors l'utilisateur clique sur "Annuler" / Options de la fonction "printCancel()"
         */
         FIELD_BAR : function(att){
+            //OBJECT
+            this.ns           = "wfw_ext_fieldbar";
             //FIELD_BAR options
             this.inputClass   = "wfw_ext_fieldbar";
             this.barClass     = "wfw_ext_fieldbar";

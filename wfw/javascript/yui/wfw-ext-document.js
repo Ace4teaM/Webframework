@@ -48,6 +48,9 @@ YUI.add('wfw-document', function (Y) {
                 [HTMLElement] parent_node   : Reçoit l'élément parent du dialogue
         */
         DIALOG : function(att){
+            //OBJECT
+            this.ns              = "wfw_document_dialog";
+            //DIALOG
             this.user            = {};
             this.parent_node     = null;
             this.center          = true;
@@ -61,6 +64,7 @@ YUI.add('wfw-document', function (Y) {
              * Constructeur
              */
             wfw.Document.DIALOG.superclass.constructor.call(this, att);
+            
               
             if(this.parent_node == null)
                 this.parent_node = Y.Node.create("<div>");
@@ -81,8 +85,6 @@ YUI.add('wfw-document', function (Y) {
                 [function/object] onCancel : Callback appelé lors l'utilisateur clique sur "Annuler" / Options de la fonction "printCancel()"
         */
         DIALOG_BOX : function(att){
-            //REF options
-            this.name       = "wfw.ext.document.DIALOG_BOX";
             //DIALOG options
             this.cssClass   = "wfw_ext_dialog-content wfw_ext_dialog_fixed_size wfw_ext_unselectable";
             //Membres
@@ -1147,7 +1149,7 @@ YUI.add('wfw-document', function (Y) {
         if(this.dlg_content==null)
             return false;
         this.parent_node.append(this.dlg_content);
-
+        
         this.dlg_content.set("id",this.id+"_content");
         wfw.Style.addClass(this.dlg_content,"wfw_ext_dialog_content");
 
@@ -1298,5 +1300,5 @@ YUI.add('wfw-document', function (Y) {
     wfw.Document.init();
     
 }, '1.0', {
-      requires:['base', 'node', 'wfw', 'wfw-style', 'wfw-request', 'wfw-states']
+      requires:['base', 'node', 'wfw', 'wfw-style', 'wfw-request', 'wfw-event', 'wfw-states']
 });

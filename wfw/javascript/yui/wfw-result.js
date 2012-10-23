@@ -32,6 +32,9 @@ YUI.add('wfw-result', function (Y) {
                 [object] args       : Tableau associatif des arguments additionnels
         */
         RESULT : function(att){
+            //OBJECT
+            this.ns            = "wfw_result";
+            //
             this.error         = 0;
             this.error_str     = "no_error";
             this.args          = null;

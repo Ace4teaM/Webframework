@@ -14,7 +14,7 @@ Implentation: [18-10-2012]
 */
 
 //initialise le contenu
-YUI().use('node', 'wfw', 'wfw-layout', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw', 'wfw-layout', function (Y)
 {
     var wfw = Y.namespace("wfw");
     

@@ -28,31 +28,55 @@ YUI.add('wfw', function (Y) {
             Classe Objet
         */
         OBJECT : function(att){
+            this.id;// Identificateur de l'instance
+            this.ns;// Espace de nommage
+
+            /*
+             * Constructeur
+             */
+            
             // initialise les données ?
             if(att != null)
             {
                 //depuis l'objet 'States' ?
                 if(typeof att == "string" && typeof wfw.States != "undefined"){
                     // 'global' namespace
-                    if(att.indexOf(':') == -1) 
-                        object_merge(this,wfw.States.fromId(att, null, {
+                    if(att.indexOf(':') == -1){
+                        this.id = att;
+                        object_merge(this,wfw.States.fromId(this.id, null, {
                             exists:true
                         }),false);
+                    }
                     // named namespace
                     else{
-                        var id = strexplode(att);
-                        object_merge(this,wfw.States.fromId(id[0], null, {
+                        var id = strexplode(att,':');
+                        this.id   = id[0];
+                        this.ns = id[1];
+                        object_merge(this,wfw.States.fromId(this.id, null, {
                             exists:true, 
-                            name:id[1]
-                            }),false);
+                            name:this.ns
+                        }),false);
                     }
                 }
                 
-                //depuis l'objet 'att' ?
+                //depuis un noeud du document ?
+                //if(instanceof att == Y.Node)
+                //    object_merge(this,att,false);
+                
+                //depuis l'argument 'att' ?
                 if(typeof att == "object" && att != null)
                     object_merge(this,att,false);
             }
             
+            //espace de nomage global
+            if(empty(this.ns))
+                this.ns = "global";
+            
+            //identificateur générique ?
+            if(empty(this.id))
+                this.id = strtoid(uniqid());
+            
+            wfw.puts("new OBJECT("+this.ns+" => "+this.id+");");
         },
         
         /*

@@ -14,37 +14,39 @@ Revisions:
 */
 
 //initialise le contenu
-YUI().use('node', 'event', 'request', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw-event', 'wfw-request', function (Y)
 {
-	var onLoad = function(e){
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
         //initialise l'interface de requete
-		Y.HTTP.init();
+        wfw.HTTP.init();
 
-		//[Envoie la requête]
-		Y.Node.one("#send_btn").on("click",function(e){
-			Y.Request.Add(
-				//name
-				null,
-				//URI
-				Y.Node.one("#uri").get('value'),
-				//get/post args
-				null,
-				//callback
-				function(request){
-					var log = Y.Node.one("#log");
-					log.append("<p>"+request.name+": Status = "+request.status+"</p>");
-					if(request.status == 200){
-						log.append("<p>"+request.name+": Response = "+request.response+"</p>");
-					}
-				},
-				//user_data
-				null,
-				//async
-				false
-			);
-		});
-	};
+        //[Envoie la requête]
+        Y.Node.one("#send_btn").on("click",function(e){
+            wfw.Request.Add(
+                //name
+                null,
+                //URI
+                Y.Node.one("#uri").get('value'),
+                //get/post args
+                null,
+                //callback
+                function(request){
+                    var log = Y.Node.one("#log");
+                    log.append("<p>"+request.name+": Status = "+request.status+"</p>");
+                    if(request.status == 200){
+                        log.append("<p>"+request.name+": Response = "+request.response+"</p>");
+                    }
+                },
+                //user_data
+                null,
+                //async
+                false
+                );
+        });
+    };
 
-	//onload event
-	Y.one('window').on('load', onLoad);
+    //onload event
+    Y.one('window').on('load', onLoad);
 });

@@ -15,7 +15,7 @@ Revisions:
 */
 
 //initialise le contenu
-YUI().use('node', 'event', 'fieldbar', function (Y)
+YUI(wfw_yui_config).use('node', 'event', 'wfw-fieldbar', function (Y)
 {
     var wfw = Y.namespace("wfw");
     
@@ -26,7 +26,7 @@ YUI().use('node', 'event', 'fieldbar', function (Y)
 		 * ---------------------------------------------------------------
 		 */
 		//Initialise une barre de champs depuis un élément INPUT
-		Y.FieldBar.initElement(Y.one("#my_field"), {
+		wfw.FieldBar.initElement(Y.one("#my_field"), {
 			//FIELD_BAR options
 			barClass: "fieldbar_fil_ariane_bar wfw_bg_frame",
 			itemClass: "fieldbar_fil_ariane_item",
@@ -40,7 +40,7 @@ YUI().use('node', 'event', 'fieldbar', function (Y)
 				label.insert(icon,'before');
 				
 				item.on("click", function(e){
-					var fieldbar = Y.FieldBar.getStates(this);
+					var fieldbar = wfw.FieldBar.getStates(this);
 					alert(this.get('text'));
 				});
 			},
@@ -54,7 +54,7 @@ YUI().use('node', 'event', 'fieldbar', function (Y)
 		});
 		
 		//intialise la barre
-		Y.FieldBar.insertItem(Y.one("#my_field"), "coucou", 0);
+		wfw.FieldBar.insertItem(Y.one("#my_field"), "coucou", 0);
 		
 		
 		/*
@@ -63,11 +63,8 @@ YUI().use('node', 'event', 'fieldbar', function (Y)
 		 * ---------------------------------------------------------------
 		 */
 		//Initialise une barre de champs depuis un élément INPUT
-		Y.FieldBar.initElement(Y.one("#my_field2"), {});
+		wfw.FieldBar.initElement(Y.one("#my_field2"), {});
 	};
 	Y.one('window').on('load', onLoad);
 });
 
-
-// intialise les extensions
-wfw.ext.initAll();

@@ -95,6 +95,9 @@ YUI.add('wfw-request', function (Y) {
                 };
         */
         REQUEST : function(att){
+            //OBJECT
+            this.ns                = "wfw_request";
+            //
             this.name              = null;
             this.url               = "";
             this.args              = null;
@@ -635,7 +638,7 @@ YUI.add('wfw-request', function (Y) {
     * Retourne:
     *  [void]
     * */
-    this.newName = function(){
+    wfw.Request.REQUEST.prototype.newName = function(){
         this.name = "_" + getTimeMS();
         while ("_" + getTimeMS() == this.name); ; //retarde le temps d'execution pour garantir que le nom soit unique
     };

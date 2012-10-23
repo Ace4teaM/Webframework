@@ -14,27 +14,29 @@ Revisions:
 */
 
 //initialise le contenu
-YUI().use('node', 'event', 'uri', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw-event', 'wfw-uri', function (Y)
 {
-	var onLoad = function(e){
+    var wfw = Y.namespace("wfw");
+    
+    var onLoad = function(e){
 		
-		var uri = Y.Node.one("window").get("location.href");
-		var adr = Y.URI.cut( uri );
+        var uri = Y.Node.one("window").get("location.href");
+        var adr = wfw.URI.cut( uri );
 		
-		if (adr != null) {
-			Y.Node.one("#addr").set('text', adr.addr);
-			Y.Node.one("#scheme").set('text', adr.scheme);
-			Y.Node.one("#authority").set('text', adr.authority);
-			Y.Node.one("#path").set('text', adr.path);
-			Y.Node.one("#query").set('text', adr.query);
-			Y.Node.one("#fragment").set('text', adr.fragment);
-		}
-		else
-			Y.Node.one("body").append('<strong>Invalid address format</strong>');
+        if (adr != null) {
+            Y.Node.one("#addr").set('text', adr.addr);
+            Y.Node.one("#scheme").set('text', adr.scheme);
+            Y.Node.one("#authority").set('text', adr.authority);
+            Y.Node.one("#path").set('text', adr.path);
+            Y.Node.one("#query").set('text', adr.query);
+            Y.Node.one("#fragment").set('text', adr.fragment);
+        }
+        else
+            Y.Node.one("body").append('<strong>Invalid address format</strong>');
 		
-		wfw.puts(adr);
-	};
+        wfw.puts(adr);
+    };
 
-	//onload event
-	Y.one('window').on('load', onLoad);
+    //onload event
+    Y.one('window').on('load', onLoad);
 });

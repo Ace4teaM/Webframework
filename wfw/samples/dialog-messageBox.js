@@ -10,24 +10,25 @@ contact@id-informatik.com
 
 Script lié au document "dialog-messageBox.html"
 
-Revisions:
-    [17-10-2012] Implentation
+Implentation: [17-10-2012]
 */
 
 //initialise le contenu
-YUI().use('node', 'document', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw-document', function (Y)
 {
+    var wfw = Y.namespace("wfw");
+    
     // Vérouille un élément à l'écran
     Y.Node.one("#LockElement").on("click", function (e,p) {
-        Y.Document.lockElement(
+        wfw.Document.lockElement(
             Y.Node.one("#messageBox"),
             {
                 title: "Répondez à cette question ...",
                 onOK: function (element) {//OK
-                    Y.Document.messageBox("Cool ;)");
+                    wfw.Document.messageBox("Cool ;)");
                 },
                 onCancel: function (element) {//Cancel
-                    Y.Document.messageBox("Dommage !");
+                    wfw.Document.messageBox("Dommage !");
                 }
             }
         );

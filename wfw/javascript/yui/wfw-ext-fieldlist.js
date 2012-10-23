@@ -31,6 +31,9 @@ YUI.add('wfw-fieldlist', function (Y) {
         *   [String]      name  : Nom du champ (Valeur de l'attribut 'name' dans l'élément 'input')
         */
         FIELD : function(att){
+            //OBJECT
+            this.ns     = "wfw_ext_fieldbar";
+            //FIELD
             this.list   = null;
             this.node   = null;
             this.input  = null;
