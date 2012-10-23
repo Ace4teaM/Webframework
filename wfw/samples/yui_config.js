@@ -47,7 +47,7 @@ var wfw_yui_config = {
                 },
                 'wfw-form': {
                     path: 'wfw-form.js',
-                    requires: [ 'base', 'wfw','wfw-request','wfw-uri','wfw-event','wfw-style','wfw-xarg' ]
+                    requires: [ 'base', 'wfw','wfw-request','wfw-xml','wfw-uri','wfw-event','wfw-style','wfw-xarg' ]
                 },
                 'wfw-http': {
                     path: 'wfw-http.js',
@@ -104,6 +104,10 @@ var wfw_yui_config = {
                 'wfw-xarg': {
                     path: 'wfw-xarg.js',
                     requires: [ 'base','node','wfw','wfw-uri','wfw-request' ]
+                },
+                'wfw-xml-template': {
+                    path: 'wfw-xml-template.js',
+                    requires: [ 'wfw','wfw-http', 'wfw-xml','wfw-request', 'wfw-style', 'wfw-utils' ]
                 },
                 'wfw-xml': {
                     path: 'wfw-xml.js',

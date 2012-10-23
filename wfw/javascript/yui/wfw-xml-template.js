@@ -59,7 +59,7 @@ YUI.add('wfw-xml-template', function (Y) {
                 insert_into.append(newElement);
                 //objInsertNode(newElement, insert_into, null, INSERTNODE_END);
 
-            this.make(document, newElement, doc, doc_node, fields);
+            this.make(Y.Node(document), newElement, doc, doc_node, fields);
 
             wfw.Style.removeClass(newElement, "wfw_hidden");
 
@@ -134,9 +134,10 @@ YUI.add('wfw-xml-template', function (Y) {
         */
         makeFrame: function (frame, element, selectDoc, selectElement, args) {
             var template = new cXMLTemplate();
+            var frame_doc = Y.Node(frame.get("contentWindow").get("document"));
 
             //initialise la classe
-            if (!template.Initialise(frame.contentWindow.document, element, selectDoc, selectElement, args))
+            if (!template.Initialise(frame_doc, element, selectDoc, selectElement, args))
                 return null;
 
             //transforme l'élément
@@ -147,7 +148,7 @@ YUI.add('wfw-xml-template', function (Y) {
             //get content
             //var content = template.getContent();
 
-            frame.get("contentWindow").get("document").write(content);
+            frame_doc.write(content);
 
             return frame;
         }/*,
@@ -253,7 +254,7 @@ YUI.add('wfw-xml-template', function (Y) {
                         this.input_element = this.input.get("documentElement");
                 }
                 else {
-                    this.input = ((input_file == null) ? document : input_file);
+                    this.input = ((input_file == null) ? Y.Node(document) : input_file);
                     this.input_element = ((input_element != null) ? input_element : this.input.get("documentElement"));
                 }
 
@@ -447,14 +448,15 @@ YUI.add('wfw-xml-template', function (Y) {
                 //arguments par defauts
                 if(typeof(func)=='undefined')
                     func = 'check_text';
-
+                
+                var _this=this;
                 if((select!=null||arg!=null) && node!=null)
                 {
                     node.get("attributes").each(function(attr){
                         var value = attr.get("text");
                         if(value)
                         {
-                            value = eval('this.'+func+'(select,value,arg);');
+                            value = eval('_this.'+func+'(select,value,arg);');
                             attr.set("text",value);
                         }
                     });
@@ -596,7 +598,7 @@ YUI.add('wfw-xml-template', function (Y) {
                 var next;
                 //recursivement
                 while(node!=null){
-                    next=null;    
+                    next=null;
                     switch(node.get("nodeType"))
                     {
                         case XML_ELEMENT_NODE:
@@ -629,7 +631,7 @@ YUI.add('wfw-xml-template', function (Y) {
                                 this.check_arguments(cur_select,node,arg);
                                 this.clean_attributes(node);
                                 //traite les noeuds enfants
-                                var firstChild = Y.Utils.getChildNode(node);
+                                var firstChild = wfw.Utils.getChildNode(node);
                                 if(firstChild != null)
                                 {
                                     this.check_node(cur_select,firstChild,arg);
@@ -1771,6 +1773,6 @@ YUI.add('wfw-xml-template', function (Y) {
     };
 
 }, '1.0', {
-    requires:['base','wfw','wfw-http','wfw-request', 'wfw-utils']
+    requires:['base','wfw','wfw-http','wfw-request', 'wfw-style', 'wfw-xml', 'wfw-utils']
 });
 

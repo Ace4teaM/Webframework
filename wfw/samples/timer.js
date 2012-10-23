@@ -14,13 +14,13 @@ Implentation: [23-10-2012]
 */
 
 //initialise le contenu
-YUI(wfw_yui_config).use('node', 'wfw-timer', function (Y)
+YUI(wfw_yui_config).use('node', 'wfw-timer', 'wfw-form', 'wfw-xml-template', function (Y)
 {
     var wfw = Y.namespace("wfw");
     
     var onLoad = function(e){
         // crée un nouveau timer
-        Y.Node.one("#createBtn").on("click",function create(e,p) {
+        Y.Node.one("#createBtn").on("click",function (e,p) {
             //initialise le timer
             var duration         = Y.Node.one("#duration").get("value");
             var frame_per_second = Y.Node.one("#frame_sec").get("value");
@@ -62,39 +62,37 @@ YUI(wfw_yui_config).use('node', 'wfw-timer', function (Y)
                     duration: parseInt(duration)
                 }
             );
-                
+
             //initialise le template
             var template = wfw.Template.insert(Y.Node.one("#timer_template"), Y.Node.one("#timer_list"), t);
             template.set("id", "t"+t.id);
             
+                
             //[start]
-            template.one("startBtn").on("click",function(e,p){
-                var timer_id = template.one("timer_id").get("value");
-                alert("click "+timer_id);
+            template.one("span[name='startBtn']").on("click",function(e,p){
+                var timer_id = template.one("input[name='timer_id']").get("value");
+                //alert("click "+timer_id);
                 //var states = new wfw.Timer.FREQUENCY_TIMER(timer_id+":wfw_timer_frequency_timer");
-                //or
-                //var states = new wfw.Timer.get(timer_id);
-                //states.start();
+                var states = wfw.Timer.get(timer_id);
+                states.start();
             });
             
             //[stop]
-            template.one("stopBtn").on("click",function(e,p){
-                var timer_id = template.one("timer_id").get("value");
-                alert("click "+timer_id);
+            template.one("span[name='stopBtn']").on("click",function(e,p){
+                var timer_id = template.one("input[name='timer_id']").get("value");
+                //alert("click "+timer_id);
                 //var states = new wfw.Timer.FREQUENCY_TIMER(timer_id+":wfw_timer_frequency_timer");
-                //or
-                //var states = new wfw.Timer.get(timer_id);
-                //states.stop();
+                var states = wfw.Timer.get(timer_id);
+                states.stop();
             });
             
             //[remove]
-            template.one("removeBtn").on("click",function(e,p){
-                var timer_id = template.one("timer_id").get("value");
-                alert("click "+timer_id);
+            template.one("span[name='removeBtn']").on("click",function(e,p){
+                var timer_id = template.one("input[name='timer_id']").get("value");
+                //alert("click "+timer_id);
                 //var states = new wfw.Timer.FREQUENCY_TIMER(timer_id+":wfw_timer_frequency_timer");
-                //or
-                //var states = new wfw.Timer.get(timer_id);
-                //states.remove();
+                var states = wfw.Timer.get(timer_id);
+                states.remove();
             });
         });
     };

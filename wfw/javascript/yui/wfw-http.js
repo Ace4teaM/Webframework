@@ -157,23 +157,28 @@ YUI.add('wfw-http', function (Y) {
             Arguments:
                 [string] url : URL de requête
             Retourne:
-                [string] Réponse
+                [string] Réponse, null si une exception est survenue
             Remarques:
                 Attention: IE9 n'actualise pas le cache du navigateur (même si l'header Cache-Control est passé), voir BUG 'wfw-ie9_get_request_cache_control'
         */
         get : function(url){
-            //Ceci est l'unique solution trouvé pour actualiser le cache sous I.E
-            //Cette solution doit être provisoire.
-            //En effet, l'ajout d'un argument à l'uri peut provoquer un comportement inattendu dans un script serveur
-            //(ne pas utiliser URI.remakeURI, qui ne prend pas encharge les chemins sans nom de domaine)
-            url += ((url.indexOf('?')!=-1) ? "&" : "?")+"random="+(parseInt(Math.random()*1000).toString());
-            //
-            this.httpRequest.onreadystatechange = null;//pas de callback (important)
-            this.httpRequest.open('GET', url, false, this.http_user, this.http_pwd);
-            this.httpRequest.setRequestHeader("Cache-Control","no-cache, must-revalidate"); 
-            this.httpRequest.send(null);
+            try{
+                //Ceci est l'unique solution trouvé pour actualiser le cache sous I.E
+                //Cette solution doit être provisoire.
+                //En effet, l'ajout d'un argument à l'uri peut provoquer un comportement inattendu dans un script serveur
+                //(ne pas utiliser URI.remakeURI, qui ne prend pas encharge les chemins sans nom de domaine)
+                url += ((url.indexOf('?')!=-1) ? "&" : "?")+"random="+(parseInt(Math.random()*1000).toString());
+                //
+                this.httpRequest.onreadystatechange = null;//pas de callback (important)
+                this.httpRequest.open('GET', url, false, this.http_user, this.http_pwd);
+                this.httpRequest.setRequestHeader("Cache-Control","no-cache, must-revalidate"); 
+                this.httpRequest.send(null);
 
-            return this.getResponse();
+                return this.getResponse();
+            }
+            catch(e){
+                return null;
+            }
         },
         
         /*
@@ -185,17 +190,22 @@ YUI.add('wfw-http', function (Y) {
                 [string] Réponse
         */
         post : function(url, params) {
-            if(typeof(params)=='object')
-                params = wfw.URI.object_to_query(params/*,true*/);//encode l'UTF 8
-            this.httpRequest.onreadystatechange = null;//pas de callback (important)
-            this.httpRequest.open('POST', url, false, this.http_user, this.http_pwd);
-            this.httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            //this.httpRequest.setRequestHeader("Content-length", params.length);
-            this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
-            //this.httpRequest.setRequestHeader("Connection", "close");
-            this.httpRequest.send(params);
+            try{
+                if(typeof(params)=='object')
+                    params = wfw.URI.object_to_query(params/*,true*/);//encode l'UTF 8
+                this.httpRequest.onreadystatechange = null;//pas de callback (important)
+                this.httpRequest.open('POST', url, false, this.http_user, this.http_pwd);
+                this.httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                //this.httpRequest.setRequestHeader("Content-length", params.length);
+                this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
+                //this.httpRequest.setRequestHeader("Connection", "close");
+                this.httpRequest.send(params);
 
-            return this.getResponse();
+                return this.getResponse();
+            }
+            catch(e){
+                return null;
+            }
         },
         
         /*
@@ -210,33 +220,38 @@ YUI.add('wfw-http', function (Y) {
                 L'Argument 'multipart_type' définit un des types MIME multipart standard : (mixed, digest, alternative, parallel) ou étendu : (encrypted, byteranges, etc...)
         */
         post_multipart : function(url, contents, multipart_type) {
-            var boundary_keyword = "end-of-body";
+            try{
+                var boundary_keyword = "end-of-body";
 
-            if(typeof(multipart_type)=="undefined")
-                multipart_type="form-data";
+                if(typeof(multipart_type)=="undefined")
+                    multipart_type="form-data";
 
-            this.httpRequest.onreadystatechange = null;//pas de callback (important)
-            this.httpRequest.open('POST', url, false, this.http_user, this.http_pwd);
-            this.httpRequest.setRequestHeader("Content-type", "multipart/"+multipart_type+"; boundary="+boundary_keyword);
-            this.httpRequest.setRequestHeader("MIME-Version", "1.0");
-            this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
-            //ajoute les contenus (parts) à la requête'
-            var body = "";
-            for(var x in contents)
-            {
-                var content = contents[x];
+                this.httpRequest.onreadystatechange = null;//pas de callback (important)
+                this.httpRequest.open('POST', url, false, this.http_user, this.http_pwd);
+                this.httpRequest.setRequestHeader("Content-type", "multipart/"+multipart_type+"; boundary="+boundary_keyword);
+                this.httpRequest.setRequestHeader("MIME-Version", "1.0");
+                this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
+                //ajoute les contenus (parts) à la requête'
+                var body = "";
+                for(var x in contents)
+                {
+                    var content = contents[x];
+                    body += "--"+boundary_keyword+"\r\n";
+                    for(var y in content.headers)
+                        body += content.headers[y]+"\r\n";
+                    body += "\r\n"/* + "\r\n"*/;
+                    body += content.data+"\r\n";
+                }
+                // fin de la requête
                 body += "--"+boundary_keyword+"\r\n";
-                for(var y in content.headers)
-                    body += content.headers[y]+"\r\n";
-                body += "\r\n"/* + "\r\n"*/;
-                body += content.data+"\r\n";
-            }
-            // fin de la requête
-            body += "--"+boundary_keyword+"\r\n";
-            //envoie
-            this.httpRequest.send(body);
+                //envoie
+                this.httpRequest.send(body);
 
-            return this.getResponse();
+                return this.getResponse();
+            }
+            catch(e){
+                return null;
+            }
         },
         
         /*

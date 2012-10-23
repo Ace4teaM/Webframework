@@ -24,9 +24,13 @@
             YUI(wfw_yui_config).use('base', 'wfw', 'wfw-states', 'wfw-utils','node', 'event', 'dom', function (Y)
             {
                     var wfw = Y.namespace("wfw");
-                    
-                    var node2 = Y.Node.one("form");
-                    alert( wfw.Utils.getNextNodeByTagName(node2,"templdate:div"));
+                    /*wfw.kiki="sdsq";
+                    var func = function(){alert(Y.wfw.kiki);};
+                    setTimeout(func,1000);*/
+        
+                    Y.Node.one("#ct").all("*").each(function(n){
+                        alert(n);
+                    });
             });
         }
 
@@ -51,6 +55,7 @@
             <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
 	</div>
       <template:div id="ns"></template:div>
+      <div id="ct"><div id="ct1"><div id="ct2">ssqd</div></div><div id="ct3"><div id="ct4">ssqd</div></div></div>
       <textarea id="text">Hello World</textarea>
       <input type="button" id="demo_btn" value="test" />
       <div id="demo"></div>

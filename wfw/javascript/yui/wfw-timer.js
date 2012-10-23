@@ -22,7 +22,7 @@ YUI.add('wfw-timer', function (Y) {
         /*
          * Globals
          **/
-        timers     : new Array(),//Tableau des objets timers
+        timers     : [],//Tableau des objets timers
         ticksTimer : {},//TICKS_TIMER_LIST[frequency]
         
         /*
@@ -281,7 +281,11 @@ YUI.add('wfw-timer', function (Y) {
         for(var t in this.timers)
             this.timers[t].update(time);
         //prochain appel
-        this.timeout = setTimeout('YUI().wfw.Timer.get('+this.id+').auto_update();',this.frequency);
+        var _this = this;
+        var func = function(){
+            wfw.Timer.get(_this.id).auto_update();
+        };
+        this.timeout = setTimeout(func,this.frequency);
     };
     
     /*-----------------------------------------------------------------------------------------------------------------------
@@ -432,8 +436,13 @@ YUI.add('wfw-timer', function (Y) {
 
         this.onUpdateFrame(cur,this.current_time,this.current_frame);
 
-        if(cur<this.end)
-            this.timeout = setTimeout('YUI().wfw.Timer.get('+this.id+').auto_update();',1000/this.frame_per_second);
+        var _this = this;
+        if(cur<this.end){
+            var func = function(){
+                wfw.Timer.get(_this.id).auto_update();
+            };
+            this.timeout = setTimeout(func,1000/this.frame_per_second);
+        }
         else{
             this.onFinish();
             this.stop();

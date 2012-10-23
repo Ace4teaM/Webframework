@@ -15,6 +15,19 @@
     Implementation: [19-10-2012]
 */
 
+var XML_ELEMENT_NODE = 1;
+var XML_ATTRIBUTE_NODE = 2;
+var XML_TEXT_NODE = 3;
+var XML_CDATA_SECTION_NODE = 4;
+var XML_ENTITY_REFERENCE_NODE = 5;
+var XML_ENTITY_NODE = 6;
+var XML_PROCESSING_INSTRUCTION_NODE = 7;
+var XML_COMMENT_NODE = 8;
+var XML_DOCUMENT_NODE = 9;
+var XML_DOCUMENT_TYPE_NODE = 10;
+var XML_DOCUMENT_FRAGMENT_NODE = 11;
+var XML_NOTATION_NODE = 12;
+
 YUI.add('wfw-xml', function (Y) {
     var wfw = Y.namespace('wfw');
 

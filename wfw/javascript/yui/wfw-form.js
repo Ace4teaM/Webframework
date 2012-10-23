@@ -265,7 +265,7 @@ YUI.add('wfw-form', function (Y) {
             var enumNode = form.all("*");
             enumNode.each(
                 function (node) {
-                    if (node.nodeType == ELEMENT_NODE) {
+                    if (node.nodeType == XML_ELEMENT_NODE) {
                         //
                         // multilangage input
                         //
@@ -384,13 +384,12 @@ YUI.add('wfw-form', function (Y) {
             var enumNode = form.all("*");
             enumNode.each(
                 function (node) {
-                    if (node.get("nodeType") == ELEMENT_NODE) {
+                    if (node.get("nodeType") == XML_ELEMENT_NODE) {
                         var element_name;
 
                         // element name ?
-                        if (empty(element_name = node.get('name')))
+                        if (empty(element_name = node.getAttribute('name')))
                             return; //continue
-
                         //element_name = element_name.toLowerCase();
                         var field_value = ((fields != null) && (typeof fields[element_name] != "undefined")) ? ""+fields[element_name] : null;//assume le type string
 
@@ -494,12 +493,11 @@ YUI.add('wfw-form', function (Y) {
             var enumNode = form.all("*");
             enumNode.each(
                 function (node) {
-                    if (node.get("nodeType") == ELEMENT_NODE) {
+                    if (node.get("nodeType") == XML_ELEMENT_NODE) {
                         var element_name;
 
                         // element name ?
-                        if ( empty(element_name = node.get(options.selectByAtt)) //standard (ex: 'name' in INPUT)
-                            && empty(element_name = node.getAttribute(options.selectByAtt)) ) // custom (ex: 'name' in DIV)
+                        if ( empty(element_name = node.getAttribute(options.selectByAtt)) )
                             return; //continue
                         element_name = element_name.toLowerCase();
 
@@ -587,12 +585,11 @@ YUI.add('wfw-form', function (Y) {
             var enumNode = form.all("*");
             enumNode.each(
                 function (node) {
-                    if (node.get("nodeType") == ELEMENT_NODE) {
+                    if (node.get("nodeType") == XML_ELEMENT_NODE) {
                         var element_name;
 
                         // element name ?
-                        if ( empty(element_name = node.get(att.selectByAtt)) //standard (ex: 'name' in INPUT)
-                            && empty(element_name = node.getAttribute(att.selectByAtt)) ) // custom (ex: 'name' in DIV)
+                        if ( empty(element_name = node.getAttribute(att.selectByAtt)) ) // custom (ex: 'name' in DIV)
                             return; //continue
                         element_name = element_name.toLowerCase();
                             
@@ -803,5 +800,5 @@ YUI.add('wfw-form', function (Y) {
         }
     }
 }, '1.0', {
-    requires:['base', 'wfw','wfw-request','wfw-uri','wfw-event','wfw-style','wfw-xarg']
+    requires:['base', 'wfw','wfw-request','wfw-xml','wfw-uri','wfw-event','wfw-style','wfw-xarg']
 });

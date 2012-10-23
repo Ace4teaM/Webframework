@@ -23,7 +23,7 @@
         <h2>Frequency timer test</h2>
         Duration <input type="text" id="duration" value="1000" />
         Frame/Seconde <input type="text" id="frame_sec" value="24" />
-        <span id="createBtn" onclick="create($value('duration'),$value('frame_sec'));" class="wfw_button_text">Create</span>
+        <span id="createBtn" class="wfw_button_text">Create</span>
         
         <hr />
         
@@ -31,7 +31,7 @@
         <!-- template -->
         <fieldset id="timer_template" class="wfw_hidden">
             <legend>FREQUENCY_TIMER object</legend>
-            <inpu type="hidden" name="timer_id" value="-{id}" />
+            <input type="hidden" name="timer_id" value="-{id}" />
             <div class="wfw_static_field" style="width:550px;"><span>id</span><span>-{id}</span></div>
             <div class="wfw_static_field" style="width:550px;"><span>begin</span><span name="begin"> -{begin}</span></div>
             <div class="wfw_static_field" style="width:550px;"><span>end</span><span name="end"> -{end}</span></div>

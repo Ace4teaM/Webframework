@@ -94,7 +94,7 @@ YUI.add('wfw-utils', function (Y) {
             var child = node.get("firstChild");
             if(child == null) {
                 var childList = node.get("childNodes");
-                if(childList != null)
+                if(childList.size())
                     return childList.get(0);
             }
             return child;
