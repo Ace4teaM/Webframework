@@ -14,12 +14,91 @@
     YUI Dependences: base, wfw
 
     Implementation: [17-10-2012] 
-*/
+ */
 
 YUI.add('wfw-utils', function (Y) {
     var wfw = Y.namespace('wfw');
     
     wfw.Utils = {
+        /*
+            Obtient le prochain Element par son nom de balise
+            Parametres:
+                [HTMLElement] node    : Element de base
+                [string]      tagName : Nom de balise a retourner. (insensible a la case)
+            Retourne:
+                [HTMLElement] Le noeud trouvé, null si introuvable.
+
+         */
+        getNextNodeByTagName : function(node,tagName)
+        {
+            return node.next(
+                function(next){
+                    if(next.get("tagName").toLowerCase() == tagName.toLowerCase())
+                        return next;
+                }
+            );
+        },
+        
+        /*
+            Importe un noeud dans le document en cours
+
+            Retourne:
+                [Node] Le noeud inséré.
+         */
+        importNode : function(doc, node, allChildren)
+        {
+            if(typeof(doc.importNode) != "undefined")
+                return doc.importNode(node, allChildren);
+            
+            /* find the node type to import */
+            switch (node.get("nodeType"))
+            {
+                case XML_ELEMENT_NODE:
+                    /* cree l'element */
+                    var newNode = doc.create("<"+node.get("nodeName")+">");
+                    var i;
+
+                    /* insert les attributs */
+                    node.get("attributes").each(function(attr){
+                        newNode.setAttribute(attr.get("name"), attr.get("text"));
+                    });
+
+                    /* insert les noeuds enfants */
+                    var childs = node.get("childNodes").each(function(child){
+                        Y.importNode(doc,child,allChildren);
+                        if(insert!=null)
+                            newNode.append(insert);
+                    });
+
+                    return newNode;
+
+                case XML_TEXT_NODE:
+                case XML_CDATA_SECTION_NODE:
+                case XML_COMMENT_NODE:
+                    return doc.create(node.get("text"));
+
+                default:
+                    wfw.puts("ignored node "+node.get("nodeType"));
+                    return null;
+            }
+        },
+        
+        /*
+            Obtient le prochain element enfant
+            Paramètres:
+                [HTMLNode] node : Noeud parent
+            Retourne:
+                [HTMLNode] Noeud enfant, null si introuvable
+         */
+        getChildNode : function(node) {
+            var child = node.get("firstChild");
+            if(child == null) {
+                var childList = node.get("childNodes");
+                if(childList != null)
+                    return childList.get(0);
+            }
+            return child;
+        },
 
         /*
             Obtient la largeur du client
@@ -27,7 +106,7 @@ YUI.add('wfw-utils', function (Y) {
                 [HTMLDocument] doc : Optionel, document concerné.
             Retourne:
                 [int] Largeur (dans l'unité définit).
-        */
+         */
         getClientWidth : function(doc) {
             if(doc == "undefined")
                 doc = Y.Node.one("document");
@@ -40,7 +119,7 @@ YUI.add('wfw-utils', function (Y) {
                 [HTMLDocument] doc : Optionel, document concerné.
             Retourne:
                 [int] Hauteur (dans l'unité définit).
-        */
+         */
         getClientHeight : function(doc) {
             if(doc == "undefined")
                 doc = Y.Node.one("document");
@@ -170,7 +249,7 @@ YUI.add('wfw-utils', function (Y) {
         En cas d'erreur, l'erreur est traité et affiché par la fonction wfw.utils.onRequestMsg (voir documentation)
         En cas d'echec, l'erreur est traité et affiché par la fonction wfw.form.onFormResult (voir documentation)
             [Le nom de la form utilisé pour le résultat est définit par l'argument 'wfw_form_name' (si définit) sinon le nom de l'objet de requête]
-        */
+         */
         onCheckRequestResult_XML: function (obj) {
             var bErrorFunc = 0;
             var bSuccessFunc = 0;
@@ -234,7 +313,7 @@ YUI.add('wfw-utils', function (Y) {
         rien
         Remarques:
         En cas d'echec, l'erreur est traité et affiché par la fonction wfw.utils.onRequestMsg (voir documentation)
-        */
+         */
         onCheckRequestResult: function (obj) {
             var bErrorFunc = 0;
             var bSuccessFunc = 0;
@@ -259,7 +338,7 @@ YUI.add('wfw-utils', function (Y) {
         [DOMDocument] Document XML, null en cas d'erreur
         Remarques:
         L'Elément root du document est nommé "data"
-        */
+         */
         fieldsToXML: function (fields) {
             /*fields to xmlDoc (Compatible)*/
             var doc_text = '<?xml version="1.0"?><data>';
@@ -307,7 +386,7 @@ YUI.add('wfw-utils', function (Y) {
                 [string] text: Texte brut
             Retourne:
                 [string] texte HTML
-        */
+         */
         strToHTML: function (text) {
             text = text.replace(/</g, "&lt;");
             text = text.replace(/>/g, "&gt;");

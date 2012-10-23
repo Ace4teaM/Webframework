@@ -5,9 +5,7 @@
     <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
     <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
     <script type="text/javascript" language="javascript" src="../yui/loader/loader-min.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-base.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-states.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-http.js"></script>
+    <script type="text/javascript" language="javascript" src="yui_config.js"></script>
     <style type="text/css">
         .a{
             background-color: white;
@@ -23,13 +21,12 @@
         function onLoad(){
             
             //initialise le contenu
-            YUI().use('base', 'wfw', 'wfw-states', 'wfw-http','node', 'event', 'dom', function (Y)
+            YUI(wfw_yui_config).use('base', 'wfw', 'wfw-states', 'wfw-utils','node', 'event', 'dom', function (Y)
             {
                     var wfw = Y.namespace("wfw");
                     
-                    var new_element = Y.Node.one("#listB");
-                    var parent = new_element.ancestor("#list");
-                    alert(parent);
+                    var node2 = Y.Node.one("form");
+                    alert( wfw.Utils.getNextNodeByTagName(node2,"templdate:div"));
             });
         }
 
@@ -44,15 +41,16 @@
             <input id="my_field5" type="text" value="item1;item2;" wfw_fieldbar="on" />
             <input id="check" type="checkbox" checked="checked" />
 	</form>
-	<div class="a" id="list" style="border:1px solid black;">
+	<div class="a" id="list" template:action="test" style="border:1px solid black;">
             <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
 	</div>
-	<div class="a" id="list1" style="border:1px solid black;">
+      <div class="a" id="list1" onshow="dfsdfs" style="border:1px solid black;">
             <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
 	</div>
 	<div class="a" id="list2" style="border:1px solid black;">
             <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
 	</div>
+      <template:div id="ns"></template:div>
       <textarea id="text">Hello World</textarea>
       <input type="button" id="demo_btn" value="test" />
       <div id="demo"></div>
