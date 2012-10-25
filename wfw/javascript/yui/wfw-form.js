@@ -20,15 +20,16 @@ YUI.add('wfw-form', function (Y) {
     var wfw = Y.namespace('wfw');
     
     wfw.Form = {
-        /*
-                Vérifie et traite le résultat d'une requête de formulaire
-                Arguments:
-                    [string]          form_name : Nom de l'élément <FORM>
-                    [Result.RESULT]   result    : L'Objet résultat
-                    [Request.REQUEST] req_obj   : L'Objet requête
-                Retourne:
-                    [void]
-             **/
+        /**
+         *
+         *   Vérifie et traite le résultat d'une requête de formulaire
+             Arguments:
+         *       @param [string]          form_name : Nom de l'élément <FORM>
+         *       @param [Result.RESULT]   result    : L'Objet résultat
+         *       @param [Request.REQUEST] req_obj   : L'Objet requête
+             Retourne:
+         *       @return [void]
+        */
         onFormResult: function (form_name, result, req_obj) {
 
             var title = result.error;

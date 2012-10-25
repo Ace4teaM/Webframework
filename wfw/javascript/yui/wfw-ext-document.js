@@ -599,9 +599,9 @@ YUI.add('wfw-document', function (Y) {
                         wfw.puts("wfw.ext.document.lockFrame : iframe element creation failed !");
                         return false;
                     }
-                    frame_obj.set("src",this.user.file_name);
-                    frame_obj.set("id",this.id+"_frame");
-                    frame_obj.set("name",filename(this.user.file_name));
+                    frame_obj.setAttribute("src",this.user.file_name);
+                    frame_obj.setAttribute("id",this.id+"_frame");
+                    frame_obj.setAttribute("name",filename(this.user.file_name));
                     wfw.Style.addClass(frame_obj,"wfw_ext_dialog_frame");
 
                     //insert le contenu
@@ -644,7 +644,7 @@ YUI.add('wfw-document', function (Y) {
                     var resize_event = function(dlg)
                     {
                         //ajuste la taille de la frame à son contenu
-                        var frame_content = Y.Node.get("#wfw_ext_content",dlg.user.doc_frame);
+                        var frame_content = dlg.user.doc_frame.one("#wfw_ext_content");
                         if(frame_content)
                         {
                             //utilise l'element 'wfw_ext_content'
@@ -663,8 +663,8 @@ YUI.add('wfw-document', function (Y) {
                     frame_obj.on("load",function(e,dlg)
                     {
                         //assigne le document au globales
-                        dlg.user.doc_frame = this.get("contentWindow").get("document");
                         dlg.user.wnd_frame = this.get("contentWindow");
+                        dlg.user.doc_frame = this.get("contentWindow").get("document");
                         dlg.user.frame_obj = this;
 
                         //ajuste la taille de la frame à son contenu
@@ -672,7 +672,7 @@ YUI.add('wfw-document', function (Y) {
 
                         //initialise le titre
                         if(empty(dlg.title)){
-                            var title_node = Y.Node.one("html > head > title", dlg.user.doc_frame);
+                            var title_node = dlg.user.doc_frame.one("html > head > title");
                             if(title_node)
                                 Y.Node.one("#"+dlg.id+"_header").set("text",title_node.get("text"));
                         }

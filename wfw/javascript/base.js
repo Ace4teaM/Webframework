@@ -1,5 +1,5 @@
 /*
-    (C)2008-2010 ID-Informatik. All rights reserved.
+    (C)2008-2012 ID-Informatik. All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
     Warning this script is protected by copyright, if you want to use this code you must ask permission:
     Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
@@ -8,47 +8,9 @@
         contact@id-informatik.com
     ---------------------------------------------------------------------------------------------------------------------------------------
 
-    WebFrameWork(R) version: 1.3
-
     Fonctions globales de bases utiles
 
-    [XX-XX-2010], Ajout de la fonction parseHTTPHeader
-    [XX-XX-2010], Ajout de la fonction str_url_to_array
-    [05-08-2010], Les fonctions sont prototype a l'objet String
-    [13-10-2010], Ajoute les fonctions: rtrim, ltrim, trim, empty
-    [18-10-2010], Ajoute la fonction: filename
-    [23-10-2010], Met a jour les constantes ERR_FAILED et ERR_OK.
-    [25-10-2010], Supprime les fonctions: str_urlencoding_to_array() et object_to_urlencoding(), Remplace par wfw.uri.query_to_object() et wfw.uri.object_to_query()
-    [25-10-2010], Modifie x_request_arguments_parse() ajout de l'argument 'bencoded'.
-    [25-10-2010], Supprime la fonction x_request_arguments_urlencoded_parse() qui est remplace par x_request_arguments_parse().
-    [17-02-2011], x_request_arguments_parse(), version 4.
-    [28-02-2011], Ajout de copy().
-    [28-02-2011], Ajout de associate_array().
-    [31-03-2011], Ajout de cInputString{}.
-    [25-06-2011], Ajout de length();
-    [23-09-2011], Ajout de keyfirst() et keylast()
-    [04-10-2011], Ajout de strtoid()
-    [11-11-2011], Ajout de strimplode() et fileext()
-    [11-11-2011], Ajout de uniqid()
-    [19-11-2011], Ajout de zerolead(), minToHour(), date()
-    [21-11-2011], Ajout de dirname(), class_exists()
-    [21-11-2011], Modify class_exists()
-    [28-11-2011], Modify strtoid()
-    [12-12-2011], Ajout de trimtext()
-    [12-12-2011], Ajout de sizeToByte(), byteToSize()
-    [13-12-2011], Update date(), si l'argument 'timestamp' n'est pas définit la date en cours est utilisé
-    [14-12-2011], Add set_fileext()
-    [17-12-2011], Update x_request_arguments_parse(), utilise new Object() au lieu de new Array() 
-    [17-12-2011], Debug objAlertMembers(), n'affiche pas la valeur des nombres negatifs [resolue]
-    [21-12-2011], Debug objAlertMembers() gere les objets indéfini
-    [28-12-2011], Add have_method()
-    [02-01-2012], Remplace associate_array() par object_merge()
-    [02-01-2012], Remplace array_flip() par object_flip()
-    [02-01-2012], Update zerolead(), utilise 'trim'
-    [02-01-2012], Implémente le format de documentation en ligne
-    [30-01-2012], Update cInput.. classes
-    [10-03-2012], Debug, objAlertMembers() securise la fonction
-    [10-03-2012], Debug copy(), transforme les types 'null' en objet [resolue]
+    [2010], Implementation
 */
 
 /*--------------------------------------------------------------------------------------------------------------------------------------
@@ -58,8 +20,8 @@ Divers
 
 /**
 *Retourne une valeur tronqué (rotative)
-*@param [numeric] Valeur
-*@param [numeric] Valeur maximum
+*@param [numeric] val Valeur
+*@param [numeric] max Valeur maximum
 *@return [string] L'Identifiant
 *@remark Si la valeur 'val' depasse le seuil maximale, le restant de la valeur est ramené a zéro
 */
@@ -76,6 +38,7 @@ function rotval(val, max) {
  *(Ne pas modifier explicitement)
  */
 var _uniqid_cnt = 0;
+
 /**
 *    Génére un identifiant unique
 *    @return [string] Identifiant unique
