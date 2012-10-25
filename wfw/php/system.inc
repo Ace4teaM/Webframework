@@ -17,6 +17,7 @@ else if(linux_server())
 else exit(1);
 
 //instancie les classes managers
-global $taskMgr = new cSysTaskMgr();
+global $taskMgr;
+$taskMgr = new cSysTaskMgr();
 
 ?>
