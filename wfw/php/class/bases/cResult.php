@@ -1,42 +1,37 @@
 <?php
-
 /**
- * Résultat de procédure (Webframework)
- *
- * @author id-informatik
+ * @brief Résultat de procédure (Webframework)
  */
 class cResult {
-    /** @var [int] Code de l'erreur */
+    /**
+     * @brief Code de l'erreur
+     * @var int $code
+     */
     public $code;
     
-    /** @var [string] Identifiant précisiant l'erreur */
+    /**
+     * @brief Identifiant précisiant l'erreur
+     * @var string $info
+     */
     public $info;
     
-    //emule l'appel à un constructeur multiple
-    public function __constructor(){
-        $argv = func_get_args(); 
-        $argc = func_num_args(); 
-        $f='__construct'.$argc;
-        if (method_exists($this,$f)) { 
-            call_user_func_array(array($this,$f),$argv); 
-        }
-    }
-    
-    public function __constructor0(){
-        $this->code = ERR_OK;
-        $this->info = "no_error";
-    }
-    
-    public function __constructor1($code){
-        $this->code = $code;
-        $this->info = "";
-    }
-    
-    public function __constructor2($code, $info){
+    /**
+     * @brief Constructeur de la classe  
+     * @param int    $code  Code de l'erreur
+     * @param string $info  Identifiant décrivant plus en détail le résultat
+     * @remarks Voir cResult pour plus de détails sur les codes d'erreurs
+     */
+    public function cResult($code, $info){
         $this->code = $code;
         $this->info = $info;
     }
     
+    /**
+     * @brief Test le résultat
+     * @return bool Etat du succès
+     * @retval true Le résultat est un succès (==0)
+     * @retval false Le résultat est un échec (!=0)
+     */
     public function isOK(){
         return ($this->code == ERR_OK ? true : false);
     }

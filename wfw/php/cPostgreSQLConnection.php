@@ -1,30 +1,22 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of cPostgreSQLConnection
- *
- * @author www-data
- */
-
 require_once 'class/bases/iDatabaseConnection.php';
 
+/**
+ * @brief Interface de connexion avec la base de données PostgreSQL
+ * @copydoc iDatabaseConnection 
+ */
 class cPostgreSQLConnection implements iDatabaseConnection
 {
-	public $db_conn = null;
-        
-        public function __destruct() {
-            $this->disconnect();
-        }
-	
-	/*
-	 * 	Connexion à la base de données
-	*/
-	function connect($user = "postgres", $name = "postgres", $pwd = "admin", $server = "localhost", $port = 5432)
+    /**
+     * @brief Ressource de connexion retournée par pg_connect()
+     */
+	private $db_conn = null;
+
+    /**
+     * @copydoc iDatabaseConnection::connect
+     */
+	public function connect($user = "postgres", $name = "postgres", $pwd = "admin", $server = "localhost", $port = 5432)
 	{
 		//connexion
 		$this->db_conn = pg_connect("host=$server port=$port dbname=$name user=$user password=$pwd");
@@ -34,10 +26,10 @@ class cPostgreSQLConnection implements iDatabaseConnection
 		return proc_result(ERR_OK);
 	}
 
-	/*
-	 * Deconnexion de la base de données
-	*/
-	function disconnect()
+	/**
+	 * @copydoc iDatabaseConnection::disconnect
+	 */
+	public function disconnect()
 	{
 		if($this->db_conn){
 			pg_close($this->db_conn);
@@ -46,21 +38,26 @@ class cPostgreSQLConnection implements iDatabaseConnection
 	}
 	
 	/**
-	 * Appel une fonction PL/SQL et retourne le resultat
-	 * Paramètres:
-	 * @param schema   Nom de schema dans la base de données
-	 * @param func     Nom de la fonction
-	 * @param arg_list Tableau associatif des arguments d'appel à la fonction 
-	 * @return Tableau associatif du resultat
+	 * @copydoc iDatabaseConnection::call
 	 */
 	public function call($schema,$func,$arg_list){
 		$req = "";
-	    for($i=0;$i<count($arg_list);$i++){
-	        $req .= ($i ? "," : '')."'".pg_escape_string($arg_list[$i])."'";//echaper les apostrophes
-	    }
+        if($arg_list !== null){
+            for($i=0;$i<count($arg_list);$i++){
+                $req .= ($i ? "," : '')."'".pg_escape_string($arg_list[$i])."'";//echaper les apostrophes
+            }
+        }
 		$res = pg_query($this->db_conn, "select * from $schema.$func($req);");
 		return pg_fetch_row($res);
 	}
+    
+    /**
+     * @brief Libére la connexion
+     */
+    private function __destruct() {
+        $this->disconnect();
+    }
+	
 }
 
 

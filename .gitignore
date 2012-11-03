@@ -1,4 +1,5 @@
 /wfw/yui/
-/nbproject/
+/wfw/modules/
+/doc
 .*
 !/.gitignore
