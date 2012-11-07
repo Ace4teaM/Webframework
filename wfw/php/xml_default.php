@@ -187,7 +187,7 @@ class cXMLDefault
             return $tree_node;
 		//enumere les noeud
 		$ret = $this->doc->enumNodes($tree_node->firstChild,
-			function($node,$condition) use ($page_id){
+			function($node,&$condition) use ($page_id){
 				if($node->nodeType == XML_ELEMENT_NODE && $node->tagName == $page_id )
 				{
 					return $node;

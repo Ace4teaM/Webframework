@@ -1,4 +1,8 @@
 <?php
+
+$libdir = realpath(dirname(__FILE__)."/../..");
+
+require_once("$libdir/php/class/bases/input.php");
 // Entier numerique 
 // Aucun Standard
 class cInputInteger extends cInput

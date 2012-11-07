@@ -1,4 +1,10 @@
 <?php
+
+$cwd = realpath(dirname(__FILE__));
+$libdir = realpath("$cwd/../..");
+
+require_once("$libdir/php/class/bases/input.php");
+
 // Mot de passe ASCII 
 // Aucun Standard
 class cInputPassword extends cInput

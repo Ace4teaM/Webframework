@@ -1,4 +1,9 @@
 <?php
+
+$libdir = realpath(dirname(__FILE__)."/../..");
+
+require_once("$libdir/php/class/bases/input.php");
+
 // Nombre a virgule 
 // Aucun Standard
 class cInputFloat extends cInput

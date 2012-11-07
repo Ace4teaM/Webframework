@@ -36,7 +36,7 @@ class XMLDocument extends DOMDocument
 			$bNext = true;
 		while($node){
 			$cond = array();
-			if(($result=$callback($node,&$cond)) !== TRUE)
+			if(($result=$callback($node,$cond)) !== TRUE)
 				return $result;
 			$child = $node->firstChild;
 			if(($child != null) && (!isset($cond["ignore_child"]))){

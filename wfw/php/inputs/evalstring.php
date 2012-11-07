@@ -1,7 +1,13 @@
 <?php
-require_once("int.php");
-require_once("float.php");
-require_once("name.php");
+
+$cwd = realpath(dirname(__FILE__));
+$libdir = realpath("$cwd/../..");
+
+require_once("$libdir/php/class/bases/input.php");
+
+require_once("$cwd/int.php");
+require_once("$cwd/float.php");
+require_once("$cwd/name.php");
 // numerique 
 // Aucun Standard
 class cInputEvalString extends cInput

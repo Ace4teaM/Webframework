@@ -7,6 +7,10 @@
    [xx-xx-2010], corrige la methode ::isValid(). 
    [23-11-2010], Debug isValid(), accept le caractere '-' dans le format du nom de domaine.
 */
+
+$libdir = realpath(dirname(__FILE__)."/../..");
+
+require_once("$libdir/php/class/bases/input.php");
 // Adresse eMail
 // RFC-2822 ( non-certifié)
 class cInputMail extends cInput

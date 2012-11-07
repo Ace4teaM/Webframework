@@ -75,6 +75,22 @@ function include_path($dir){
 	}
 	return $return;
 }
+        
+function require_path($dir,$include_func="include_once"){
+	$return = array();
+	// liste les fichiers...
+	if ($dh = opendir($dir)) {
+		$file;
+		while(($file = readdir($dh)) !== false) {
+			if( (is_file($dir . $file)) && ($file!=".") && ($file!="..") && (substr($file,-4)==".php") ) {
+				$return[] = require_once($dir . $file);
+			}
+		}
+		closedir($dh);
+	}
+	return $return;
+}  
+    
 
 //genere un nom de fichier unique
 function uniq_filename($base_name,$dir){

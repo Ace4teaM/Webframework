@@ -4,6 +4,10 @@
 	La classe cInputBool test une valeur booleen
 */
 
+$libdir = realpath(dirname(__FILE__)."/../..");
+
+require_once("$libdir/php/class/bases/input.php");
+
 class cInputBool extends cInput
 {
 	public static function isValid($value){

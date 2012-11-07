@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+    <title>Webframework Minimal Web Site</title>
+    <name>Webframework</name>
+    <base>webframework</base>
+    <description>Exemple Web Site</description>
+
+    <index>
+        <page id="index" name="Accueil">index.php</page>
+    <!--contact-->
+        <title id="contact">AceTeaM</title>
+        <mail id="contact">dev@aceteam.org</mail>
+        <mail id="no-reply">no-reply@aceteam.org</mail>
+    <!--autres-->
+        <image id="logo">bin/pictures/logo.png</image>
+        <image id="icon">bin/pictures/logo.ico</image>
+    </index>
+
+    <tree>
+        <index/>
+    </tree>
+
+</site>

@@ -340,4 +340,65 @@ class cTemplateMarkerdefault extends cTemplateMarker
 	}
 }
 
+/*
+check_default_attribute
+	Syntaxe: -{index_identifier:identifier@attribute_identifier }
+	Retourne la valeur d'un attribut dans la selection par defaut
+check_default_value
+	Syntaxe: -{index_identifier:identifier}
+	Retourne la valeur d'un element du fichier defaut.xml
+check_default_uri
+	Syntaxe: -{:page_identifier}
+	Retourne l'uri complete d'une page
+*/ 
+
+class cTemplateMarker_node extends cTemplateMarker
+{
+	public $sitefile;
+	
+	public static function exp()
+	{
+		return array(
+			('('.cInputName::regExp().')'.'\['.'('.cInputName::regExp().')')                                   => 'check_value',
+			('('.cInputName::regExp().')'.'\['.'('.cInputName::regExp().')'.'\@'.'('.cInputName::regExp().')') => 'check_attribute',
+		);
+	}
+	
+	function __construct($input,&$arg)
+	{
+	}
+	
+        
+	
+	public function check_value($input,$select,$matches,&$arg)
+	{
+		$type  = $matches[1];
+		$Id    = $matches[2];
+                
+                $first = XMLDocument::getNextChildNode($select,$type);
+                while($first != NULL){
+                    if($first->getAttribute("id") == $Id)
+                        return $first->nodeValue;
+                    $first = XMLDocument::getNext($first,$type);
+                }
+                return "";
+	}
+
+	public function check_attribute($input,$select,$matches,&$arg)
+	{
+		$type = $matches[1];
+		$Id   = $matches[2];
+		$attId    = $matches[3];
+		
+                $first = XMLDocument::getNextChildNode($select,$type);
+                while($first != NULL){
+                    if($first->getAttribute("id") == $Id)
+        		return $first->getAttribute($attId);
+ 
+                    $first = XMLDocument::getNext($first,$type);
+                }
+                return "";
+	}
+} 
+
 ?>

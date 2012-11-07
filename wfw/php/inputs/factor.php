@@ -1,5 +1,11 @@
 <?php
-// Facteur de 0 à 1 
+
+$cwd = realpath(dirname(__FILE__));
+$libdir = realpath("$cwd/../..");
+
+require_once("$libdir/php/class/bases/input.php");
+
+// Facteur de 0 ï¿½ 1 
 // Aucun Standard
 class cInputFactor extends cInput
 {

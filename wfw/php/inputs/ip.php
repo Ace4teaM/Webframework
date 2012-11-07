@@ -1,4 +1,8 @@
 <?php
+
+$libdir = realpath(dirname(__FILE__)."/../..");
+
+require_once("$libdir/php/class/bases/input.php");
 // Chaine de carcteres 
 // Aucun Standard
 class cInputIPv4 extends cInput

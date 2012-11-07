@@ -1,4 +1,10 @@
 <?php
+
+$cwd = realpath(dirname(__FILE__));
+$libdir = realpath("$cwd/../..");
+
+require_once("$libdir/php/class/bases/input.php");
+
 // Chaine de carcteres 
 // Aucun Standard
 class cInputString extends cInput

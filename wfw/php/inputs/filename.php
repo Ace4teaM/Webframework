@@ -4,6 +4,10 @@
 	La classe cInputFileName valide le format d'un nom de fichier
 */
 
+$libdir = realpath(dirname(__FILE__)."/../..");
+
+require_once("$libdir/php/class/bases/input.php");
+
 class cInputWindowsFileName extends cInput
 {
 	public static function isValid($value){
