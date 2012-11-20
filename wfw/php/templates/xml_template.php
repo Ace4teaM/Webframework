@@ -115,6 +115,10 @@ class cXMLTemplate {
     //Element de selection principale (entrée)
     public $input_element = NULL;
 
+    public function setRootPath($path) {
+        $this->var_path = $path;
+    }
+    
     public function Initialise($input_file, $input_element, $select_file, $select_element, $arg) {
         $timestamp = time();
         $this->arg = $arg;
@@ -127,7 +131,8 @@ class cXMLTemplate {
         $this->doc = NULL;
 
         // hostname  
-        $hostname = ""; {
+        $hostname = "";
+        {
             exec("hostname", $hostname, $return);
             if ($return == 0)
                 $hostname = strtolower($hostname[0]);
@@ -583,7 +588,7 @@ class cXMLTemplate {
     //scan le noeud donne et les noeuds suivants
     public function post($title, $msg) {
         //rpost($title,$msg);
-        echo($title . " " . $msg . "\n");
+        //echo($title . " " . $msg . "\n");
     }
 
     //nettoie les noeuds
@@ -671,7 +676,6 @@ class cXMLTemplate {
             $path = substr($path, 0, -1);
         $filename = $path . "/" . $name;
 
-        $this->post("load_xml_file", $filename);
 
         //
         if (!isset($this->xml_files[$name])) {
@@ -684,6 +688,8 @@ class cXMLTemplate {
                 $this->post("load_xml_file", "$filename can't load");
                 return NULL;
             }
+            
+            $this->post("load_xml_file", "$filename OK");
             $this->xml_files[$name] = $file;
         }
 
@@ -704,6 +710,45 @@ class cXMLTemplate {
      */
 
     public function get_xml_selection($current_select, $arg, $path, $conditions = NULL) {
+        
+        //
+        // charge un nouveau fichier...
+        //
+	if (substr($path, 0, 1) == ':') { //absolue
+            $filename = cRegExpFmt::filename();
+            if (preg_match("'^:(.*):(.*)$'", $path, $matches)) {
+                //   if(preg_match("'^:($filename){1}:(.*)$'",$path,$matches)){
+                $this->post("get_xml_selection", $matches[1] . " -> " . $matches[2]);
+                if ($varfile = $this->load_xml_file($matches[1]))
+                    return $this->get_xml_selection($varfile->documentElement, $arg, $matches[2], $conditions); //ok, re-selectionne avec le chemin seulement 
+                return NULL;
+            }
+            else {
+                $this->post("get_xml_selection", "($path) path invalid format!");
+                return NULL;
+            }
+        }
+
+        //
+        // recherche dans le fichier en cours...
+        //         
+
+        if ($current_select == NULL) {
+            $this->post("get_xml_selection", "no input file!");
+            return NULL;
+        }
+
+        //obtient le fichier en cours
+        $varfile = $current_select->ownerDocument;
+        
+        if(empty($path))
+            return $varfile->documentElement;
+        
+        //obtient la selection
+        return $varfile->one($path, $current_select);
+    }
+    
+    public function get_xml_selection_old($current_select, $arg, $path, $conditions = NULL) {
 
         //
         // charge un nouveau fichier...

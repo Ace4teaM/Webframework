@@ -4,6 +4,6 @@ global $app;
 
 //print_r($app);
 
-$app->showXMLView("view/pages/index.html",NULL,array());
+$app->showXMLView("view/pages/contact.html",NULL,array());
 
 ?>

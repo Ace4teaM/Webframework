@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Interface principale de l'application 
+ * @brief Interface principale avec l'application 
  */
 class Application{
     public $config;
@@ -14,7 +14,7 @@ class Application{
     }
     
     /**
-     * Obtient le chemin d'accès vers l'application
+     * @brief Obtient le chemin d'accès vers l'application
      * @return string Chemin absolue vers la racine de l'application
      */
     function getRootPath(){
@@ -22,7 +22,7 @@ class Application{
     }
     
     /**
-     * Obtient un chemin d'accès depuis la configuration locale
+     * @brief Obtient un chemin d'accès depuis la configuration locale
      * 
      * @param string $name Identifiant de la librairie
      * @param bool $relatif Si true retourne le chemin relatif, sinon le chemin absolue
@@ -41,10 +41,12 @@ class Application{
     }
     
     /**
-     * Fabrique une vue HTML
+     * @brief Fabrique une vue HTML
+     * @param string $filename Chemin d'accès au fichier template (relatif à la racine du site)
+     * @param string $attributes Tableau associatif des champs en entrée (voir cHTMLTemplate::transform)
      * @return string Contenu du template transformé
      */
-    function makeHTML($filename,$attributes){
+    function makeHTMLView($filename,$attributes){
 	return cHTMLTemplate::transform(
            //fichier..
            file_get_contents($this->root_path.'/'.$filename),
@@ -54,36 +56,46 @@ class Application{
     }
     
     /**
-     * Affiche une vue HTML dans la sortie standard
+     * @brief Fabrique puis affiche une vue HTML dans la sortie standard
+     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
+     * @param $attributes Tableau associatif des champs en entrée (voir cHTMLTemplate::transform)
      */
-    function showHTML($filename,$attributes){
-        $content = $this->makeHTML($filename,$attributes);
+    function showHTMLView($filename,$attributes){
+        $content = $this->makeHTMLView($filename,$attributes);
         header("Content-type: text/html");
         echo $content;
     }
     
     /**
-     * Fabrique une vue XML/XHTML
+     * @brief Fabrique une vue XML/XHTML
+     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
+     * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
+     * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @return string Contenu du template transformé
      */
-    function makeXML($filename,$select,$attributes){
-        
-        //transforme 
+    function makeXMLView($filename,$select,$attributes){ 
         $template = new cXMLTemplate();
+        
+        //charge le fichier de configuration
+        $template->load_xml_file('default.xml',$this->root_path);
+        
+        //initialise la classe template 
         if(!$template->Initialise($this->root_path.'/'.$filename,NULL,$select,NULL,$attributes)){
                 return false;
         }
-        
-        $template->load_xml_file('default.xml',$this->root_path);
 
+        //transforme le fichier
 	return $template->Make();
     }
     
     /**
-     * Affiche une vue XML/XHTML dans la sortie standard
+     * @brief Fabrique puis affiche une vue XML/XHTML dans la sortie standard
+     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
+     * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
+     * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      */
-    function showXML($filename,$select,$attributes){
-        $content = $this->makeXML($filename,$select,$attributes);
+    function showXMLView($filename,$select,$attributes){
+        $content = $this->makeXMLView($filename,$select,$attributes);
         echo $content;
     }
 

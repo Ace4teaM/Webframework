@@ -236,29 +236,39 @@ class cTemplateMarkerdefault extends cTemplateMarker
 	{
 		if( $this->sitefile = $input->load_xml_file("default.xml") )
 		{
-			//Nom de domaine
-			$arg["__domain__"]       = $this->getdefault($input,"domain",$arg["__hostname__"]); 
-			//URI sans protocol
-			$arg["__uri_nop__"]      = $arg["__domain__"].$this->getdefault($input,"path",$arg["__hostname__"])."/";               
-			//URI sans protocol
-			$arg["__base_uri_nop__"] = $arg["__domain__"].$this->getdefault($input,"base_path",$arg["__hostname__"])."/"; 
-			//URI complete
-			$arg["__uri__"]          = "http://".$arg["__domain__"].$this->getdefault($input,"path",$arg["__hostname__"])."/";    
-			//URI racine complete
-			$arg["__base_uri__"]     = "http://".$arg["__domain__"].$this->getdefault($input,"base_path",$arg["__hostname__"])."/";  
-			//URI racine complete
-			$arg["__path__"]         = $this->getdefault($input,"path_root",$arg["__hostname__"])."/";
-			//SiteName
-			$node = $this->sitefile->getNode("site/name");
-			$arg["__name__"]         = ($node ? $node->nodeValue : "");
-			$node = $this->sitefile->getNode("site/title");
-			$arg["__title__"]         = ($node ? $node->nodeValue : "");
-			//SiteDesc
-			$node = $this->sitefile->getNode("site/description");
-			$arg["__description__"]  = ($node ? $node->nodeValue : "");
-			//id
-			$node = $this->sitefile->getNode("site/id");
-			$arg["__id__"]           = ($node ? $node->nodeValue : "");
+                    //host config
+                    $hostname = $arg["__hostname__"];
+                    if(!empty($hostname)){
+                        //Nom de domaine
+                        $node = $this->sitefile->one(">host[id=$hostname]>domain");
+                        $arg["__domain__"]       = ($node ? $node->nodeValue : "");
+                        //URI sans protocol
+                        $node = $this->sitefile->one(">host[id=$hostname]>path");
+                        $arg["__uri_nop__"]      = ($node ? $node->nodeValue : "");             
+                        //URI sans protocol
+                        $node = $this->sitefile->one(">host[id=$hostname]>base_path");
+                        $arg["__base_uri_nop__"] = ($node ? $node->nodeValue : ""); 
+                        //URI complete
+                        $node = $this->sitefile->one(">host[id=$hostname]>path");
+                        $arg["__uri__"]          = "http://".$arg["__domain__"].($node ? $node->nodeValue : "")."/";    
+                        //URI racine complete
+                        $node = $this->sitefile->one(">host[id=$hostname]>base_path");
+                        $arg["__base_uri__"]     = "http://".$arg["__domain__"].($node ? $node->nodeValue : "")."/";  
+                        //URI racine complete
+                        $node = $this->sitefile->one(">host[id=$hostname]>path_root");
+                        $arg["__path__"]         = ($node ? $node->nodeValue : "")."/";
+                    }
+                    //SiteName
+                    $node = $this->sitefile->one(">name");
+                    $arg["__name__"]         = ($node ? $node->nodeValue : "");
+                    $node = $this->sitefile->one(">title");
+                    $arg["__title__"]        = ($node ? $node->nodeValue : "");
+                    //SiteDesc
+                    $node = $this->sitefile->one(">description");
+                    $arg["__description__"]  = ($node ? $node->nodeValue : "");
+                    //id
+                    $node = $this->sitefile->one(">id");
+                    $arg["__id__"]           = ($node ? $node->nodeValue : "");
 		}
 	}
 	
@@ -341,15 +351,17 @@ class cTemplateMarkerdefault extends cTemplateMarker
 }
 
 /*
-check_default_attribute
-	Syntaxe: -{index_identifier:identifier@attribute_identifier }
-	Retourne la valeur d'un attribut dans la selection par defaut
-check_default_value
-	Syntaxe: -{index_identifier:identifier}
-	Retourne la valeur d'un element du fichier defaut.xml
-check_default_uri
-	Syntaxe: -{:page_identifier}
-	Retourne l'uri complete d'une page
+ * @brief selection avancé de noeuds
+ * @remarks
+ *   - check_default_attribute
+ *           Syntaxe: -{[index_identifier]:[identifier]@[attribute_name] }
+ *           Retourne la valeur d'un attribut dans la sélection active
+ *   - check_default_value
+ *           Syntaxe: -{[index_identifier]:[identifier]}
+ *           Retourne la valeur d'un élement du fichier defaut.xml
+ *   - check_default_uri
+ *           Syntaxe: -{:[page_identifier]}
+ *           Retourne l'URI compléte d'une page
 */ 
 
 class cTemplateMarker_node extends cTemplateMarker
@@ -358,18 +370,29 @@ class cTemplateMarker_node extends cTemplateMarker
 	
 	public static function exp()
 	{
-		return array(
-			('('.cInputName::regExp().')'.'\['.'('.cInputName::regExp().')')                                   => 'check_value',
-			('('.cInputName::regExp().')'.'\['.'('.cInputName::regExp().')'.'\@'.'('.cInputName::regExp().')') => 'check_attribute',
-		);
+		return array(('(\>?)\s*(\w+)\s*(?:\[(\w+|\w+\=\w+)\])?') => 'find_node');
+	//	return array(('('.cInputName::regExp().')'.'((>|\s+)'.cInputName::regExp().'(\['.cInputName::regExp().'|'.cInputName::regExp().'='.cInputString::regExp().'\]))*)') => 'find_node');
 	}
 	
 	function __construct($input,&$arg)
 	{
 	}
 	
+	public function find_node($input,$select,$matches,&$arg)
+	{echo("find_node");
+            print_r($matches);
+	/*	$type  = $matches[1];
+		$Id    = $matches[2];
+                
+                $first = XMLDocument::getNextChildNode($select,$type);
+                while($first != NULL){
+                    if($first->getAttribute("id") == $Id)
+                        return $first->nodeValue;
+                    $first = XMLDocument::getNext($first,$type);
+                }*/
+            return "";
+	}
         
-	
 	public function check_value($input,$select,$matches,&$arg)
 	{
 		$type  = $matches[1];

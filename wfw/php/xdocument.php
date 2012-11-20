@@ -22,6 +22,14 @@
 	[05-12-2011], Add XMLDocument::make()
 	[26-03-2012], Update, Renomme XMLDocument::removeChild() par XMLDocument::removeChildNodes()
 */
+
+$libdir = realpath(dirname(__FILE__) . "/..");
+
+require_once("$libdir/php/base.php");
+require_once("$libdir/php/regexp.php");
+require_path("$libdir/php/class/bases/");
+require_path("$libdir/php/inputs/");
+
 class XMLDocument extends DOMDocument
 {
 	function make($content)
@@ -29,25 +37,39 @@ class XMLDocument extends DOMDocument
 		return $this->loadHTML( $content );
 	}
 
+        /**
+         * @brief Enumére les enfants d'un noeud XML
+         * @param type $node Noeud de base
+         * @param type $callback Fonction de rappel
+         * @param boolean $bNext Si true, suit les noeuds suivant '$node'
+         * @return Résultat retourné par la fonction de rappel '$callback'
+         * 
+         * @remarks La fonction de rappel bool Callback(Node node,String condition), tant que la fonction retourne true l'énumération continue.
+         */
 	function enumNodes($node,$callback,$bNext)
 	{
 		$result = true;
 		if(!is_bool($bNext))
 			$bNext = true;
-		while($node){
-			$cond = array();
-			if(($result=$callback($node,$cond)) !== TRUE)
-				return $result;
-			$child = $node->firstChild;
-			if(($child != null) && (!isset($cond["ignore_child"]))){
-				$result = $this->enumNodes($child,$callback,TRUE);
-				if($result !== TRUE)
-					return $result;
-			}
-			if($bNext==TRUE)
-				$node = $node->nextSibling;
-			else
-				$node = NULL;
+		while($node !== NULL){
+ //                   echo("check $node->tagName\n");
+                    
+                    $cond = array();
+                    if(($result=$callback($node,$cond)) !== TRUE)
+                            return $result;
+                    //recherche dans les enfants
+                    $child = $node->firstChild;
+                    if(($child != null) && (!isset($cond["ignore_child"]))){
+ //                   echo("check >> $child->tagName\n");
+                            $result = $this->enumNodes($child,$callback,TRUE);
+                            if($result !== TRUE)
+                                    return $result;
+                    }
+                    //noeud suivant ...
+                    if($bNext==TRUE)
+                        $node = $node->nextSibling;
+                    else
+                        $node = NULL;
 		}
 		return $result;
 	}
@@ -122,6 +144,61 @@ class XMLDocument extends DOMDocument
 			return "";
 		
 		return $node->setAttribute($name,$value); 
+	}
+	
+	
+	/*
+         * @brief Obtient un élément du document
+         * @param selector Sélecteur, de style CSS (voir Remarques)
+         * @return Retourne le noeud trouvé (DOMNode), NULL si introuvable
+         * 
+         * @remarks Le selecteur peut prendre la forme suivante ( > TAGNAME [ATT_NAME=ATT_VALUE,...] )
+         */
+	public function one($selector,$context=NULL)
+	{
+            $cur = ($context===NULL) ? $this->documentElement : $context;
+            
+            //analyse le selecteur
+            preg_match_all('/(\>|\/?)\s*(\w+)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i',$selector,$matches);
+
+ //         echo("begin ($selector)\n");
+           // print_r($matches);
+            foreach($matches[2] as $key=>$tag){
+//                echo("find ($tag)....");
+
+                $cur = $this->enumNodes($cur->firstChild,function($node,&$cond) use ($key,$matches, $tag){
+                    //enfant direct ?
+ //                   echo("child ".trim($matches[1][$key])."\n");
+                    if(trim($matches[1][$key]) == '>')
+                        $cond["ignore_child"] = true;
+                    //tagname
+                    if($node->tagName != $tag)
+                        return TRUE;
+                    //attributs ?
+                    if(!empty($matches[3][$key])){
+                        $att_selector = $matches[3][$key];
+                        $att_list = strexplode($att_selector, ',', true);
+                        foreach($att_list as $att_pair){
+                            $att = strexplode($att_pair, '=', true);
+                            if($att[1] != $node->getAttribute($att[0]))
+                                return TRUE;
+                        }
+                    }
+                    //ok
+                    return $node;
+                }, true);
+                
+                //slection ok ?
+                if ($cur === TRUE){
+ //                   echo("not found\n");
+                    return NULL;
+                }
+//                else echo("ok\n");
+            }
+
+ //               echo("end ($cur->tagName)\n");
+            //retourne la nouvelle selection
+            return $cur;
 	}
 	
 	//obtient un noeud specifique

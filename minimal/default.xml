@@ -4,20 +4,39 @@
     <name>Webframework</name>
     <base>webframework</base>
     <description>Exemple Web Site</description>
+    
+    <host id="localhost">
+        <domain>localhost</domain>
+        <path></path>
+        <base_path></base_path>
+        <path_root></path_root>
+    </host>
 
     <index>
-        <page id="index" name="Accueil">index.php</page>
-    <!--contact-->
-        <title id="contact">AceTeaM</title>
-        <mail id="contact">dev@aceteam.org</mail>
-        <mail id="no-reply">no-reply@aceteam.org</mail>
-    <!--autres-->
-        <image id="logo">bin/pictures/logo.png</image>
+        <page id="contact" name="Accueil">contact.php</page>
+        <image id="logo">bin/pictures/www.jpg</image>
         <image id="icon">bin/pictures/logo.ico</image>
+        <page id="index" name="Accueil">index.php</page>
     </index>
+
+    <contact>
+        <title id="contact">AceTeaM</title>
+        <mail>
+            <primary>dev@aceteam.org</primary>
+            <no_reply>no-reply@aceteam.org</no_reply>
+        </mail>
+        <postal>
+            <name>Mr AUGUEY Thomas</name>
+            <address>133 bis, rue Jean Moulin</address>
+            <zipcode>50110</zipcode>
+            <city>TOURLAVILLE</city>
+            <country>FRANCE</country>
+        </postal>
+        <phone>02.33.20.06.48</phone>
+    </contact>
 
     <tree>
         <index/>
+        <contact/>
     </tree>
-
 </site>
