@@ -925,12 +925,13 @@ class cXMLTemplateAction_all extends cXMLTemplateAction {
         
         $selector = $node->getAttributeNS($input->wfw_template_uri, "selector");
 
-        $all = $input->all($selector,$select);
-        
+        $all = $input->doc->all($selector,$select);
+//        print_r($all);
         //scan le contenu
         foreach($all as $key=>$select) {
             $arg['__array_count__']++;
             $arg['__inner_text__'] = $select->nodeValue;
+            $arg['__tag_name__'] = $select->tagName;
 
             //$this->post("check_node","add array item");
             //copie le noeud
