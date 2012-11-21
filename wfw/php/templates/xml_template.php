@@ -916,6 +916,47 @@ class cXMLTemplateAction_array extends cXMLTemplateAction {
 
 }
 
+class cXMLTemplateAction_all extends cXMLTemplateAction {
+
+    public function check_node($input, $select, $node, $arg) {
+        $arg['__array_count__'] = 0;
+
+        $next = $node->nextSibling;
+        
+        $selector = $node->getAttributeNS($input->wfw_template_uri, "selector");
+
+        $all = $input->all($selector,$select);
+        
+        //scan le contenu
+        foreach($all as $key=>$select) {
+            $arg['__array_count__']++;
+            $arg['__inner_text__'] = $select->nodeValue;
+
+            //$this->post("check_node","add array item");
+            //copie le noeud
+            $node_new = $node->cloneNode(TRUE);
+
+            //traite les arguments pour ce noeud
+            $input->check_arguments($select, $node_new, $arg);
+
+            //supprime les attributs inutiles
+            $input->clean_attributes($node_new);
+
+            $node->parentNode->insertBefore($node_new, $node);
+            //scan le contenu enfant
+            if ($node_new->firstChild != NULL)
+                $input->check_node($select, $node_new->firstChild, $arg);
+        }
+
+        //supprime le noeud de reference
+        if ($node->parentNode)
+            $node->parentNode->removeChild($node);
+
+        return $next;
+    }
+
+}
+
 /*
   test une expression reguliere sur la selection
  */
