@@ -146,6 +146,67 @@ class XMLDocument extends DOMDocument
 		return $node->setAttribute($name,$value); 
 	}
 	
+	/*
+         * @brief Obtient un élément du document
+         * @param selector Sélecteur, de style CSS (voir Remarques)
+         * @return Retourne le noeud trouvé (DOMNode), NULL si introuvable
+         * 
+         * @remarks Le selecteur peut prendre la forme suivante ( > TAGNAME [ATT_NAME=ATT_VALUE,...] )
+         */
+	public function all($selector,$context=NULL)
+	{
+            $list = array();
+            
+            $cur = ($context===NULL) ? $this->documentElement : $context;
+            
+            //analyse le selecteur
+            preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i',$selector,$matches);
+
+ //         echo("begin ($selector)\n");
+           // print_r($matches);
+            do{
+                $found = false;
+                foreach($matches[2] as $key=>$tag){
+    //                echo("find ($tag)....");
+
+                    $cur = $this->enumNodes($cur->firstChild,function($node,&$cond) use ($key,$matches, $tag){
+                        //enfant direct ?
+     //                   echo("child ".trim($matches[1][$key])."\n");
+                        if(trim($matches[1][$key]) == '>')
+                            $cond["ignore_child"] = true;
+                        //deja en liste ?
+                        if(array_search($list, $node) !== FALSE)
+                            return TRUE;
+                        //tagname
+                        if($tag != '*' && $node->tagName != $tag)
+                            return TRUE;
+                        //attributs ?
+                        if(!empty($matches[3][$key])){
+                            $att_selector = $matches[3][$key];
+                            $att_list = strexplode($att_selector, ',', true);
+                            foreach($att_list as $att_pair){
+                                $att = strexplode($att_pair, '=', true);
+                                if($att[1] != $node->getAttribute($att[0]))
+                                    return TRUE;
+                            }
+                        }
+                        //ok
+                        return $node;
+                    }, true);
+
+                    //slection ok ?
+                    if ($cur !== TRUE){
+                        //ajoute ce noeud a la liste
+                        array_push($list,$cur);
+                        $found = true;
+                    }
+                }
+            }while($found);
+
+ //               echo("end ($cur->tagName)\n");
+            //retourne la nouvelle selection
+            return $cur;
+	}
 	
 	/*
          * @brief Obtient un élément du document
