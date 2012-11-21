@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!--(C)2010-ID-Informatik-->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head>
+<title>Nous contacter</title>
+
+<!-- page's id -->
+<meta http-equiv="wfw.page-id" content="contact" />
+
+<!-- Includes -->
+<script type="text/javascript" language="javascript" src="wfw/javascript/base.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/dom-func-compatible.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw.js"></script>
+<script type="text/javascript" language="javascript" src="wfw/javascript/wfw-extends.js"></script>
+
+<!-- style -->
+<style type="text/css">
+    fieldset {
+        margin:9px;
+    }
+    fieldset div{
+        font-weight:bold;
+    }
+</style>
+
+</head>
+
+<!-- Document -->
+<body>
+
+<h1>Contact</h1>
+
+<template:container template:action="select" template:path=":default.xml:>contact">
+    <p>Voici les différents moyen de contact dont nous diposons...</p>
+    <fieldset template:action="select" template:path=">mail">
+        <legend>Adresse éléctronique</legend>
+        <div>-{primary}</div>
+    </fieldset>
+
+    <fieldset template:action="select" template:path=">postal">
+        <legend>Adresse postale</legend>
+        <div>-{name}</div>
+        <div>-{address}</div>
+        <div>-{zipcode} -{city}</div>
+        <div>-{country}</div>
+    </fieldset>
+
+    <fieldset template:action="select" template:path=">phone">
+        <legend>Numéro de téléphone</legend>
+        <div>-{__inner_text__}</div>
+    </fieldset>
+</template:container>
+
+<p><a href="-{page:index}">Retour à l'accueil</a></p>
+
+</body>
+
+</html>

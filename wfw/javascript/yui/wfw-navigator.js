@@ -98,6 +98,7 @@ YUI.add('wfw-navigator', function (Y) {
                         "eventLoadNavigation",
                         wfw.Navigator.onLoad
                         );
+                    wfw.Event.ApplyTo(Y.Node(window),"wfw_window");
                     return true;
                 }
                 else
@@ -118,7 +119,7 @@ YUI.add('wfw-navigator', function (Y) {
                 return null;
             }
             //obtient le noeud des modules
-            var cur = this.modNode = Y.Node.get("> id",this.navDoc);
+            var cur = this.modNode = Y.Node.one("> id",this.navDoc);
             //recherche le module
             if(cur!=null)
                 return trim(cur.get("text"));
@@ -138,7 +139,7 @@ YUI.add('wfw-navigator', function (Y) {
                 return null;
             }
             //obtient le noeud des modules
-            var cur = this.modNode = Y.Node.get("> name",this.navDoc);
+            var cur = this.modNode = Y.Node.one("> name",this.navDoc);
             //recherche le module
             if(cur!=null)
                 return trim(cur.get("text"));

@@ -23,7 +23,7 @@ YUI.add('wfw', function (Y) {
     var wfw = Y.namespace('wfw');
     
     object_merge(wfw, {
-
+        
         /*
             Classe Objet
         */
