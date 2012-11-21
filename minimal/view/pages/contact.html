@@ -31,32 +31,30 @@
 <!-- Document -->
 <body>
 
-<div name="content">
-    <h1>Contact</h1>
+<h1>Contact</h1>
 
-    <template:container template:action="select" template:path=":default.xml:>contact">
-        <p>Voici les différents moyen de contact dont nous diposons...</p>
-        <fieldset template:action="select" template:path=">mail">
-            <legend>Adresse éléctronique</legend>
-            <div>-{primary}</div>
-        </fieldset>
+<template:container template:action="select" template:path=":default.xml:>contact">
+    <p>Voici les différents moyen de contact dont nous diposons...</p>
+    <fieldset template:action="select" template:path=">mail">
+        <legend>Adresse éléctronique</legend>
+        <div>-{primary}</div>
+    </fieldset>
 
-        <fieldset template:action="select" template:path=">postal">
-            <legend>Adresse postale</legend>
-            <div>-{name}</div>
-            <div>-{address}</div>
-            <div>-{zipcode} -{city}</div>
-            <div>-{country}</div>
-        </fieldset>
+    <fieldset template:action="select" template:path=">postal">
+        <legend>Adresse postale</legend>
+        <div>-{name}</div>
+        <div>-{address}</div>
+        <div>-{zipcode} -{city}</div>
+        <div>-{country}</div>
+    </fieldset>
 
-        <fieldset template:action="select" template:path=">phone">
-            <legend>Numéro de téléphone</legend>
-            <div>-{__inner_text__}</div>
-        </fieldset>
-    </template:container>
+    <fieldset template:action="select" template:path=">phone">
+        <legend>Numéro de téléphone</legend>
+        <div>-{__inner_text__}</div>
+    </fieldset>
+</template:container>
 
-    <p><a href="-{page:index}">Retour à l'accueil</a></p>
-</div>
+<p><a href="-{page:index}">Retour à l'accueil</a></p>
 
 </body>
 
