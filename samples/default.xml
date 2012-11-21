@@ -6,21 +6,21 @@
     <description>Webframework Exemples HTML/Javascript</description>
 
     <index>
-        <page id="index" name="Accueil">index.html</page>
-        <page id="base" name="Fonctions de base">base.html</page>
-        <page id="css" name="Styles de bases (CSS)">css.html</page>
-        <page id="style" name="Styles (CSS)">style.html</page>
-        <page id="dialog" name="Dialogue">dialog.html</page>
-        <page id="dialog_messageBox" name="Dialogues (boite de message)">dialog-messageBox.html</page>
-        <page id="fieldbar" name="Barre de champs">fieldbar.html</page>
-        <page id="form" name="Formulaire">form.html</page>
-        <page id="layout" name="Positionnement (Layout)">layout.html</page>
-        <page id="layout_full" name="Positionnement encré (Layout)">layout_full.html</page>
-        <page id="request" name="Requête HTTP">request.html</page>
-        <page id="states" name="Données locales">states.html</page>
-        <page id="uri" name="Adresse (URI)">uri.html</page>
-        <page id="xarg" name="X-Argument (Format d'échange de données)">xarg.html</page>
-        <page id="default_file" name="Fichier Défaut">default_file.html</page>
+        <page id="index" name="Accueil">index.php</page>
+        <page id="base" name="Fonctions de base">index.php?sample=base</page>
+        <page id="css" name="Styles de bases (CSS)">index.php?sample=css</page>
+        <page id="style" name="Styles (CSS)">index.php?sample=style</page>
+        <page id="dialog" name="Dialogue">index.php?sample=dialog</page>
+        <page id="dialog_messageBox" name="Dialogues (boite de message)">index.php?sample=dialog-messageBox</page>
+        <page id="fieldbar" name="Barre de champs">index.php?sample=fieldbar</page>
+        <page id="form" name="Formulaire">index.php?sample=form.html</page>
+        <page id="layout" name="Positionnement (Layout)">index.php?sample=layout</page>
+        <page id="layout_full" name="Positionnement encré (Layout)">index.php?sample=layout_full</page>
+        <page id="request" name="Requête HTTP">index.php?sample=request</page>
+        <page id="states" name="Données locales">index.php?sample=states</page>
+        <page id="uri" name="Adresse (URI)">index.php?sample=uri</page>
+        <page id="xarg" name="X-Argument (Format d'échange de données)">index.php?sample=xarg</page>
+        <page id="default_file" name="Fichier Défaut">index.php?sample=default_file</page>
     <!--contact-->
         <title id="contact">AceTeaM</title>
         <mail id="contact">dev@aceteam.org</mail>
@@ -32,20 +32,22 @@
 
     <tree>
         <index>
-            <base/>
-            <css/>
-            <style/>
-            <dialog/>
-            <dialog_messageBox/>
-            <fieldbar/>
-            <form/>
-            <layout/>
-            <layout_full/>
-            <request/>
-            <states/>
-            <uri/>
-            <xarg/>
-            <default_file/>
+            <js> 
+                <base/>
+                <css/>
+                <style/>
+                <dialog/>
+                <dialog_messageBox/>
+                <fieldbar/>
+                <form/>
+                <layout/>
+                <layout_full/>
+                <request/>
+                <states/>
+                <uri/>
+                <xarg/>
+                <default_file/>
+            </js>
         </index>
     </tree>
 

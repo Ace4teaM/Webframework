@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>WebFrameWork - Exemples</title>
+
+        <!-- Navigator Page Id -->
+        <meta http-equiv="wfw.page-id" content="index" /> 
+        
+        <!-- Internet explorer CSS compatible -->
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
+        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
+        <link rel="stylesheet" href="css/fieldbar_menu.css" type="text/css" />
+
+        <!-- Includes -->
+        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
+        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
+        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
+        <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
+        <script type="text/javascript" language="javascript" src="js/index.js"></script>
+
+    </head>
+
+    <!-- Document -->
+    <body>
+        <h1>Exemples Webframework (HTML/JS)</h1>
+        <!-- Navigation bar -->
+        <div>
+            <input type="hidden" id="nav_input" value="index" />
+            <div id="nav_bar"></div>
+        </div>
+        <hr/>
+        <!-- Content -->
+        <p>Le document en cours posséde l'identifiant: <span id="page_id"></span></p>
+        <h2>Exemples Javascript (YUI)</h2>
+        <div template:action="select" template:path=":default.xml:>tree>index>js">
+            <p>Liste des pages d'exemples</p>
+            <ul>
+                <li template:action="all" template:path=">*">-{__inner_text__}</li>
+            </ul>
+        </div>
+        <ul id="sample_list"></ul>
+    </body>
+</html>

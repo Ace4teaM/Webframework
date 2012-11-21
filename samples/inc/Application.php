@@ -4,13 +4,21 @@
  * @brief Interface principale avec l'application 
  */
 class Application{
+    public $template_attributes;
     public $config;
     public $root_path;
     
     function Application($root_path){
         $this->root_path = $root_path;
+        
         // Charge la configuration
         $this->config = parse_ini_file($this->root_path."/cfg/config.ini", true);
+        
+        //
+        $this->template_attributes = array(
+            "_LIB_PATH_WFW_" => $this->getLibPath("wfw",true),
+            "_LIB_PATH_YUI_" => $this->getLibPath("yui",true)
+        );
     }
     
     /**
@@ -51,7 +59,7 @@ class Application{
            //fichier..
            file_get_contents($this->root_path.'/'.$filename),
            //champs..
-           $attributes
+           array_merge($attributes,$this->template_attributes)
 	);
     }
     
@@ -80,9 +88,13 @@ class Application{
         $template->load_xml_file('default.xml',$this->root_path);
         
         //initialise la classe template 
-        if(!$template->Initialise($this->root_path.'/'.$filename,NULL,$select,NULL,$attributes)){
+        if(!$template->Initialise(
+                    $this->root_path.'/'.$filename,
+                    NULL,
+                    $select,
+                    NULL,
+                    array_merge($attributes,$this->template_attributes) ) )
                 return false;
-        }
 
         //transforme le fichier
 	return $template->Make();
