@@ -319,7 +319,6 @@ class cXMLTemplate {
       node  : noeud element scaner.
       arg   : recoie les arguments de l'action precedente, tableau vide si aucune.
      */
-
     public function check_arguments($select, $node, $arg, $func = "check_text") {
         if ($node != NULL) {
             $attributes = $node->attributes;
@@ -346,7 +345,6 @@ class cXMLTemplate {
       node  : noeud element scanne.
       arg   : recoie les arguments de l'action precedente, tableau vide si aucune.
      */
-
     public function merge_arguments($select, $node, $arg) {
         if ($select != NULL && $node != NULL) {
             //importe les arguments
@@ -378,7 +376,6 @@ class cXMLTemplate {
       node  : noeud element scaner.
       arg   : recoie les arguments de l'action precedente, tableau vide si aucune.
      */
-
     public function include_arguments($select, $node, $arg) {
         if ($select != NULL && $node != NULL) {
             //importe les arguments
@@ -391,15 +388,12 @@ class cXMLTemplate {
         }
     }
 
-    /*
-      importe le contenu d'un noeud
-      [Document]  input_doc : document qui importe le noeud
-      [Node]      dst_node  : noeud de destination
-      [Node]      src_node  : noeud a importer
-      Retourne:
-      rien
+    /**
+     * @brief  Importe le contenu d'un noeud dans un autre document
+     * @param $input_doc Document recevant le noeud
+     * @param $dst_node  Noeud de destination parent
+     * @param $src_node  Noeud à importer
      */
-
     public static function import_node_content($input_doc, $dst_node, $src_node) {
         $list = array();
         //recursivement
@@ -412,17 +406,17 @@ class cXMLTemplate {
         return $list;
     }
 
-    /*
-      verify_node_condition
-      verifie si une condition est vrai
-      Argument:
-      select     : Noeud de la selection active
-      arg        : Arguments en cours
-      conditions : Syntaxe de la condition
-      Retourne:
-      TRUE si la condition est vrai. FALSE si la condition est fausse ou invalide
+    /**
+     * @brief Vérifie si une condition est vrai
+     * @deprecated since version 1.7
+     *
+     * @param $select     Noeud de la sélection active
+     * @param $arg        Arguments en cours
+     * @param $conditions Syntaxe de la condition
+     *
+     * @returns TRUE si la condition est vrai. FALSE si la condition est fausse ou invalide
+     * 
      */
-
     public function verify_node_condition($select, $arg, $conditions) {
         if ($select == NULL)
             return NULL;
@@ -486,7 +480,12 @@ class cXMLTemplate {
         return true;
     }
 
-    //scan le noeud donne et les noeuds suivants
+    /**
+     * @brief Transforme un noeuds, ses enfants et tout les noeuds suivants
+     * @param $select Curseur sur le noeud en cours dans la sélection
+     * @param $node Curseur sur le noeud en cours de transformation
+     * @param $arg Pointeur sur le tableau associatif des arguments
+     */
     public function check_node($select, $node, &$arg) {
         //scan recursivement
         while ($node != NULL) {
@@ -916,8 +915,15 @@ class cXMLTemplateAction_array extends cXMLTemplateAction {
 
 }
 
+/**
+ * @brief Test la sélection, pour chaque élément trouvé, duplique puis applique transforme le noeud en cours
+ */
 class cXMLTemplateAction_all extends cXMLTemplateAction {
 
+    /**
+     * @copydoc cXMLTemplate::checkNode()
+     * @param $input Référence sur la classe appelante de type cXMLTemplate
+     */
     public function check_node($input, $select, $node, $arg) {
         $arg['__array_count__'] = 0;
 
