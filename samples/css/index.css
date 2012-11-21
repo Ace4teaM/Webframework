@@ -1,0 +1,88 @@
+/*
+ * CSS basé sur le composant wfw.ext.FieldBar pour créer un menu de navigation (fil d'ariane)
+ * 
+ * Schema des elements: 
+ * <bar>
+ * 	<title/>
+ * 	<items>
+ * 		<item1/>
+ * 		<item2/>
+ * 		...
+ * 	</items>
+ * </bar>
+ */
+
+/* Force l'affichage de l'input */
+input.wfw_ext_fieldbar
+{
+	display:inherit;
+}
+
+/*
+ * Bar
+ */
+.fieldbar_fil_ariane_bar{
+	line-height:20px;
+}
+
+/*
+* Item
+*/
+.fieldbar_fil_ariane_item{
+	height:20px;
+	vertical-align:middle !important;
+	display:inline-block;
+	border:0px solid black;
+	padding:0px;
+	margin:0px;
+}
+
+/*
+* Bar title
+*/
+.fieldbar_fil_ariane_item_title{
+	display:block;
+	line-height:20px;
+	color:#1010FF;
+	font-size:13px;
+	font-family:Verdana;
+	font-weight:lighter;
+	font-variant:small-caps;
+	text-transform:capitalize;
+	text-decoration:underline;
+	font-weight:bold;
+	-moz-user-select: none;
+}
+
+/*
+* Item text
+*/
+.fieldbar_fil_ariane_item label{
+	line-height:20px;
+	color:#5050FF;
+	font-size:13px;
+	font-family:Verdana;
+	font-weight:lighter;
+	font-variant:small-caps;
+	text-transform:capitalize;
+	cursor:pointer;
+	-moz-user-select: none;
+}
+
+.fieldbar_fil_ariane_item label:hover{
+	color:#0000FF;
+}
+
+/*
+* Item icon
+*/
+.fieldbar_fil_ariane_item_image
+{
+	background-image:url("bin/green_right_arrow2.png");
+	background-position:center center;
+	background-repeat:no-repeat;
+	width:8px;
+	height:13px;
+	display:inline-block;
+	margin:0px 4px 0px 4px;
+}
