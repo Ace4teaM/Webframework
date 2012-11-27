@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Projet WebFrameWork</title>
+        <title>Exemples WebFrameWork</title>
 
         <!-- Navigator Page Id -->
-        <meta http-equiv="wfw.page-id" content="index" /> 
+        <meta http-equiv="wfw.page-id" content="samples" /> 
 
         <!-- Internet explorer CSS compatible -->
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
@@ -39,9 +39,10 @@
     
 	<div id="page" class="container">
             <div id="content">
-                <h1>Projet Webframework</h1>
-                <a href="-{page:index}" style="float:right; vertical-align: top;"><img src="bin/pictures/logo_webframework.png" /></a>
-                <p>Bienvenue sur l'espace de documentation du projet Webframework.</p>
+                <h1>Exemples</h1>
+                <p>Ici vous trouverez des explications détaillées sous forme d'exemples des différentes fonctionnalités de la librairie Webframework.</p>
+                <p>Plus d'informations sur le <a href="-{link:wfw_projet}" target="wfw_projet">projet Webframework</a></p>
+
                 <!-- Navigation bar -->
                 <div>
                     <input type="hidden" id="nav_input" value="index" />
@@ -49,13 +50,18 @@
                 </div>
                 
                 <!-- Content -->
-                <h2>Introduction</h2>
-                <p>Webframework est une librairie PHP/JS déstiné à aider la conception d'application Web.</p>
-                <p>Ce site vous propose un <a href="-{page:guide}">guide partique de programmation</a>, <a href="-{page:samples}">des exemples de codes</a> et <a href="-{page:modules}">les modules disponibles</a>.</p>
-                
-                <h2>Licence</h2>
-                <p>Webframework est un projet Open-Source placé sous licence GPL. Son utilisation n'est pas limitée au secteur publique et peut être utilisée de façon commerciale.</p>
-                <p><a href="-{page:licence}">En savoir plus...</a></p>
+                <h2>Exemples par langages</h2>
+                <p>Liste des pages d'exemples</p>
+
+                <div template:action="select" template:path=":default.xml:>tree>samples">
+                    <div class="column" template:action="all" template:selector=">*">
+                        <h3>-{{page:-{__tag_name__}@name}}</h3>
+                        <p><a href="-{{page:-{__tag_name__}}}">Tout les exemples -{{page:-{__tag_name__}@name}}</a></p>
+                        <ul>
+                            <li template:action="all" template:selector=">*"><a href="-{page:index}?php_sample=-{__tag_name__}">-{{page:-{__tag_name__}@name}}</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </body>

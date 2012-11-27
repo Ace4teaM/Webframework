@@ -1,5 +1,5 @@
----------------------------------------------------------------------------------------------------------------------------------------
- (C)2008-2012 AceTeaM. All rights reserved. (R)WebFrameWork 
+﻿---------------------------------------------------------------------------------------------------------------------------------------
+ WebFrameWork v1.3
 ---------------------------------------------------------------------------------------------------------------------------------------
 Warning this script is protected by copyright, if you want to use this code you must ask permission:
 Attention ce script est protégé part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
@@ -22,3 +22,9 @@ wfw.Template.makeDoc()           [IE9] Le chargement échoue si le doctype du do
 ---------------------------------------------------------------------------------------------------------------------------------------
 La version 1.7 de webframework inclue des changements profond dans le style de codage de Javascript.
 Les librairies 'wfw.js' et 'wfw-extends.js' sont maintenant basé sur le Framework 'Yahoo-UI', La librairie 'DOM-Compatible' étant abandonnée.
+
+---------------------------------------------------------------------------------------------------------------------------------------
+ Licence
+---------------------------------------------------------------------------------------------------------------------------------------
+Webframework est un logiciel libre sous licence <GNU version 3>, consultez le fichier <license.txt> pour obtenir le détail de cette licence.
+Le contenu de la licence GNU-3 est aussi disponible sur le net à l'adresse suivante: http://www.gnu.org/licenses/gpl-3.0.txt

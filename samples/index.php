@@ -5,8 +5,8 @@ global $app;
 //print_r($app);
 
 // exemples JS
-if(isset($_REQUEST["sample"])){
-    $app->showXMLView("view/pages/".$_REQUEST["sample"].".html",NULL,array());
+if(isset($_REQUEST["page"])){
+    $app->showXMLView("view/pages/".$_REQUEST["page"].".html",NULL,array());
     exit;
 }
 
