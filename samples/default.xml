@@ -27,7 +27,7 @@
         <page id="js" name="Javascript">js_samples.php</page>
         <page id="php" name="PHP">php_samples.php</page>
         <page id="samples" name="Exemples">index.php?page=samples</page>
-        <page id="download" name="Téléchargements">index.php?page=download</page>
+        <page id="download" name="Téléchargements">index.php?page=telechargements</page>
         <!-- liens -->
         <link id="wfw_projet">http://wfw.aceteam.org</link>
         <link id="wfw_js_api">http://wfw.aceteam.org/api/js</link>

@@ -48,6 +48,7 @@ ul, ol {
 a {
 	text-decoration: none;
 	color: #731F1F;
+        font-weight: bold;
 }
 
 a:hover {
