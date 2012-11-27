@@ -14,7 +14,7 @@ Implentation: [22-10-2012]
 */
 
 //initialise le contenu
-YUI(wfw_yui_config).use('node', 'event', 'wfw-fieldlist', function (Y)
+YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'event', 'wfw-fieldlist', function (Y)
 {
     var wfw = Y.namespace("wfw");
 

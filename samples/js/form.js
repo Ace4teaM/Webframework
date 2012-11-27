@@ -7,59 +7,75 @@ Auteur : AUGUEY THOMAS
 Mail   : dev@aceteam.org
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-Script lié au document "navigator.html"
+Script lié au document "form.html"
 
-Implentation: [18-10-2012]
+Implentation: [21-11-2012]
 */
 
 //initialise le contenu
-YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'wfw-navigator', 'wfw-fieldbar', function (Y)
+YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'wfw-event', 'wfw-form', function (Y)
 {
     var wfw = Y.namespace("wfw");
     
     var onLoad = function(e){
         
-        /*
-        * ---------------------------------------------------------------
-        * Affiche l'id du fichier
-        * ---------------------------------------------------------------
-        */
-        Y.Node.one("#page_id").set("text", wfw.Navigator.pageId);
+            // Liste les éléments du formulaire
+            Y.Node.one("#show_elements").on("click",function(e){
+                var infos = Y.Node.one("#infos");
+                infos.all("*").remove();
+                var elements = wfw.Form.get_elements("form", {getStaticNode: (Y.Node.one("#all").get("checked"))});
+                for(var i in elements){
+                    var e = elements[i];
+                    infos.append("<p>"+i+" = \""+e.get("tagName")+"\"</p>");
+                }
+            });
 
-        /*
-        * ---------------------------------------------------------------
-        * Initialise la barre de navigation
-        * ---------------------------------------------------------------
-        */
-        wfw.FieldBar.initElement(Y.one("#nav_input"), {
-            //FIELD_BAR options
-            barClass: "fieldbar_fil_ariane_bar wfw_bg_frame",
-            itemClass: "fieldbar_fil_ariane_item",
-            itemEvent: "fieldbar_fil_ariane",
-            editable: false,
-            contener: Y.Node.one("#nav_bar"),
-            //Events
-            onCreateItem: function(item,label){
-                //insert une icon aux items
-                var icon = Y.Node.create('<span>');
-                icon.addClass('fieldbar_fil_ariane_item_image');
-                label.insert(icon,'before');
-                
-		//onClick: redirige vers la page désirée	
-                item.on("click", function(e){
-                    //var fieldbar = Y.FieldBar.getStates(this);
-                    var page_id = this.get('text');
-                    window.open(wfw.Navigator.getURI(page_id),"_self");
-                });
-            },
-            onCreateBar: function(contener){
-                //insert un titre à la barre principale
-                var text_label = Y.Node.create('<label>');
-                text_label.addClass('fieldbar_fil_ariane_item_title');
-                text_label.insert("Navigation");
-                contener.insert(text_label);
-            }
-        });
+            // Liste les champs du formulaire
+            Y.Node.one("#show_fields").on("click",function(e){
+                var infos = Y.Node.one("#infos");
+                infos.all("*").remove();
+                var elements = wfw.Form.get_fields("form", {getStaticNode: (Y.Node.one("#all").get("checked"))});
+                for(var name in elements){
+                    var value = elements[name];
+                    infos.append("<p>"+name+" = \""+value+"\"</p>");
+                }
+            });
+
+            // Envoie du formulaire par le biais d'une frame
+            Y.Node.one("#send_frame").on("click",function(e){
+                wfw.Form.sendFrame(
+                    "form",
+                    null,
+                    function(responseText,param,args){ alert(responseText); },
+                    { foo:"bar" },
+                    {
+                        hiddenFrame: (Y.Node.one("#hide_frame").get("checked")),
+                        getStaticNode: (Y.Node.one("#all").get("checked"))
+                    }
+                );
+            });
+
+            // Envoie du formulaire
+            Y.Node.one("#send_form").on("click",function(e){
+                wfw.Form.send( "form", null, null, null );
+            });
+
+            // Envoie du formulaire par le biais d'une requete
+            Y.Node.one("#send_req").on("click",function(e){
+                wfw.Form.sendReq(
+                    "form",
+                    null,
+                    true,
+                    function(obj){
+                        if (!wfw.Request.onCheckRequestStatus(obj))
+                            return;
+
+                        alert(obj.response);
+                    },
+                    { foo:"bar" }
+                );
+            });
+                    
     };
     
     Y.one('window').on('load', onLoad);

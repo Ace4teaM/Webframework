@@ -317,7 +317,7 @@ class cXMLTemplate {
       Arguments
       select: recoie le noeud de selection de l'action precedente, NULL si aucune.
       node  : noeud element scaner.
-      arg   : recoie les arguments de l'action precedente, tableau vide si aucune.
+      arg   : reçoie les arguments de l'action precedente, tableau vide si aucune.
      */
     public function check_arguments($select, $node, $arg, $func = "check_text") {
         if ($node != NULL) {

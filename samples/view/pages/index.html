@@ -3,18 +3,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>WebFrameWork - Exemples</title>
+        <title>Guide Utilisateur WebFrameWork</title>
 
         <!-- Navigator Page Id -->
         <meta http-equiv="wfw.page-id" content="index" /> 
-        
+
         <!-- Internet explorer CSS compatible -->
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
 
         <!-- Styles -->
         <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
         <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
+        <link rel="stylesheet" href="css/index.css" type="text/css" />
         <link rel="stylesheet" href="css/fieldbar_menu.css" type="text/css" />
+        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 
         <!-- Includes -->
         <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
@@ -27,22 +29,54 @@
 
     <!-- Document -->
     <body>
-        <h1>Exemples Webframework (HTML/JS)</h1>
-        <!-- Navigation bar -->
-        <div>
-            <input type="hidden" id="nav_input" value="index" />
-            <div id="nav_bar"></div>
+        <div id="header">
+            <div id="menu" class="container">
+                <ul>
+                    <li class="current_page_item"><a href="#">Homepage</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Photos</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Links</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
         </div>
-        <hr/>
-        <!-- Content -->
-        <p>Le document en cours posséde l'identifiant: <span id="page_id"></span></p>
-        <h2>Exemples Javascript (YUI)</h2>
-        <div template:action="select" template:path=":default.xml:>tree>index>js">
-            <p>Liste des pages d'exemples</p>
-            <ul>
-                <li template:action="all" template:selector=">*"><a href="-{page:index}?sample=-{__tag_name__}">-{{page:-{__tag_name__}@name}}</a></li>
-            </ul>
+    
+	<div id="page" class="container">
+            <div id="content">
+                <h1>Exemples Webframework</h1>
+                <p>Bienvenue sur l'espace de documentation de la librairie Webframework</p>
+                <p>Vous trouverez ici des explications détaillées sous forme d'exemples et un guide utilisateur des différentes fonctionnalités de la librairie Webframework.</p>
+                <p>Plus d'informations sur le <a href="-{link:wfw_projet}" target="wfw_projet">projet Webframework</a></p>
+
+                <!-- Navigation bar -->
+                <div>
+                    <input type="hidden" id="nav_input" value="index" />
+                    <div id="nav_bar"></div>
+                </div>
+                
+                <!-- Content -->
+                <h2>Exemples</h2>
+                <p>Liste des pages d'exemples</p>
+
+                <div class="column" template:action="select" template:path=":default.xml:>tree>index>js">
+                    <h3>Javascript (YUI)</h3>
+                    <p>Voir la documentation <a href="-{link:wfw_js_api}" target="wfw_js_api">Javascript API-Références</a>.</p>
+
+                    <ul class="list-style2">
+                        <li template:action="all" template:selector=">*"><a href="-{page:index}?sample=-{__tag_name__}">-{{page:-{__tag_name__}@name}}</a></li>
+                    </ul>
+                </div>
+
+                <div class="column" template:action="select" template:path=":default.xml:>tree>index>php">
+                    <h3>PHP</h3>
+                    <p>Voir la documentation <a href="-{link:wfw_php_api}" target="wfw_php_api">PHP API-Références</a>.</p>
+                    <ul>
+                        <li template:action="all" template:selector=">*"><a href="-{page:index}?php_sample=-{__tag_name__}">-{{page:-{__tag_name__}@name}}</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <ul id="sample_list"></ul>
     </body>
 </html>

@@ -4,99 +4,35 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
     <title>Formulaire</title>
-    <!-- Includes -->
-    <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/dom.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/dom-func-compatible.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/wfw.js"></script>
-    <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-base.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-event.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-uri.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-request.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-math.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-http.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-form.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-style.js"></script>
-    <script type="text/javascript" language="javascript" src="../javascript/yui/wfw-xarg.js"></script>
-    <script type="text/javascript" language="javascript">
-        // <![CDATA[
-        function onLoad(){
-		//initialise le contenu
-		YUI().use('node', 'event', 'dom', 'form', function (Y)
-		{
-                    // Liste les éléments du formulaire
-                    Y.Node.one("#show_elements").on("click",function(e){
-                        var infos = Y.Node.one("#infos");
-                        infos.all("*").remove();
-                        var elements = Y.Form.get_elements("form", {getStaticNode: (Y.Node.one("#all").get("checked"))});
-                        for(var i in elements){
-                            var e = elements[i];
-                            infos.append("<p>"+i+" = \""+e.get("tagName")+"\"</p>");
-                        }
-                    });
-                    
-                    // Liste les champs du formulaire
-                    Y.Node.one("#show_fields").on("click",function(e){
-                        var infos = Y.Node.one("#infos");
-                        infos.all("*").remove();
-                        var elements = Y.Form.get_fields("form", {getStaticNode: (Y.Node.one("#all").get("checked"))});
-                        for(var name in elements){
-                            var value = elements[name];
-                            infos.append("<p>"+name+" = \""+value+"\"</p>");
-                        }
-                    });
-                    
-                    // Envoie du formulaire par le biais d'une frame
-                    Y.Node.one("#send_frame").on("click",function(e){
-                        Y.Form.sendFrame(
-                            "form",
-                            null,
-                            function(responseText,param,args){ alert(responseText); },
-                            { foo:"bar" },
-                            {
-                                hiddenFrame: (Y.Node.one("#hide_frame").get("checked")),
-                                getStaticNode: (Y.Node.one("#all").get("checked"))
-                            }
-                        );
-                    });
-                    
-                    // Envoie du formulaire
-                    Y.Node.one("#send_form").on("click",function(e){
-                        Y.Form.send( "form", null, null, null );
-                    });
-                    
-                    // Envoie du formulaire par le biais d'une requete
-                    Y.Node.one("#send_req").on("click",function(e){
-                        Y.Form.sendReq(
-                            "form",
-                            null,
-                            true,
-                            function(obj){
-                                if (!Y.Request.onCheckRequestStatus(obj))
-                                    return;
+    
+    <!-- Navigator Page Id -->
+    <meta http-equiv="wfw.page-id" content="form" /> 
 
-                                alert(obj.response);
-                            },
-                            { foo:"bar" }
-                        );
-                    });
-                    
-		});
-        }
-        // ]]>
-    </script>
+    <!-- Internet explorer CSS compatible -->
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
+    <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
+    <link rel="stylesheet" href="css/fieldbar_menu.css" type="text/css" />
+
+    <!-- Includes -->
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
+    <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
+    <script type="text/javascript" language="javascript" src="js/form.js"></script>
+
     <!-- styles -->
     <style type="text/css">
         #button_list input[type="button"]{
             width: 150px;
         }
     </style>
-    <link href="../css/wfw-extends.css" lang="text/css" />
   </head>
-  <body onload="onLoad();">
+  <body>
         <h1>Identification</h1>
-        <form id="form" action="form-req.html" method="get">
+        <form id="form" action="-{page:index}?sample=form-req" method="get">
             <fieldset>
                 <legend>Entrez vos informations d'identification</legend>
                 <div><span>Identifiant</span><input type="text" name="uid" value="User Id" /></div>

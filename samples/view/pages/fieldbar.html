@@ -4,20 +4,68 @@
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
     <title>Field Bar</title>
-    <link rel="stylesheet" href="../css/wfw-extends.css" type="text/css" />
-    <link rel="stylesheet" href="../css/wfw-fieldbar.css" type="text/css" />
-    <link rel="stylesheet" href="fieldbar_menu.css" type="text/css" />
+    
+    <!-- Navigator Page Id -->
+    <meta http-equiv="wfw.page-id" content="fieldbar" /> 
+
+    <!-- Internet explorer CSS compatible -->
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
+    <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
+    <link rel="stylesheet" href="css/fieldbar_menu.css" type="text/css" />
+    <link rel="stylesheet" href="css/code/code.css" type="text/css" />
+
     <!-- Includes -->
-    <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
-    <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
-    <script type="text/javascript" language="javascript" src="yui_config.js"></script>
-    <script type="text/javascript" language="javascript" src="fieldbar.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
+    <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
+    <script type="text/javascript" language="javascript" src="js/fieldbar.js"></script>
   </head>
   <body>
-	<h2>Custom Fieldbar</h2>
-        Change for update the bar: <input id="my_field" type="text" value="item1;item2;" />
+        <h1>Barre de champs (FieldBar)</h1>
+        <p>Les barres de champs permette de créer facilement un visuel à partir d'une ligne de texte.</p>
+        
+        <h2>Usage</h2>
+        <p>Le visuel CSS/HTML est totalement généré depuis un champ texte. Le caractère de séparation ';' est utilisé pour diviser la chaîne en champs. Chaque champ représente un élément HTML.</p>
+        <p>On peut facilement imaginer les applications utiles d'une Barre de champs:</p>
+        <ul>
+            <li>Gérer une liste de contact dans un e-mail</li>
+            <li>Créer une barre de navigation dynamique</li>
+            <li>Lister des options dans un formulaire</li>
+        </ul>
+        
+	<h2>Exemple</h2>
+        <p>FieldBar avec son style par défaut.</p>
+	<input id="my_field2" type="text" value="item1;item2;" />
+        
+        <fieldset class="sample_code">
+            <legend>Code HTML</legend>
+            <div>[CODE]</div>
+            <p>Un élément INPUT stock la valeur des champs. Le DIV '#mybar' reçevra les éléments créés dynamiquement.</p>
+        </fieldset>
+        
+        <fieldset class="sample_code">
+            <legend>Code JS</legend>
+            <div>[CODE]</div>
+            <p>L'Initialisation se fait depuis le module 'YUI.wfw.Fieldbar'.</p>
+        </fieldset>
+        
+	<h2>Personnalisée les éléments</h2>
+        <p>Les fonctions de rappels 'onCreateItem' et 'onCreateBar' vous permet de personnaliser la barre principale et ses items.</p>
+        
+        <input id="my_field" type="text" value="item1;item2;" />
+        <p>FieldBar avec un titre et des éléments personnalisés.</p>
 
-	<h2>Auto Fieldbar</h2>
-	Change for update the bar: <input id="my_field2" type="text" value="item1;item2;" />
+        <fieldset class="sample_code">
+            <legend>Code JS</legend>
+            <div>[CODE]</div>
+            <p>Personnalise la création et ajoute un événement 'onclick'.</p>
+        </fieldset>
+        
+	<h2>Voir aussi</h2>
+        
   </body>
 </html>

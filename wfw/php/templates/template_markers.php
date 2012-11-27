@@ -279,7 +279,7 @@ class cTemplateMarkerdefault extends cTemplateMarker
 		if($this->sitefile==NULL)
 			return NULL;
 		//recherche
-		$entry_node = $this->sitefile->getNode('site/index/'.$type);
+		$entry_node = $this->sitefile->one('>index>'.$type);
 		while($entry_node){
 			$entry_id = $this->sitefile->getAtt($entry_node,"id");
 			if($entry_id == $id)
