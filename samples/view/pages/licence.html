@@ -2,7 +2,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Projet WebFrameWork</title>
 
         <!-- Navigator Page Id -->
@@ -11,60 +10,35 @@
         <!-- Internet explorer CSS compatible -->
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
-        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
-        <link rel="stylesheet" href="css/index.css" type="text/css" />
-        <link rel="stylesheet" href="css/fieldbar_menu.css" type="text/css" />
-        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-
-        <!-- Includes -->
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
-        <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
-        <script type="text/javascript" language="javascript" src="js/index.js"></script>
-
     </head>
 
     <!-- Document -->
     <body>
-        <div id="header">
-            <div id="menu" class="container" template:action="select" template:path=":default.xml:>tree">
-                <ul>
-                    <li template:action="all" template:selector=">*"><a href="-{{page:-{__tag_name__}}}">-{{page:-{__tag_name__}@name}}</a></li>
-                </ul>
-            </div>
-        </div>
-    
-	<div id="page" class="container">
-            <div id="content">
-                <h1>A Propos de Webframework</h1>
-                <a href="-{page:index}" style="float:right;"><img src="bin/pictures/logo_webframework.png" /></a>
-                
-                <h2>Auteur</h2>
-                <img src="bin/pictures/auguey_thomas.jpg" style="float:left; margin:16px;" height="120" title="AUGUEY Thomas, auteur de Webframework" />
-                <p></p>
-                <p>Webframework est un projet Open-Source modifiable et utilisable par quiconque.</p>
-                <p>A gauche, c'est moi... je me nomme Thomas AUGUEY, j'ai 28 ans et je suis à l'origine du projet. Si vous voulez en savoir plus sur moi, mon profil est diponible sur mon site web personnel: <a href="http://www.aceteam.org">www.AceTeaM.org</a></p>
-                <div style="clear: both;"></div>
-                
-                <h2>Contact</h2>
-                <p>Si vous souhaité me contacter vous pouvez envoyer un mail à l'adresse suivante <a href="mailto:-{mail:contact}">-{mail:contact}</a>, je ferais mon possible pour vous répondre le plus rapidement possible.</p>
-                
-                <h2>Contributions</h2>
-                <p>A l'heure où ces lignes sont écrites, aucune contribution "extérieur" n'à été apporté au projet. En effet le projet n'est pas connu sur le web et j'en suis le seul contributeur.</p>
-                <p>L'Avancement du projet est encore modeste et n'est rattaché à aucune communauté, ceci explique cela...</p>
-                <p>Si vous êtes intéressé par ce projet n'hésité pas à <a href="#contact">me contacter</a> pour plus d'informations.</p>
+        <h1>A Propos de Webframework</h1>
+        <a href="-{page:index}" style="float:right;"><img src="bin/pictures/logo_webframework.png" /></a>
 
-                <h2>Historique</h2>
-                <p>Webframework est un projet récent. Développer depuis 2008, son but, lors de sa création été de permettre une vitesse de développement accrue et une compatibilité optimale sur les navigateurs.</p>
-                <p>Webframework à été conçu dans la démarche d'une création d'entreprise (ID-Informatik) spécialisé en site-web. Aucune licence particulière n'a été déposé, le développement étant strictement interne à la société. Aujourd'hui la société n'existant plus, son <a href="">auteur</a> propose le projet sous licence publique.</p>
-                
-                <h2>Licence</h2>
-                <p>Le projet Webframework est un projet Open-Source placé sous licence GPL.</p>
-                <p>Son utilisation n'est pas limité au secteur publique et peut utilisée de façon commerciale.</p>
-            </div>
-        </div>
+        <h2>Auteur</h2>
+        <img src="bin/pictures/auguey_thomas.jpg" style="float:left; margin:16px;" height="120" title="AUGUEY Thomas, auteur de Webframework" />
+        <p></p>
+        <p>Webframework est un projet Open-Source modifiable et utilisable par tous.</p>
+        <p>A gauche... c'est moi, je me nomme Thomas AUGUEY, j'ai -{age} ans et je suis à l'origine du projet. Si vous voulez en savoir plus, mon profil est diponible sur mon site web personnel: <a href="http://www.aceteam.org">www.AceTeaM.org</a></p>
+        <div style="clear: both;"></div>
+
+        <h2>Contact</h2>
+        <p>Si vous souhaité me contacter vous pouvez envoyer un mail à l'adresse suivante <a href="mailto:-{mail:contact}">-{mail:contact}</a>, je ferais mon possible pour vous répondre le plus rapidement possible.</p>
+
+        <h2>Contributions</h2>
+        <p>A l'heure où ces lignes sont écrites, aucune contribution "extérieur" n'à été apporté au projet. En effet le projet n'est pas connu sur le web et j'en suis le seul contributeur.</p>
+        <p>L'Avancement du projet est encore modeste et n'est rattaché à aucune communauté, ceci explique cela...</p>
+        <p>Si vous êtes intéressé par ce projet n'hésité pas à <a href="#contact">me contacter</a> pour plus d'informations.</p>
+
+        <h2>Historique</h2>
+        <p>Webframework est un projet récent. Développer depuis 2008, son but, lors de sa création été de permettre une vitesse de développement accrue et une compatibilité optimale sur les navigateurs.</p>
+        <p>Webframework à été conçu dans la démarche d'une création d'entreprise (ID-Informatik) spécialisé en site-web. Aucune licence particulière n'a été déposé, le développement étant strictement interne à la société. Aujourd'hui la société n'existant plus, son <a href="">auteur</a> propose le projet sous licence publique.</p>
+
+        <h2>Licence</h2>
+        <p>Le projet Webframework est un projet Open-Source placé sous licence GPL.</p>
+        <p>Son utilisation n'est pas limité au secteur publique et peut utilisée de façon commerciale.</p>
+
     </body>
 </html>

@@ -81,15 +81,20 @@ class Application{
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @return string Contenu du template transformé
      */
-    function makeXMLView($filename,$select,$attributes){ 
+    function makeXMLView($filename,$select,$attributes,$template_file="view/template.html"){ 
+
         $template = new cXMLTemplate();
         
+        //charge le contenu en selection
+        $select = new XMLDocument("1.0", "utf-8");
+        $select->load($this->root_path.'/'.$filename);
+
         //charge le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
         
         //initialise la classe template 
         if(!$template->Initialise(
-                    $this->root_path.'/'.$filename,
+                    $this->root_path.'/'.$template_file,
                     NULL,
                     $select,
                     NULL,

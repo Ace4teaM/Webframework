@@ -6,7 +6,17 @@ global $app;
 
 // exemples JS
 if(isset($_REQUEST["page"])){
-    $app->showXMLView("view/pages/".$_REQUEST["page"].".html",NULL,array());
+    $param = array();
+    switch($_REQUEST["page"]){
+        case "licence":
+            //mon age depuis ma naissance
+            date_default_timezone_set('UTC');
+            $begin = mktime(3, 0, 0, 25, 12, 1983);
+            $end = date(DATE_RFC822);
+            $param["age"] = "28";
+            break;
+    }
+    $app->showXMLView("view/pages/".$_REQUEST["page"].".html",NULL,$param);
     exit;
 }
 

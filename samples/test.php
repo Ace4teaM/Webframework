@@ -1,37 +1,27 @@
 <?php
+require_once("inc/globals.php");
+global $app;
 
-function all()
-{
-    $list = array();
+    $template = new cXMLTemplate();
+    $filename = "view/pages/template.html";
+    $attributes = array();
+    
+    //charge le contenu en selection
+    $select = new XMLDocument("1.0", "utf-8");
+    $select->load($app->root_path.'/view/pages/test.html');
 
-        print_r("all\n");
-    $func = function($node) use($list){
-            print_r("hello\n");
-            //deja en liste ?
-            if(array_search($node, $list) !== FALSE)
-                return TRUE;
-            return $node;
-        };
-        
-    one($func);
+    //charge le fichier de configuration
+    $template->load_xml_file('default.xml',$app->root_path);
 
-    return $list;
-}
+    //initialise la classe template 
+    if(!$template->Initialise(
+                $app->root_path.'/'.$filename,
+                NULL,
+                $select,
+                NULL,
+                array_merge($attributes,$app->template_attributes) ) )
+            return false;
 
-function one($addCheck=NULL)
-{
-        print_r("one\n");
-         // print_r($addCheck);
-
-        $func2 = function() use ($addCheck){
-        print_r("func2\n");
-          $addCheck("fs");
-        };
-        
-        $func2();
-  //  }
-}
-
-all();
-
+    //transforme le fichier
+    echo $template->Make();
 ?>

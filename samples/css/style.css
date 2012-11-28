@@ -13,7 +13,7 @@ body {
 	font-size: 13px;
 	color: #626262;
 	background: #FFFFFF url(images/img02.png) repeat-x left top;
-        background-position-y: -620px;
+        background-position-y: -580px;
 }
 
 h1, h2, h3 {
@@ -73,9 +73,19 @@ a:hover {
 
 #header {
 	width: 1200px;
-	height: 80px;
-	margin: 0 auto;
+	margin: 0 auto 20px auto;
 	/*background: url(images/img04.jpg) no-repeat right top;*/
+}
+
+#banner > p{
+  display: inline-block;
+  vertical-align: bottom;
+  font-family: calibri;
+  font-size: 1.8em;
+  font-weight: bold;
+  padding:0px;
+  margin:0px;
+  color:white;
 }
 
 /* Logo */
@@ -127,6 +137,8 @@ a:hover {
 	overflow: hidden;
 	height: 60px;
 	background: url(images/img03.jpg) repeat-x left top;
+        box-shadow: 0px 2px 5px #888888;
+     border-radius: 0.3em;
 }
 
 #menu ul {
@@ -275,7 +287,6 @@ a:hover {
 #footer-content a:hover {
 	text-decoration: underline;
 }
-
 
 #column1 {
 	float: left;
@@ -509,10 +520,10 @@ ul.component_boxes{
 }
 
 ul.component_boxes > li{
-    background-color: white;
+    background-color: #f4f4f4;
     display: inline-block;
     width:300px;
-    height:200px;
+    min-height:200px;
     border-radius: 10px;
     border-color: gray;
     box-shadow: 2px 2px 5px #888888;
@@ -526,4 +537,15 @@ ul.component_boxes > li > h3{
     margin:10px 0px 20px 0px;
     text-transform: capitalize;
     border-bottom: 2px solid gray;
+}
+
+ul.component_boxes > li > p{
+    font-weight: bold;
+    height: 4em;
+    font-size: 1em;
+    text-align: center;
+}
+
+ul.component_boxes > li > ul {
+    margin-left: 20px;
 }

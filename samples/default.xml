@@ -38,7 +38,8 @@
         <mail id="no-reply">no-reply@aceteam.org</mail>
     <!--autres-->
         <image id="logo">bin/pictures/www.jpg</image>
-        <image id="icon">bin/pictures/logo.ico</image>
+        <image id="icon">bin/pictures/wfw_icon32.png</image>
+        <icon id="favicon">bin/pictures/favicon.ico</icon>
     </index>
 
     <tree>

@@ -2,7 +2,6 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>Guide WebFrameWork</title>
 
         <!-- Navigator Page Id -->
@@ -11,88 +10,63 @@
         <!-- Internet explorer CSS compatible -->
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
 
-        <!-- Styles -->
-        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
-        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
-        <link rel="stylesheet" href="css/index.css" type="text/css" />
-        <link rel="stylesheet" href="css/fieldbar_menu.css" type="text/css" />
-        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-
-        <!-- Includes -->
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
-        <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
-        <script type="text/javascript" language="javascript" src="js/index.js"></script>
-
     </head>
 
     <!-- Document -->
     <body>
-        <div id="header">
-            <div id="menu" class="container" template:action="select" template:path=":default.xml:>tree">
-                <ul>
-                    <li template:action="all" template:selector=">*"><a href="-{{page:-{__tag_name__}}}">-{{page:-{__tag_name__}@name}}</a></li>
-                </ul>
-            </div>
+        <h1>Guide</h1>
+        <p>Bienvenue sur l'espace de documentation du projet Webframework.</p>
+
+        <!-- Navigation bar -->
+        <div>
+            <input type="hidden" id="nav_input" value="index" />
+            <div id="nav_bar"></div>
         </div>
-    
-	<div id="page" class="container">
-            <div id="content">
-                <h1>Guide</h1>
-                <p>Bienvenue sur l'espace de documentation du projet Webframework.</p>
 
-                <!-- Navigation bar -->
-                <div>
-                    <input type="hidden" id="nav_input" value="index" />
-                    <div id="nav_bar"></div>
-                </div>
-                
-                <!-- Content -->
-                <h2>Introduction</h2>
-                <p>Ce guide vous présente les composants de bases d'un site web dynamique et les outils dont dispose Webframework.</p>
+        <!-- Content -->
+        <h2>Introduction</h2>
+        <p>Ce guide vous présente les composants de bases d'un site web dynamique et les outils dont dispose Webframework.</p>
 
-                <!-- Content -->
-                <h2>Composants</h2>
-                
-                <ul class="component_boxes">
-                
-                    <li>
-                        <h3>Templates</h3>
-                        <p>Les templates permettent la création dynamique des pages HTML.</p>
-                        <ul>
-                            <li>XML Template</li>
-                            <li>HTML Template</li>
-                        </ul>
-                    </li>
+        <!-- Content -->
+        <h2>Composants</h2>
 
-                    <li>
-                        <h3>Contrôle de champ</h3>
-                        <p>Valider les entrées utilisateurs.</p>
-                        <ul>
-                            <li>Types</li>
-                        </ul>
-                    </li>
+        <ul class="component_boxes">
 
-                    <li>
-                        <h3>Navigation</h3>
-                        <p>Arboréscence du site web.</p>
-                        <ul>
-                            <li>Fichiers Défault</li>
-                            <li>JS Navigator</li>
-                        </ul>
-                    </li>
-
-                    <li>
-                        <h3>Navigation</h3>
-                        <p>Arboréscence du site web.</p>
-                        <ul>
-                            <li>Fichiers Défault</li>
-                            <li>JS Navigator</li>
-                        </ul>
-                    </li>
+            <li>
+                <h3>Templates</h3>
+                <p>Les templates permettent la création dynamique des pages HTML.</p>
+                <ul class="list-style1">
+                    <li>XML Template</li>
+                    <li>HTML Template</li>
                 </ul>
-            </div>
-        </div>
+            </li>
+
+            <li>
+                <h3>Contrôles des champs</h3>
+                <p>Valider les entrées utilisateurs.</p>
+                <ul class="list-style1">
+                    <li>Types</li>
+                </ul>
+            </li>
+
+            <li>
+                <h3>Navigation</h3>
+                <p>Arboréscence du site web.</p>
+                <ul class="list-style1">
+                    <li>Fichiers Défault</li>
+                    <li>JS Navigator</li>
+                </ul>
+            </li>
+
+            <li>
+                <h3>Requêtes HTTP</h3>
+                <p>Echange des données Client -&gt; Serveur.</p>
+                <ul class="list-style1">
+                    <li>Requêtes Client</li>
+                    <li>Réponses Server</li>
+                    <li>X-Arg Echange Format</li>
+                </ul>
+            </li>
+        </ul>
     </body>
 </html>
