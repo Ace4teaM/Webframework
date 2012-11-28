@@ -111,8 +111,8 @@ class Application{
      * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      */
-    function showXMLView($filename,$select,$attributes){
-        $content = $this->makeXMLView($filename,$select,$attributes);
+    function showXMLView($filename,$select,$attributes,$template_file){
+        $content = $this->makeXMLView($filename,$select,$attributes,$template_file);
         echo $content;
     }
 

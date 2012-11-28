@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+    <head template:action="merge" template:path=">head">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        
+        <!-- FavIcon -->
+        <link rel="icon" type="image/png" href="-{image:icon}" />
+        <link rel="shortcut icon" type="image/x-icon" href="-{icon:favicon}" />
+
+        <!-- Main Styles -->
+        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
+        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
+        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+        
+        <!-- Main Includes -->
+        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
+        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
+        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
+        <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
+        
+    </head>
+
+    <!-- Document -->
+    <body template:action="select" template:selector=">compounddef>sectiondef>memberdef[id=-{id}]">
+        <h2>-{name}</h2>
+        <p>-{briefdescription}</p>
+        <div>function -{definition} -{argsstring}</div>
+        
+        <h3>Parmetres</h3>
+        <ul template:action="all" template:selector="parameterlist>parameteritem">
+            <li template:action="all" template:selector=">parameternamelist">-{parametertype} -{parametername}</li>
+        </ul>
+    </body>
+</html>
