@@ -14,7 +14,7 @@ Revisions:
 */
 
 //initialise le contenu
-YUI(wfw_yui_config).use('node', 'wfw-event', 'wfw-request', function (Y)
+YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'wfw-event', 'wfw-request', function (Y)
 {
     var wfw = Y.namespace("wfw");
     

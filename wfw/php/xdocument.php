@@ -157,83 +157,60 @@ class XMLDocument extends DOMDocument
 	{
             $list = array();
             
-            $cur = ($context===NULL) ? $this->documentElement : $context;
-            
-            //analyse le selecteur
-            preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i',$selector,$matches);
-
- //         echo("begin ($selector)\n");
-           // print_r($matches);
-            do{
-                $found = false;
-                foreach($matches[2] as $key=>$tag){
-    //                echo("find ($tag)....");
-
-                    $cur = $this->enumNodes($cur->firstChild,function($node,&$cond) use ($key,$matches, $tag){
-                        //enfant direct ?
-     //                   echo("child ".trim($matches[1][$key])."\n");
-                        if(trim($matches[1][$key]) == '>')
-                            $cond["ignore_child"] = true;
-                        //deja en liste ?
-                        if(array_search($list, $node) !== FALSE)
-                            return TRUE;
-                        //tagname
-                        if($tag != '*' && $node->tagName != $tag)
-                            return TRUE;
-                        //attributs ?
-                        if(!empty($matches[3][$key])){
-                            $att_selector = $matches[3][$key];
-                            $att_list = strexplode($att_selector, ',', true);
-                            foreach($att_list as $att_pair){
-                                $att = strexplode($att_pair, '=', true);
-                                if($att[1] != $node->getAttribute($att[0]))
-                                    return TRUE;
-                            }
-                        }
-                        //ok
+            $func = function($node) use(&$list){
+                    //deja en liste ?
+                    if(!in_array($node, $list, true)){
                         return $node;
-                    }, true);
-
-                    //slection ok ?
-                    if ($cur !== TRUE){
-                        //ajoute ce noeud a la liste
-                        array_push($list,$cur);
-                        $found = true;
                     }
-                }
-            }while($found);
+                    return TRUE;
+                };
+                
+ //           $i=0;
+            //trouve le premier
+            do{
+                $cur = $this->one($selector,$context,$func);
+                
+                if($cur != NULL)
+                    array_push($list, $cur);
 
- //               echo("end ($cur->tagName)\n");
+ //               $i++;
+            }while(/*$i<5 && */$cur != NULL);
+//          print_r($list);  
+            
             //retourne la nouvelle selection
-            return $cur;
+            return $list;
 	}
 	
 	/*
          * @brief Obtient un élément du document
          * @param selector Sélecteur, de style CSS (voir Remarques)
+         * @param addCheck Fonction de verification additionnel
          * @return Retourne le noeud trouvé (DOMNode), NULL si introuvable
          * 
          * @remarks Le selecteur peut prendre la forme suivante ( > TAGNAME [ATT_NAME=ATT_VALUE,...] )
          */
-	public function one($selector,$context=NULL)
+	public function one($selector,$context=NULL,$addCheck=NULL)
 	{
             $cur = ($context===NULL) ? $this->documentElement : $context;
-            
+
             //analyse le selecteur
-            preg_match_all('/(\>|\/?)\s*(\w+)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i',$selector,$matches);
+            preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i',$selector,$matches);
 
- //         echo("begin ($selector)\n");
-           // print_r($matches);
+//          echo("begin ($selector)\n");
             foreach($matches[2] as $key=>$tag){
-//                echo("find ($tag)....");
+ //               echo("find ($tag)....");
 
-                $cur = $this->enumNodes($cur->firstChild,function($node,&$cond) use ($key,$matches, $tag){
+                $cur = $this->enumNodes($cur->firstChild,function($node,&$cond) use ($addCheck,$key,$matches, $tag){
+                   
                     //enfant direct ?
- //                   echo("child ".trim($matches[1][$key])."\n");
+                    //echo("child $node->tagName\n");
                     if(trim($matches[1][$key]) == '>')
                         $cond["ignore_child"] = true;
+                    //element seulement
+                    if($node->nodeType != XML_ELEMENT_NODE)
+                        return TRUE;
                     //tagname
-                    if($node->tagName != $tag)
+                    if($tag != '*' && $node->tagName != $tag)
                         return TRUE;
                     //attributs ?
                     if(!empty($matches[3][$key])){
@@ -245,16 +222,19 @@ class XMLDocument extends DOMDocument
                                 return TRUE;
                         }
                     }
+                    if(is_callable($addCheck)){
+                        return $addCheck($node);
+                    }
                     //ok
                     return $node;
                 }, true);
                 
                 //slection ok ?
                 if ($cur === TRUE){
- //                   echo("not found\n");
+//                   echo("not found\n");
                     return NULL;
                 }
-//                else echo("ok\n");
+ //               else echo("found $cur->tagName\n");
             }
 
  //               echo("end ($cur->tagName)\n");

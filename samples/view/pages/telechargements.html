@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+    <head>
+        <title>Téléchargements</title>
+
+        <!-- Navigator Page Id -->
+        <meta http-equiv="wfw.page-id" content="index" /> 
+
+        <!-- Internet explorer CSS compatible -->
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="css/download.css" type="text/css" />
+        <link rel="stylesheet" href="css/css3-github-buttons/gh-buttons.css" type="text/css" media="screen" />
+
+        <!-- Includes -->
+        <script type="text/javascript" language="javascript" src="js/download.js"></script>
+
+    </head>
+
+    <!-- Document -->
+    <body>
+        <h1>Téléchargements</h1>
+        <p>Le projet est disponible sur GitHub</p>
+
+        <h2>Dépôt Git</h2>
+        <p>Pour obtenir le dépot, cliquez sur un des boutons suivants.</p>
+        <div class="actions button-container">
+            <a href="github-windows://openRepo/https://github.com/Ace4teaM/Webframework" class="button icon settings">Cloner dans Windows</a>
+            <a href="https://github.com/Ace4teaM/Webframework/archive/master.zip" class="button icon arrowdown">Zip</a>
+            <div class="button-group">
+                <button id="git_http_link" class="button inactive">HTTP</button>
+                <button id="git_ssh_link" class="button inactive">SSH</button>
+                <button id="git_read_only_link" class="button inactive">Git Read-Only</button>
+                <input id="git_link" type="text" value="" />
+            </div>
+        </div>
+    </body>
+</html>

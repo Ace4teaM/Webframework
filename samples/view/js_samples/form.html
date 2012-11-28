@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
+  <head>
+    <meta http-equiv="Cache-Control" content="no-cache" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
+    <title>Formulaire</title>
+    
+    <!-- Navigator Page Id -->
+    <meta http-equiv="wfw.page-id" content="form" /> 
+
+    <!-- Internet explorer CSS compatible -->
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
+    <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
+    <link rel="stylesheet" href="css/fieldbar_menu.css" type="text/css" />
+
+    <!-- Includes -->
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
+    <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
+    <script type="text/javascript" language="javascript" src="js/form.js"></script>
+
+    <!-- styles -->
+    <style type="text/css">
+        #button_list input[type="button"]{
+            width: 150px;
+        }
+    </style>
+  </head>
+  <body>
+        <h1>Identification</h1>
+        <form id="form" action="-{page:index}?sample=form-req" method="get">
+            <fieldset>
+                <legend>Entrez vos informations d'identification</legend>
+                <div><span>Identifiant</span><input type="text" name="uid" value="User Id" /></div>
+                <div><span>Mot-de-Passe</span><input type="password" name="pwd" value="Password" /></div>
+                <div>
+                    <span>Choix A</span><input type="radio" name="choose" value="A" />
+                    <span>Choix B</span><input type="radio" name="choose" value="B" />
+                    <span>Choix C</span><input type="radio" name="choose" value="C" />
+                    <span>Choix D</span><input type="radio" name="choose" value="D" />
+                </div>
+                <div name="comment">Champ statique</div>
+            </fieldset>
+        </form>
+        <h2>Actions</h2>
+        <div>
+            <div style="width:150px; display:inline-block;">
+                <p><input type="checkbox" id="all" />getStaticNode</p>
+                <p><input type="checkbox" id="hide_frame" checked="checked" />showContent</p>
+            </div>
+            <div id="button_list" style="display:inline-block;">
+                <input id="show_elements" type="button" value="Lister les éléments" />
+                <input id="show_fields" type="button" value="Lister les champs" />
+                <input id="send_frame" type="button" value="Send as frame..." />
+                <input id="send_req" type="button" value="Send as request..." />
+                <input id="send_form" type="button" value="Send form..." />
+            </div>
+        </div>
+        <fieldset id="infos"><p>...</p></fieldset>
+  </body>
+</html>

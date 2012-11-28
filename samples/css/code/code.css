@@ -1,0 +1,28 @@
+fieldset.sample_code{
+    background-color: #f0f0f0;
+    padding:2px;
+    margin-top:10px;
+    border:none;
+}
+
+fieldset.sample_code > legend{
+    background-color: transparent;
+    padding:2px;
+    margin:2px;
+    font-size: 0.6em;
+    font-stretch: expended;
+    font-family: arial;
+}
+
+fieldset.sample_code > div{ /* Zone de code */
+    background-color: #cccccc;
+    padding:2px;
+    margin:6px 2px 6px 2px;
+    font-family: monospace, verdana, "courrier new";
+}
+
+fieldset.sample_code > p{ /* infos */
+    font-style: italic;
+    font-size: 0.8em;
+    font-family: verdana;
+}

@@ -7,31 +7,45 @@
 
     <index>
         <page id="index" name="Accueil">index.php</page>
-        <page id="base" name="Fonctions de base">index.php?sample=base</page>
-        <page id="css" name="Styles de bases (CSS)">index.php?sample=css</page>
-        <page id="style" name="Styles (CSS)">index.php?sample=style</page>
-        <page id="dialog" name="Dialogue">index.php?sample=dialog</page>
-        <page id="dialog_messageBox" name="Dialogues (boite de message)">index.php?sample=dialog-messageBox</page>
-        <page id="fieldbar" name="Barre de champs">index.php?sample=fieldbar</page>
-        <page id="form" name="Formulaire">index.php?sample=form.html</page>
-        <page id="layout" name="Positionnement (Layout)">index.php?sample=layout</page>
-        <page id="layout_full" name="Positionnement encré (Layout)">index.php?sample=layout_full</page>
-        <page id="request" name="Requête HTTP">index.php?sample=request</page>
-        <page id="states" name="Données locales">index.php?sample=states</page>
-        <page id="uri" name="Adresse (URI)">index.php?sample=uri</page>
-        <page id="xarg" name="X-Argument (Format d'échange de données)">index.php?sample=xarg</page>
-        <page id="default_file" name="Fichier Défaut">index.php?sample=default_file</page>
+        <page id="guide" name="Guide">index.php?page=guide</page>
+        <page id="licence" name="A Propos...">index.php?page=licence</page>
+        <page id="modules" name="Modules">index.php?page=modules</page>
+        <page id="base" name="Fonctions de base">samples.php?sample=base</page>
+        <page id="css" name="Styles de bases (CSS)">samples.php?sample=css</page>
+        <page id="style" name="Styles (CSS)">samples.php?sample=style</page>
+        <page id="dialog" name="Dialogue">samples.php?sample=dialog</page>
+        <page id="dialog_messageBox" name="Dialogues (boite de message)">samples.php?sample=dialog-messageBox</page>
+        <page id="fieldbar" name="Barre de champs">samples.php?sample=fieldbar</page>
+        <page id="form" name="Formulaire">samples.php?sample=form.html</page>
+        <page id="layout" name="Positionnement (Layout)">samples.php?sample=layout</page>
+        <page id="layout_full" name="Positionnement encré (Layout)">samples.php?sample=layout_full</page>
+        <page id="request" name="Requête HTTP">samples.php?sample=request</page>
+        <page id="states" name="Données locales">samples.php?sample=states</page>
+        <page id="uri" name="Adresse (URI)">samples.php?sample=uri</page>
+        <page id="xarg" name="X-Argument (Format d'échange de données)">samples.php?sample=xarg</page>
+        <page id="default_file" name="Fichier Défaut">samples.php?sample=default_file</page>
+        <page id="js" name="Javascript">js_samples.php</page>
+        <page id="php" name="PHP">php_samples.php</page>
+        <page id="samples" name="Exemples">index.php?page=samples</page>
+        <page id="download" name="Téléchargements">index.php?page=telechargements</page>
+        <!-- liens -->
+        <link id="wfw_projet">http://wfw.aceteam.org</link>
+        <link id="wfw_js_api">http://wfw.aceteam.org/api/js</link>
+        <link id="wfw_php_api">http://wfw.aceteam.org/api/php</link>
     <!--contact-->
         <title id="contact">AceTeaM</title>
         <mail id="contact">dev@aceteam.org</mail>
         <mail id="no-reply">no-reply@aceteam.org</mail>
     <!--autres-->
-        <image id="logo">bin/pictures/logo.png</image>
-        <image id="icon">bin/pictures/logo.ico</image>
+        <image id="logo">bin/pictures/www.jpg</image>
+        <image id="icon">bin/pictures/wfw_icon32.png</image>
+        <icon id="favicon">bin/pictures/favicon.ico</icon>
     </index>
 
     <tree>
-        <index>
+        <index></index>
+        <guide></guide>
+        <samples>
             <js> 
                 <base/>
                 <css/>
@@ -48,7 +62,12 @@
                 <xarg/>
                 <default_file/>
             </js>
-        </index>
+            <php> 
+            </php>
+        </samples>
+        <modules></modules>
+        <download></download>
+        <licence></licence>
     </tree>
 
 </site>
