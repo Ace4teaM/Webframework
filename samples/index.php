@@ -10,7 +10,7 @@ if(isset($_REQUEST["page"])){
     switch($_REQUEST["page"]){
         case "licence":
             //mon age depuis ma naissance
-            date_default_timezone_set('UTC');
+            date_default_timezone_set('France/Paris');
             $begin = mktime(3, 0, 0, 25, 12, 1983);
             $end = date(DATE_RFC822);
             $param["age"] = "28";
