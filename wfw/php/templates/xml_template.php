@@ -964,6 +964,50 @@ class cXMLTemplateAction_all extends cXMLTemplateAction {
 
 }
 
+/**
+ * @brief Test la sélection et transforme le premier élément trouvé
+ */
+class cXMLTemplateAction_one extends cXMLTemplateAction {
+
+    /**
+     * @copydoc cXMLTemplate::checkNode()
+     * @param $input Référence sur la classe appelante de type cXMLTemplate
+     */
+    public function check_node($input, $select, $node, $arg) {
+
+        $next = $node->nextSibling;
+        
+        $selector = $node->getAttributeNS($input->wfw_template_uri, "selector");
+
+        $select = $input->doc->one($selector,$select);
+//        print_r($all);
+        //scan le contenu
+        if($select) {
+            $arg['__inner_text__'] = $select->nodeValue;
+            $arg['__tag_name__'] = $select->tagName;
+
+            //traite les arguments pour ce noeud
+            $input->check_arguments($select, $node, $arg);
+
+            //supprime les attributs inutiles
+            $input->clean_attributes($node);
+
+            //scan le contenu enfant
+            if ($node->firstChild != NULL)
+                $input->check_node($select, $node->firstChild, $arg);
+        }
+        //sinon, supprime ce noeud
+        else {
+            $input->post("cXMLTemplateAction_one", "selection introuvable, supprime le noeud de reference.");
+            if ($node->parentNode)
+                $node->parentNode->removeChild($node);
+        }
+
+        return $next;
+    }
+
+}
+
 /*
   test une expression reguliere sur la selection
  */

@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
         <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
         <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="css/coding.css" type="text/css" />
         
         <!-- Main Includes -->
         <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
@@ -22,14 +23,65 @@
     </head>
 
     <!-- Document -->
-    <body template:action="select" template:selector=">compounddef>sectiondef>memberdef[id=-{id}]">
-        <h2>-{name}</h2>
-        <p>-{briefdescription}</p>
-        <div>function -{definition} -{argsstring}</div>
-        
-        <h3>Parmetres</h3>
-        <ul template:action="all" template:selector="parameterlist>parameteritem">
-            <li template:action="all" template:selector=">parameternamelist">-{parametertype} -{parametername}</li>
-        </ul>
+    <body>
+        <!-- <div template:action="one" template:selector=">compounddef>sectiondef>memberdef[id=-{id}]"> -->
+        <div template:action="all" template:selector=">compounddef>sectiondef>memberdef[kind=function]">
+            <h2 id="-{name}">-{name}</h2>
+            <p>-{briefdescription}</p>
+            <!-- Syntaxe -->
+            <h4>Syntaxe</h4>
+            <blockquote>
+                <div class="code_syntax">
+                    <!--
+                    <span template:action="one" template:selector="parameterlist[kind=retval]">
+                        <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
+                    </span>-->
+                    -{name}(
+                    <blockquote template:action="all" template:selector="parameterlist[kind=param]>parameteritem">
+                        [-{parametername@direction}] <span class="code_syntax_type">-{type}</span> <span class="code_syntax_definition">-{parametername}</span>,<br />
+                    </blockquote>
+                    );
+                </div>
+            </blockquote>
+            <!-- Paramètres -->
+            <div template:action="one" template:selector="parameterlist[kind=param]">
+                <h4>Paramètres</h4>
+                <blockquote>
+                    <div template:action="all" template:selector=">parameteritem">
+                        <span template:action="one" template:selector=">parameternamelist" class="code_syntax_definition">-{parametername}</span>
+                        <br />
+                        <blockquote template:action="one" template:selector=">parameterdescription">
+                            <div template:action="format" template:transform="true">-{__inner_text__}</div>
+                        </blockquote>
+                    </div>
+                </blockquote>
+            </div>
+            <!-- Retourne -->
+            <h4>Retourne</h4>
+            <div template:action="one" template:selector="simplesect[kind=return]">
+                <blockquote>-{__inner_text__}</blockquote>
+            </div>
+            <blockquote template:action="one" template:selector="parameterlist[kind=retval]">
+                <div template:action="all" template:selector=">parameteritem"><span class="code_syntax_type">[-{parametername}]</span> : -{parameterdescription}</div>
+            </blockquote>
+            <!-- Remarques -->
+            <div template:action="one" template:selector="simplesect[kind=remark]">
+                <h4>Remarques</h4>
+                <blockquote>-{__inner_text__}</blockquote>
+            </div>
+            <!-- Textes -->
+            <div template:action="one" template:selector="simplesect[kind=par]">
+                <h4>-{title}</h4>
+                <blockquote>-{para}</blockquote>
+            </div>
+            <!-- Exemple
+            <div template:action="array" template:path="sample">
+                <h4>Exemple</h4>
+                <blockquote>
+                    <p template:action="select" template:path="description">-{__inner_text__}</p>
+                    <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
+                </blockquote>
+            </div> -->
+        </div>
     </body>
 </html>

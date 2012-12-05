@@ -16,11 +16,11 @@ if(isset($_REQUEST["page"])){
             $param["age"] = "28";
             break;
     }
-    $app->showXMLView("view/pages/".$_REQUEST["page"].".html",NULL,$param);
+    $app->showXMLView("view/pages/".$_REQUEST["page"].".html",$param);
     exit;
 }
 
 // accueil
-$app->showXMLView("view/pages/index.html",NULL,array());
+$app->showXMLView("view/pages/index.html",array());
 
 ?>

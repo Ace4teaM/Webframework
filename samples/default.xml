@@ -6,6 +6,7 @@
     <description>Webframework Exemples HTML/Javascript</description>
 
     <index>
+        <page id="api" name="API">doxy_index.php</page>
         <page id="index" name="Accueil">index.php</page>
         <page id="guide" name="Guide">index.php?page=guide</page>
         <page id="licence" name="A Propos...">index.php?page=licence</page>
@@ -65,6 +66,7 @@
             <php> 
             </php>
         </samples>
+        <api></api>
         <modules></modules>
         <download></download>
         <licence></licence>

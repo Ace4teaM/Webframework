@@ -120,26 +120,35 @@ class cTemplateMarker_attribute extends cTemplateMarker
 	public static function exp()
 	{
 		return array(
-			('\@('.cInputName::regExp().')')                     => 'check_text',
-			('\@('.cInputName::regExp().')'.'\|'.'\'([^\']*)\'') => 'check_text',
+			('('.cInputName::regExp().')?\@('.cInputName::regExp().')')                     => 'check_text',
+			('('.cInputName::regExp().')?\@('.cInputName::regExp().')'.'\|'.'\'([^\']*)\'') => 'check_text'
 			);
 	}
 	
 	public function check_text($input,$select,$matches,&$arg)
 	{
-		$attribute_name = $matches[1];
+            $node_name = $matches[1];
+            $attribute_name = $matches[2];
 
-		//recherche dans la selection
-		if($select!=NULL && $select->hasAttribute($attribute_name)){
-			//obtient la selection
-			return $select->getAttribute($attribute_name);
-		}
-		
-		//aucune entree trouve, texte de remplacement?
-		if(isset($matches[2]))
-			return $matches[2];
-		
-		return "";
+            //recherche la selection ?
+            if(!empty($node_name) && $select!=NULL){
+                //obtient la selection
+                $node_select = $input->get_xml_selection($select,$arg,$node_name);
+                if($node_select!=NULL)
+                        $select = $node_select;
+            }
+
+            //recherche l'attribut
+            if($select!=NULL && $select->hasAttribute($attribute_name)){
+                    //obtient la selection
+                    return $select->getAttribute($attribute_name);
+            }
+
+            //aucune entree trouve, texte de remplacement?
+            if(isset($matches[2]))
+                    return $matches[2];
+
+            return "";
 	}
 }
 

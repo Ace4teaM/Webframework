@@ -11,6 +11,13 @@ class Application{
     function Application($root_path){
         $this->root_path = $root_path;
         
+        // Configuration par défaut
+        /*$this->config = array(
+            "TMP_DIR" => "tmp",
+            "UPLOAD_DIR" => "tmp"
+        );
+        array_merge($this->config, parse_ini_file($this->root_path."/cfg/config.ini", true));*/
+        
         // Charge la configuration
         $this->config = parse_ini_file($this->root_path."/cfg/config.ini", true);
         
@@ -27,6 +34,14 @@ class Application{
      */
     function getRootPath(){
         return $this->root_path;
+    }
+    
+    /**
+     * @brief Obtient le chemin d'accès vers l'application
+     * @return string Chemin absolue vers la racine de l'application
+     */
+    function getTmpPath(){
+        return $this->root_path."/".$this->config["path"]["tmp"];
     }
     
     /**
@@ -81,7 +96,7 @@ class Application{
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @return string Contenu du template transformé
      */
-    function makeXMLView($filename,$select,$attributes,$template_file="view/template.html"){ 
+    function makeXMLView($filename,$attributes,$template_file="view/template.html"){ 
 
         $template = new cXMLTemplate();
         
@@ -89,7 +104,7 @@ class Application{
         $select = new XMLDocument("1.0", "utf-8");
         $select->load($this->root_path.'/'.$filename);
 
-        //charge le fichier de configuration
+        //ajoute le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
         
         //initialise la classe template 
@@ -111,8 +126,8 @@ class Application{
      * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      */
-    function showXMLView($filename,$select,$attributes,$template_file){
-        $content = $this->makeXMLView($filename,$select,$attributes,$template_file);
+    function showXMLView($filename,$attributes,$template_file="view/template.html"){
+        $content = $this->makeXMLView($filename,$attributes,$template_file);
         echo $content;
     }
 

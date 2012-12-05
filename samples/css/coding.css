@@ -1,0 +1,165 @@
+/*
+ Class Styles
+    Generic code
+*/
+
+.code_syntax {
+	margin:10px;
+	padding:10px;
+	background-color:white;
+	font-family:Consolas, Verdana;
+	font-size:10pt;
+    color:#6f6f6f;
+    border:1px solid black;
+}
+
+.code_syntax blockquote 
+{
+    margin:5px 0px 0px 16px;
+    padding:0px;
+}
+
+.code_syntax_comment
+{
+    font-style:normal;
+    font-weight:bold;
+    color:#008000;
+}
+.code_syntax_title
+{
+    font-style:normal;
+    font-weight:bold;
+}
+.code_syntax_type
+{
+    font-style:normal;
+    font-weight:bold;
+}
+
+.code_syntax_definition
+{
+    font-style:italic;
+    font-weight:normal;
+}
+
+.cmd_prompt
+{
+    font-style:normal;
+    font-weight:bold;
+	font-family:Consolas;
+	background-color:#444444;
+	color:#eeeeee;
+	font-size:10pt;
+}
+
+div.cmd_prompt
+{
+	margin:4px;
+	padding:4px;
+    border:1px solid black;
+}
+
+.cmd_prompt em
+{
+	color:yellow;
+}
+
+.citation
+{
+    font-weight:bold;
+    font-style:italic;
+    font-family:Calibri;
+}
+
+.script
+{
+    font-style:normal;
+    font-weight:normal;
+	font-family:Consolas;
+	background-color:#cccccc;
+	color:#444444;
+	font-size:8pt;
+	line-height:14pt;
+	overflow-x:scroll;
+	white-space:nowrap;
+}
+
+div.script
+{
+	margin:10px;
+	padding:10px;
+    border:1px solid black;
+}
+
+pre.script
+{
+	background-color:#cccccc;
+	color:#444444;
+	margin:10px;
+	padding:10px;
+    border:1px solid black;
+	white-space:pre;
+}
+
+/* */
+
+table.items
+{
+    font-family:Calibri;
+    font-size:small;
+    color:Black;
+    background-color:#e3e3e3;
+    width:100%;
+}
+
+table.items th
+{
+    font-size:medium;
+    font-weight:normal;
+    color:white;
+    background-color:#969696;
+    width:35%;
+}
+
+table.items td
+{
+    font-weight:normal;
+    background-color:#ededed;
+}
+
+/* */
+
+.syntax 
+{
+    display:block;
+	padding:6px;
+	background-color:#969696;
+	font-family:Calibri;
+    color:#ffffdb;
+    border:1px solid black;
+    cursor:default;
+}
+
+.syntax .field {
+    font-style:italic;
+    color:#ffffdb;
+}
+
+.syntax .field:hover 
+{
+    color:#00ff00;
+}
+
+.syntax .optionnal_field {
+    font-style:italic;
+}
+
+.syntax .optionnal_field:after {
+    content:"]";
+    color:Yellow;
+}
+
+.syntax .optionnal_field:before {
+    content:"[";
+    color:Yellow;
+}
