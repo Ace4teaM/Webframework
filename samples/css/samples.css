@@ -1,8 +1,8 @@
 .column{
     display:inline-block;
-    width: 320px;
+    width: 240px;
     vertical-align: top;
-    border-right: solid 2px black;
+    border-right: dashed 2px #eeeeee;
 
     padding-right: 20px;
     padding-left: 20px;

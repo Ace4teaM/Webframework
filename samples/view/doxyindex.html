@@ -40,19 +40,23 @@
         </div>
         
         <div class="column">
-            <h2>Fonctions et Variables</h2>
-            <fieldset template:action="all" template:selector=">compound[kind=file]">
-                <legend>-{name}</legend>
-                <input type="hidden" value="-{@refid}" />
-                <strong>Fonctions</strong>
+            <h2>Fonctions</h2>
+            <template:container template:action="all" template:selector=">compound[kind=file]">
+                <!-- <h3>-{name}</h3> -->
                 <ul>
                     <li template:action="all" template:selector=">member[kind=function]"><a href="doxy_function.php?ref=-{@refid}">-{name}</a></li>
                 </ul>
-                <strong>Variables</strong>
+            </template:container>
+        </div>
+        
+        <div class="column">
+            <h2>Globales</h2>
+            <template:container template:action="all" template:selector=">compound[kind=file]">
+                <!-- <h3>-{name}</h3> -->
                 <ul>
                     <li template:action="all" template:selector=">member[kind=variable]">-{name}</li>
                 </ul>
-            </fieldset>
+            </template:container>
         </div>
     </body>
 </html>
