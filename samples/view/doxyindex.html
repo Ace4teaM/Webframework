@@ -27,14 +27,14 @@
     <body>
         <div class="column">
             <h2>Classes</h2>
-            <ul>
+            <ul class="list-style2">
                 <li template:action="all" template:selector=">compound[kind=class]">-{name}</li>
             </ul>
         </div>
         
         <div class="column">
             <h2>Interfaces</h2>
-            <ul>
+            <ul class="list-style2">
                 <li template:action="all" template:selector=">compound[kind=interface]">-{name}</li>
             </ul>
         </div>
@@ -43,7 +43,7 @@
             <h2>Fonctions</h2>
             <template:container template:action="all" template:selector=">compound[kind=file]">
                 <!-- <h3>-{name}</h3> -->
-                <ul>
+                <ul class="list-style2">
                     <li template:action="all" template:selector=">member[kind=function]"><a href="doxy_function.php?ref=-{@refid}">-{name}</a></li>
                 </ul>
             </template:container>
@@ -53,7 +53,7 @@
             <h2>Globales</h2>
             <template:container template:action="all" template:selector=">compound[kind=file]">
                 <!-- <h3>-{name}</h3> -->
-                <ul>
+                <ul class="list-style2">
                     <li template:action="all" template:selector=">member[kind=variable]">-{name}</li>
                 </ul>
             </template:container>
