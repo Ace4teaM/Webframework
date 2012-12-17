@@ -32,11 +32,9 @@
 
         <div template:action="select" template:path=":default.xml:>tree>samples">
             <div class="column" template:action="all" template:selector=">*">
-                <h3>-{{page:-{__tag_name__}@name}}</h3>
+                <h3><img style="float:left;" src="-{{image:-{__tag_name__}}}" height="40" />-{{page:-{__tag_name__}@name}}</h3>
+                
                 <p><a href="-{{page:-{__tag_name__}}}">Tout les exemples -{{page:-{__tag_name__}@name}}</a></p>
-                <ul class="list-style2">
-                    <li template:action="all" template:selector=">*"><a href="-{page:index}?php_sample=-{__tag_name__}">-{{page:-{__tag_name__}@name}}</a></li>
-                </ul>
             </div>
         </div>
     </body>

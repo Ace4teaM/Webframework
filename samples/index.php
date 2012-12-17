@@ -4,7 +4,7 @@ global $app;
 
 //print_r($app);
 
-// exemples JS
+// page
 if(isset($_REQUEST["page"])){
     $param = array();
     switch($_REQUEST["page"]){

@@ -1,22 +1,33 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
   <head>
     <meta http-equiv="Cache-Control" content="no-cache" />
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
     <title>Template XML</title>
-    <!-- stylesheet -->
-    <link rel="stylesheet" href="../css/wfw-extends.css" type="text/css" />
+    
+    <!-- Navigator Page Id -->
+    <meta http-equiv="wfw.page-id" content="xml_template" /> 
+
+    <!-- Internet explorer CSS compatible -->
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
+    <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
+    <link rel="stylesheet" href="css/code/code.css" type="text/css" />
+
     <!-- Includes -->
-    <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
-    <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
-    <script type="text/javascript" language="javascript" src="yui_config.js"></script>
-    <script type="text/javascript" language="javascript" src="xml_template.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
+    <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
+    <script type="text/javascript" language="javascript" src="js/xml_template.js"></script>
   </head>
   <body>
 	<h2>Bibliothèque Manga</h2>
         <div id="biblio"></div>
         <!-- template -->
-        <fieldset id="my_template" class="wfw_hidden">
+        <fieldset template:action="ignore" id="my_template" class="wfw_hidden">
             <legend>-{title}</legend>
             <p>-{text}</p>
         </fieldset>

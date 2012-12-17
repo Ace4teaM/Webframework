@@ -1121,92 +1121,36 @@ YUI.add('wfw-xml-template', function (Y) {
             {
                 this.sitefile = wfw.Navigator.doc.doc; //xml doc
                 var cdef = wfw.Navigator.doc;
-
+            }
+            else{
+                this.sitefile = new wfw.Xml.DEFAULT_FILE();
+                this.sitefile.Initialise("default.xml");
+            }
+            
+            //initialise les parametres globaux
+            if(this.sitefile != null){
                 //Nom de domaine
-                arg["__domain__"]       = cdef.getIndexValue("domain",arg["__hostname__"]); 
+                arg["__domain__"]       = this.sitefile.getIndexValue("domain",arg["__hostname__"]); 
                 //URI sans protocol
-                arg["__uri_nop__"]      = arg["__domain__"]+cdef.getIndexValue("path",arg["__hostname__"])+"/";               
+                arg["__uri_nop__"]      = arg["__domain__"]+this.sitefile.getIndexValue("path",arg["__hostname__"])+"/";               
                 //URI sans protocol
-                arg["__base_uri_nop__"] = arg["__domain__"]+cdef.getIndexValue("base_path",arg["__hostname__"])+"/"; 
+                arg["__base_uri_nop__"] = arg["__domain__"]+this.sitefile.getIndexValue("base_path",arg["__hostname__"])+"/"; 
                 //URI complete
-                arg["__uri__"]          = "http://"+arg["__domain__"]+cdef.getIndexValue("path",arg["__hostname__"])+"/";    
+                arg["__uri__"]          = "http://"+arg["__domain__"]+this.sitefile.getIndexValue("path",arg["__hostname__"])+"/";    
                 //URI racine complete
-                arg["__base_uri__"]     = "http://"+arg["__domain__"]+cdef.getIndexValue("base_path",arg["__hostname__"])+"/";  
+                arg["__base_uri__"]     = "http://"+arg["__domain__"]+this.sitefile.getIndexValue("base_path",arg["__hostname__"])+"/";  
                 //URI racine complete
-                arg["__path__"]         = cdef.getIndexValue("path_root",arg["__hostname__"])+"/";
+                arg["__path__"]         = this.sitefile.getIndexValue("path_root",arg["__hostname__"])+"/";
                 //SiteName
-                arg["__name__"]         = cdef.getValue("name");
-                arg["__title__"]        = cdef.getValue("title");
+                arg["__name__"]         = this.sitefile.getValue("name");
+                arg["__title__"]        = this.sitefile.getValue("title");
                 //SiteDesc
-                arg["__description__"]  = cdef.getValue("description");
+                arg["__description__"]  = this.sitefile.getValue("description");
                 //id
-                arg["__id__"]           = cdef.getValue("id");
+                arg["__id__"]           = this.sitefile.getValue("id");
             }
-            //charge le fichier
-            else if( this.sitefile = input.load_xml_file("default.xml") )
-            {
-                var node;
-                //Nom de domaine
-                arg["__domain__"]       = this.getdefault(input,"domain",arg["__hostname__"]); 
-                //URI sans protocol
-                arg["__uri_nop__"]      = arg["__domain__"]+this.getdefault(input,"path",arg["__hostname__"])+"/";               
-                //URI sans protocol
-                arg["__base_uri_nop__"] = arg["__domain__"]+this.getdefault(input,"base_path",arg["__hostname__"])+"/"; 
-                //URI complete
-                arg["__uri__"]          = "http://"+arg["__domain__"]+this.getdefault(input,"path",arg["__hostname__"])+"/";    
-                //URI racine complete
-                arg["__base_uri__"]     = "http://"+arg["__domain__"]+this.getdefault(input,"base_path",arg["__hostname__"])+"/";  
-                //URI racine complete
-                arg["__path__"]         = this.getdefault(input,"path_root",arg["__hostname__"])+"/";
-                //SiteName
-                node = this.sitefile.one("site > name");
-                arg["__name__"] = (node != null ? node.get("text") : "");
-                node = this.sitefile.one("site > title");
-                arg["__title__"] = (node != null ? node.get("text") : "");
-                //SiteDesc
-                node = this.sitefile.one("site > description");
-                arg["__description__"]  = (node!=null ? node.get("text") : "");
-                //id
-                node = this.sitefile.one("site > id");
-                arg["__id__"]           = (node!=null ? node.get("text") : "");
-            }
-        }
-
-        /*
-        Obtient un noeud de l'index
-        Arguments:
-        [string] type : type de noeud (nom de balise)
-        [string] id   : identificateur
-        Retourne:
-        [XMLElement] Noeud trouve, null si introuvable
-        */
-        this.getIndexNode = function (type, id) {
-            //recherche
-            var entry_node = this.sitefile.one('site > index > ' + type);
-            while (entry_node) {
-                var entry_id = entry_node.getAttribute("id");
-                if (entry_id == id)
-                    return entry_node;
-
-                entry_node = objGetNext(entry_node, type);
-            }
-            return null;
-        }
-
-        //obtient une valeur du defaut          
-        this.getdefault = function(input,type,id){
-
-            if(this.sitefile==null)
-            {
-                return "";
-            }
-
-
-            var pageNode = this.getIndexNode(type, id);
-            if (pageNode == null)
-                return "";
-
-            return objGetInnerText(pageNode);
+            else
+                wfw.puts("cXMLTemplateMarker_default: can't load default file");
         }
 
         //obtient une URI 

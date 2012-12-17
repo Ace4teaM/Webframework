@@ -6,11 +6,11 @@ global $app;
 
 // exemples JS
 if(isset($_REQUEST["sample"])){
-    $app->showXMLView("view/js_samples/".$_REQUEST["sample"].".html",NULL,array());
+    $app->showXMLView("view/js_samples/".$_REQUEST["sample"].".html",array());
     exit;
 }
 
 // accueil
-$app->showXMLView("view/js_samples/index.html",NULL,array());
+$app->showXMLView("view/js_samples/index.html",array());
 
 ?>

@@ -12,57 +12,25 @@
         <meta http-equiv="X-UA-Compatible" content="IE=8" />
 
         <!-- Styles -->
-        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
-        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
         <link rel="stylesheet" href="css/index.css" type="text/css" />
-        <link rel="stylesheet" href="css/fieldbar_menu.css" type="text/css" />
-        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
 
         <!-- Includes -->
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
-        <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
         <script type="text/javascript" language="javascript" src="js/index.js"></script>
 
     </head>
 
     <!-- Document -->
     <body>
-        <div id="header">
-            <div id="menu" class="container" template:action="select" template:path=":default.xml:>tree">
-                <ul>
-                    <li template:action="all" template:selector=">*"><a href="-{{page:-{__tag_name__}}}">-{{page:-{__tag_name__}@name}}</a></li>
-                </ul>
-            </div>
-        </div>
-    
-	<div id="page" class="container">
-            <div id="content">
-                <h1>Exemples Webframework</h1>
-                <p>Ici vous trouverez des explications détaillées sous forme d'exemples des différentes fonctionnalités de la librairie Webframework.</p>
-                <p>Plus d'informations sur le <a href="-{link:wfw_projet}" target="wfw_projet">projet Webframework</a></p>
+        <h1>Exemples Javascript</h1>
+        <p><img style="float:left;" src="-{image:js}" height="40" />Sous Webframework la programmation d'interface utilisteur est basée sur la librairie <a href="http://yuilibrary.com/">Yahoo-UI</a>.</p>
 
-                <!-- Navigation bar -->
-                <div>
-                    <input type="hidden" id="nav_input" value="index" />
-                    <div id="nav_bar"></div>
-                </div>
-                
-                <!-- Content -->
-                <h2>Exemples par langages</h2>
-                <p>Liste des pages d'exemples</p>
+        <!-- Content -->
+        <h2>Exemples par thème</h2>
 
-                <div template:action="select" template:path=":default.xml:>tree>samples">
-                    <div class="column" template:action="all" template:selector=">*">
-                        <h3>-{{page:-{__tag_name__}@name}}</h3>
-                        <p><a href="-{{page:-{__tag_name__}}}">Tout les exemples -{{page:-{__tag_name__}@name}}</a></p>
-                        <ul>
-                            <li template:action="all" template:selector=">*"><a href="-{page:index}?php_sample=-{__tag_name__}">-{{page:-{__tag_name__}@name}}</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div template:action="select" template:path=":default.xml:>tree>samples>js">
+            <ul>
+                <li template:action="all" template:selector=">*"><a href="-{{page:-{__tag_name__}}}">-{{page:-{__tag_name__}@name}}</a></li>
+            </ul>
         </div>
     </body>
 </html>
