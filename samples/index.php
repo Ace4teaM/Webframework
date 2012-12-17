@@ -7,6 +7,7 @@ global $app;
 // page
 if(isset($_REQUEST["page"])){
     $param = array();
+    //arguments 
     switch($_REQUEST["page"]){
         case "licence":
             //mon age depuis ma naissance
