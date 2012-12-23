@@ -586,4 +586,5 @@ function str_explode($text,$separator,$bTrim){
 	return $ar2;
 }               
  
+    
 ?>

@@ -1,12 +1,22 @@
 <?php
+require_once("inc/Error.php");
 
 /**
  * @brief Interface principale avec l'application 
  */
 class Application{
+    //errors class
+    const Configuration = 2001;
+    
+    //
     public $template_attributes;
     public $config;
     public $root_path;
+    /** 
+     * @brief Pointeur sur la base de données par défaut
+     * @var iDataBase
+     */
+    public $db;
     
     function Application($root_path){
         $this->root_path = $root_path;
@@ -26,6 +36,43 @@ class Application{
             "_LIB_PATH_WFW_" => $this->getLibPath("wfw",true),
             "_LIB_PATH_YUI_" => $this->getLibPath("yui",true)
         );
+        
+        // initialise la base de données à null
+        //( la fonction getDB initialise la connexion si besoin )
+        $this->db = null;
+    }
+
+    /**
+     * @brief Obtient la connexion à la base de données par défaut
+     * @return Résultat de la procédure
+     * @retval true La fonction à réussit, $db_iface contient un pointeur vers une interface iDataBase initialisée
+     * @retval false La fonction à échouée, voir cResult::getLast() pour plus d'informations
+     */
+    function getDB(&$db_iface)
+    {
+        //obtient le nom de la classe à instancier
+        if(!isset($this->config["database"]["class"]) || empty($this->config["database"]["class"]))
+            return RESULT(Application::Configuration,"No database class defined");
+        $db_classname = $this->config["database"]["class"];
+
+        //initialise l'instance
+        if($this->db == null){
+            //initialise la connexion
+            $db = new $db_classname();
+            $user   = $this->config["database"]["user"];
+            $name   = $this->config["database"]["name"];
+            $pwd    = $this->config["database"]["pwd"];
+            $server = $this->config["database"]["server"];
+            $port   = $this->config["database"]["port"];
+            if(!$db->connect($user,$name,$pwd,$server,$port))
+                return false;
+            
+            $this->db = $db; // ok
+        }
+        
+        //ok, retourne l'interface
+        $db_iface = $this->db;
+        return RESULT_OK();
     }
     
     /**

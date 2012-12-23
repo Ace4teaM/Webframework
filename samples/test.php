@@ -1,27 +1,19 @@
 <?php
 require_once("inc/globals.php");
 global $app;
+//ini_set('display_errors', '1');
 
-    $template = new cXMLTemplate();
-    $filename = "view/pages/template.html";
-    $attributes = array();
-    
-    //charge le contenu en selection
-    $select = new XMLDocument("1.0", "utf-8");
-    $select->load($app->root_path.'/view/pages/test.html');
+if(!$app->getDB($db))
+    exit;
 
-    //charge le fichier de configuration
-    $template->load_xml_file('default.xml',$app->root_path);
+//test une requete
+if($db->execute("SELECT value from globals where name='et_create_user'", $result)){
+    echo "value=".$db->fetchValue($result,"value");
+}
+else{
+    RESULT(cResult::Failed,'execute failed');
+    exit;
+}
 
-    //initialise la classe template 
-    if(!$template->Initialise(
-                $app->root_path.'/'.$filename,
-                NULL,
-                $select,
-                NULL,
-                array_merge($attributes,$app->template_attributes) ) )
-            return false;
 
-    //transforme le fichier
-    echo $template->Make();
 ?>

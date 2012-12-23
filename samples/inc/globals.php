@@ -11,7 +11,12 @@ $app = new Application(ROOT_PATH);
 
 set_include_path(get_include_path() . PATH_SEPARATOR . $app->getLibPath('wfw'));
 
+require_once("php/class/bases/cResult.php");
 require_once("php/templates/cHTMLTemplate.php");
 require_once("php/templates/xml_template.php");
 
+//charge la classe de la base de données
+$db_classname = $app->config["database"]["class"];
+if(!empty($db_classname))
+    require_once($app->getLibPath("wfw")."/php/$db_classname.php");
 ?>
