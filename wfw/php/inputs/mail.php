@@ -11,6 +11,8 @@
 $libdir = realpath(dirname(__FILE__)."/../..");
 
 require_once("$libdir/php/class/bases/input.php");
+require_once("$libdir/php/string.php");
+
 // Adresse eMail
 // RFC-2822 ( non-certifié)
 class cInputMail extends cInput

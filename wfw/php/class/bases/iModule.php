@@ -1,17 +1,14 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of iModule
+ * Interface module
  *
- * @author developpement
+ * @author Thomas AUGUEY
  */
 interface iModule {
-    //put your code here
+    const CantFindTemplateFile = 6001;
+    const CantLoadDefaultFile  = 6002;
+    public static function makeView($name,$attributes,$template_file);
 }
 
 ?>

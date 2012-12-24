@@ -7,6 +7,7 @@
 $libdir = realpath(dirname(__FILE__)."/../..");
 
 require_once("$libdir/php/class/bases/input.php");
+require_once("$libdir/php/string.php");
 
 class cInputWindowsFileName extends cInput
 {

@@ -4,6 +4,7 @@ $cwd = realpath(dirname(__FILE__));
 $libdir = realpath("$cwd/../..");
 
 require_once("$libdir/php/class/bases/input.php");
+require_once("$libdir/php/string.php");
 
 // Mot de passe ASCII 
 // Aucun Standard

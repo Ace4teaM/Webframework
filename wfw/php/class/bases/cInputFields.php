@@ -54,7 +54,7 @@ class cInputFields {
                 }
             }
         }
-        
+
         //ok
         return RESULT_OK();
     }

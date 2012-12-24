@@ -3,6 +3,8 @@
 $libdir = realpath(dirname(__FILE__)."/../..");
 
 require_once("$libdir/php/class/bases/input.php");
+require_once("$libdir/php/string.php");
+
 // Identificateur ASCII 
 // Aucun Standard
 class cInputIdentifier extends cInput

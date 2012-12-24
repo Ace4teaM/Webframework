@@ -31,27 +31,31 @@ class cResult {
      * @param string $info  Identifiant décrivant plus en détail le résultat
      * @remarks Voir cResult pour plus de détails sur les codes d'erreurs
      */
-    public static function last($code, $info){
-        self::$last_code = $code;
-        self::$last_info = $info;
-        if($code != cResult::Ok){
-            echo("RESULT: $code, $info\n");
-            return false;
-        }
-        return true;
-    }
-    
-    /**
-     * @brief Constructeur de la classe  
-     * @param int    $code  Code de l'erreur
-     * @param string $info  Identifiant décrivant plus en détail le résultat
-     * @remarks Voir cResult pour plus de détails sur les codes d'erreurs
-     */
     public function cResult($code, $info){
         $this->code = $code;
         $this->info = $info;
     }
-    
+
+    /**
+     * @brief Initialise la dernière erreur
+     * @param int    $code  Code de l'erreur
+     * @param string $info  Identifiant décrivant plus en détail le résultat
+     * @remarks Voir cResult pour plus de détails sur les codes d'erreurs
+     */
+    public static function last($code, $info){
+        self::$last_code = $code;
+        self::$last_info = $info;
+        return ($code == cResult::Ok) ? true : false;
+    }
+
+    /**
+     * @brief Obtient une instance de la dernière erreur
+     * @return Instance d'une classe cResult initialisé avec les paramétres de la dernière erreur
+     */
+    public static function getLast(){
+        return new cResult(self::$last_code,self::$last_info);
+    }
+
     /**
      * @brief Test le résultat
      * @return bool Etat du succès
