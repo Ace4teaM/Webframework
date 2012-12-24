@@ -2,6 +2,13 @@
 require_once("inc/globals.php");
 global $app;
 
+//si la reference n'est pas definit, retour à l'index des fonctions
+if(!cInputFields::checkArray(array("ref"=>"cInputIdentifier"))){
+    header("Location: doxy_index.php");
+    exit;
+}
+
+//
 $ref = $_REQUEST["ref"];
 $cache_file = "view/tmp/$ref.html";
 

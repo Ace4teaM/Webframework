@@ -11,7 +11,9 @@ $app = new Application(ROOT_PATH);
 
 set_include_path(get_include_path() . PATH_SEPARATOR . $app->getLibPath('wfw'));
 
+require_once("php/string.php");
 require_once("php/class/bases/cResult.php");
+require_once("php/class/bases/cInputFields.php");
 require_once("php/templates/cHTMLTemplate.php");
 require_once("php/templates/xml_template.php");
 

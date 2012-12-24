@@ -5,7 +5,8 @@ global $app;
 //print_r($app);
 
 // exemples JS
-if(isset($_REQUEST["sample"])){
+if(cInputFields::checkArray(array("sample"=>"cInputIdentifier")))
+{
     $app->showXMLView("view/js_samples/".$_REQUEST["sample"].".html",array());
     exit;
 }

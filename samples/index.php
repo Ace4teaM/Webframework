@@ -5,9 +5,10 @@ global $app;
 //print_r($app);
 
 // page
-if(isset($_REQUEST["page"])){
-    $param = array();
+if(cInputFields::checkArray(array("page"=>"cInputIdentifier")))
+{
     //arguments 
+    $param = array();
     switch($_REQUEST["page"]){
         case "licence":
             //mon age depuis ma naissance
@@ -17,11 +18,12 @@ if(isset($_REQUEST["page"])){
             $param["age"] = "28";
             break;
     }
+    //construit le template
     $app->showXMLView("view/pages/".$_REQUEST["page"].".html",$param);
     exit;
 }
 
-// accueil
+//construit le template d'accueil
 $app->showXMLView("view/pages/index.html",array());
 
 ?>

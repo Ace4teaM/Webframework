@@ -63,7 +63,7 @@ class cResult {
     }
 }
 
-function RESULT($code,$info){
+function RESULT($code,$info=""){
     return cResult::last($code,$info);
 }
 
