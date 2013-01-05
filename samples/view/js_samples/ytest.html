@@ -1,63 +1,66 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" > 
-  <head> 
-    <meta http-equiv="Cache-Control" content="no-cache" />
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" /> 
-    <script type="text/javascript" language="javascript" src="../javascript/base.js"></script>
-    <script type="text/javascript" language="javascript" src="../yui/yui/yui-min.js"></script>
-    <script type="text/javascript" language="javascript" src="../yui/loader/loader-min.js"></script>
-    <script type="text/javascript" language="javascript" src="yui_config.js"></script>
-    <style type="text/css">
-        .a{
-            background-color: white;
-        }
-        .b{
-            background-color: red;
-        }
-    </style>
-    <title>YUI Test</title>
-    <!-- Includes -->
-    <script type="text/javascript" language="javascript">
-        // <![CDATA[
-        function onLoad(){
-            
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+
+    <head> 
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>WebFrameWork - YUI Test</title>
+
+        <!-- Internet explorer CSS compatible -->
+        <meta http-equiv="X-UA-Compatible" content="IE=8" />
+
+        <style type="text/css">
+            .a{
+                background-color: white;
+            }
+            .b{
+                background-color: red;
+            }
+        </style>
+
+        <!-- Includes -->
+        <script type="text/javascript" language="javascript">
+            // <![CDATA[
+
             //initialise le contenu
             YUI(wfw_yui_config).use('base', 'wfw', 'wfw-states', 'wfw-utils','node', 'event', 'dom', function (Y)
             {
-                    var wfw = Y.namespace("wfw");
-                    /*wfw.kiki="sdsq";
+                var wfw = Y.namespace("wfw");
+                /*wfw.kiki="sdsq";
                     var func = function(){alert(Y.wfw.kiki);};
                     setTimeout(func,1000);*/
-        
-                    Y.Node.one("#ct").all("*").each(function(n){
-                        alert(n);
-                    });
-            });
-        }
 
-        // ]]>
-    </script>
-  </head> 
-  <body onload="onLoad();">
-	<form id="form1">
+                /*Y.Node.one("#ct").all("*").each(function(n){
+                    alert(n);
+                });*/
+
+                alert(Y.Node.one("div[class~='a']").get("text"));
+            });
+
+            // ]]>
+        </script>
+    </head> 
+    <body>
+        <form id="form1">
             <input id="my_field2" type="text" value="item1;item2;" wfw_fieldbar="on" />
             <input id="my_field3" type="text" value="item1;item2;" wfw_fieldbar="on" />
             <input id="my_field4" type="text" value="item1;item2;" wfw_fieldbar="on" />
             <input id="my_field5" type="text" value="item1;item2;" wfw_fieldbar="on" />
             <input id="check" type="checkbox" checked="checked" />
-	</form>
-	<div class="a" id="list" template:action="test" style="border:1px solid black;">
+        </form>
+        <div class="a" id="list" template:action="test" style="border:1px solid black;">
+            <span>A1</span><span id="listB">B1</span><span>C1</span><span>D1<span>D1</span></span>
+        </div>
+        <div class="a" id="list1" onshow="dfsdfs" style="border:1px solid black;">
             <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
-	</div>
-      <div class="a" id="list1" onshow="dfsdfs" style="border:1px solid black;">
+        </div>
+        <div class="a" id="list2" style="border:1px solid black;">
             <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
-	</div>
-	<div class="a" id="list2" style="border:1px solid black;">
-            <span>A</span><span id="listB">B</span><span>C</span><span>D<span>D</span></span>
-	</div>
-      <template:div id="ns"></template:div>
-      <div id="ct"><div id="ct1"><div id="ct2">ssqd</div></div><div id="ct3"><div id="ct4">ssqd</div></div></div>
-      <textarea id="text">Hello World</textarea>
-      <input type="button" id="demo_btn" value="test" />
-      <div id="demo"></div>
-  </body>
+        </div>
+        <template:div id="ns"></template:div>
+        <div id="ct"><div id="ct1"><div id="ct2">ssqd</div></div><div id="ct3"><div id="ct4">ssqd</div></div></div>
+        <textarea id="text">Hello World</textarea>
+        <input type="button" id="demo_btn" value="test" />
+        <div id="demo"></div>
+    </body>
 </html>

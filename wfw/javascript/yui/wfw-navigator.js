@@ -354,6 +354,7 @@ YUI.add('wfw-navigator', function (Y) {
             return true;
         },
 
+        
         // events...
 
         onLoad : function(e){

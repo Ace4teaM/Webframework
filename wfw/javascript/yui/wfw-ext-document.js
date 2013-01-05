@@ -23,7 +23,9 @@ YUI.add('wfw-document', function (Y) {
         /*
             Données Membres
         */
-        contentElement    : "wfw_ext_content",
+        dialogContainerId : "#wfw_ext_dialog",
+        contentElement    : "html > body",
+        //contentElement  : "#wfw_ext_content",
         center            : false,
         copyright         : false,
         onUnlockScreen    : null,//evenement callback pour le dialogue...
@@ -110,10 +112,10 @@ YUI.add('wfw-document', function (Y) {
             
             /**/
             if("string"==typeof(this.contentElement))
-                this.contentElement = Y.Node.one("#"+this.contentElement);
+                this.contentElement = Y.Node.one(this.contentElement);
 
             //centre automatiquement le contenu
-            if(this.contentElement && this.center)
+            if(this.contentElement != null && this.center)
             {
                 wfw.Event.SetCallback( // window
                     "wfw_window",
@@ -131,7 +133,7 @@ YUI.add('wfw-document', function (Y) {
             }
 
             //ajoute un copyright à la fin du document
-            if(this.contentElement && this.copyright)
+            if(this.contentElement != null && this.copyright)
             {
                 wfw.Event.SetCallback( // window
                     "wfw_window",
@@ -203,7 +205,7 @@ YUI.add('wfw-document', function (Y) {
         },
 
         /*
-            Obtient l'objet dialogue en cours
+            Obtient l'objet du dialogue en cours
             Retourne:
                 [DIALOG|DIALOG_EX] l'objet du dialogue. Si null, aucun dialogue n'est visible
         */
@@ -220,18 +222,18 @@ YUI.add('wfw-document', function (Y) {
         /*
             Obtient l'élément du dialogue visible
             Retourne:
-                [YUI.Node] L'Elément DIV, parent du contenu. Si null, aucun dialogue n'est visible
+                [HTMLNode] L'Elément parent du contenu. Si null, aucun dialogue n'est visible
         */
         getDialogElement : function()
         {
-            var dlg;
+            var container = this.getDialogContainer();
 
-            if(dlg = Y.Node.one("#wfw_ext_dialog"))
+            if(container)
             {
-                var dlg_content = dlg.one("> div");
-                if(!dlg_content || wfw.Style.haveClass(dlg_content,"wfw_hidden"))
+                var dlg = container.one("> div");
+                if(wfw.Style.haveClass(dlg,"wfw_hidden"))
                     return null;
-                return dlg_content;
+                return dlg;
             }
 
             return null;
@@ -246,22 +248,11 @@ YUI.add('wfw-document', function (Y) {
         */
         getDialogContent : function(find_class)
         {
-            var dlg;
+            var container = this.getDialogContainer();
 
-            if(dlg = Y.Node.one("#wfw_ext_dialog"))
+            if(container)
             {
-                //obtient le premier dialogue
-                var dlg_content = dlg.one("> div");
-                if(!dlg_content || wfw.Style.haveClass(dlg_content,"wfw_hidden"))
-                    return null;
-                
-                //recherche dans le contenu
-                var cur = dlg_content.one("> div");
-                while(cur){
-                    if(wfw.Style.haveClass(cur,find_class))
-                        return cur;
-                    cur = objGetNext(cur);
-                }
+                return container.one("> div[class~='"+find_class+"']");
             }
 
             return null;
@@ -281,13 +272,13 @@ YUI.add('wfw-document', function (Y) {
             this.lockScreen();
 
             //obtient le conteneur
-            var container = Y.Node.one("#wfw_ext_dialog");
+            var container = Y.Node.one("#"+this.dialogContainerId);
             if(!container)
             {
                 //crée l'élément dialogue
                 if((container = Y.Node.create('<div>'))==null)
                     return false;
-                container.set("id","wfw_ext_dialog");
+                container.set("id",this.dialogContainerId);
                 Y.Node.one("#wfw_ext_lock").prepend(container);
             }
 
@@ -372,7 +363,7 @@ YUI.add('wfw-document', function (Y) {
         pushDialog : function()
         {
             var dlg;
-            if(dlg = Y.Node.one("#wfw_ext_dialog"))
+            if(dlg = Y.Node.one("#"+this.dialogContainerId))
             {
                 var dlg_content = dlg.one("> div");
                 if(!dlg_content)
@@ -440,7 +431,7 @@ YUI.add('wfw-document', function (Y) {
         getDialogID : function()
         {
             var dlg;
-            if(dlg = Y.Node.one("#wfw_ext_dialog"))
+            if(dlg = Y.Node.one("#"+this.dialogContainerId))
             {
                 dlg_content = dlg.one("> div");
                 return dlg_content.get("id");
@@ -588,7 +579,9 @@ YUI.add('wfw-document', function (Y) {
                     file_name : file_name,
                     doc_frame : null,
                     wnd_frame : null,
-                    frame_obj : null
+                    frame_obj : null,
+                    width : null,
+                    height:null
                 },
                 onInit: function () {
                     //cree la frame
@@ -643,13 +636,17 @@ YUI.add('wfw-document', function (Y) {
                     //fonction de redimentionnement de la frame
                     var resize_event = function(dlg)
                     {
+                        if(dlg.user.width != null)
+                            wfw.Utils.setWidth(dlg.user.frame_obj,dlg.user.width);
+                        if(dlg.user.height != null)
+                            wfw.Utils.setHeight(dlg.user.frame_obj,dlg.user.height);
                         //ajuste la taille de la frame à son contenu
-                        var frame_content = dlg.user.doc_frame.one("#wfw_ext_content");
-                        if(frame_content)
+                        //var frame_content = dlg.user.doc_frame.one("#wfw_ext_content");
+                        else if(wfw.Document.contentElement)
                         {
                             //utilise l'element 'wfw_ext_content'
-                            var h;
-                            if(h = wfw.Utils.getHeight(frame_content))
+                            var h = wfw.Utils.getHeight(wfw.Document.contentElement);
+                            if(h)
                                 wfw.Utils.setHeight(dlg.user.frame_obj,h);
                         }
                         else
@@ -998,9 +995,17 @@ YUI.add('wfw-document', function (Y) {
         */
         unprintScreen : function()
         {
-            var dlg = Y.Node.one("#wfw_ext_dialog");
+            var dlg = this.getDialogContainer();
             if(dlg)
                 dlg.remove();
+        },
+
+        /*
+            Obtient le conteneur des dialogues
+        */
+        getDialogContainer : function()
+        {
+            return Y.Node.one("#"+this.dialogContainerId);
         },
 
         /*
@@ -1089,7 +1094,7 @@ YUI.add('wfw-document', function (Y) {
 
         // Evenements
         eventCenterContent : function(e){
-            if(wfw.Document.contentElement){
+            if(wfw.Document.contentElement != null){
                 var win_width  = wfw.Utils.getClientWidth();
                 var body_width = wfw.Utils.getWidth(wfw.Document.contentElement);
                 if(win_width>body_width)
@@ -1194,7 +1199,7 @@ YUI.add('wfw-document', function (Y) {
     //Experimentale: centre verticalement le dialogue
     //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
     wfw.Document.DIALOG.prototype.centerDialog = function(){
-        var container = Y.Node.one("#wfw_ext_dialog");
+        var container = wfw.Document.getDialogContainer();
         var height = wfw.Utils.getHeight(this.parent_node);
         var demi_height = height/2;
         if(demi_height){
@@ -1206,7 +1211,7 @@ YUI.add('wfw-document', function (Y) {
     //Experimentale: centre verticalement le dialogue
     //(Si le dialogue sort de l'ecran il sera coupé verticalement est inaccessible)
     wfw.Document.DIALOG.prototype.uncenterDialog = function(){
-        var container = Y.Node.one("#wfw_ext_dialog");
+        var container = wfw.Document.getDialogContainer();
         container.set("style.marginTop","0px");
         container.set("style.top","0px");
     };

@@ -14,6 +14,9 @@
         <page id="php" name="PHP">php_samples.php</page>
         <page id="samples" name="Exemples">index.php?page=samples</page>
         <page id="download" name="Téléchargements">index.php?page=telechargements</page>
+        <!-- Guide -->
+        <page id="wfw-request" name="Requêtes HTTP (coté client)">guide.php?page=wfw-request</page>
+        <page id="client_dialog" name="Dialogue">guide.php?page=client_dialog</page>
         <!-- JS/YUI samples -->
         <page id="js" name="Javascript">js_samples.php</page>
         <page id="base" name="Fonctions de base">js_samples.php?sample=base</page>
@@ -35,15 +38,15 @@
         <link id="wfw_projet">http://wfw.aceteam.org</link>
         <link id="wfw_js_api">http://wfw.aceteam.org/api/js</link>
         <link id="wfw_php_api">http://wfw.aceteam.org/api/php</link>
-    <!--contact-->
+        <!--contact-->
         <title id="contact">AceTeaM</title>
         <mail id="contact">dev@aceteam.org</mail>
         <mail id="no-reply">no-reply@aceteam.org</mail>
-    <!--autres-->
+        <!--autres-->
         <image id="logo">bin/pictures/www.jpg</image>
         <image id="icon">bin/pictures/wfw_icon32.png</image>
         <icon id="favicon">bin/pictures/favicon.ico</icon>
-    <!-- icones des categories d'exemples -->
+        <!-- icones des categories d'exemples -->
         <image id="js">bin/pictures/JavaScriptLogo.png</image>
         <image id="php">bin/pictures/php-logo.png</image>
     </index>

@@ -55,8 +55,15 @@ class cDataBasePostgres implements iDatabase {
                 $req .= ($i ? "," : '') . "'" . pg_escape_string($arg_list[$i]) . "'"; //echaper les apostrophes
             }
         }
+
         $res = pg_query($this->db_conn, "select * from $schema.$func($req);");
-        return pg_fetch_row($res);
+        if(!$res)
+            return RESULT(iDataBase::QueryFailed, pg_last_error($this->db_conn));
+        
+        $result = pg_fetch_row($res);
+        RESULT_OK();
+        
+        return $result;
     }
 
     /**
