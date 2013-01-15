@@ -71,6 +71,7 @@ class cDataBasePostgres implements iDatabase {
      */
     public function execute($query,&$result){
         $result = pg_query($this->db_conn, $query);
+        
         if(!$result)
             return RESULT(iDataBase::QueryFailed, pg_last_error($this->db_conn));
         return RESULT_OK();
@@ -80,7 +81,10 @@ class cDataBasePostgres implements iDatabase {
      * @copydoc iDatabase::fetchValue
      */
     public function fetchValue($result,$column_name){
-        return pg_fetch_result($result, 0, pg_field_num($result,$column_name));
+        $num = pg_field_num($result,$column_name);
+        if($num < 0)
+            return RESULT(iDataBase::QueryFailed, "Field '$column_name' not found");
+        return pg_fetch_result($result, $num);
     }
 
 }

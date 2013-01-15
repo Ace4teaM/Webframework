@@ -98,7 +98,7 @@ YUI.add('wfw-navigator', function (Y) {
                         "eventLoadNavigation",
                         wfw.Navigator.onLoad
                         );
-                    wfw.Event.ApplyTo(Y.Node(window),"wfw_window");
+                    wfw.Event.ApplyTo(Y.one('window'),"wfw_window");
                     return true;
                 }
                 else
