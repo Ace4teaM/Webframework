@@ -81,7 +81,7 @@ foreach($_REQUEST as $item=>$item_value){
 		//decode la valeur pour la traiter (re-encode a la sauvegarde)
 //		$item_value=utf8_decode($item_value);
 		//verifie l'identificateur
-		if(cInputIdentifier::isValid($item) != ERR_OK)
+		if(!cInputIdentifier::isValid($item))
 			continue;
 		//formate la valeur
 		//$item_value = utf8_encode($item_value);

@@ -87,11 +87,10 @@ rcheck(
 $address = str_explode($_REQUEST['to'],";",true);
 foreach($address as $cur_address)
 {
-    $result=cInputMail::isValid($cur_address);
-    if($result!=ERR_OK){
+    if(!cInputMail::isValid($cur_address)){
         rpost("exinfos", "\"$cur_address\" is not a valid address mail in 'to' argument field");
-        rpost_result($result, "invalid_address");
-	}
+        rpost_result(cResult::getLast()->info, "invalid_address");
+    }
 }
 
 //

@@ -32,7 +32,7 @@ if(!cInputIdentifier::isValid($_REQUEST["cmd"])){
 }
 
 if(!isset($_REQUEST["date"])){
-  rpost_result(ERR_REQ_MISSING_ARG"argument date");
+  rpost_result(ERR_REQ_MISSING_ARG,"argument date");
 }
 if(!cInputInteger::isValid($_REQUEST["date"])){
   rpost_result(ERR_REQ_INVALID_ARG,"argument date");

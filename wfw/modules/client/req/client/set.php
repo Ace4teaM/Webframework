@@ -2,18 +2,18 @@
 
 /*
 	(C)2010-2011 ID-INFORMATIK. WebFrameWork(R)
-	Définit les champs d'un dossier
+	DÃ©finit les champs d'un dossier
 
 	Arguments:
-		[Name]         wfw_id     : Identificateur du dossier à vérfier
-		[Password]     [wfw_pwd]  : Optionnel, mot de passe du dossier (si définit)
-		[Identifier]   [wfw_type] : Optionnel, type de dossier. Si différent, la requête échoue 
-		[]             [...]      : Optionnel, Champs à insérer ou à modifier
+		[Name]         wfw_id     : Identificateur du dossier Ã  vÃ©rfier
+		[Password]     [wfw_pwd]  : Optionnel, mot de passe du dossier (si dï¿½finit)
+		[Identifier]   [wfw_type] : Optionnel, type de dossier. Si diffï¿½rent, la requï¿½te ï¿½choue 
+		[]             [...]      : Optionnel, Champs Ã  insÃ©rer ou Ã  modifier
     
 	Retourne:
 		id         : Identificateur du dossier
-		result     : Résultat de la requête
-		info       : Détails sur l'erreur en cas d'echec
+		result     : RÃ©sultat de la requÃªte
+		info       : DÃ©tails sur l'erreur en cas d'echec
 	
 	Revisions:
 		[13-12-2011] Update, ROOT_PATH
@@ -86,10 +86,10 @@ if(isset($_REQUEST["wfw_type"]))
 //
 foreach($_REQUEST as $item=>$item_value){
 	if(substr($item,0,4)!='wfw_'){
-		//supprime les anti slash et decode l'unicode reçu par le formulaire HTML
+		//supprime les anti slash et decode l'unicode reÃ§u par le formulaire HTML
 //		$item_value=utf8_decode(stripslashes($item_value));
 		//verifie l'identificateur
-		if(cInputIdentifier::isValid($item) != ERR_OK)
+		if(!cInputIdentifier::isValid($item))
 			continue;
 		//obtient la valeur   
 		$node = $doc->getNode("data/$item",TRUE);

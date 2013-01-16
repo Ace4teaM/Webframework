@@ -2,16 +2,16 @@
 
 /*
 	(C)2010-2011 ID-INFORMATIK. WebFrameWork(R)
-	Définit les champs d'un dossier
+	Dï¿½finit les champs d'un dossier
 
 	Arguments:
-		[Name]         wfw_id     : Identificateur du dossier à vérfier
-		[]             [...]      : Optionnel, Champs à insérer ou à modifier
+		[Name]         wfw_id     : Identificateur du dossier ï¿½ vï¿½rfier
+		[]             [...]      : Optionnel, Champs ï¿½ insï¿½rer ou ï¿½ modifier
     
 	Retourne:
 		id         : Identificateur du dossier
-		result     : Résultat de la requête
-		info       : Détails sur l'erreur en cas d'echec
+		result     : Rï¿½sultat de la requï¿½te
+		info       : Dï¿½tails sur l'erreur en cas d'echec
 	
 	Revisions:
 		[13-12-2011] Update, ROOT_PATH
@@ -64,7 +64,7 @@ $doc = clientOpen($id);
 //
 foreach($_REQUEST as $item=>$item_value){
 	//verifie l'identificateur
-	if(cInputIdentifier::isValid($item) != ERR_OK)
+	if(!cInputIdentifier::isValid($item))
 		continue;
 	//obtient la valeur   
 	$node = $doc->getNode("data/$item",TRUE);

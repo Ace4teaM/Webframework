@@ -232,7 +232,7 @@ function newArticle()
                 else
                 {
                     //assure le format de l'id
-                    if(cInputName.isValid(fields.id)!=ERR_OK)
+                    if(!cInputName.isValid(fields.id))
                     {
                         wfw.ext.document.messageBox("Le format de l'identificateur de page '"+fields.id+"' est invalide");
                         return;

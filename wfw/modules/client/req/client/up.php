@@ -45,7 +45,7 @@ if(!isset($_FILES['file'])){
 if($_FILES['file']['error'] != UPLOAD_ERR_OK) 
   rpost_result(ERR_FAILED, "UPLOAD_ERR_".$_FILES['file']['error']);
 
-if(cInputUNIXFileName::isValid($_FILES['file']['name']) != ERR_OK)
+if(!cInputUNIXFileName::isValid($_FILES['file']['name']))
 	rpost_result(ERR_FAILED, "invalid_file_name");
 
 //

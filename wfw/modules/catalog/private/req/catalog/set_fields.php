@@ -82,7 +82,7 @@ if($replace){
 foreach($_REQUEST as $item=>$item_value){
 	if(substr($item,0,4)!='wfw_'){
 		//verifie l'identificateur
-		if(cInputIdentifier::isValid($item) != ERR_OK)
+		if(!cInputIdentifier::isValid($item))
 			continue;
 		//obtient le noeud
 		$node = $catalog_doc->doc->objGetNode($fieldsNode,$item,true);

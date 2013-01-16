@@ -10,8 +10,8 @@
     [...]      : champs a inserer ou modifier
     
   Retourne:
-		result     : Résultat de la requête
-		info       : Détails sur l'erreur en cas d'echec
+		result     : Rï¿½sultat de la requï¿½te
+		info       : Dï¿½tails sur l'erreur en cas d'echec
     
   Revisions:
     [12-10-2011] Debug, les items de type 'wfw_' ne sont pas supprimes sous caution de perdre des informations indispensables
@@ -77,7 +77,7 @@ if(isset($_REQUEST["wfw_type"]))
 foreach($_REQUEST as $item=>$item_value)
 {
     //verifie l'identificateur (les arguments prives ne doit pas etre supprimes)
-    if(cInputIdentifier::isValid($item) != ERR_OK)
+    if(!cInputIdentifier::isValid($item))
   	 continue;
   	 
     //obtient la valeur   

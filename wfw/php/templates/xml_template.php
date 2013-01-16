@@ -1096,7 +1096,7 @@ class cXMLTemplateAction_eval extends cXMLTemplateAction {
         if (empty($att_eval) || empty($att_target))
             return $next;
 
-        if (cInputEvalString::isValid($att_eval) != ERR_OK) {
+        if (!cInputEvalString::isValid($att_eval)) {
             $arg[$att_target] = "not";
             return $next;
         }

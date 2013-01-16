@@ -60,5 +60,6 @@ if($i>=$cnt){
 $input_name = $inputs[$i];
 $input = new $input_name;
 
-rpost_result($input->isValid($value));
+$input->isValid($value);
+rpost_result(cResult::getLast()->info);
 ?>

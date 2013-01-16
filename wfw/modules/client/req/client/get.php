@@ -5,14 +5,14 @@
 	Obtient les champs d'un dossier
 
 	Arguments:  
-		[Name]         wfw_id        : Identificateur du dossier à vérfier
+		[Name]         wfw_id        : Identificateur du dossier ï¿½ vï¿½rfier
 		[Password]     [wfw_pwd]     : Optionnel, mot de passe du dossier  
-		[Identifier]   [wfw_type]    : Optionnel, type de dossier. Si différent, la requête échoue 
+		[Identifier]   [wfw_type]    : Optionnel, type de dossier. Si diffï¿½rent, la requï¿½te ï¿½choue 
 		[Bool]         [wfw_noempty] : Optionnel, ignore les champs vides
 		[]             [...]         : champs a initialiser
 	Retourne:         
-		result     : Résultat de la requête
-		info       : Détails sur l'erreur en cas d'echec
+		result     : Rï¿½sultat de la requï¿½te
+		info       : Dï¿½tails sur l'erreur en cas d'echec
 	
 	Revisions:
 		[13-12-2011] Update, ROOT_PATH
@@ -83,7 +83,7 @@ foreach($_REQUEST as $item=>$item_value){
 		//supprime les anti slash et decode l'unicode recu par le formulaire HTML
 		//$item_value=utf8_decode(stripslashes($item_value));
 		//verifie l'identificateur
-		if(cInputIdentifier::isValid($item) != ERR_OK)
+		if(!cInputIdentifier::isValid($item))
 			continue;    
 		//obtient la valeur   
 		$value = $doc->getNodeValue("data/$item");

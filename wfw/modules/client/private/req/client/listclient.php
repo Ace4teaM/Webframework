@@ -67,7 +67,7 @@ $warning = "";//dossiers corrompus
 $private_field=array();
 foreach($_REQUEST as $item=>$item_value){
 	//verifie l'identificateur
-	if(cInputIdentifier::isValid($item) == ERR_OK)
+	if(cInputIdentifier::isValid($item))
 		$private_field[$item]="";
 }
 

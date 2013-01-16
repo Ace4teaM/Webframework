@@ -5,14 +5,14 @@
 	Supprime un ou plusieurs champs d'un dossier
 
 	Arguments:
-		[Name]       wfw_id     : Identificateur du dossier à vérfier
+		[Name]       wfw_id     : Identificateur du dossier ï¿½ vï¿½rfier
 		[Password]   [wfw_pwd]  : Optionnel, mot de passe du dossier  
-		[Identifier] [wfw_type] : Optionnel, type de dossier. Si différent, la requête échoue 
-		[String]     [...]      : Optionnel, champs à supprimer
+		[Identifier] [wfw_type] : Optionnel, type de dossier. Si diffï¿½rent, la requï¿½te ï¿½choue 
+		[String]     [...]      : Optionnel, champs ï¿½ supprimer
  
 	Retourne:
-		result     : Résultat de la requête
-		info       : Détails sur l'erreur en cas d'echec
+		result     : Rï¿½sultat de la requï¿½te
+		info       : Dï¿½tails sur l'erreur en cas d'echec
 
 	Revisions:
 		[13-12-2011] Update, ROOT_PATH
@@ -80,7 +80,7 @@ if(isset($_REQUEST["wfw_type"]))
 foreach($_REQUEST as $item=>$item_value)
 {
     //verifie l'identificateur (les arguments prives ne doit pas etre supprimes)
-    if((cInputIdentifier::isValid($item) != ERR_OK) || (substr($item,0,4) == 'wfw_'))
+    if(!cInputIdentifier::isValid($item) || (substr($item,0,4) == 'wfw_'))
   	 continue;
   	 
     //obtient la valeur   

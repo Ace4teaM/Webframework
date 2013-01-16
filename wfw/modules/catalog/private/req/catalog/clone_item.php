@@ -87,7 +87,7 @@ $node->appendChild($param);
 foreach($_REQUEST as $item=>$item_value){
 	if(substr($item,0,4)!='wfw_'){
 		//verifie l'identificateur
-		if(cInputIdentifier::isValid($item) != ERR_OK)
+		if(!cInputIdentifier::isValid($item))
 			continue;
 		//obtient le noeud
 		$item_node = $catalog_doc->doc->objGetNode($node,"set/$item",true);

@@ -22,7 +22,7 @@
 		[string]  info    : details sur l'erreur en cas d'echec.
 		
 	Remarques:
-		Si un ou plusieurs envoies on échoués, la requête retoure une erreur
+		Si un ou plusieurs envoies on ï¿½chouï¿½s, la requï¿½te retoure une erreur
 
 	Revisions:
 		[xx-xx-2010] Met a jour le changement du format de reponse des requetes
@@ -35,7 +35,7 @@
 		[08-12-2011] Update, path (ROOT_PATH)
 		[08-12-2011] Update, gestion des destinataires multiples
 		[19-12-2011] Debug, accepte que le parametre 'msg' peut etre vide si 'html_msg' est utilise
-		[21-01-2012] Update, retoure une erreur si un ou plusieurs envoies échoues
+		[21-01-2012] Update, retoure une erreur si un ou plusieurs envoies ï¿½choues
 		[20-02-2012] Update, mise a jour des codes erreurs
 		[20-02-2012] Update, si les arguments 'fromname', 'from', 'server', 'port' ne sont pas definits, ils sont obtenu automatiquement depuis les defauts
 */
@@ -89,9 +89,8 @@ rcheck(
 $address = str_explode($_REQUEST['to'],";",true);
 foreach($address as $cur_address)
 {
-	$result=cInputMail::isValid($cur_address);
-	if($result!=ERR_OK)
-		rpost_result($result, "\"$cur_address\" is not a valid mail address in 'to' argument field");
+	if(!cInputMail::isValid($cur_address))
+            rpost_result(cResult::getLast()->info, "\"$cur_address\" is not a valid mail address in 'to' argument field");
 }
 
 //
