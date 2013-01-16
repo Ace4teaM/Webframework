@@ -34,9 +34,8 @@ class cInputFields {
                 }
                 //verifie le format si besoin    
                 if (!empty($arg_type)) {
-                    $result = $arg_type::isValid($fields[$arg_name]);
-                    if ($result != cResult::Ok)
-                        return RESULT($result, "$arg_name = \"" . $fields[$arg_name] . "\"");
+                    if (!$arg_type::isValid($fields[$arg_name]))
+                            return false; // conserve le resultat de la fonction
                 }
             }
         }
@@ -47,10 +46,8 @@ class cInputFields {
             foreach ($optionnal_arg as $arg_name => $arg_type) {
                 //existe?
                 if (isset($fields[$arg_name]) && !empty($arg_type)) {
-                    //verifie le format
-                    $result = $arg_type::isValid($fields[$arg_name]);
-                    if ($result != cResult::Ok)
-                        return RESULT($result, "argument = $arg_name, $result, value = " . $fields[$arg_name]);
+                    if (!$arg_type::isValid($fields[$arg_name]))
+                            return false; // conserve le resultat de la fonction
                 }
             }
         }

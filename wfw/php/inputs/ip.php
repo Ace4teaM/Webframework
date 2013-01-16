@@ -9,13 +9,13 @@ class cInputIPv4 extends cInput
 {
 	public static function isValid($value){
 		if( empty($value) )
-			return ERR_TEXT_EMPTY;
+			return RESULT(cResult::Failed, cInput::EmptyText);
 		
 		// chaine valide ?
 		if(preg_match("/^".cInputIPv4::regExp()."$/",$value)==0)
-			return ERR_TEXT_INVALIDCHAR;
+			return RESULT(cResult::Failed, cInput::InvalidChar);
 
-		return ERR_OK;
+		return RESULT_OK();
 	}
 	public static function regExp(){
 		return '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}';  

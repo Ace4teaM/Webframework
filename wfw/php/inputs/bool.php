@@ -13,7 +13,7 @@ class cInputBool extends cInput
 {
 	public static function isValid($value){
 		if( empty_string($value) )
-			return ERR_TEXT_EMPTY;
+                    return RESULT(cResult::Failed,cInput::EmptyText);
 		
 		// carateres valides
 		switch(strtolower($value)){
@@ -25,11 +25,11 @@ class cInputBool extends cInput
 			case "off":
 			case "true":
 			case "false":
-				return ERR_OK;
+                            return RESULT_OK();
 		}
 
-		return ERR_TEXT_INVALIDCHAR;
-	}     
+                return RESULT(cResult::Failed,cInput::InvalidChar);
+	}
 	public static function regExp(){
 		return 'on|off|0|1|yes|no|true|false';
 	}

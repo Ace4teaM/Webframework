@@ -7,24 +7,27 @@ require_once("$libdir/php/class/bases/input.php");
 
 // Chaine de carcteres 
 // Aucun Standard
-class cInputString extends cInput
-{
-	public static function isValid($value){
-		if( empty($value) )
-			return ERR_TEXT_EMPTY;
-		
-		// chaine valide ?
-		if(preg_match("/^".cInputString::regExp()."$/",$value)==0)
-			return ERR_TEXT_INVALIDCHAR;
+class cInputString extends cInput {
 
-		return ERR_OK;
-	}
-	public static function regExp(){
-		return '[^"\n\r]*';  
-	}
-	public static function getMaxLength(){
-		return 128;
-	}
+    public static function isValid($value) {
+        if (empty($value))
+            return RESULT(cResult::Failed, cInput::EmptyText);
+
+        // chaine valide ?
+        if (preg_match("/^" . cInputString::regExp() . "$/", $value) == 0)
+            return RESULT(cResult::Failed, cInput::InvalidChar);
+
+        return RESULT_OK();
+    }
+
+    public static function regExp() {
+        return '[^"\n\r]*';
+    }
+
+    public static function getMaxLength() {
+        return 128;
+    }
+
 }
 
 ?>

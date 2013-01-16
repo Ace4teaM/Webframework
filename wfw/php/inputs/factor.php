@@ -13,9 +13,9 @@ class cInputFactor extends cInput
 		//if( empty_string($value) )
 		//	return ERR_TEXT_EMPTY;
 		if(!preg_match('/(0|1)(\.[0-9]*)?/', $value))
-			return ERR_TEXT_INVALIDCHAR;
+			return RESULT(cResult::Failed,cInput::InvalidChar);
 
-		return ERR_OK;
+		return RESULT_OK();
 	}     
 	public static function regExp(){
 		return '(0|1)(\\.[0-9]*)?';

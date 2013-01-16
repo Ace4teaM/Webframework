@@ -13,22 +13,22 @@ class cInputWindowsFileName extends cInput
 {
 	public static function isValid($value){
 		if( empty($value) )
-			return ERR_TEXT_EMPTY;
+                    return RESULT(cResult::Failed,cInput::EmptyText);
 
-		$error = ERR_TEXT_INVALIDCHAR;
 		//
 		//Valide la part local:
 		//
 		// 1. non vide
-		if( empty($value) ) return $error;
+		if( empty($value) )
+                    return RESULT(cResult::Failed,cInput::InvalidChar);
 		// 2. carateres invalides
 		if(!is_not_strof($value,'\/:*?"<>|'))
-			return $error;
+                    return RESULT(cResult::Failed,cInput::InvalidChar);
 		// 3. pas de point '.' ni au debut, ni a la fin, ni de double point
 		if((substr($value,0,1)=='.') || (substr($value,-1,1)=='.') || (strpos($value,'..')!==FALSE))
-			return $error;
+                    return RESULT(cResult::Failed,cInput::InvalidChar);
 
-		return ERR_OK;
+		return RESULT_OK();
 	}
 	public static function toHTML($id,$value){
 		return '<input lang="en-us" size="20" maxlength="'.($this->getMaxLength()).'" name="'.$id.'" id="'.$id.'" type="text" value="'.$value.'" wbfw="mail" >';
@@ -42,20 +42,20 @@ class cInputUNIXFileName extends cInput
 {
 	public static function isValid($value){
 		if( empty($value) )
-			return ERR_TEXT_EMPTY;
+			return RESULT(cResult::Failed,cInput::EmptyText);
 
-		$error = ERR_TEXT_INVALIDCHAR;
 		//
 		//Valide la part local:
 		//
 		// 1. non vide
-		if( empty($value) ) return $error;
+		if( empty($value) )
+                    return RESULT(cResult::Failed,cInput::InvalidChar);
 		// 2. carateres invalides
 		if(!is_not_strof($value,'\/:*?"<>|'))
-			return $error;
+                    return RESULT(cResult::Failed,cInput::InvalidChar);
 		// 3. pas de point '.' ni au debut, ni a la fin, ni de double point
 		if((substr($value,0,1)=='.') || (substr($value,-1,1)=='.') || (strpos($value,'..')!==FALSE))
-			return $error;
+                    return RESULT(cResult::Failed,cInput::InvalidChar);
 
 		return ERR_OK;
 	}
