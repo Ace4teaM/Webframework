@@ -22,6 +22,15 @@ class cDataBasePostgres implements iDatabase {
     }
     
     /**
+     * @brief Obtient le nom du fournisseur de service utilisé
+     * 
+     * @return string Nom du fournisseur de service (MySQL, PostgreSQL, etc...)
+     */
+    public function getServiceProviderName(){
+        return "PostgreSQL";
+    }
+
+    /**
      * @copydoc iDatabase::connect
      */
     public function connect($user = "postgres", $name = "postgres", $pwd = "admin", $server = "localhost", $port = 5432) {

@@ -9,6 +9,13 @@ interface iDatabase {
     const QueryFailed = 1002;//cResult::DataBase+1;
 
     /**
+     * @brief Obtient le nom du service utilisé
+     * 
+     * @return string Nom du fournisseur de service (MySQL, PostgreSQL, etc...)
+     */
+    public function getServiceProviderName();
+
+    /**
      * @brief Etablie la connexion
      * 
      * @param string $user   Identifiant de connexion
