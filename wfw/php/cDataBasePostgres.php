@@ -61,7 +61,13 @@ class cDataBasePostgres implements iDatabase {
         $req = "";
         if ($arg_list !== null) {
             for ($i = 0; $i < count($arg_list); $i++) {
-                $req .= ($i ? "," : '') . "'" . pg_escape_string($arg_list[$i]) . "'"; //echaper les apostrophes
+                //ajoute la virgule si besion
+                $req .= ($i ? "," : '');
+                //ajoute la valeur
+                if(is_null($arg_list[$i]))
+                    $req .= "NULL"; //echaper les apostrophes
+                else
+                    $req .= "'" . pg_escape_string($arg_list[$i]) . "'"; //echaper les apostrophes
             }
         }
 

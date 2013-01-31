@@ -6,8 +6,8 @@
  * @author developpement
  */
 class cInputFields {
-    const NoInputFileds = 5002;
-    const MissingArg = 5001;
+    const NoInputFileds = "NO_INPUT_FIELD";
+    const MissingArg = "MISSING_FILED";
 
     /*
      * @brief Check format of inputs fields
@@ -18,7 +18,7 @@ class cInputFields {
     public static function checkArray($required_arg, $optionnal_arg=NULL, $fields=NULL) {
 
         if($fields===NULL && isset($_REQUEST))
-            $fields=$_REQUEST;
+            $fields = $_REQUEST;
 
         //aucun champs ?
         if($fields===NULL)
@@ -30,12 +30,14 @@ class cInputFields {
             foreach ($required_arg as $arg_name => $arg_type) {
                 //existe?
                 if (!isset($fields[$arg_name]) || empty_string($fields[$arg_name])) {
-                    return RESULT(cInputFields::MissingArg, $arg_name);
+                    return RESULT( cResult::Failed, cInputFields::MissingArg, array("field_name"=>$arg_name) );
                 }
                 //verifie le format si besoin    
                 if (!empty($arg_type)) {
-                    if (!$arg_type::isValid($fields[$arg_name]))
-                            return false; // conserve le resultat de la fonction
+                    if (!$arg_type::isValid($fields[$arg_name])){
+                        RESULT_PUSH("field_name", $arg_name);
+                        return false; // conserve le resultat de la fonction
+                    }
                 }
             }
         }
@@ -46,8 +48,10 @@ class cInputFields {
             foreach ($optionnal_arg as $arg_name => $arg_type) {
                 //existe?
                 if (isset($fields[$arg_name]) && !empty($arg_type)) {
-                    if (!$arg_type::isValid($fields[$arg_name]))
-                            return false; // conserve le resultat de la fonction
+                    if (!$arg_type::isValid($fields[$arg_name])){
+                        RESULT_PUSH("field_name", $arg_name);
+                        return false; // conserve le resultat de la fonction
+                    }
                 }
             }
         }

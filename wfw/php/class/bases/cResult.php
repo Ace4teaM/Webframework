@@ -35,10 +35,17 @@ class cResult {
      * @param string $info  Identifiant décrivant plus en détail le résultat
      * @remarks Voir cResult pour plus de détails sur les codes d'erreurs
      */
-    public function cResult($code, $info){
+    public function cResult($code, $info, $att=array()){
         $this->code = $code;
         $this->info = $info;
-        $this->att  = array();
+        $this->att  = $att;
+    }
+    
+    public function toArray(){
+        $ar = array("error_code"=>$this->code, "error_str"=>$this->info);
+        if(is_array($this->att))
+            return array_merge($ar,$this->att);
+        return $ar;
     }
 
     /**
@@ -47,10 +54,10 @@ class cResult {
      * @param string $info  Identifiant décrivant plus en détail le résultat
      * @remarks Voir cResult pour plus de détails sur les codes d'erreurs
      */
-    public static function last($code, $info){
+    public static function last($code, $info, $att=array()){
         self::$last_code = $code;
         self::$last_info = $info;
-        self::$last_att  = array();
+        self::$last_att  = $att;
         return ($code == cResult::Ok) ? true : false;
     }
 
@@ -75,8 +82,8 @@ class cResult {
     }
 }
 
-function RESULT($code,$info=""){
-    return cResult::last($code,$info);
+function RESULT($code,$info="",$att=array()){
+    return cResult::last($code,$info,$att);
 }
 
 function RESULT_OK(){
