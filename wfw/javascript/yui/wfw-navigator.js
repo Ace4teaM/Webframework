@@ -92,13 +92,15 @@ YUI.add('wfw-navigator', function (Y) {
                 //ok ajoute l'événement de chargement
                 if(typeof(this.navNode)=='object')
                 {
+                    Y.Event.attach('load',wfw.Navigator.onLoad,Y.one('window'),Y.one('window'));
+                    /*
                     wfw.Event.SetCallback( // window
                         "wfw_window",
                         "load",
                         "eventLoadNavigation",
                         wfw.Navigator.onLoad
                         );
-                    wfw.Event.ApplyTo(Y.one('window'),"wfw_window");
+                    wfw.Event.ApplyTo(Y.one('window'),"wfw_window");*/
                     return true;
                 }
                 else

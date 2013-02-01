@@ -42,7 +42,7 @@ class cResult {
     }
     
     public function toArray(){
-        $ar = array("error_code"=>$this->code, "error_str"=>$this->info);
+        $ar = array("result"=>$this->code, "error"=>$this->info);
         if(is_array($this->att))
             return array_merge($ar,$this->att);
         return $ar;

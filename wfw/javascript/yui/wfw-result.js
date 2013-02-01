@@ -19,6 +19,9 @@ YUI.add('wfw-result', function (Y) {
     var wfw = Y.namespace('wfw');
     
     wfw.Result = {
+        Ok      : "ERR_OK",
+        Success : "ERR_OK",
+        Failed  : "ERR_FAILED",
         ERR_OK : 0,
         ERR_FAILED : 1,
         /**

@@ -131,6 +131,7 @@ YUI.add('wfw-xarg', function (Y) {
                 [function] onerror(obj)        : Optionnel, callback en cas d'erreur de transmition de la requête
                 [string]   no_msg              : Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
                 [string]   no_result           : Si spécifié, le contenu du fichier est retourné sans traitement des erreurs
+                [string]   no_output           : Si spécifié, aucun dialogue d'erreur n'est affiché
             Retourne:
                 rien
             Remarques:
@@ -145,9 +146,11 @@ YUI.add('wfw-xarg', function (Y) {
             var bSuccessFunc = 0;
             var bFailedFunc = 0;
             var bCheckResult = 1;
+            var bShowError = 1;
 
             if (obj.user != null) {
                 bCheckResult = (typeof (obj.user["no_result"]) != "undefined") ? 0 : 1;
+                bShowError = (typeof (obj.user["no_output"]) != "undefined") ? 0 : 1;
                 bErrorFunc = (typeof (obj.user["onerror"]) == "function") ? 1 : 0;
                 bSuccessFunc = (typeof (obj.user["onsuccess"]) == "function") ? 1 : 0;
                 bFailedFunc = (typeof (obj.user["onfailed"]) == "function") ? 1 : 0;
@@ -159,26 +162,29 @@ YUI.add('wfw-xarg', function (Y) {
             //resultat ?
             var args = wfw.XArg.to_object(obj.response, false);
             if (!args) {
-                wfw.Document.showRequestMsg(obj, "Erreur de requête", obj.response);
+                if (bShowError)
+                    wfw.Document.showRequestMsg(obj, "Erreur de requête", obj.response);
                 if (bErrorFunc)
                     obj.user.onerror(obj);
                 return;
             }
 
             //non x-argument result !
-            if (typeof (args.result) == 'undefined') {
-                wfw.Document.showRequestMsg(obj, "Résultat de requête invalide", obj.response);
+            if (bCheckResult && typeof (args.result) == 'undefined') {
+                if (bShowError)
+                    wfw.Document.showRequestMsg(obj, "Résultat de requête non spécifié", obj.response);
                 if (bErrorFunc)
                     obj.user.onerror(obj);
                 return;
             }
 
             //erreur ?
-            if (bCheckResult && (parseInt(args.result) != ERR_OK)) {
+            if (bCheckResult && (parseInt(args.result) != wfw.Result.Ok)) {
                 //message
-                var result_form_id = ((typeof obj.args["wfw_form_name"] == "string") ? obj.args.wfw_form_name : obj.name);
-                wfw.Form.onFormResult(result_form_id, args, obj);
-
+                if (bShowError){
+                    var result_form_id = ((typeof obj.args["wfw_form_name"] == "string") ? obj.args.wfw_form_name : obj.name);
+                    wfw.Form.onFormResult(result_form_id, args, obj);
+                }
                 //failed callback
                 if (bFailedFunc)
                     obj.user.onfailed(obj, args);
@@ -191,5 +197,5 @@ YUI.add('wfw-xarg', function (Y) {
         }
     };
 }, '1.0', {
-    requires:['base','node','wfw','wfw-uri','wfw-request']
+    requires:['base','node','wfw','wfw-uri','wfw-request','wfw-document','wfw-result']
 });
