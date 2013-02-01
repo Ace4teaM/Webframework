@@ -181,6 +181,34 @@ function strw_to_array($string,$sep=" \n"){
 	return $ar;
 }
 
+
+/*
+ * @brief Convertie une chaine de paramétres en tableau associatif
+ * 
+ * @param string $string Chaine à convertir
+ * @param string $septag Caractère(s) de separation nom/valeur, ':' par défaut
+ * @param string $endtag Caractère(s) de fin de paramétre, ';' par défaut
+ * @return Tableau associatif des paramétres
+*/
+function stra_to_array($string,$septag=":",$endtag=";"){
+	$table=array();
+	$tok = strtok($string, $septag.$endtag);
+	$name=$tok;
+	$value=false;
+	while ($tok !== false) {
+		$tok = strtok($septag.$endtag);
+		if($name===false)
+			$name=$tok;
+		else{
+			$value=$tok;
+			$table[$name] = $value;
+			$name=false;
+			$value=false;
+		}
+	}
+	return $table;
+}
+
 function is_strchar($str,$chr){
 	for($i=0;$i<strlen($str);$i++){
 		if(strstr($chr,substr($str,$i,1))===false)
