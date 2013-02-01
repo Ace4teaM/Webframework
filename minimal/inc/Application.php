@@ -6,11 +6,20 @@
 class Application{
     public $config;
     public $root_path;
+    public $template_attributes;
     
     function Application($root_path){
         $this->root_path = $root_path;
         // Charge la configuration
         $this->config = parse_ini_file($this->root_path."/cfg/config.ini", true);
+        
+        //ajoute les chamins d'accès aux attributs de template
+        if(isset($this->config["path"])){
+            foreach($this->config["path"] as $name=>$path){
+                $this->template_attributes["_LIB_PATH_".strtoupper($name)."_"] = $path;
+            }
+        }
+        
     }
     
     /**
