@@ -53,8 +53,13 @@ class cSysTaskMgr implements iSysTaskMgr{
 	 * Crée une tâche appelant une commande système (iSysTaskMgr impl�mentation)
 	 */
 	public static function create( $name,DateTime $date, $cmd){
-            $cmd = 'schtasks /create /tn "'.$name.'" /tr "\"'.$cmd.'\"" /sc once /st '.$date->format("H:i:s").' /sd '.$date->format("m/d/Y");
-	    return $cmd;
+            $cmd = 'schtasks /create /tn "'.$name.'" /tr "'.$cmd.'" /sc once /st '.$date->format("H:i:s").' /sd '.$date->format("m/d/Y");
+	    $cmd = 'schtasks /create /tn "'.$name.'" /tr "dir" /sc once /st '.$date->format("H:i:s").' /sd '.$date->format("m/d/Y");
+	    
+            print_r(exec($cmd,$output,$return_var));
+            print_r($output);
+            print_r($cmd.";$return_var\n");
+            return $return_var;
             //return new cSysTask($name,"schtasks /create /tn \"$name\" ".$date->format("H:i")." /tr $cmd");
 	}
 	/**
