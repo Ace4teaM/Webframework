@@ -411,7 +411,7 @@ YUI.add('wfw-request', function (Y) {
             //if(this.loading_box_delay){
             //    wfw.puts("Start openLoadingBox");
             //}
-            wfw.puts("Start");
+            //wfw.puts("Start");
             this.async = async;
             this.onStart();
             return this.ExecuteNext();

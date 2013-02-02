@@ -1,8 +1,8 @@
 <?php
 /**
- * Implémente l'interface de tâches planifiées pour UNIX
+ * ImplÃ©mente l'interface de tÃ¢ches planifiÃ©es pour UNIX
  * Remarques:
- * Le logiciel CRON est requis sur le système
+ * Le logiciel CRON est requis sur le systÃ¨me
  */
 class cSysTaskMgr implements iSysTaskMgr{
 	public function get($name){}

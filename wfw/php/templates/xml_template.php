@@ -812,7 +812,7 @@ class cXMLTemplate {
 
 class cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         return NULL; /* noeud suivant ou NULL si auto */
     }
 
@@ -824,7 +824,7 @@ class cXMLTemplateAction {
 
 class cXMLTemplateAction_each extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         $arg['__count__'] = 0;
 
         $condition = $node->getAttributeNS($input->wfw_template_uri, "condition");
@@ -874,7 +874,7 @@ class cXMLTemplateAction_each extends cXMLTemplateAction {
 
 class cXMLTemplateAction_array extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         $arg['__array_count__'] = 0;
 
         $condition = $node->getAttributeNS($input->wfw_template_uri, "condition");
@@ -924,7 +924,7 @@ class cXMLTemplateAction_all extends cXMLTemplateAction {
      * @copydoc cXMLTemplate::checkNode()
      * @param $input Référence sur la classe appelante de type cXMLTemplate
      */
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         $arg['__array_count__'] = 0;
 
         $next = $node->nextSibling;
@@ -973,7 +973,7 @@ class cXMLTemplateAction_one extends cXMLTemplateAction {
      * @copydoc cXMLTemplate::checkNode()
      * @param $input Référence sur la classe appelante de type cXMLTemplate
      */
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
 
         $next = $node->nextSibling;
         
@@ -1014,7 +1014,7 @@ class cXMLTemplateAction_one extends cXMLTemplateAction {
 
 class cXMLTemplateAction_exp extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         //check les arguments
         $input->check_arguments($select, $node, $arg);
 
@@ -1079,7 +1079,7 @@ class cXMLTemplateAction_exp extends cXMLTemplateAction {
 
 class cXMLTemplateAction_eval extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         //check les arguments
         $input->check_arguments($select, $node, $arg);
 
@@ -1126,7 +1126,7 @@ class cXMLTemplateAction_eval extends cXMLTemplateAction {
 
 class cXMLTemplateAction_select extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         //traite les arguments pour ce noeud      
         $input->check_arguments($select, $node, $arg);
 
@@ -1167,7 +1167,7 @@ class cXMLTemplateAction_select extends cXMLTemplateAction {
 
 class cXMLTemplateAction_merge extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         //traite les arguments pour ce noeud      
         $input->check_arguments($select, $node, $arg);
 
@@ -1202,7 +1202,7 @@ class cXMLTemplateAction_merge extends cXMLTemplateAction {
 
 class cXMLTemplateAction_include extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         //obtient les options de formatage
         $opt = $node->getAttributeNS($input->wfw_template_uri, "option");
         //options
@@ -1268,7 +1268,7 @@ class cXMLTemplateAction_include extends cXMLTemplateAction {
 
 class cXMLTemplateAction_ignore extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         //clean
         $input->clean_attributes($node);
 
@@ -1287,7 +1287,7 @@ class cXMLTemplateAction_ignore extends cXMLTemplateAction {
 
 class cXMLTemplateAction_format extends cXMLTemplateAction {
 
-    public function check_node($input, $select, $node, $arg) {
+    public static function check_node($input, $select, $node, $arg) {
         //obtient les options de formatage
         $preset = $node->getAttributeNS($input->wfw_template_uri, "preset");
         $transform = $node->getAttributeNS($input->wfw_template_uri, "transform");

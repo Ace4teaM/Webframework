@@ -1,53 +1,12 @@
 <?php
 /**
- * Implémente l'interface de tâches planifiées pour WINDOWS/NT
+ * ImplÃ©mente l'interface de tÃ¢ches planifiÃ©es pour WINDOWS/NT
  * Remarques:
- * Le logiciel SCHTASKS est requis sur le système
+ * Le logiciel SCHTASKS est requis sur le systÃ¨me
  */
-class cSysTaskMgr implements iSysTaskMgr{
-	
-	/**
-	 * Obtient une tâche par son identificateur (AT spécifique)
-	 */
-	public function getById(int $id){
-		return new cSysTask($name,"at $id".$task->getId());
-	}
-	/**
-	 * Obtient une tâche par son nom (iSysTaskMgr implémentation)
-	 */
-	public function get(String $name){
-		return new cSysTask($name,"at $id".$task->getId());
-	}
-	/**
-	 * Actualise une tâche existante (iSysTaskMgr implémentation)
-	 */
-	public function set(cSysTask $task){
-		system ( $task->getCmdLine(), &$return_var);
-		return $return_var;
-	}
-	/**
-	 * Supprime une tâche existante (iSysTaskMgr implémentation)
-	 */
-	public function delete(cSysTask $task){
-		system ( "schtasks /delete /u www /tn \"".$task->getName()."\"", &$return_var);
-		/*if($return_var!=0)
-			return procResult(ERR_FAILED,"SYSTEM_ERROR");
-		return procResult(ERR_OK,"DELETE_TASK");*/
-		return $return_var;
-	}
-	/**
-	 * Crée une tâche appelant une commande système (iSysTaskMgr implémentation)
-	 */
-	public function create(String $name,DateTime $date,String $cmd){
-		return new cSysTask($name,"schtasks /create /tn \"$name\"".$date->format("H:i")." /tr $cmd");
-	}
-	/**
-	 * Crée une tâche appelant une requête PHP (iSysTaskMgr implémentation)
-	 */
-	public function createPHPRequest($name,DateTime $date,$reqName,$reqName){
-		return create($name,$date,"php $reqName ...");
-	}
-}
+
+require_once 'php/class/bases/iTask.php';
+
 
 class cSysTask implements iSysTask{
 	var $name;
@@ -57,6 +16,53 @@ class cSysTask implements iSysTask{
 	public function getName(){return $name;}
 	public function getCmdLine(){return $cmd;}
 	public function getId(){return $id;}
+}
+
+class cSysTaskMgr implements iSysTaskMgr{
+	
+	/**
+	 * Obtient une tÃ¢che par son identificateur (AT spï¿½cifique)
+	 */
+	public static function getById(int $id){
+		return new cSysTask($name,"at $id".$task->getId());
+	}
+	/**
+	 * Obtient une tÃ¢che par son nom (iSysTaskMgr implï¿½mentation)
+	 */
+	public static function get( $name){
+		return new cSysTask($name,"at $id".$task->getId());
+	}
+	/**
+	 * Actualise une tÃ¢che existante (iSysTaskMgr implï¿½mentation)
+	 */
+	public static function set(cSysTask $task){
+		system ( $task->getCmdLine(), $return_var);
+		return $return_var;
+	}
+	/**
+	 * Supprime une tÃ¢che existante (iSysTaskMgr implï¿½mentation)
+	 */
+	public static function delete(cSysTask $task){
+		system ( "schtasks /delete /u www /tn \"".$task->getName()."\"", $return_var);
+		//if($return_var!=0)
+		//	return procResult(ERR_FAILED,"SYSTEM_ERROR");
+		//return procResult(ERR_OK,"DELETE_TASK");
+		return $return_var;
+	}
+	/**
+	 * CrÃ©e une tÃ¢che appelant une commande systÃ¨me (iSysTaskMgr implï¿½mentation)
+	 */
+	public static function create( $name,DateTime $date, $cmd){
+            $cmd = 'schtasks /create /tn "'.$name.'" /tr "\"'.$cmd.'\"" /sc once /st '.$date->format("H:i:s").' /sd '.$date->format("m/d/Y");
+	    return $cmd;
+            //return new cSysTask($name,"schtasks /create /tn \"$name\" ".$date->format("H:i")." /tr $cmd");
+	}
+	/**
+	 * CrÃ©e une tÃ¢che appelant une requÃªte PHP (iSysTaskMgr implï¿½mentation)
+	 */
+	public static function createPHPRequest($name,DateTime $date,$reqName,$reqName){
+		return create($name,$date,"php $reqName ...");
+	}
 }
 
 ?>

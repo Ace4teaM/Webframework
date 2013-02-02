@@ -1,6 +1,6 @@
 <?php
 /**
- * Interface de gestion des tâches planifiées
+ * Interface de gestion des tÃ¢ches planifiÃ©es
  */
 interface iSysTask{
 	public function getName();
@@ -9,25 +9,25 @@ interface iSysTask{
 
 interface iSysTaskMgr{
 	/**
-	 * Obtient une tâche par son nom 
+	 * Obtient une tÃ¢che par son nom 
 	 */
-	public function get(String $name);
+	public static function get( $name);
 	/**
-	 * Actualise une tâche existante
+	 * Actualise une tÃ¢che existante
 	 */
-	public function set(cSysTask $task);
+	public static function set(cSysTask $task);
 	/**
-	 * Supprime une tâche existante
+	 * Supprime une tÃ¢che existante
 	 */
-	public function delete(cSysTask $task);
+	public static function delete(cSysTask $task);
 	/**
-	 * Crée une tâche appelant une commande système 
+	 * CrÃ©e une tÃ¢che appelant une commande systÃ¨me 
 	 */
-	public function create(String $name,DateTime $date,String $cmd);
+	public static function create( $name,DateTime $date, $cmd);
 	/**
-	 * Crée une tâche appelant une requête PHP 
+	 * CrÃ©e une tÃ¢che appelant une requÃªte PHP 
 	 */
-	public function createPHPRequest($name,DateTime $date,$reqName,$reqArg);
+	public static function createPHPRequest($name,DateTime $date,$reqName,$reqArg);
 }
 
 ?>

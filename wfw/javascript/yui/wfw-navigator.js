@@ -49,15 +49,15 @@ YUI.add('wfw-navigator', function (Y) {
 
             //charge le sitemap "default.xml"
             if("string"==typeof(this.navDoc)){
-                wfw.puts("load navigation doc..."+this.navDoc);
+                wfw.puts("Navigator.init: load navigation doc..."+this.navDoc);
                 try{
                     var doc = wfw.HTTP.get(this.navDoc);
                     if(!doc){
-                        wfw.puts("can't load navigation doc: "+this.navDoc+" (HTTP Status: "+wfw.HTTP.getResponseStatus()+")");
+                        wfw.puts("Navigator.init: can't load navigation doc: "+this.navDoc+" (HTTP Status: "+wfw.HTTP.getResponseStatus()+")");
                         return false;
                     }
                     if(!(doc = xml_parse(doc))){
-                        wfw.puts("can't parse xml navigation doc: "+this.navDoc);
+                        wfw.puts("Navigator.init: can't parse xml navigation doc: "+this.navDoc);
                         return false;
                     }
                     this.navDoc = doc;
@@ -65,10 +65,10 @@ YUI.add('wfw-navigator', function (Y) {
                 catch(e){
                     switch(e.name){
                         case "NS_ERROR_DOM_BAD_URI":
-                            wfw.puts("can't load navigation doc: "+this.navDoc+" (NS_ERROR_DOM_BAD_URI)");
+                            wfw.puts("Navigator.init: can't load navigation doc: "+this.navDoc+" (NS_ERROR_DOM_BAD_URI)");
                             break;
                         default:
-                            wfw.puts("can't load navigation doc: "+this.navDoc+" (Unexpected error)");
+                            wfw.puts("Navigator.init: can't load navigation doc: "+this.navDoc+" (Unexpected error)");
                             break;
                     }
                 //return wfw.checkError(e);
@@ -104,7 +104,7 @@ YUI.add('wfw-navigator', function (Y) {
                     return true;
                 }
                 else
-                    wfw.puts("wfw.ext.navigator.init: navigation doc/node not ready");
+                    wfw.puts("Navigator.init: navigation doc/node not ready");
             }  
             return false;
         },
@@ -117,7 +117,7 @@ YUI.add('wfw-navigator', function (Y) {
         getId : function(){
             //document ?
             if((typeof(this.navDoc)!='object')){
-                wfw.puts("wfw.ext.navigator.getId: no document");
+                wfw.puts("Navigator.getId: no document");
                 return null;
             }
             //obtient le noeud des modules
@@ -137,7 +137,7 @@ YUI.add('wfw-navigator', function (Y) {
         getName : function(){
             //document ?
             if((typeof(this.navDoc)!='object')){
-                wfw.puts("wfw.ext.navigator.getName: no document");
+                wfw.puts("Navigator.getName: no document");
                 return null;
             }
             //obtient le noeud des modules
@@ -159,7 +159,7 @@ YUI.add('wfw-navigator', function (Y) {
         getModule : function(name){
             //document ?
             if((typeof(this.navDoc)!='object') || (typeof(this.cfgNode)!='object')){
-                wfw.puts("wfw.ext.navigator.getModule: no document or module node");
+                wfw.puts("Navigator.getModule: no document or module node");
                 return null;
             }
 
@@ -188,7 +188,7 @@ YUI.add('wfw-navigator', function (Y) {
     */
         getPageInfos : function(){
             if(!this.bOk){
-                wfw.puts("getPageInfos not ready:"+this.bOk);
+                wfw.puts("Navigator.getPageInfos: not ready:"+this.bOk);
                 return null;
             }
             var obj=new Object();
@@ -365,16 +365,16 @@ YUI.add('wfw-navigator', function (Y) {
  
             //introuvable?
             if(!meta_tag){
-                wfw.puts("this page as not meta-tag: wfw.page-id");
+                wfw.puts("Navigator.onLoad: this page as not meta-tag: wfw.page-id");
                 return;
             }
 
             //obtient l'id
             wfw.Navigator.pageId = meta_tag.get("content");
-            wfw.puts('page_id = '+wfw.Navigator.pageId);
+            wfw.puts('Navigator.onLoad: page_id = '+wfw.Navigator.pageId);
             if(empty(wfw.Navigator.pageId))
             {
-                wfw.puts('pageId not specified');
+                wfw.puts('Navigator.onLoad: pageId not specified');
                 return;
             }
 
@@ -382,18 +382,18 @@ YUI.add('wfw-navigator', function (Y) {
             wfw.Navigator.pageIndex   = wfw.Navigator.getPageIndex(wfw.Navigator.pageId);
             if(!wfw.Navigator.pageIndex)
             {
-                wfw.puts(wfw.Navigator.pageId+', index node is not found');
+                wfw.puts("Navigator.onLoad: "+wfw.Navigator.pageId+', index node is not found');
                 return;
             }
    
             wfw.Navigator.pageNode    = wfw.Navigator.getPageNode(wfw.Navigator.pageId);
             if(!wfw.Navigator.pageNode)
             {
-                wfw.puts(wfw.Navigator.pageId+', tree node is not found');
+                wfw.puts("Navigator.onLoad: "+wfw.Navigator.pageId+', tree node is not found');
                 return;
             }
         
-            wfw.puts('navigation tree OK');
+            wfw.puts('Navigator.onLoad: navigation tree OK');
             wfw.Navigator.bOk = true;
         }
     };

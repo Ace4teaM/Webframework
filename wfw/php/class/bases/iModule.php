@@ -6,8 +6,8 @@
  * @author Thomas AUGUEY
  */
 interface iModule {
-    const CantFindTemplateFile = 6001;
-    const CantLoadDefaultFile  = 6002;
+    const CantFindTemplateFile = "MOD_CANT_FIND_MODULE";
+    const CantLoadDefaultFile  = "MOD_CANT_LOAD_DEFAULT";
     public static function makeView($name,$attributes,$template_file);
 }
 
