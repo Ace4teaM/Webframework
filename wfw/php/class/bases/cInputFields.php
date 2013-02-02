@@ -7,7 +7,7 @@
  */
 class cInputFields {
     const NoInputFileds = "NO_INPUT_FIELD";
-    const MissingArg = "MISSING_FILED";
+    const MissingArg = "MISSING_FIELD";
 
     /*
      * @brief Check format of inputs fields
