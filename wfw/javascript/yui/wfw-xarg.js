@@ -179,7 +179,7 @@ YUI.add('wfw-xarg', function (Y) {
             }
 
             //erreur ?
-            if (bCheckResult && (parseInt(args.result) != wfw.Result.Ok)) {
+            if (bCheckResult && (args.result != wfw.Result.Ok)) {
                 //message
                 if (bShowError){
                     var result_form_id = ((typeof obj.args["wfw_form_name"] == "string") ? obj.args.wfw_form_name : obj.name);

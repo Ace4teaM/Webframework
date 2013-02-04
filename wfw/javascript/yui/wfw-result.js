@@ -22,8 +22,8 @@ YUI.add('wfw-result', function (Y) {
         Ok      : "ERR_OK",
         Success : "ERR_OK",
         Failed  : "ERR_FAILED",
-        ERR_OK : 0,
-        ERR_FAILED : 1,
+        ERR_OK : "ERR_OK",
+        ERR_FAILED : "ERR_FAILED",
         /**
             Objet de resultat
         

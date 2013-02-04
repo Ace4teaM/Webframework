@@ -195,8 +195,9 @@ YUI.add('wfw-request', function (Y) {
             wfw.puts("wfw.request.Insert: " + action.name + ", " + action.url);
 
             //appel du callback callback
-            if (action.callback != null)
+            if (action.callback != null){
                 action.callback(action);
+            }
 
             //execute la requete ?
             if (this.auto_start && !this.working){

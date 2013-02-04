@@ -18,7 +18,7 @@
 //fichier log
 define("LOG_FILE", "private/log.txt");
    
-//passe les arguments de la ligne de commande dans $_REQUEST
+//passe les arguments de la ligne de commande dans la variable $_REQUEST
 if(isset($argc) && ($argc > 1))
 {
   for ($i=1;$i < $argc;$i++)

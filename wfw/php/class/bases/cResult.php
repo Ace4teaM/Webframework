@@ -38,7 +38,7 @@ class cResult {
     public function cResult($code, $info, $att=array()){
         $this->code = $code;
         $this->info = $info;
-        $this->att  = $att;
+        $this->att  = array_change_key_case($att, CASE_LOWER);
     }
     
     public function toArray(){
@@ -57,7 +57,7 @@ class cResult {
     public static function last($code, $info, $att=array()){
         self::$last_code = $code;
         self::$last_info = $info;
-        self::$last_att  = $att;
+        self::$last_att  = array_change_key_case($att, CASE_LOWER);
         return ($code == cResult::Ok) ? true : false;
     }
 
@@ -69,6 +69,15 @@ class cResult {
         $result = new cResult(self::$last_code,self::$last_info);
         $result->att = self::$last_att;
         return $result;
+    }
+
+    /**
+     * @brief Obtient un attribut
+     * @return Valeur de lo'attribut, NULL si introuvable
+     */
+    public function getAtt($name){
+        $name = strtolower($name);
+        return isset($this->att[$name]) ? $this->att[$name] : NULL;
     }
 
     /**
