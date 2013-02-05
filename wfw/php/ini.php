@@ -20,6 +20,6 @@ $_hostname_ = "";
 } 
 
 /** version */
-define('WFW_VERSION','1.4');
+define('WFW_VERSION','1.7');
 
 ?>

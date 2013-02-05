@@ -91,8 +91,8 @@ class cSchTasksMgr implements iSysTaskMgr{
             //print_r($cmd."; 0x".hexdec(intval($return_var))."\n");
             //ok?
             if(intval($return_var) != 0)
-                return RESULT(cResult::Failed,"schtasks_error",array("schtasks_code"=>"0x".hexdec(intval($return_var)),"schtasks_cmd"=>$cmd,"schtasks_output"=>print_r($output,true)));
-                    
+                return RESULT(cResult::System,"SYS_TASK_CREATE",array("type"=>"schtasks","rval"=>"0x".hexdec(intval($return_var)),"cmd"=>$cmd,"output"=>print_r($output,true)));
+
             return RESULT_OK();
             //return new cSysTask($name,"schtasks /create /tn \"$name\" ".$date->format("H:i")." /tr $cmd");
 	}
