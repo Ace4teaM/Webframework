@@ -72,8 +72,18 @@ class cResult {
     }
 
     /**
+     * @brief Ajoute un attribut
+     * @return Valeur de l'attribut, NULL si introuvable
+     */
+    public function addAtt($name,$value){
+        $name = strtolower($name);
+        $this->att[$name] = $value;
+        return $value;
+    }
+
+    /**
      * @brief Obtient un attribut
-     * @return Valeur de lo'attribut, NULL si introuvable
+     * @return Valeur de l'attribut, NULL si introuvable
      */
     public function getAtt($name){
         $name = strtolower($name);

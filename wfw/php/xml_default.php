@@ -253,11 +253,8 @@ class cXMLDefault {
             //echo("code $code not found");
             return $code;
         }
-      
-        //templatise
-        //...
 
-        return $entry_node->nodeValue;
+        return trim($entry_node->nodeValue);
     }
 
 }
