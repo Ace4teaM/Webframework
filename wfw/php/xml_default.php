@@ -193,7 +193,7 @@ class cXMLDefault {
             return NULL;
         if ($page_id == NULL)
             return $tree_node;
-        //enumere les noeud
+        //enumere les noeuds
         $ret = $this->doc->enumNodes($tree_node->firstChild, function($node, &$condition) use ($page_id) {
                     if ($node->nodeType == XML_ELEMENT_NODE && $node->tagName == $page_id) {
                         return $node;
@@ -238,6 +238,26 @@ class cXMLDefault {
             return NULL;
 
         return $page_node;
+    }
+
+    /*
+      Obtient le texte associé à un code de résultat
+      @param string $code Code de résultat désiré
+      @param string $lang Code du langage désiré
+      @return Traduction du code. Si le texte est introuvable, $code est retourné.
+     */
+    public function getResultText($type, $code, $lang="fr")
+    {
+        $entry_node = $this->doc->one("results[lang=$lang]>$type>$code");
+        if($entry_node === NULL){
+            //echo("code $code not found");
+            return $code;
+        }
+      
+        //templatise
+        //...
+
+        return $entry_node->nodeValue;
     }
 
 }

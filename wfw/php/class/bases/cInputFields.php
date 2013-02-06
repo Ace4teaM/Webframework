@@ -6,8 +6,11 @@
  * @author developpement
  */
 class cInputFields {
+    //erreurs
     const NoInputFileds = "NO_INPUT_FIELD";
     const MissingArg = "MISSING_FIELD";
+    //messages
+    const MsgInvalidInput = "INPUT_MSG_INVALID_FIELD";
 
     /*
      * @brief Check format of inputs fields
@@ -30,11 +33,12 @@ class cInputFields {
             foreach ($required_arg as $arg_name => $arg_type) {
                 //existe?
                 if (!isset($fields[$arg_name]) || empty_string($fields[$arg_name])) {
-                    return RESULT( cResult::Failed, cInputFields::MissingArg, array("field_name"=>$arg_name) );
+                    return RESULT( cResult::Failed, cInputFields::MissingArg, array("message"=>cInputFields::MsgInvalidInput,"field_name"=>$arg_name) );
                 }
                 //verifie le format si besoin    
                 if (!empty($arg_type)) {
                     if (!$arg_type::isValid($fields[$arg_name])){
+                        RESULT_PUSH("message", cInputFields::MsgInvalidInput);
                         RESULT_PUSH("field_name", $arg_name);
                         return false; // conserve le resultat de la fonction
                     }
@@ -49,6 +53,7 @@ class cInputFields {
                 //existe?
                 if (isset($fields[$arg_name]) && !empty($arg_type)) {
                     if (!$arg_type::isValid($fields[$arg_name])){
+                        RESULT_PUSH("message", cInputFields::MsgInvalidInput);
                         RESULT_PUSH("field_name", $arg_name);
                         return false; // conserve le resultat de la fonction
                     }
