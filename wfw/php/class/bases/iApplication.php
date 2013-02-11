@@ -6,12 +6,21 @@
  * @author Thomas AUGUEY
  */
 interface iApplication {
-    public static function processLastError();
+    //interfaces
+    function getTaskMgr(&$iface);
+    function getDB(&$db_iface);
+    //path
     function getLibPath($name,$relatif);
     function getTmpPath();
     function getRootPath();
-    function getDB(&$db_iface);
-    function applyErrorDefinition($code,$message);
+    //cfg
+    function getCfgSection($name);
+    function getCfgValue($section_name,$item_name);
+    //view
+    function makeHTMLView($filename,$attributes);
+    function makeXMLView($filename,$attributes,$template_file);
+    static function processLastError();
+    static function translateResult($result);
 }
 
 ?>
