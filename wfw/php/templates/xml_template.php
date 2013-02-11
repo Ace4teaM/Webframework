@@ -1024,11 +1024,11 @@ class cXMLTemplateAction_exp extends cXMLTemplateAction {
         //procède à une selection temporaire
         $target_str = null;
         $target_node = null;
-        $target = $node->getAttributeNS($this->wfw_template_uri, "target");
+        $target = $node->getAttributeNS($input->wfw_template_uri, "target");
         if (!empty($target) && isset($arg[$target]))
             $target_str = $arg[$target];
         if (!empty($target))
-            $target_node = $this->get_xml_selection($select, $arg, $target, $node->getAttributeNS($this->wfw_template_uri, "condition"));
+            $target_node = $input->get_xml_selection($select, $arg, $target, $node->getAttributeNS($input->wfw_template_uri, "condition"));
 
         //supprime les attributs inutiles
         $input->clean_attributes($node);

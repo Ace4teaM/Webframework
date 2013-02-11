@@ -1,6 +1,6 @@
 <?php
 /**
- * Interface de gestion des tâches planifiées
+ * Interface de gestion des fichiers
  */
 interface iFile{
 	public function getName();
@@ -10,7 +10,7 @@ interface iFile{
 
 interface iFileSysMgr{
 	/**
-	 * Crée un lien symbolique vers un fichier
+	 * Crï¿½e un lien symbolique vers un fichier
 	 */
 	public function createSymbolicFile(String $src_filename,String $dst_filename);
 	/**
@@ -18,11 +18,11 @@ interface iFileSysMgr{
 	 */
 	public function removeFile(String $filename);
 	/**
-	 * Crée un fichier
+	 * Crï¿½e un fichier
 	 */
 	public function createFile(String $filename);
 	/**
-	 * Crée un fichier temporaire
+	 * Crï¿½e un fichier temporaire
 	 */
 	public function createTempFile(String $filename);
 }

@@ -1,20 +1,27 @@
 <?php
-
 /*
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-  WebFrameWork, v1.3 - Classe de base pour le formatage et la verification de données
-  input.php
-  (C)2007-2008 Avalanche, Tout droits reserver
-  PHP Code
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-  AUTHOR: Auguey Thomas
-  MAIL  : augueyace@wanadoo.fr
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-  Methodes:
-  ::isValid
-  ::toHTML
-  ::getMaxLength
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
+*/
 
+/**
+ * Formatage et verification de champs de données
  */
 
 class cInput {

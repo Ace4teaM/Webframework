@@ -57,7 +57,7 @@ class cInputUNIXFileName extends cInput
 		if((substr($value,0,1)=='.') || (substr($value,-1,1)=='.') || (strpos($value,'..')!==FALSE))
                     return RESULT(cResult::Failed,cInput::InvalidChar);
 
-		return ERR_OK;
+		return RESULT_OK();
 	}
 	public static function toHTML($id,$value){
 		return '<input lang="en-us" size="20" maxlength="'.($this->getMaxLength()).'" name="'.$id.'" id="'.$id.'" type="text" value="'.$value.'" wbfw="mail" >';
