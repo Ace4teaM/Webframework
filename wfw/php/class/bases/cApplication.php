@@ -336,13 +336,13 @@ class cApplication implements iApplication{
         //
         $att = array_merge(array(
             //champs...
-            "fields"=>function($content) use ($fields,$default){
+            "fields"=>function($content) use ($fields,$default,$values){
                 $insert = "";
                 foreach($fields as $name=>$type){
                     $tmp = array(
                         "name"=>$name,
                         "type"=>$type,
-                        "title"=>(isset($default) ? $default->translateArgName($name) : $name ),
+                        "title"=>(isset($default) ? $default->getResultText("fields",$name) : $name ),
                         "value"=>(isset($values[$name]) ? $values[$name] : "")
                     );
                     $insert .= cHTMLTemplate::transform($content,$tmp);
@@ -350,13 +350,13 @@ class cApplication implements iApplication{
                 return $insert;
             },
             //champs...
-            "opt_fields"=>function($content) use ($opt_fields,$default){
+            "opt_fields"=>function($content) use ($opt_fields,$default,$values){
                 $insert = "";
                 foreach($opt_fields as $name=>$type){
                     $tmp = array(
                         "name"=>$name,
                         "type"=>$type,
-                        "title"=>(isset($default) ? $default->translateArgName($name) : $name ),
+                        "title"=>(isset($default) ? $default->getResultText("fields",$name) : $name ),
                         "value"=>(isset($values[$name]) ? $values[$name] : "")
                     );
                     $insert .= cHTMLTemplate::transform($content,$tmp);
@@ -425,6 +425,8 @@ class cApplication implements iApplication{
         
         return $att;
     }
+    
+    
     
 }
 
