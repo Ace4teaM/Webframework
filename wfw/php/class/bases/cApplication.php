@@ -367,7 +367,7 @@ class cApplication implements iApplication{
         //transforme le fichier
 	return cHTMLTemplate::transform($template_content,$att);
         
-       // return makeXMLView("tmp_file.html");
+        // return makeXMLView("tmp_file.html");
     }
     
     /**
