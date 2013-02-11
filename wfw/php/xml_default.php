@@ -14,6 +14,8 @@
  */
 
 class cXMLDefault {
+    const InvalidArg = "XML_DEFAULT_INVALID_FUNCTION_ARG";
+    const CantLoadFile = "XML_DEFAULT_CANT_LOAD_FILE";
 
     /** @ brief Instance de la classe XMLDocument */
     public $doc = NULL;
@@ -21,7 +23,7 @@ class cXMLDefault {
     /**
      * @brief Charge le document XML
      * @param $doc Chemin d'accès au fichier ou instance d'une classe XMLDocument
-     * @return type
+     * @return Résultat de procédure
      */
     public function Initialise($doc) {
         //Initialise les membres
@@ -31,10 +33,10 @@ class cXMLDefault {
         if (is_string($doc)) {
             $this->doc = new XMLDocument();
             if (!$this->doc->load($doc))
-                return RESULT(cResult::Failed, 'cant_load_file');
+                return RESULT(cResult::Failed, cXMLDefault::CantLoadFile);
         }
-        else if (($this->doc = $doc) == NULL) {
-            return RESULT(cResult::Failed, 'invalid_arg');
+        else if (($this->doc = $doc) === NULL) {
+            return RESULT(cResult::Failed, cXMLDefault::InvalidArg);
         }
 
         return RESULT_OK();

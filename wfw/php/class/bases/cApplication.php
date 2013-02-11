@@ -63,6 +63,7 @@ class cApplication implements iApplication{
     private $template_attributes;
     private $config;
     private $root_path;
+    private $default;
     
     /** 
      * @brief Pointeur sur la base de données par défaut
@@ -114,6 +115,10 @@ class cApplication implements iApplication{
         // initialise le gestionnaire de tache
         //( la fonction getTaskMgr initialise l'instance si besoin )
         $this->task = null;
+        
+        // initialise le fichier defaut
+        //( la fonction getDefaultFile initialise l'instance si besoin )
+        $this->default = null;
     }
 
     /**
@@ -167,6 +172,34 @@ class cApplication implements iApplication{
         return RESULT_OK();
     }
     
+    /** 
+     * Obtient le fichier default
+     * @return Résultat de la procédure
+     * @retval true La fonction à réussit, $iface contient un pointeur vers une classe cXMLDefault initialisée
+     * @retval false La fonction à échouée, voir cResult::getLast() pour plus d'informations
+     */
+    function getDefaultFile(&$iface)
+    {
+        if($this->default instanceof cXMLDefault){
+            $iface = $this->default;
+            return RESULT_OK();
+        }
+
+        //si la tentative a deja echoue
+        if($this->default === FALSE)
+            return RESULT(cApplication::CantLoadDefaultFile);
+
+        //tente le chargement
+        $this->default = new cXMLDefault();
+        if(!$this->default->Initialise("default.xml")){
+            $this->default = FALSE;
+            return FALSE;//passe le résultat de Initialise()
+        }
+
+        $iface = $this->default;
+        
+        return RESULT_OK();
+    }
     /**
      * @brief Obtient le chemin d'accès vers l'application
      * @return string Chemin absolue vers la racine de l'application
@@ -293,18 +326,44 @@ class cApplication implements iApplication{
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @return string Contenu du template transformé
      */
-    function makeFormView($fields,$template_file="view/form.html"){ 
-
+    function makeFormView($att,$fields,$opt_fields,$values,$template_file="view/mail/pages/form.html")
+    {
         $template_content = file_get_contents($this->root_path.'/'.$template_file);
-        $att=array(
+        
+        $default = NULL;
+        $this->getDefaultFile($default);
+
+        //
+        $att = array_merge(array(
             //champs...
-            "field"=>function($content){
+            "fields"=>function($content) use ($fields,$default){
                 $insert = "";
-                foreach($fields as $key=>$obj)
-                    $insert .= cHTMLTemplate::transform($content,$fields);
+                foreach($fields as $name=>$type){
+                    $tmp = array(
+                        "name"=>$name,
+                        "type"=>$type,
+                        "title"=>(isset($default) ? $default->translateArgName($name) : $name ),
+                        "value"=>(isset($values[$name]) ? $values[$name] : "")
+                    );
+                    $insert .= cHTMLTemplate::transform($content,$tmp);
+                }
+                return $insert;
+            },
+            //champs...
+            "opt_fields"=>function($content) use ($opt_fields,$default){
+                $insert = "";
+                foreach($opt_fields as $name=>$type){
+                    $tmp = array(
+                        "name"=>$name,
+                        "type"=>$type,
+                        "title"=>(isset($default) ? $default->translateArgName($name) : $name ),
+                        "value"=>(isset($values[$name]) ? $values[$name] : "")
+                    );
+                    $insert .= cHTMLTemplate::transform($content,$tmp);
+                }
                 return $insert;
             }
-        );
+        ),$att);
         //transforme le fichier
 	return cHTMLTemplate::transform($template_content,$att);
         
@@ -349,12 +408,12 @@ class cApplication implements iApplication{
      * @param string $result Instance de la classe cResult
      * @return Tableau associatif contenant les champs traduits
      */
-    public static function translateResult($result)
+    public function translateResult($result)
     {
         $att = $result->toArray();
+        $default;
         
-        $default = new cXMLDefault();
-        if($default->Initialise("default.xml")){
+        if($this->getDefaultFile($default)){
 
             $att["txt_result"]  = $default->getResultText("codes",$result->code);
             $att["txt_error"]   = $default->getResultText("errors",$result->info);
@@ -366,6 +425,7 @@ class cApplication implements iApplication{
         
         return $att;
     }
+    
 }
 
 ?>

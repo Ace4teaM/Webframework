@@ -20,7 +20,7 @@ interface iApplication {
     function makeHTMLView($filename,$attributes);
     function makeXMLView($filename,$attributes,$template_file);
     static function processLastError();
-    static function translateResult($result);
+    function translateResult($result);
 }
 
 ?>
