@@ -243,42 +243,53 @@ class cTemplateMarkerdefault extends cTemplateMarker
 	
 	function __construct($input,&$arg)
 	{
-		if( $this->sitefile = $input->load_xml_file("default.xml") )
-		{
-                    //host config
-                    $hostname = $arg["__hostname__"];
-                    if(!empty($hostname)){
-                        //Nom de domaine
-                        $node = $this->sitefile->one(">host[id=$hostname]>domain");
-                        $arg["__domain__"]       = ($node ? $node->nodeValue : "");
-                        //URI sans protocol
-                        $node = $this->sitefile->one(">host[id=$hostname]>path");
-                        $arg["__uri_nop__"]      = ($node ? $node->nodeValue : "");             
-                        //URI sans protocol
-                        $node = $this->sitefile->one(">host[id=$hostname]>base_path");
-                        $arg["__base_uri_nop__"] = ($node ? $node->nodeValue : ""); 
-                        //URI complete
-                        $node = $this->sitefile->one(">host[id=$hostname]>path");
-                        $arg["__uri__"]          = "http://".$arg["__domain__"].($node ? $node->nodeValue : "")."/";    
-                        //URI racine complete
-                        $node = $this->sitefile->one(">host[id=$hostname]>base_path");
-                        $arg["__base_uri__"]     = "http://".$arg["__domain__"].($node ? $node->nodeValue : "")."/";  
-                        //URI racine complete
-                        $node = $this->sitefile->one(">host[id=$hostname]>path_root");
-                        $arg["__path__"]         = ($node ? $node->nodeValue : "")."/";
-                    }
-                    //SiteName
-                    $node = $this->sitefile->one(">name");
-                    $arg["__name__"]         = ($node ? $node->nodeValue : "");
-                    $node = $this->sitefile->one(">title");
-                    $arg["__title__"]        = ($node ? $node->nodeValue : "");
-                    //SiteDesc
-                    $node = $this->sitefile->one(">description");
-                    $arg["__description__"]  = ($node ? $node->nodeValue : "");
-                    //id
-                    $node = $this->sitefile->one(">id");
-                    $arg["__id__"]           = ($node ? $node->nodeValue : "");
-		}
+            //obtient le fichier default de l'application ?
+            global $app;
+            if(isset($app) /*$app instanceof cApplication*/){
+                if($app->getDefaultFile($default))
+                    $this->sitefile = $input->push_xml_file("default.xml",$default->doc);
+            }
+
+            //tente de charger le fichier ?
+            if($this->sitefile === NULL)
+                $this->sitefile = $input->load_xml_file("default.xml");
+                
+            if( $this->sitefile !== NULL )
+            {
+                //host config
+                $hostname = $arg["__hostname__"];
+                if(!empty($hostname)){
+                    //Nom de domaine
+                    $node = $this->sitefile->one(">host[id=$hostname]>domain");
+                    $arg["__domain__"]       = ($node ? $node->nodeValue : "");
+                    //URI sans protocol
+                    $node = $this->sitefile->one(">host[id=$hostname]>path");
+                    $arg["__uri_nop__"]      = ($node ? $node->nodeValue : "");             
+                    //URI sans protocol
+                    $node = $this->sitefile->one(">host[id=$hostname]>base_path");
+                    $arg["__base_uri_nop__"] = ($node ? $node->nodeValue : ""); 
+                    //URI complete
+                    $node = $this->sitefile->one(">host[id=$hostname]>path");
+                    $arg["__uri__"]          = "http://".$arg["__domain__"].($node ? $node->nodeValue : "")."/";    
+                    //URI racine complete
+                    $node = $this->sitefile->one(">host[id=$hostname]>base_path");
+                    $arg["__base_uri__"]     = "http://".$arg["__domain__"].($node ? $node->nodeValue : "")."/";  
+                    //URI racine complete
+                    $node = $this->sitefile->one(">host[id=$hostname]>path_root");
+                    $arg["__path__"]         = ($node ? $node->nodeValue : "")."/";
+                }
+                //SiteName
+                $node = $this->sitefile->one(">name");
+                $arg["__name__"]         = ($node ? $node->nodeValue : "");
+                $node = $this->sitefile->one(">title");
+                $arg["__title__"]        = ($node ? $node->nodeValue : "");
+                //SiteDesc
+                $node = $this->sitefile->one(">description");
+                $arg["__description__"]  = ($node ? $node->nodeValue : "");
+                //id
+                $node = $this->sitefile->one(">id");
+                $arg["__id__"]           = ($node ? $node->nodeValue : "");
+            }
 	}
 	
 	//[private]

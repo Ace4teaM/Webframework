@@ -58,7 +58,7 @@ class cApplication implements iApplication{
     const ModuleClassNotFound        = "MODULE_NOT_FOUND";
     const DatabaseConnectionNotFound = "DATABASE_CONNECTION_NOT_FOUND";
     const UnsuportedFeature          = "UNSUPORTED_FEATURE";
-    
+    const CreateTemporaryFile        = "CREATE_TMP_FILE";
     //
     private $template_attributes;
     private $config;
@@ -305,7 +305,7 @@ class cApplication implements iApplication{
 
         //ajoute le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
-        
+
         //initialise la classe template 
         if(!$template->Initialise(
                     $this->root_path.'/'.$template_file,
@@ -320,6 +320,17 @@ class cApplication implements iApplication{
     }
     
     /**
+     * @brief Fabrique puis affiche une vue XML/XHTML dans la sortie standard
+     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
+     * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
+     * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
+     */
+    function showXMLView($filename,$attributes,$template_file="view/template.html"){
+        $content = $this->makeXMLView($filename,$attributes,$template_file);
+        echo $content;
+    }
+
+    /**
      * @brief Fabrique une vue de formulaire
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
      * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
@@ -328,13 +339,14 @@ class cApplication implements iApplication{
      */
     function makeFormView($att,$fields,$opt_fields,$values,$template_file="view/mail/pages/form.html")
     {
+        $tmp_file = $this->getCfgValue("path","tmp")."/form.html";
         $template_content = file_get_contents($this->root_path.'/'.$template_file);
         
         $default = NULL;
         $this->getDefaultFile($default);
 
-        //
-        $att = array_merge(array(
+        // attributs du template temporaire
+        $tmp_att = array(
             //champs...
             "fields"=>function($content) use ($fields,$default,$values){
                 $insert = "";
@@ -363,24 +375,22 @@ class cApplication implements iApplication{
                 }
                 return $insert;
             }
-        ),$att);
-        //transforme le fichier
-	return cHTMLTemplate::transform($template_content,$att);
+        );
         
-        // return makeXMLView("tmp_file.html");
+        //transforme le template temporaire
+	$content = cHTMLTemplate::transform($template_content,$tmp_att);
+        if(FALSE === file_put_contents($tmp_file, $content)){
+            return RESULT(cResult::System,cApplication::CreateTemporaryFile);
+        }
+        
+        //fabrique le template final
+        $content = $this->makeXMLView($tmp_file,$att);
+        
+        //OK
+        RESULT_OK();
+        return $content;
     }
     
-    /**
-     * @brief Fabrique puis affiche une vue XML/XHTML dans la sortie standard
-     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
-     * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
-     * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
-     */
-    function showXMLView($filename,$attributes,$template_file="view/template.html"){
-        $content = $this->makeXMLView($filename,$attributes,$template_file);
-        echo $content;
-    }
-
     /**
      * @brief Traitement a appliquer en cas d'erreur
      */

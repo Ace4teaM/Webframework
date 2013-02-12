@@ -587,7 +587,7 @@ class cXMLTemplate {
     //scan le noeud donne et les noeuds suivants
     public function post($title, $msg) {
         //rpost($title,$msg);
-        //echo($title . " " . $msg . "\n");
+        //echo("$title: $msg\n");
     }
 
     //nettoie les noeuds
@@ -665,7 +665,13 @@ class cXMLTemplate {
         }
     }
 
-    //charge un fichier de selection
+    /**
+     * @brief Charge un fichier de selection
+     * @param string $name Nom du fichier (sans chemin)
+     * @param string $path Chemin d'accès au fichier
+     * @return Instance du fichier XML passé en argument
+     * @retval NULL Le chargement du fichier a échoué
+     */
     public function load_xml_file($name, $path = NULL) {
         //construit le chemin
         if ($path === NULL)
@@ -676,7 +682,7 @@ class cXMLTemplate {
         $filename = $path . "/" . $name;
 
 
-        //
+        //charge le fichier ?
         if (!isset($this->xml_files[$name])) {
             if (!file_exists($filename)) {
                 $this->post("load_xml_file", "$filename does not exists");
@@ -693,6 +699,19 @@ class cXMLTemplate {
         }
 
         return $this->xml_files[$name];
+    }
+
+    /**
+     * @brief Assigne un fichier de selection
+     * @param string $name Nom du fichier (sans chemin)
+     * @param XMLDocument $file Instance du fichier XML
+     * @return Instance du fichier XML passé en argument
+     */
+    public function push_xml_file($name, XMLDocument $file) {
+        $this->xml_files[$name] = $file;
+        $this->post("push_xml_file", "$name OK");
+
+        return $file;
     }
 
     /*
