@@ -337,7 +337,7 @@ class cApplication implements iApplication{
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @return string Contenu du template transformé
      */
-    function makeFormView($att,$fields,$opt_fields,$values,$template_file="view/mail/pages/form.html")
+    function makeFormView($att,$fields,$opt_fields,$values,$template_file="view/form.html")
     {
         $tmp_file = $this->getCfgValue("path","tmp")."/form.html";
         $template_content = file_get_contents($this->root_path.'/'.$template_file);
@@ -364,15 +364,16 @@ class cApplication implements iApplication{
             //champs...
             "opt_fields"=>function($content) use ($opt_fields,$default,$values){
                 $insert = "";
-                foreach($opt_fields as $name=>$type){
-                    $tmp = array(
-                        "name"=>$name,
-                        "type"=>$type,
-                        "title"=>(isset($default) ? $default->getResultText("fields",$name) : $name ),
-                        "value"=>(isset($values[$name]) ? $values[$name] : "")
-                    );
-                    $insert .= cHTMLTemplate::transform($content,$tmp);
-                }
+                if($opt_fields !== NULL)
+                    foreach($opt_fields as $name=>$type){
+                        $tmp = array(
+                            "name"=>$name,
+                            "type"=>$type,
+                            "title"=>(isset($default) ? $default->getResultText("fields",$name) : $name ),
+                            "value"=>(isset($values[$name]) ? $values[$name] : "")
+                        );
+                        $insert .= cHTMLTemplate::transform($content,$tmp);
+                    }
                 return $insert;
             }
         );
