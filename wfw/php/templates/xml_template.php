@@ -1,14 +1,27 @@
 <?php
-
 /*
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    (C)2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-  (C)2012 ID-INFORMATIK - WebFrameWork(R)
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/**
   Classe de template XML
-  PHP Code
-
-  AUTHOR: Auguey Thomas
-  MAIL  : contact@id-informatik.com
-
 
   - Utilisez l'espace de nommage "http://www.webframework.fr/last/xmlns/template" pour inserer des commandes dans un fichier XML
   - Le template agit sous forme 'd'actions' applicable a un element et ses enfants
@@ -54,38 +67,7 @@
   -{__date_w3c__}                  : date actuelle au format du W3C.
   -{__timpestamp__}                : timestamp UNIX en cours.
   -{__uri__}                       : nom de domaine specifie dans "default.xml", vide si inexistant.
-
-  Revisions:
-  [10-11-2011] Implentation de la requete "template.php" en classes
-  [10-11-2011] cXMLTemplateMarker_attribute->check_text verifie l'existance de l'attribut meme si la selection existe
-  [12-11-2011] Debug cXMLTemplate::replaceContentElement()
-  [28-11-2011] Update cXMLTemplate::merge_arguments(), utilise htmlentities() pour parser le texte
-  [30-11-2011] Debug cXMLTemplate::replaceContentElement(), utilise Node::removeNode() au lieu de Node::removeChild()
-  [30-11-2011] Add cXMLTemplate::getInnerHTML()
-  [30-11-2011] Update cXMLTemplateAction_format, formate les entités HTML "<" et ">", formate l'integralite du contenu HTML
-  [30-11-2011] Debug cXMLTemplate::Initialise() utilise $select au lieu de $select_element
-  [05-12-2011] Update cXMLTemplate::Initialise(), choisi l'element racine de la selection par defaut
-  [14-12-2011] Update cXMLTemplateMarker_parse::check_text(), n'importe pas d'argument depuis la variable $_REQUEST (possible confilt lors d'une execution dans un document php)
-  [14-12-2011] Update cXMLTemplateAction_exp::check_node(), n'importe pas d'argument depuis la variable $_REQUEST (possible confilt lors d'une execution dans un document php)
-  [14-12-2011] Update cXMLTemplateMarker_simple::check_text(), n'importe pas d'argument depuis la variable $_REQUEST (possible confilt lors d'une execution dans un document php)
-  [27-12-2011] Update cXMLTemplateAction_exp, check les arguments avant l'expression
-  [27-12-2011] Update cXMLTemplateAction_exp, implente l'utilisation du parametre 'target'
-  [27-12-2011] Update cXMLTemplate::clean_node()
-  [28-12-2011] Add cXMLTemplateAction_each
-  [09-01-2012] Update cXMLTemplateAction_format, ajoute l'option "transform"
-  [13-01-2012] cXMLTemplateAction_exp, utilise "target" plutot que "path"
-  [13-01-2012] Update cXMLTemplateAction_exp, l'action test dans l'ordre: la selection locale (target), la selection d'argument (target), la selection globale (path)
-  [14-01-2012] Update cXMLTemplateAction_format, utilise l'attribut "preset" pour remplacer "option"
-  [16-01-2012] Debug cXMLTemplate::check_arguments() et ::merge_arguments(), utilise setAttribute pour définir la valeur d'un attribut avec des entites HTML
-  [16-02-2012] Les documents de selection XML sont rétablie aprés transformation du noeud appellant (cXMLTemplate::varfile et cXMLTemplate::siteFile sont supprimés)
-  [23-02-2012] Debug, cXMLTemplate::Make() transforme les éléments suivant l'élément 'input_element' [Resolue] (Seul les noeuds enfants de l'élément 'input_element' sont transformé)
-  [27-02-2012] Debug, cXMLTemplateAction_exp::check_node() test les cibles avec une chaine vide 'target_str'
-  [16-01-2012] Debug cXMLTemplate::check_arguments() et ::merge_arguments(), $att->setAttribute ne definit par la valeur d'un attribut issue d'un name_space [résolue]
-  [29-02-2012] Update, cXMLTemplate::verify_node_condition()
-  [02-03-2012] Debug, cXMLTemplate::get_xml_selection(), n'agit plus sur la selection globale
-  [02-03-2012] Update, supprime la fonction cXMLTemplate::check_node_condition(), la fonction est obselete
-  [16-03-2012] Debug, cXMLTemplateMarker_default::check_default_attribute() mauvais appel de la fonction getIndexNode [resolue]
- */
+*/
 
 $libdir = realpath(dirname(__FILE__) . "/../..");
 
@@ -492,6 +474,8 @@ class cXMLTemplate {
             $next = NULL;
             switch ($node->nodeType) {
                 case XML_ELEMENT_NODE:
+ //                   $this->post("cXMLTemplate::check_node", $node->tagName);
+                    
                     $cur_select = $select;
                     $cur_node = $node;
 
@@ -515,6 +499,7 @@ class cXMLTemplate {
                     else {
                         $this->check_arguments($cur_select, $node, $arg);
                         $this->clean_attributes($node);
+                        
                         if ($node->firstChild != NULL)
                             $this->check_node($cur_select, $node->firstChild, $arg);
                     }
@@ -712,6 +697,19 @@ class cXMLTemplate {
         $this->post("push_xml_file", "$name OK");
 
         return $file;
+    }
+
+    /**
+     * @brief Obtient un fichier de selection
+     * @param string $name Nom du fichier (sans chemin)
+     * @return Instance du fichier XML
+     * @retval NULL Fichier introuvable
+     */
+    public function get_xml_file($name) {
+        if(isset($this->xml_files[$name]))
+            return $this->xml_files[$name];
+
+        return NULL;
     }
 
     /*
@@ -1204,9 +1202,13 @@ class cXMLTemplateAction_merge extends cXMLTemplateAction {
             //merge le contenu text
             //  $node->nodeValue = $node->nodeValue.$select->nodeValue;
             $input->import_node_content($input->doc, $node, $select->firstChild);
-            if ($node->firstChild != NULL)
-                $input->check_node(NULL, $node->firstChild, $arg);
+
         }
+        
+        //scan les enfants meme si la selection échoue
+        if ($node->firstChild != NULL)
+            $input->check_node(NULL, $node->firstChild, $arg);
+                    
         return $next;
     }
 
