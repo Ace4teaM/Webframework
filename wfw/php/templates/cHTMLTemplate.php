@@ -110,6 +110,19 @@ class cHTMLTemplate{
         return $info;
     }
     /**
+     * @brief Vérifie si un paramètre est une fonction
+     * @param array $fields Tableau des paramètres
+     * @param mixed $key Clé du champ à analyser
+     * @return bool True si le champ est une fonction, sinon false
+     * @remarks isCallableParam Accepte uniquement les fonctions locales, une référence à une fonction globale échouera, ex: mail(). Ceci afin d'éviter un appel de fonction non prévue
+     */
+    static public function isCallableParam($fields,$key) {
+        //verifie si le champs est une fonction
+        //[uniquement si appelable et si la fonction n'est pas globale]
+        return (is_callable($fields[$key],false,$context) && $context!=$fields[$key]); // $context == "Closure::__invoke" only
+    }
+    
+    /**
      * @brief Transforme un texte
      * @param string $string Texte du template à transformer
      * @param array  $fields Champs des données à implenter
@@ -134,8 +147,10 @@ class cHTMLTemplate{
             $content = substr($string,$zone["text_begin"],$zone["text_end"]-$zone["text_begin"]);
             $value = "";
             if(isset($fields[$name])){
-                $value = $fields[$name];
-                $value = (is_callable($value) ? $value($content) : $value);
+                $value = &$fields[$name];
+                //verifie si le champs est une fonction
+                $callable = cHTMLTemplate::isCallableParam($fields,$name);
+                $value = ($callable ? $value($content) : $value);
             }
             $str .= $before.$value;
         }
@@ -149,15 +164,20 @@ class cHTMLTemplate{
             $name    = $matches[1];
             $content = $matches[2];
             if(isset($fields[$name])){
-                $value = $fields[$name];
-                return (is_callable($value) ? $value($content) : $value);
+                $value = &$fields[$name];
+                //verifie si le champs est une fonction
+                $callable = cHTMLTemplate::isCallableParam($fields,$name);
+                return ($callable ? $value($content) : $value);
             }
             return "";
         }, $string);
 
         //remplace les valeurs de champs
-        foreach ($fields as $key => $value) {
-            $string = str_replace('$' . strtoupper($key), (is_callable($value) ? $value($string) : $value), $string);
+        foreach ($fields as $key => &$value) {
+            //verifie si le champs est une fonction
+            $callable = cHTMLTemplate::isCallableParam($fields,$key);
+            // remplace la valeur
+            $string = str_replace('$' . strtoupper($key), ($callable ? $value($string) : $value), $string);
         }
         
         return $string;
