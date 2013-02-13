@@ -59,6 +59,8 @@ class cApplication implements iApplication{
     const DatabaseConnectionNotFound = "DATABASE_CONNECTION_NOT_FOUND";
     const UnsuportedFeature          = "UNSUPORTED_FEATURE";
     const CreateTemporaryFile        = "CREATE_TMP_FILE";
+    const Information                = "INFORMATION";
+    const Success                    = "SUCCESS";
     //
     private $template_attributes;
     private $config;

@@ -106,7 +106,7 @@ function RESULT($code,$info="",$att=array()){
 }
 
 function RESULT_OK(){
-    return cResult::last(cResult::Ok,"Success");
+    return cResult::last(cResult::Ok,"SUCCESS");
 }
 
 function RESULT_PUSH($name,$value){
