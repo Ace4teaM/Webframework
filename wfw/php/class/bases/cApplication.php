@@ -365,7 +365,7 @@ class cApplication implements iApplication{
                     $tmp = array(
                         "name"=>$name,
                         "type"=>$type,
-                        "title"=>(isset($default) ? $default->getResultText("fields",$name) : $name ),
+                        "title"=>htmlentities(isset($default) ? $default->getResultText("fields",$name) : $name ),
                         "value"=>htmlentities(isset($values[$name]) ? $values[$name] : "")
                     );
                     $insert .= cHTMLTemplate::transform($content,$tmp);
@@ -380,7 +380,7 @@ class cApplication implements iApplication{
                         $tmp = array(
                             "name"=>$name,
                             "type"=>$type,
-                            "title"=>(isset($default) ? $default->getResultText("fields",$name) : $name ),
+                            "title"=>htmlentities(isset($default) ? $default->getResultText("fields",$name) : $name ),
                             "value"=>htmlentities(isset($values[$name]) ? $values[$name] : "")
                         );
                         $insert .= cHTMLTemplate::transform($content,$tmp);
