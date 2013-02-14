@@ -121,6 +121,17 @@ class cHTMLTemplate{
         //[uniquement si appelable et si la fonction n'est pas globale]
         return (is_callable($fields[$key],false,$context) && $context!=$fields[$key]); // $context == "Closure::__invoke" only
     }
+
+    /**
+     * @brief Transforme un fichier
+     * @param string $filename Chemin d'accès au fichier à transformer
+     * @param array  $fields Champs des données à implenter
+     * @return string Texte du template transformé
+     */
+    static public function transformFile($filename,$fields) {
+        $content = file_get_contents($filename);
+        return cHTMLTemplate::transform($content,$fields);
+    }
     
     /**
      * @brief Transforme un texte

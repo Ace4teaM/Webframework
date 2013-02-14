@@ -79,9 +79,8 @@ function include_path($dir) {
 function require_path($dir, $include_func = "include_once") {
     $return = array();
     
-    //s'assure que les slash sont tous du même senes (possibilité de bug avec is_file())
-    if(defined("WINDOWS"))
-        $dir = str_replace( '\\','/', $dir);
+    //s'assure que les slash sont tous du même sens (possibilité de bug avec is_file())
+    $dir = str_replace( '\\','/', $dir);
     
     //s'assure que qu'aucun slash ne termine le nom de dossier
     if(substr($dir, -1) == "/")
