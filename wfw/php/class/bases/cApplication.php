@@ -73,10 +73,28 @@ class cApplication implements iApplication{
      */
     public $db;
     
-    function cApplication($root_path,$config){
+    function cApplication($root_path,$config)
+    {
+        //enregistre la globale utilisée par les includes de ce construction
+        global $app;
+        $app = $this;
+        
+        //initialise les memebres
         $this->root_path = $root_path;
         $this->config = $config;
         $this->template_attributes = array();
+
+        // initialise la base de données à null
+        //( la fonction getDB initialise la connexion si besoin )
+        $this->db = null;
+        
+        // initialise le gestionnaire de tache
+        //( la fonction getTaskMgr initialise l'instance si besoin )
+        $this->task = null;
+        
+        // initialise le fichier defaut
+        //( la fonction getDefaultFile initialise l'instance si besoin )
+        $this->default = null;
         
         // Configuration par défaut
         /*$this->config = array(
@@ -108,19 +126,6 @@ class cApplication implements iApplication{
         $classname = $this->getCfgValue(constant("SYSTEM"), "taskmgr_class");
         if(!empty($classname))
             require_once($this->getLibPath("wfw")."/php/system/windows/$classname.php");
-
-
-        // initialise la base de données à null
-        //( la fonction getDB initialise la connexion si besoin )
-        $this->db = null;
-        
-        // initialise le gestionnaire de tache
-        //( la fonction getTaskMgr initialise l'instance si besoin )
-        $this->task = null;
-        
-        // initialise le fichier defaut
-        //( la fonction getDefaultFile initialise l'instance si besoin )
-        $this->default = null;
     }
 
     /**
