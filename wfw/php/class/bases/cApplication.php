@@ -61,11 +61,14 @@ class cApplication implements iApplication{
     const CreateTemporaryFile        = "CREATE_TMP_FILE";
     const Information                = "INFORMATION";
     const Success                    = "SUCCESS";
+    const UnknownHostname            = "UNKNOWN_HOSTNAME";
+    const NoDatabaseConfigured       = "NO_DATABASE_CONFIGURED";
     //
     private $template_attributes;
     private $config;
     private $root_path;
     private $default;
+    private $hostname;
     
     /** 
      * @brief Pointeur sur la base de données par défaut
@@ -95,6 +98,10 @@ class cApplication implements iApplication{
         // initialise le fichier defaut
         //( la fonction getDefaultFile initialise l'instance si besoin )
         $this->default = null;
+        
+        //nom d'hôte
+        //( la fonction getHostName initialise l'instance si besoin )
+        $this->hostname = NULL;
         
         // Configuration par défaut
         /*$this->config = array(
@@ -161,7 +168,7 @@ class cApplication implements iApplication{
         //obtient le nom de la classe à instancier
         $db_classname = $this->getCfgValue("database","class");
         if(!isset($db_classname) || empty($db_classname))
-            return RESULT(cApplication::Configuration,"No database class defined");
+            return RESULT(cResult::Failed,cApplication::NoDatabaseConfigured);
 
         //initialise l'instance
         if($this->db == null){
@@ -173,7 +180,7 @@ class cApplication implements iApplication{
             $server = $this->getCfgValue("database","server");
             $port   = $this->getCfgValue("database","port");
             if(!$db->connect($user,$name,$pwd,$server,$port))
-                return false;
+                return false;//passe le message d'erreur
             
             $this->db = $db; // ok
         }
@@ -198,19 +205,74 @@ class cApplication implements iApplication{
 
         //si la tentative a deja echoue
         if($this->default === FALSE)
-            return RESULT(cApplication::CantLoadDefaultFile);
+            return RESULT(cResult::Failed,cApplication::CantLoadDefaultFile);
 
         //tente le chargement
         $this->default = new cXMLDefault();
         if(!$this->default->Initialise("default.xml")){
             $this->default = FALSE;
-            return FALSE;//passe le résultat de Initialise()
+            return FALSE;//passe le résultat
         }
 
         $iface = $this->default;
         
         return RESULT_OK();
     }
+    
+    /** 
+     * Obtient le nom de l'hote
+     * @return Résultat de la procédure
+     * @retval true La fonction à réussit, $hostname contient le nom de l'hôte (ex: localhost)
+     * @retval false La fonction à échouée, voir cResult::getLast() pour plus d'informations
+     */
+    function getHostName(&$hostname)
+    {
+        //si la tentative a deja echoue
+        if(is_string($this->hostname)){
+            $hostname = $this->hostname;
+            return RESULT_OK();
+        }
+
+        //si la tentative a deja echoue
+        if($this->hostname === FALSE)
+            return RESULT(cResult::Failed,cApplication::UnknownHostname);
+
+        //test avec la commande 'hostname'
+        exec("hostname", $output, $return);
+        if ($return != 0){
+            $this->default = FALSE;
+            return RESULT(cResult::Failed,cApplication::UnknownHostname,array("cmd_return"=>print_r($return,true)));
+        }
+        
+        $hostname = $this->hostname = strtolower($output[0]);
+
+        return RESULT_OK();
+    }
+        
+    /** 
+     * Obtient l'e nom de l'hote'adresse de base de l'application
+     * @return URI avec le chemin d'accès (ex: foo.com/bar)
+     */
+    function getBaseURI()
+    {
+        $uri = $this->getCfgValue("application","base_uri");
+        if(empty($uri)){
+            $uri = "http://";
+            
+            //hote
+            $server = $_SERVER["SERVER_NAME"];
+            if(substr($server,-1)=='/')
+               $server = substr($server,0,strlen($server)-1);
+            $uri .= $server;
+            
+            //chemin
+            $path = dirname($_SERVER["REQUEST_URI"]);
+            if(!empty($path) && $path!="/")
+                $uri .= $path;
+        }
+        return $uri;
+    }
+        
     /**
      * @brief Obtient le chemin d'accès vers l'application
      * @return string Chemin absolue vers la racine de l'application
