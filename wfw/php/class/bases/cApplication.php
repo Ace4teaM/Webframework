@@ -114,6 +114,10 @@ class cApplication implements iApplication{
         if(isset($path_section)){
             foreach($path_section as $name=>$path){
                 $this->template_attributes["_LIB_PATH_".strtoupper($name)."_"] = $path;
+                if(file_exists($path))
+                    require_path($path);
+                //else
+                //    echo($this->getRootPath()."/$path not exists\n");
             }
         }
 
