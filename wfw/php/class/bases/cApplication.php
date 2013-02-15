@@ -437,7 +437,6 @@ class cApplication implements iApplication{
             $tmp_file = $this->getTmpPath()."/".tempnam_s($this->getTmpPath(), ".html");
         else
             $tmp_file = $this->getTmpPath()."/".$tmp_filename;
-        echo($tmp_file);
         
         //fabrique le cache ?
         if($tmp_filename===NULL || ($tmp_filename!==NULL && !file_exists($tmp_file)))
@@ -447,15 +446,16 @@ class cApplication implements iApplication{
                 //champs...
                 "fields"=>function($content) use ($fields,$default,$values){
                     $insert = "";
-                    foreach($fields as $name=>$type){
-                        $tmp = array(
-                            "name"=>$name,
-                            "type"=>$type,
-                            "title"=>htmlentities(isset($default) ? $default->getResultText("fields",$name) : $name ),
-                            "value"=>"-{".$name."}" //htmlentities(isset($values[$name]) ? $values[$name] : "")
-                        );
-                        $insert .= cHTMLTemplate::transform($content,$tmp);
-                    }
+                    if($fields !== NULL)
+                        foreach($fields as $name=>$type){
+                            $tmp = array(
+                                "name"=>$name,
+                                "type"=>$type,
+                                "title"=>htmlentities(isset($default) ? $default->getResultText("fields",$name) : $name ),
+                                "value"=>"-{".$name."}" //htmlentities(isset($values[$name]) ? $values[$name] : "")
+                            );
+                            $insert .= cHTMLTemplate::transform($content,$tmp);
+                        }
                     return $insert;
                 },
                 //champs...
