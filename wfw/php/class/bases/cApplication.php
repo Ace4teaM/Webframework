@@ -31,6 +31,7 @@ else{
 }
 
 require_once("iApplication.php");
+require_once("php/file.php");
 require_once("php/xarg.php");
 require_once("php/class/bases/cResult.php");
 require_once("php/templates/cHTMLTemplate.php");
@@ -286,7 +287,10 @@ class cApplication implements iApplication{
      * @return string Chemin absolue vers la racine de l'application
      */
     function getTmpPath(){
-        return $this->root_path."/".$this->getCfgValue("path","tmp");
+        $tmp = $this->getCfgValue("path","tmp");
+        if(!empty($tmp))
+            return $this->root_path."/".$tmp;
+        return sys_get_temp_dir();
     }
     
     /**
@@ -364,24 +368,29 @@ class cApplication implements iApplication{
     /**
      * @brief Fabrique une vue XML/XHTML
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
-     * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
+     * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
      * @return string Contenu du template transformé
      */
-    function makeXMLView($filename,$attributes,$template_file="view/template.html"){ 
+    function makeXMLView($filename,$attributes,$template_file=NULL)
+    { 
+
+        //fichier template
+        if($template_file === NULL)
+            $template_file = $this->getCfgValue ("application", "main_template");
 
         $template = new cXMLTemplate();
         
         //charge le contenu en selection
         $select = new XMLDocument("1.0", "utf-8");
-        $select->load($this->root_path.'/'.$filename);
+        $select->load($filename);
 
         //ajoute le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
 
         //initialise la classe template 
         if(!$template->Initialise(
-                    $this->root_path.'/'.$template_file,
+                    $template_file,
                     NULL,
                     $select,
                     NULL,
@@ -393,12 +402,13 @@ class cApplication implements iApplication{
     }
     
     /**
-     * @brief Fabrique puis affiche une vue XML/XHTML dans la sortie standard
+     * @brief Fabrique et affiche une vue XML/XHTML dans la sortie standard
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
-     * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
+     * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
+     * @return string Contenu du template transformé
      */
-    function showXMLView($filename,$attributes,$template_file="view/template.html"){
+    function showXMLView($filename,$attributes,$template_file=NULL){
         $content = $this->makeXMLView($filename,$attributes,$template_file);
         echo $content;
     }
@@ -408,57 +418,73 @@ class cApplication implements iApplication{
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
      * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
+     * @param $tmp_file Nom du fichier en cache, null si un fichier temporaire doit être créé
      * @return string Contenu du template transformé
      */
-    function makeFormView($att,$fields,$opt_fields,$values,$template_file="view/form.html")
+    function makeFormView($att,$fields,$opt_fields,$values,$template_file=NULL,$tmp_filename=NULL,$xml_template_file=NULL)
     {
-        $tmp_file = $this->getCfgValue("path","tmp")."/form.html";
+        if($template_file===NULL)
+            $template_file = $this->getCfgValue("application", "form_template");
         $template_content = file_get_contents($this->root_path.'/'.$template_file);
         
         $default = NULL;
         $this->getDefaultFile($default);
-
-        // attributs du template temporaire
-        $tmp_att = array(
-            //champs...
-            "fields"=>function($content) use ($fields,$default,$values){
-                $insert = "";
-                foreach($fields as $name=>$type){
-                    $tmp = array(
-                        "name"=>$name,
-                        "type"=>$type,
-                        "title"=>htmlentities(isset($default) ? $default->getResultText("fields",$name) : $name ),
-                        "value"=>htmlentities(isset($values[$name]) ? $values[$name] : "")
-                    );
-                    $insert .= cHTMLTemplate::transform($content,$tmp);
-                }
-                return $insert;
-            },
-            //champs...
-            "opt_fields"=>function($content) use ($opt_fields,$default,$values){
-                $insert = "";
-                if($opt_fields !== NULL)
-                    foreach($opt_fields as $name=>$type){
+        
+        //-------------------------------------------------------------------------
+        //chemin d'accès au fichier cache
+        if($tmp_filename === NULL)
+            //$tmp_file = tempnam( $this->getCfgValue("path","tmp"), "form.html");
+            $tmp_file = $this->getTmpPath()."/".tempnam_s($this->getTmpPath(), ".html");
+        else
+            $tmp_file = $this->getTmpPath()."/".$tmp_filename;
+        echo($tmp_file);
+        
+        //fabrique le cache ?
+        if($tmp_filename===NULL || ($tmp_filename!==NULL && !file_exists($tmp_file)))
+        {
+            // attributs du template temporaire
+            $tmp_att = array(
+                //champs...
+                "fields"=>function($content) use ($fields,$default,$values){
+                    $insert = "";
+                    foreach($fields as $name=>$type){
                         $tmp = array(
                             "name"=>$name,
                             "type"=>$type,
                             "title"=>htmlentities(isset($default) ? $default->getResultText("fields",$name) : $name ),
-                            "value"=>htmlentities(isset($values[$name]) ? $values[$name] : "")
+                            "value"=>"-{".$name."}" //htmlentities(isset($values[$name]) ? $values[$name] : "")
                         );
                         $insert .= cHTMLTemplate::transform($content,$tmp);
                     }
-                return $insert;
+                    return $insert;
+                },
+                //champs...
+                "opt_fields"=>function($content) use ($opt_fields,$default,$values){
+                    $insert = "";
+                    if($opt_fields !== NULL)
+                        foreach($opt_fields as $name=>$type){
+                            $tmp = array(
+                                "name"=>$name,
+                                "type"=>$type,
+                                "title"=>htmlentities(isset($default) ? $default->getResultText("fields",$name) : $name ),
+                                "value"=>"-{".$name."}" //htmlentities(isset($values[$name]) ? $values[$name] : "")
+                            );
+                            $insert .= cHTMLTemplate::transform($content,$tmp);
+                        }
+                    return $insert;
+                }
+            );
+
+            //transforme le template temporaire
+            $content = cHTMLTemplate::transform($template_content,$tmp_att);
+            if(FALSE === file_put_contents($tmp_file, $content)){
+                return RESULT(cResult::System,cApplication::CreateTemporaryFile);
             }
-        );
-        
-        //transforme le template temporaire
-	$content = cHTMLTemplate::transform($template_content,$tmp_att);
-        if(FALSE === file_put_contents($tmp_file, $content)){
-            return RESULT(cResult::System,cApplication::CreateTemporaryFile);
         }
         
+        //-------------------------------------------------------------------------
         //fabrique le template final
-        $content = $this->makeXMLView($tmp_file,$att);
+        $content = $this->makeXMLView($tmp_file, array_merge($att,$values), $xml_template_file);
         
         //OK
         RESULT_OK();

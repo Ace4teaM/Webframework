@@ -50,7 +50,7 @@ function rrmdir($dir)
     
   return TRUE;
 }*/
-//le dossier "$dir" et son contenu est supprimé
+//le dossier "$dir" et son contenu est supprimÃ©
 //rrmdir ne suit pas les liens symboliques
 function rrmdir($dir,$bBaseDirRemove=true) { 
 	if (is_dir($dir)) { 

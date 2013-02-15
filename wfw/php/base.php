@@ -104,7 +104,12 @@ function require_path($dir, $include_func = "include_once") {
     return $return;
 }
 
-//genere un nom de fichier unique
+/**
+ * Genere un nom de fichier unique
+ * @param $base_name Nom de base du fichier, si vide auto
+ * @param $dir Chemin d'accès au dossier de création
+ * @return Nom de fichier unique sans le chemin d'accès
+ */
 function uniq_filename($base_name, $dir) {
     if (empty($base_name))
         $base_name = uniqid();
