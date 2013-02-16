@@ -101,14 +101,31 @@ class cResult {
     }
 }
 
+/**
+ * @brief Initialise le résultat en coours
+ * @param string $code Contexte de l'erreur. Généralement une des constantes suivantes [cResult::Ok, cResult::Failed, cResult::System]
+ * @param string $info Code de l'erreur
+ * @param array $att Tableau associatif des attributs supplémentaires
+ * @return bool true si $code == cResult::Ok, sinon false
+ */
 function RESULT($code,$info="",$att=array()){
     return cResult::last($code,$info,$att);
 }
 
+/**
+ * @brief Initialise le résultat en coours avec le code cResult::Ok
+ * @return bool true
+ */
 function RESULT_OK(){
     return cResult::last(cResult::Ok,"SUCCESS");
 }
 
+/**
+ * @brief Ajoute un attribut au résultat en cours
+ * @param string $name Nom de l'attribut
+ * @param string $value Valeur de l'attribut 
+ * @return string Valeur du paramètre
+ */
 function RESULT_PUSH($name,$value){
     return cResult::$last_att[$name]=$value;
 }
