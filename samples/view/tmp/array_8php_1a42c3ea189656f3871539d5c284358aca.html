@@ -1,74 +1,70 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <!-- FavIcon -->
-        <link rel="icon" type="image/png" href="" />
-        <link rel="shortcut icon" type="image/x-icon" href="" />
+    <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <!-- Main Styles -->
-        <link rel="stylesheet" href="/css/wfw-extends.css" type="text/css" />
-        <link rel="stylesheet" href="/css/wfw-fieldbar.css" type="text/css" />
-        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
         <link rel="stylesheet" href="css/coding.css" type="text/css" />
-        <!-- Main Includes -->
-        <script type="text/javascript" language="javascript" src="/javascript/base.js"></script>
-        <script type="text/javascript" language="javascript" src="/yui/yui-min.js"></script>
-        <script type="text/javascript" language="javascript" src="/javascript/yui/yui_config.js"></script>
-        <script type="text/javascript">var wfw_yui_base_path = "/javascript/yui/";</script>
+        <script type="text/javascript" language="javascript" src="js/doxy_function.js"></script>
+        <style type="text/css">
+            #content{
+                padding:10px;
+            }
+        </style>
     </head>
     <!-- Document -->
     <body>
         <!-- <div template:action="one" template:selector=">compounddef>sectiondef>memberdef[id=-{id}]"> -->
         <div>
-            <h2 id="array_to_tree">array_to_tree</h2>
-            <p>
+            <div class="function">
+                <h2 id="array_to_tree">array_to_tree</h2>
+                <p>
 Convertie un tableau simple en tableau d'arborescence.         </p>
-            <!-- Syntaxe -->
-            <h4>Syntaxe</h4>
-            <blockquote>
-                <div class="code_syntax">
-                    <!--
-                    <span template:action="one" template:selector="parameterlist[kind=retval]">
-                        <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
-                    </span>-->
-                    array_to_tree(
+                <div class="function_content">
+                    <!-- Syntaxe -->
+                    <h4>Syntaxe</h4>
                     <blockquote>
-                        [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$simple_array</span>,<br />
+                        <div class="code_syntax">
+                            <!--
+                            <span template:action="one" template:selector="parameterlist[kind=retval]">
+                                <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
+                            </span>-->
+                            array_to_tree(
+                            <blockquote>
+                                [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$simple_array</span>,<br />
+                            </blockquote>
+                            );
+                        </div>
                     </blockquote>
-                    );
-                </div>
-            </blockquote>
-            <!-- Paramètres -->
-            <div>
-                <h4>Param&#xE8;tres</h4>
-                <blockquote>
+                    <!-- Paramètres -->
                     <div>
-                        <span class="code_syntax_definition">$simple_array</span>
-                        <br />
+                        <h4>Param&#xE8;tres</h4>
                         <blockquote>
-                            <div>Tableau &#xE0; convertir</div>
+                            <div>
+                                <span class="code_syntax_definition">$simple_array</span>
+                                <br />
+                                <blockquote>
+                                    <div>Tableau &#xE0; convertir</div>
+                                </blockquote>
+                            </div>
                         </blockquote>
                     </div>
-                </blockquote>
-            </div>
-            <!-- Retourne -->
-            <h4>Retourne</h4>
-            <div>
-                <blockquote>Tableau en arborescence </blockquote>
-            </div>
-            <blockquote>
-                <div><span class="code_syntax_type">[array]</span> : 
+                    <!-- Retourne -->
+                    <h4>Retourne</h4>
+                    <div>
+                        <blockquote>Tableau en arborescence </blockquote>
+                    </div>
+                    <blockquote>
+                        <div><span class="code_syntax_type">[array]</span> : 
 Tableau en arborescence</div>
-            </blockquote>
-            <!-- Remarques -->
-            <div>
-                <h4>Remarques</h4>
-                <blockquote>Chaque cl&#xE9; du tableau correspond &#xE0; un chemin de noms s&#xE9;par&#xE9; par des points (.)</blockquote>
-            </div>
-            <!-- Textes -->
-            <div>
-                <h4>Exemple</h4>
-                <blockquote>Utilisation de la fonction array_to_tree() $ar=array(
+                    </blockquote>
+                    <!-- Remarques -->
+                    <div>
+                        <h4>Remarques</h4>
+                        <blockquote>Chaque cl&#xE9; du tableau correspond &#xE0; un chemin de noms s&#xE9;par&#xE9; par des points (.)</blockquote>
+                    </div>
+                    <!-- Textes -->
+                    <div>
+                        <h4>Exemple</h4>
+                        <blockquote>Utilisation de la fonction array_to_tree() $ar=array(
 "ceci.est.un_chemin"=&gt;"ceciestlavaleur1",
 "ceci.est.un_autre_chemin"=&gt;"ceciestlavaleur2"
 );
@@ -85,211 +81,224 @@ print_r(array_to_tree($ar));
 )
 )
  </blockquote>
+                    </div>
+                    <!-- Exemple
+                    <div template:action="array" template:path="sample">
+                        <h4>Exemple</h4>
+                        <blockquote>
+                            <p template:action="select" template:path="description">-{__inner_text__}</p>
+                            <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
+                        </blockquote>
+                    </div> -->
+                </div>
             </div>
-            <!-- Exemple
-            <div template:action="array" template:path="sample">
-                <h4>Exemple</h4>
-                <blockquote>
-                    <p template:action="select" template:path="description">-{__inner_text__}</p>
-                    <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
-                </blockquote>
-            </div> -->
-            <br /><hr />
         </div><div>
-            <h2 id="tree_to_array">tree_to_array</h2>
-            <p>
+            <div class="function">
+                <h2 id="tree_to_array">tree_to_array</h2>
+                <p>
 Convertie un tableau d'arborescence en tableau simple.         </p>
-            <!-- Syntaxe -->
-            <h4>Syntaxe</h4>
-            <blockquote>
-                <div class="code_syntax">
-                    <!--
-                    <span template:action="one" template:selector="parameterlist[kind=retval]">
-                        <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
-                    </span>-->
-                    tree_to_array(
+                <div class="function_content">
+                    <!-- Syntaxe -->
+                    <h4>Syntaxe</h4>
                     <blockquote>
-                        [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$tree_array</span>,<br />
+                        <div class="code_syntax">
+                            <!--
+                            <span template:action="one" template:selector="parameterlist[kind=retval]">
+                                <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
+                            </span>-->
+                            tree_to_array(
+                            <blockquote>
+                                [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$tree_array</span>,<br />
+                            </blockquote>
+                            );
+                        </div>
                     </blockquote>
-                    );
-                </div>
-            </blockquote>
-            <!-- Paramètres -->
-            <div>
-                <h4>Param&#xE8;tres</h4>
-                <blockquote>
+                    <!-- Paramètres -->
                     <div>
-                        <span class="code_syntax_definition">$tree_array</span>
-                        <br />
+                        <h4>Param&#xE8;tres</h4>
                         <blockquote>
-                            <div>Tableau &#xE0; convertir</div>
+                            <div>
+                                <span class="code_syntax_definition">$tree_array</span>
+                                <br />
+                                <blockquote>
+                                    <div>Tableau &#xE0; convertir</div>
+                                </blockquote>
+                            </div>
                         </blockquote>
                     </div>
-                </blockquote>
-            </div>
-            <!-- Retourne -->
-            <h4>Retourne</h4>
-            <div>
-                <blockquote>Tableau </blockquote>
-            </div>
-            <blockquote>
-                <div><span class="code_syntax_type">[array]</span> : 
+                    <!-- Retourne -->
+                    <h4>Retourne</h4>
+                    <div>
+                        <blockquote>Tableau </blockquote>
+                    </div>
+                    <blockquote>
+                        <div><span class="code_syntax_type">[array]</span> : 
 Tableau associatif </div>
-            </blockquote>
-            <!-- Remarques -->
-            <!-- Textes -->
-            <!-- Exemple
-            <div template:action="array" template:path="sample">
-                <h4>Exemple</h4>
-                <blockquote>
-                    <p template:action="select" template:path="description">-{__inner_text__}</p>
-                    <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
-                </blockquote>
-            </div> -->
-            <br /><hr />
+                    </blockquote>
+                    <!-- Remarques -->
+                    <!-- Textes -->
+                    <!-- Exemple
+                    <div template:action="array" template:path="sample">
+                        <h4>Exemple</h4>
+                        <blockquote>
+                            <p template:action="select" template:path="description">-{__inner_text__}</p>
+                            <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
+                        </blockquote>
+                    </div> -->
+                </div>
+            </div>
         </div><div>
-            <h2 id="array_length">array_length</h2>
-            <p>
+            <div class="function">
+                <h2 id="array_length">array_length</h2>
+                <p>
 Obtient la taille d'un tableau.         </p>
-            <!-- Syntaxe -->
-            <h4>Syntaxe</h4>
-            <blockquote>
-                <div class="code_syntax">
-                    <!--
-                    <span template:action="one" template:selector="parameterlist[kind=retval]">
-                        <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
-                    </span>-->
-                    array_length(
+                <div class="function_content">
+                    <!-- Syntaxe -->
+                    <h4>Syntaxe</h4>
                     <blockquote>
-                        [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$ar</span>,<br />
+                        <div class="code_syntax">
+                            <!--
+                            <span template:action="one" template:selector="parameterlist[kind=retval]">
+                                <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
+                            </span>-->
+                            array_length(
+                            <blockquote>
+                                [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$ar</span>,<br />
+                            </blockquote>
+                            );
+                        </div>
                     </blockquote>
-                    );
-                </div>
-            </blockquote>
-            <!-- Paramètres -->
-            <div>
-                <h4>Param&#xE8;tres</h4>
-                <blockquote>
+                    <!-- Paramètres -->
                     <div>
-                        <span class="code_syntax_definition">$ar</span>
-                        <br />
+                        <h4>Param&#xE8;tres</h4>
                         <blockquote>
-                            <div>Tableau &#xE0; examiner</div>
+                            <div>
+                                <span class="code_syntax_definition">$ar</span>
+                                <br />
+                                <blockquote>
+                                    <div>Tableau &#xE0; examiner</div>
+                                </blockquote>
+                            </div>
                         </blockquote>
                     </div>
-                </blockquote>
-            </div>
-            <!-- Retourne -->
-            <h4>Retourne</h4>
-            <div>
-                <blockquote>Taille du tableau </blockquote>
-            </div>
-            <blockquote>
-                <div><span class="code_syntax_type">[int]</span> : 
+                    <!-- Retourne -->
+                    <h4>Retourne</h4>
+                    <div>
+                        <blockquote>Taille du tableau </blockquote>
+                    </div>
+                    <blockquote>
+                        <div><span class="code_syntax_type">[int]</span> : 
 Nombre d'&#xE9;l&#xE9;ment(s) dans le tableau </div>
-            </blockquote>
-            <!-- Remarques -->
-            <!-- Textes -->
-            <!-- Exemple
-            <div template:action="array" template:path="sample">
-                <h4>Exemple</h4>
-                <blockquote>
-                    <p template:action="select" template:path="description">-{__inner_text__}</p>
-                    <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
-                </blockquote>
-            </div> -->
-            <br /><hr />
-        </div><div>
-            <h2 id="array_cmp">array_cmp</h2>
-            <p>
-Compare deux tableaux.         </p>
-            <!-- Syntaxe -->
-            <h4>Syntaxe</h4>
-            <blockquote>
-                <div class="code_syntax">
-                    <!--
-                    <span template:action="one" template:selector="parameterlist[kind=retval]">
-                        <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
-                    </span>-->
-                    array_cmp(
-                    <blockquote>
-                        [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$ar1</span>,<br />
-                    </blockquote><blockquote>
-                        [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$ar2</span>,<br />
                     </blockquote>
-                    );
-                </div>
-            </blockquote>
-            <!-- Paramètres -->
-            <div>
-                <h4>Param&#xE8;tres</h4>
-                <blockquote>
-                    <div>
-                        <span class="code_syntax_definition">$ar1</span>
-                        <br />
+                    <!-- Remarques -->
+                    <!-- Textes -->
+                    <!-- Exemple
+                    <div template:action="array" template:path="sample">
+                        <h4>Exemple</h4>
                         <blockquote>
-                            <div>Tableau &#xE0; comparer</div>
+                            <p template:action="select" template:path="description">-{__inner_text__}</p>
+                            <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
                         </blockquote>
-                    </div><div>
-                        <span class="code_syntax_definition">$ar2</span>
-                        <br />
+                    </div> -->
+                </div>
+            </div>
+        </div><div>
+            <div class="function">
+                <h2 id="array_cmp">array_cmp</h2>
+                <p>
+Compare deux tableaux.         </p>
+                <div class="function_content">
+                    <!-- Syntaxe -->
+                    <h4>Syntaxe</h4>
+                    <blockquote>
+                        <div class="code_syntax">
+                            <!--
+                            <span template:action="one" template:selector="parameterlist[kind=retval]">
+                                <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
+                            </span>-->
+                            array_cmp(
+                            <blockquote>
+                                [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$ar1</span>,<br />
+                            </blockquote><blockquote>
+                                [in] <span class="code_syntax_type"></span> <span class="code_syntax_definition">$ar2</span>,<br />
+                            </blockquote>
+                            );
+                        </div>
+                    </blockquote>
+                    <!-- Paramètres -->
+                    <div>
+                        <h4>Param&#xE8;tres</h4>
                         <blockquote>
-                            <div>Tableau &#xE0; examiner</div>
+                            <div>
+                                <span class="code_syntax_definition">$ar1</span>
+                                <br />
+                                <blockquote>
+                                    <div>Tableau &#xE0; comparer</div>
+                                </blockquote>
+                            </div><div>
+                                <span class="code_syntax_definition">$ar2</span>
+                                <br />
+                                <blockquote>
+                                    <div>Tableau &#xE0; examiner</div>
+                                </blockquote>
+                            </div>
                         </blockquote>
                     </div>
-                </blockquote>
-            </div>
-            <!-- Retourne -->
-            <h4>Retourne</h4>
-            <div>
-                <blockquote>Diff&#xE9;rence entre les deux tableaux </blockquote>
-            </div>
-            <blockquote>
-                <div><span class="code_syntax_type">[false]</span> : 
+                    <!-- Retourne -->
+                    <h4>Retourne</h4>
+                    <div>
+                        <blockquote>Diff&#xE9;rence entre les deux tableaux </blockquote>
+                    </div>
+                    <blockquote>
+                        <div><span class="code_syntax_type">[false]</span> : 
 une ou plusieur cl&#xE9;s de $ar1 est introuvable dans $ar2 </div><div><span class="code_syntax_type">[true]</span> : 
 toutes les cl&#xE9;s de $ar1 sont existantes dans $ar2 </div>
-            </blockquote>
-            <!-- Remarques -->
-            <!-- Textes -->
-            <!-- Exemple
-            <div template:action="array" template:path="sample">
-                <h4>Exemple</h4>
-                <blockquote>
-                    <p template:action="select" template:path="description">-{__inner_text__}</p>
-                    <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
-                </blockquote>
-            </div> -->
-            <br /><hr />
-        </div><div>
-            <h2 id="array_find">array_find</h2>
-            <p>
-Alias de la fonction array_cmp.        </p>
-            <!-- Syntaxe -->
-            <h4>Syntaxe</h4>
-            <blockquote>
-                <div class="code_syntax">
-                    <!--
-                    <span template:action="one" template:selector="parameterlist[kind=retval]">
-                        <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
-                    </span>-->
-                    array_find(
-                    );
+                    </blockquote>
+                    <!-- Remarques -->
+                    <!-- Textes -->
+                    <!-- Exemple
+                    <div template:action="array" template:path="sample">
+                        <h4>Exemple</h4>
+                        <blockquote>
+                            <p template:action="select" template:path="description">-{__inner_text__}</p>
+                            <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
+                        </blockquote>
+                    </div> -->
                 </div>
-            </blockquote>
-            <!-- Paramètres -->
-            <!-- Retourne -->
-            <h4>Retourne</h4>
-            <!-- Remarques -->
-            <!-- Textes -->
-            <!-- Exemple
-            <div template:action="array" template:path="sample">
-                <h4>Exemple</h4>
-                <blockquote>
-                    <p template:action="select" template:path="description">-{__inner_text__}</p>
-                    <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
-                </blockquote>
-            </div> -->
-            <br /><hr />
+            </div>
+        </div><div>
+            <div class="function">
+                <h2 id="array_find">array_find</h2>
+                <p>
+Alias de la fonction array_cmp.        </p>
+                <div class="function_content">
+                    <!-- Syntaxe -->
+                    <h4>Syntaxe</h4>
+                    <blockquote>
+                        <div class="code_syntax">
+                            <!--
+                            <span template:action="one" template:selector="parameterlist[kind=retval]">
+                                <span template:action="one" template:selector=">parameteritem" class="code_syntax_type">-{parametername}</span>
+                            </span>-->
+                            array_find(
+                            );
+                        </div>
+                    </blockquote>
+                    <!-- Paramètres -->
+                    <!-- Retourne -->
+                    <h4>Retourne</h4>
+                    <!-- Remarques -->
+                    <!-- Textes -->
+                    <!-- Exemple
+                    <div template:action="array" template:path="sample">
+                        <h4>Exemple</h4>
+                        <blockquote>
+                            <p template:action="select" template:path="description">-{__inner_text__}</p>
+                            <pre class="prettyprint lang-js script" template:action="format" template:transform="true" template:preset="script">-{code}</pre>
+                        </blockquote>
+                    </div> -->
+                </div>
+            </div>
         </div>
     </body>
 </html>
