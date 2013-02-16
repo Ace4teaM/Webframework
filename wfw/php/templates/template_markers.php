@@ -267,7 +267,7 @@ class cTemplateMarkerdefault extends cTemplateMarker {
 
         //obtient le fichier default de l'application ?
         global $app;
-        if (isset($app) && ($this->sitefile === NULL) /* $app instanceof cApplication */) {
+        if (isset($app) && isset($app->getDefaultFile) && ($this->sitefile === NULL) /* $app instanceof cApplication */) {
             if ($app->getDefaultFile($default))
                 $this->sitefile = $input->push_xml_file("default.xml", $default->doc);
         }

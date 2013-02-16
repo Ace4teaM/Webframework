@@ -12,7 +12,7 @@ $template = new cXMLTemplate();
 //charge le contenu en selection
 $select = new XMLDocument("1.0", "utf-8");
 $select->load($app->root_path."/../doc/php/xml/index.xml");
-$attributes = array("id" => $ref);
+$attributes = array();
 
 //ajoute le fichier de configuration
 //$template->load_xml_file("default.xml',$this->root_path);
