@@ -20,22 +20,19 @@ $template = new cXMLTemplate();
 
 //charge le contenu en selection
 $select = new XMLDocument("1.0", "utf-8");
-$select->load($app->root_path."/../doc/php/xml/$file.xml");
+$select->load($app->getRootPath()."/".$app->getCfgValue("path","php_api_doc")."/$file.xml");
 $attributes = array("id" => $ref);
-
-//ajoute le fichier de configuration
-//$template->load_xml_file("default.xml',$this->root_path);
 
 //transforme le fichier
 if(!$template->Initialise(
-            $app->root_path.'/view/doxy_function.html',
+            $app->getRootPath().'/view/doxy_function.html',
             NULL,
             $select,
             NULL,
-            array_merge($attributes,$app->template_attributes) ) )
-        return false;
+            $attributes ) )
+    $app->processLastError();
 
-file_put_contents($app->root_path.'/'.$cache_file, $template->Make());
+file_put_contents($app->getRootPath().'/'.$cache_file, $template->Make());
 
 //------------------------------------------------------------------
 //fabrique la vue

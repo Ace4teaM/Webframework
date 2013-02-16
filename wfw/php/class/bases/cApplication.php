@@ -495,6 +495,7 @@ class cApplication implements iApplication{
      * @brief Traitement a appliquer en cas d'erreur
      */
     public static function processLastError(){
+
         $result = cResult::getLast();
         if($result->code != cResult::Ok){
             header("content-type: text/plain");

@@ -1,45 +1,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
-    <head template:action="merge" template:path=">head">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        
-        <!-- FavIcon -->
-        <link rel="icon" type="image/png" href="-{image:icon}" />
-        <link rel="shortcut icon" type="image/x-icon" href="-{icon:favicon}" />
-
-        <!-- Main Styles -->
-        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-extends.css" type="text/css" />
-        <link rel="stylesheet" href="-{_LIB_PATH_WFW_}/css/wfw-fieldbar.css" type="text/css" />
-        <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" />
-        
-        <!-- Main Includes -->
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
-        <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
-        <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
-        
-        <!-- Styles -->
-        <link rel="stylesheet" href="css/samples.css" type="text/css" />
-    </head>
-
-    <!-- Document -->
     <body>
-        <div class="column">
+        <div id="class_index">
             <h2>Classes</h2>
             <ul class="list-style2">
                 <li template:action="all" template:selector=">compound[kind=class]">-{name}</li>
             </ul>
         </div>
         
-        <div class="column">
+        <div id="interfaces_index">
             <h2>Interfaces</h2>
             <ul class="list-style2">
                 <li template:action="all" template:selector=">compound[kind=interface]">-{name}</li>
             </ul>
         </div>
         
-        <div class="column">
+        <div id="functions_index">
             <h2>Fonctions</h2>
             <template:container template:action="all" template:selector=">compound[kind=file]">
                 <!-- <h3>-{name}</h3> -->
@@ -49,7 +26,7 @@
             </template:container>
         </div>
         
-        <div class="column">
+        <div id="globals_index">
             <h2>Globales</h2>
             <template:container template:action="all" template:selector=">compound[kind=file]">
                 <!-- <h3>-{name}</h3> -->

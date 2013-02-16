@@ -78,7 +78,12 @@ require_once("$libdir/php/regexp.php");
 require_path("$libdir/php/class/bases/");
 require_path("$libdir/php/inputs/");
 
-class cXMLTemplate {
+class cXMLTemplate
+{
+    //errors
+    const NoInputFile       = "XML_TEMPLATE_NO_INPUT_FILE";
+    const NoInputElement    = "XML_TEMPLATE_NO_INPUT_ELEMENT";
+    const CantLoadInputFile = "XML_TEMPLATE_CANT_LOAD_INPUT_FILE";
 
     //URI utilise par l'extention XML template
     public $wfw_template_uri = "http://www.webframework.fr/last/xmlns/template";
@@ -101,9 +106,21 @@ class cXMLTemplate {
         $this->var_path = $path;
     }
     
-    public function Initialise($input_file, $input_element, $select_file, $select_element, $arg) {
+    /**
+     * @brief Prépare un template à être transformé
+     * @param string/cXMLDocument $input_file Nom ou instance du document à charger
+     * @param XMLElement $input_element Elément de départ à transformer. Si NULL, l'élément racine du document $input_file est selectionné.
+     * @param type $select_file Nom ou instance du document à charger en selection
+     * @param type $select_element Elément de selection par défaut. Si NULL, l'élément racine du document $select_file est selectionné.
+     * @param type $arg Tableau associatif des attributs de selection
+     * @return boolean Résultat de procédure
+     */
+    public function Initialise($input_file, $input_element, $select_file, $select_element, $arg)
+    {
         $timestamp = time();
         $this->arg = $arg;
+        
+        //obtient le chemin d'accès au template
         if (is_string($input_file)) {
             $input_pathinfo = pathinfo($input_file);
             $this->var_path = $input_pathinfo["dirname"] . "/";
@@ -128,7 +145,7 @@ class cXMLTemplate {
         $this->arg["__timestamp__"] = $timestamp;
         $this->arg["__hostname__"] = $hostname;
 
-        //charge/assigne le fichier input
+        //charge le fichier en entrée
         if (is_string($input_file)) {
             if ($this->load($input_file)) {
                 $this->input_element = $this->doc->documentElement;
@@ -141,30 +158,30 @@ class cXMLTemplate {
                     $this->arg["__file_ctime_rfc822__"] = date(DATE_RFC822, $fstat['atime']);
                     $this->arg["__file_mtime_rfc822__"] = date(DATE_RFC822, $fstat['mtime']);
                 }
-            } else {
-                $this->post("load_input_file", "failed");
-                return FALSE;
             }
-        } else {
+            else
+                return RESULT(cResult::Failed,cXMLTemplate::CantLoadInputFile);
+        }
+        //assigne le fichier en entrée
+        else if($input_file!==NULL){
             $this->doc = $input_file;
             $this->input_element = (($input_element != NULL) ? $input_element : $this->doc->documentElement);
         }
 
-        if (!$this->doc) {
-            $this->post("load_input_file", "failed");
-            return FALSE;
-        }
+        //pas de fichier en entrée ?
+        if (!$this->doc)
+            return RESULT(cResult::Failed,cXMLTemplate::NoInputFile);
 
-        if (!$this->input_element) {
-            $this->post("input_element", "null");
-            return FALSE;
-        }
+        //pas d'élément en entrée ?
+        if (!$this->input_element)
+            return RESULT(cResult::Failed,cXMLTemplate::NoInputElement);
 
-        //charge/assigne la selection
+        //charge la selection
         if (is_string($select_file)) {
             if ($varfile = $this->load_xml_file($select_file))
                 $this->select = $varfile->documentElement;
         }
+        //assigne la selection
         else {
             $this->select = (($select_element == NULL && $select_file != NULL) ? $select_file->documentElement : $select_element);
         }
@@ -175,7 +192,7 @@ class cXMLTemplate {
             $this->check_text_class[$i] = new $class_name($this, $this->arg);
         }
 
-        return TRUE;
+        return RESULT_OK();
     }
 
     /*
