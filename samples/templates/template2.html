@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!-- Main template -->
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+<head template:action="merge" template:path=">head">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="content-language" content="fr" />
+    <meta http-equiv="X-UA-Compatible" content="IE=8" /><!-- Internet explorer CSS compatible -->
+    <meta http-equiv="content-script-type" content="text/javascript" /><!-- Default script langage -->
+
+    <!-- Author -->
+    <meta name="Author" lang="fr" content="Thomas AUGUEY" />
+    <meta name="Publisher" lang="fr" content="Thomas AUGUEY" />
+    <meta name="Copyright" content="(C)2012-2013 Thomas AUGUEY" />
+
+    <!-- FavIcon -->
+    <link rel="icon" type="image/png" href="-{image:icon}" />
+    <link rel="shortcut icon" type="image/x-icon" href="-{icon:favicon}" />
+
+    <!-- ExtJS
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_EXT_}/ext-all.js"></script>
+    <link rel="stylesheet" type="text/css" href="-{_LIB_PATH_EXT_}/resources/css/ext-all.css" />
+ -->
+    <!-- Main Includes -->
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
+    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
+    <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
+    <!-- <script type="text/javascript" language="javascript" src="js/init.js"></script> -->
+
+    <!-- Add-Includes
+    <script type="text/javascript" language="javascript" src="js/user/user.js"></script>
+    <script type="text/javascript" language="javascript" src="js/globals.js"></script>
+    <script type="text/javascript" language="javascript" src="js/template.js"></script> -->
+
+    <!-- Layers positions -->
+    <style type="text/css">
+        
+        /* BODY */
+        body{
+            background-color: #aaaaaa;
+            top:0;
+            bottom: 0;
+            width: 800px;
+            padding: 0;
+            margin: 0;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+        
+        /* BACKGROUND */
+        #bg{
+            background-color: blue;
+            position: absolute;
+            top:0px;
+            bottom: 0px;
+            left:0px;
+            right: 0px;
+            z-index: -1;
+        }
+        #bg_top{
+            padding: 0;
+            margin: 0;
+            background-color: red;
+            height: 100px;
+            width: 100%;
+            z-index: 10;
+            position: absolute;
+        }
+        #bg_bottom{
+            padding: 0;
+            margin: 0;
+            background-color: red;
+            height: 100px;
+            width: 100%;
+            bottom: 0;
+            position: absolute;
+            z-index: 10;
+        }
+        
+        /* CONTENT */
+        #doc{
+            padding-top:100px; /* BG top */
+            padding-bottom:100px; /* BG bottom */
+            position: relative;
+            min-height: 300px;
+            z-index: 0;
+        }
+    </style>
+    
+    <!-- Layers styles -->
+    <style type="text/css">
+        #bg{
+            vertical-align: middle;
+            text-align: center;
+            font-size: 1.5em;
+        }
+        
+        /* CONTENT */
+        #doc{
+            background-color: red;
+            padding-right:10px;
+            padding-left:10px;
+            margin-right:10px;
+            margin-left:10px;
+        }
+    </style>
+</head>
+
+<!-- Document -->
+<body>
+    
+        <div id="bg">
+            <div id="bg_top">Background Layer Top</div>
+            <div id="bg_bottom">Background Layer Bottom</div>
+        </div>
+        <div id="doc">hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/>hghkjhkj<br/></div>
+
+</body>
+
+
+</html>
