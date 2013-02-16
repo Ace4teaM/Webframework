@@ -12,7 +12,7 @@ if(cInputFields::checkArray(array("page"=>"cInputIdentifier")))
     switch($_REQUEST["page"]){
         case "licence":
             //mon age depuis ma naissance
-            date_default_timezone_set('France/Paris');
+            date_default_timezone_set('Europe/Paris');
             $begin = mktime(3, 0, 0, 25, 12, 1983);
             $end = date(DATE_RFC822);
             $param["age"] = "28";
