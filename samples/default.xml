@@ -14,6 +14,7 @@
         <page id="php" name="PHP">php_samples.php</page>
         <page id="samples" name="Exemples">index.php?page=samples</page>
         <page id="download" name="Téléchargements">index.php?page=telechargements</page>
+        <page id="resources" name="Ressources">index.php?page=resources</page>
         <!-- Guide -->
         <page id="wfw-request" name="Requêtes HTTP (coté client)">guide.php?page=wfw-request</page>
         <page id="client_dialog" name="Dialogue">guide.php?page=client_dialog</page>
@@ -78,6 +79,7 @@
         <api></api>
         <modules></modules>
         <download></download>
+        <resources></resources>
         <licence></licence>
     </tree>
 

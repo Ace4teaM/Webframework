@@ -6,7 +6,7 @@ $cache_file = "view/tmp/doxy_index.html";
 //------------------------------------------------------------------
 //fabrique le template intermediaire
 //------------------------------------------------------------------
-$file = substr($ref, 0, strrpos($ref,'_'));
+
 $template = new cXMLTemplate();
 
 //charge le contenu en selection

@@ -1,6 +1,6 @@
 /yui/
 /wfw/modules/
-/doc
+/doc/*
 .*
 ~*
 !/.gitignore
