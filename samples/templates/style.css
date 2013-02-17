@@ -1,0 +1,50 @@
+/* Placement of elements */
+html,
+body {
+	margin:0;
+	padding:0;
+	height:100%;
+}
+#wrapper {
+	min-height:100%;
+	position:relative;
+}
+#header {
+	background:#ededed;
+	margin:0;
+	padding:0;
+}
+#content {
+	padding-bottom:100px; /* Height of the footer element */
+}
+#footer {
+	margin:0;
+	padding:0;
+	background:#ffab62;
+	width:100%;
+	height:100px;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+/* styles */
+body {
+	background-color:#b6ff67;
+    width: 845px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#wrapper {
+	background-image:url('bg_middle.png');
+}
+#header {
+	background-image:url('bg_top.png');
+	height:323px;
+}
+#content {
+}
+#footer {
+	background-image:url('bg_bottom.png');
+	height:90px;
+}

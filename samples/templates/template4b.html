@@ -1,31 +1,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<!-- Main template -->
-
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
-<head template:action="merge" template:path=">head">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="content-language" content="fr" />
-    <meta http-equiv="X-UA-Compatible" content="IE=8" /><!-- Internet explorer CSS compatible -->
-    <meta http-equiv="content-script-type" content="text/javascript" /><!-- Default script langage -->
+<!-- saved from url=(0093)file:///C:/Users/developpement/Documents/GitHub/Webframework/samples/templates/template4.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr"><head template:action="merge" template:path="&gt;head"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="content-language" content="fr">
+    <meta http-equiv="X-UA-Compatible" content="IE=8"><!-- Internet explorer CSS compatible -->
+    <meta http-equiv="content-script-type" content="text/javascript"><!-- Default script langage -->
 
     <!-- Author -->
-    <meta name="Author" lang="fr" content="Thomas AUGUEY" />
-    <meta name="Publisher" lang="fr" content="Thomas AUGUEY" />
-    <meta name="Copyright" content="(C)2012-2013 Thomas AUGUEY" />
+    <meta name="Author" lang="fr" content="Thomas AUGUEY">
+    <meta name="Publisher" lang="fr" content="Thomas AUGUEY">
+    <meta name="Copyright" content="(C)2012-2013 Thomas AUGUEY">
 
     <!-- FavIcon -->
-    <link rel="icon" type="image/png" href="-{image:icon}" />
-    <link rel="shortcut icon" type="image/x-icon" href="-{icon:favicon}" />
+    <link rel="icon" type="image/png" href="file:///C:/Users/developpement/Documents/GitHub/Webframework/samples/templates/-%7Bimage:icon%7D">
+    <link rel="shortcut icon" type="image/x-icon" href="file:///C:/Users/developpement/Documents/GitHub/Webframework/samples/templates/-%7Bicon:favicon%7D">
 
     <!-- ExtJS
     <script type="text/javascript" language="javascript" src="-{_LIB_PATH_EXT_}/ext-all.js"></script>
     <link rel="stylesheet" type="text/css" href="-{_LIB_PATH_EXT_}/resources/css/ext-all.css" />
  -->
     <!-- Main Includes -->
-    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/base.js"></script>
-    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
-    <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
+    <script type="text/javascript" language="javascript" src="file:///C:/Users/developpement/Documents/GitHub/Webframework/samples/templates/-%7B_LIB_PATH_WFW_%7D/javascript/base.js"></script>
+    <script type="text/javascript" language="javascript" src="file:///C:/Users/developpement/Documents/GitHub/Webframework/samples/templates/-%7B_LIB_PATH_YUI_%7D/yui/yui-min.js"></script>
+    <script type="text/javascript" language="javascript" src="file:///C:/Users/developpement/Documents/GitHub/Webframework/samples/templates/-%7B_LIB_PATH_WFW_%7D/javascript/yui/yui_config.js"></script>
     <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
     <!-- <script type="text/javascript" language="javascript" src="js/init.js"></script> -->
 
@@ -66,8 +63,6 @@
             background-color: red;
             height: 100px;
             width: 100%;
-            top:-100px; /*-height*/
-            position: relative;
         }
         #bg_bottom{
             padding: 0;
@@ -75,15 +70,18 @@
             background-color: red;
             height: 100px;
             width: 100%;
-            bottom: -100px; /*-height*/
+            bottom: 0;
             position: absolute;
         }
         
         /* CONTENT */
         #doc{
-            background-color: green;
-            margin-top:100px; /* BG top */
+            background-color: red;
+            opacity: 0.5;
+            padding-top:100px; /* BG top */
+            padding-bottom:100px; /* BG bottom */
             position: relative;
+            min-height: 300px;
         }
     </style>
     
@@ -93,13 +91,6 @@
             vertical-align: middle;
             text-align: center;
             font-size: 1.5em;
-            background-image: url('damier.jpg');
-        }
-        #doc{
-            /*opacity:0.5;*/
-            padding: 10px;
-            background-color: transparent;
-            min-height: 300px;
         }
     </style>
 </head>
@@ -108,12 +99,13 @@
 <body>
     
         <div id="bg">
-            <div id="bg_top">Background Layer Top</div>
-            <div id="bg_bottom">Background Layer Bottom</div>
-        </div>
-        <div id="doc">Content</div>
-
-</body>
+        <div id="bg_top">Background Layer Top</div>
+        <div id="bg_bottom">Background Layer Bottom</div></div>
+        <div id="doc">BLABLABLA<br>BLABLABLA<br>BLABLABLA<br>BLABLABLA<br>BLABLABLA<br>BLABLABLA<br>
+</div>
 
 
-</html>
+
+
+
+</body></html>
