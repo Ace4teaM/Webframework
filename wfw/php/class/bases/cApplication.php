@@ -76,7 +76,7 @@ class cApplication implements iApplication{
      * @var iDataBase
      */
     public $db;
-    
+
     function cApplication($root_path,$config)
     {
         //enregistre la globale utilisée par les includes de ce construction
@@ -138,6 +138,14 @@ class cApplication implements iApplication{
         $classname = $this->getCfgValue(constant("SYSTEM"), "taskmgr_class");
         if(!empty($classname))
             require_once($this->getLibPath("wfw")."/php/system/windows/$classname.php");
+    }
+    
+    /**
+     * @brief Retourne les attributs globaux
+     * @return array Tableau associatif des attributs globaux (utilisé entre autre pour fabriquer les templates)
+     */
+    function getAttributes(){
+        return $this->template_attributes;
     }
 
     /**
