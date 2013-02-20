@@ -370,11 +370,10 @@ class cApplication implements iApplication{
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
-     * @return string Contenu du template transformé
+    * @return string Contenu du template transformé
      */
     function makeXMLView($filename,$attributes,$template_file=NULL)
-    { 
-
+    {
         //fichier template
         if($template_file === NULL)
             $template_file = $this->getCfgValue ("application", "main_template");
@@ -413,6 +412,22 @@ class cApplication implements iApplication{
         echo $content;
     }
 
+    /**
+     * @brief Retourne le chemin vers un fichier en cache
+     * @param $extension Extension du fichier (si généré)
+     * @param $tmp_filename Nom du fichier en cache
+     * @return string Chemin d'accès absolue au fichier template
+     */
+    function cacheFilePath($extension=NULL,$tmp_filename=NULL)
+    {
+        //-------------------------------------------------------------------------
+        //chemin d'accès au fichier cache
+        if($tmp_filename === NULL)
+            //$tmp_file = tempnam( $this->getCfgValue("path","tmp"), "form.html");
+            return $this->getTmpPath()."/".tempnam_s($this->getTmpPath(), ".".(is_string($extension) ? $extension : "tmp"));
+        return $this->getTmpPath()."/".$tmp_filename;
+    }
+    
     /**
      * @brief Fabrique une vue de formulaire
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
