@@ -695,9 +695,8 @@ class cXMLTemplate
             $file = new XMLDocument();
             if ($file->load($filename) == NULL) {
                 $error = libxml_get_last_error();
-                //return RESULT(cResult::Failed,cXMLTemplate::CantLoadSelectFile,array("libxml_error"=>$error->message));
-                $this->post("load_xml_file", $error->message);
-//                $this->post("load_xml_file", "$filename can't load");
+                $this->post("load_xml_file", "$filename can't load");
+                RESULT(cResult::Failed,cXMLTemplate::CantLoadSelectFile,array("libxml_error"=>$error->message));
                 return NULL;
             }
             
@@ -705,6 +704,7 @@ class cXMLTemplate
             $this->xml_files[$name] = $file;
         }
 
+        RESULT_OK();
         return $this->xml_files[$name];
     }
 
