@@ -680,6 +680,7 @@ class cXMLTemplate
         if ($path === NULL)
             $path = $this->var_path;
 
+        //supprime le slash de fin
         if (substr($path, -1) == '/' || substr($path, -1) == '\\')
             $path = substr($path, 0, -1);
         $filename = $path . "/" . $name;
@@ -858,7 +859,7 @@ class cXMLTemplateAction {
 }
 
 /*
-  duplique et transforme en boucle lee noeud enfants
+  duplique et transforme en boucle les noeuds enfants
  */
 
 class cXMLTemplateAction_each extends cXMLTemplateAction {
