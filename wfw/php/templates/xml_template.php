@@ -84,6 +84,7 @@ class cXMLTemplate
     const NoInputFile       = "XML_TEMPLATE_NO_INPUT_FILE";
     const NoInputElement    = "XML_TEMPLATE_NO_INPUT_ELEMENT";
     const CantLoadInputFile = "XML_TEMPLATE_CANT_LOAD_INPUT_FILE";
+    const CantLoadSelectFile= "XML_TEMPLATE_CANT_LOAD_SELECTION_FILE";
 
     //URI utilise par l'extention XML template
     public $wfw_template_uri = "http://www.webframework.fr/last/xmlns/template";
@@ -686,13 +687,17 @@ class cXMLTemplate
 
         //charge le fichier ?
         if (!isset($this->xml_files[$name])) {
-            if (!file_exists($filename)) {
+            /* ! retourne false avec les fichiers distants (suivant configuration !
+             if (!file_exists($filename)) {
                 $this->post("load_xml_file", "$filename does not exists");
                 return NULL;
-            }
+            }*/
             $file = new XMLDocument();
             if ($file->load($filename) == NULL) {
-                $this->post("load_xml_file", "$filename can't load");
+                $error = libxml_get_last_error();
+                //return RESULT(cResult::Failed,cXMLTemplate::CantLoadSelectFile,array("libxml_error"=>$error->message));
+                $this->post("load_xml_file", $error->message);
+//                $this->post("load_xml_file", "$filename can't load");
                 return NULL;
             }
             

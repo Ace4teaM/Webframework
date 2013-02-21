@@ -259,7 +259,7 @@ class cApplication implements iApplication{
     }
         
     /** 
-     * Obtient l'e nom de l'hote'adresse de base de l'application
+     * Obtient le nom de l'adresse de base de l'application
      * @return URI avec le chemin d'accès (ex: foo.com/bar)
      */
     function getBaseURI()
