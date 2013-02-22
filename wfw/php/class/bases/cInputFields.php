@@ -28,7 +28,7 @@ class cInputFields {
             return RESULT(cInputFields::NoInputFileds);
 
         //verifie les elements requis...
-        //ils doivent exister, etre valide et ne pas etre une chaine vide
+        //ils doivent existés, etre valide et ne pas etre une chaine vide
         if (is_array($required_arg)) {
             foreach ($required_arg as $arg_name => $arg_type) {
                 //existe?
@@ -47,10 +47,10 @@ class cInputFields {
         }
         
         //verifie les elements optionnels... 
-        //si il existes ils doivent etre valide
+        //si ils existent, ils doivent être valide
         if (is_array($optionnal_arg)) {
             foreach ($optionnal_arg as $arg_name => $arg_type) {
-                //existe?
+                //existe ?
                 if (isset($fields[$arg_name]) && !empty($fields[$arg_name]) && !empty($arg_type)) {
                     if (!$arg_type::isValid($fields[$arg_name])){
                         RESULT_PUSH("message", cInputFields::MsgInvalidInput);
