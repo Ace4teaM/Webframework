@@ -38,7 +38,7 @@ class cDataBasePostgres implements iDatabase {
         $this->db_conn = pg_connect("host=$server port=$port dbname=$name user=$user password=$pwd");
         if (!$this->db_conn){
             $error = error_get_last();
-            return RESULT(iDataBase::ConnectionFailed, $error["message"]);
+            return RESULT(cResult::Failed, iDataBase::ConnectionFailed, array("message"=>$error["message"]));
         }
 
         return RESULT_OK();
@@ -73,7 +73,7 @@ class cDataBasePostgres implements iDatabase {
 
         $res = pg_query($this->db_conn, "select * from $schema.$func($req);");
         if(!$res)
-            return RESULT(iDataBase::QueryFailed, pg_last_error($this->db_conn));
+            return RESULT(cResult::Failed, iDataBase::QueryFailed, array("message"=>pg_last_error($this->db_conn)));
         
         $result = pg_fetch_row($res);
         RESULT_OK();
@@ -88,7 +88,7 @@ class cDataBasePostgres implements iDatabase {
         $result = pg_query($this->db_conn, $query);
         
         if(!$result)
-            return RESULT(iDataBase::QueryFailed, pg_last_error($this->db_conn));
+            return RESULT(cResult::Failed,iDataBase::QueryFailed, array("message"=>pg_last_error($this->db_conn)));
         return RESULT_OK();
     }
 
@@ -98,7 +98,7 @@ class cDataBasePostgres implements iDatabase {
     public function fetchValue($result,$column_name){
         $num = pg_field_num($result,$column_name);
         if($num < 0)
-            return RESULT(iDataBase::QueryFailed, "Field '$column_name' not found");
+            return RESULT(cResult::Failed, iDataBase::QueryFailed, array("message"=>"Field '$column_name' not found"));
         return pg_fetch_result($result, $num);
     }
 
