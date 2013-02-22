@@ -65,11 +65,11 @@ class cApplication implements iApplication{
     const UnknownHostname            = "UNKNOWN_HOSTNAME";
     const NoDatabaseConfigured       = "NO_DATABASE_CONFIGURED";
     //
-    private $template_attributes;
-    private $config;
-    private $root_path;
-    private $default;
-    private $hostname;
+    protected $template_attributes;
+    protected $config;
+    protected $root_path;
+    protected $default;
+    protected $hostname;
     
     /** 
      * @brief Pointeur sur la base de données par défaut

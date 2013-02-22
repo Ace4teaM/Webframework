@@ -51,7 +51,7 @@ class cInputFields {
         if (is_array($optionnal_arg)) {
             foreach ($optionnal_arg as $arg_name => $arg_type) {
                 //existe?
-                if (isset($fields[$arg_name]) && !empty($arg_type)) {
+                if (isset($fields[$arg_name]) && !empty($fields[$arg_name]) && !empty($arg_type)) {
                     if (!$arg_type::isValid($fields[$arg_name])){
                         RESULT_PUSH("message", cInputFields::MsgInvalidInput);
                         RESULT_PUSH("field_name", $arg_name);
