@@ -55,15 +55,16 @@ class FormField
  */
 class cApplication implements iApplication{
     //errors class
-    const Configuration              = "CONFIGURATION";
-    const ModuleClassNotFound        = "MODULE_NOT_FOUND";
-    const DatabaseConnectionNotFound = "DATABASE_CONNECTION_NOT_FOUND";
-    const UnsuportedFeature          = "UNSUPORTED_FEATURE";
-    const CreateTemporaryFile        = "CREATE_TMP_FILE";
-    const Information                = "INFORMATION";
-    const Success                    = "SUCCESS";
-    const UnknownHostname            = "UNKNOWN_HOSTNAME";
-    const NoDatabaseConfigured       = "NO_DATABASE_CONFIGURED";
+    const Configuration              = "APP_CONFIGURATION";
+    const ModuleClassNotFound        = "APP_MODULE_NOT_FOUND";
+    const DatabaseConnectionNotFound = "APP_DATABASE_CONNECTION_NOT_FOUND";
+    const UnsuportedFeature          = "APP_UNSUPORTED_FEATURE";
+    const CreateTemporaryFile        = "APP_CREATE_TMP_FILE";
+    const Information                = "APP_INFORMATION";
+    const Success                    = "APP_SUCCESS";
+    const UnknownHostname            = "APP_UNKNOWN_HOSTNAME";
+    const NoDatabaseConfigured       = "APP_NO_DATABASE_CONFIGURED";
+    const UnknownFormTemplateFile    = "APP_UNKNOWN_FORM_TEMPLATE_FILE";
     //
     protected $template_attributes;
     protected $config;
@@ -443,11 +444,16 @@ class cApplication implements iApplication{
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @param $tmp_file Nom du fichier en cache, null si un fichier temporaire doit être créé
      * @return string Contenu du template transformé
+     * @retval false Une erreur est survenue, voir: cResult::getLast().
      */
     function makeFormView($att,$fields,$opt_fields,$values,$template_file=NULL,$tmp_filename=NULL,$xml_template_file=NULL)
     {
         if($template_file===NULL)
             $template_file = $this->getCfgValue("application", "form_template");
+        
+        if(empty($template_file))
+            return RESULT(cResult::Failed,cApplication::UnknownFormTemplateFile);
+        
         $template_content = file_get_contents($this->root_path.'/'.$template_file);
         
         $default = NULL;
@@ -517,21 +523,15 @@ class cApplication implements iApplication{
     /**
      * @brief Traitement a appliquer en cas d'erreur
      */
-    public static function processLastError(){
+    public function processLastError(){
 
         $result = cResult::getLast();
         if($result->code != cResult::Ok){
             header("content-type: text/plain");
             echo("The application encountered a fatal error.\n");
             echo("L'application à rencontrée une erreur fatale.\n");
-            echo("\nCode\t: ");
-            echo(isset(Error::$code[$result->code]) ? Error::$code[$result->code] : $result->code);
-            echo("\nInfos\t: ");
-            echo(isset(Error::$info[$result->info]) ? Error::$info[$result->info] : $result->info);
-            if(!empty($result->att)){
-                echo("\n\nAdditionnal:\n");
-                print_r($result->att);
-            }
+            $result_infos = $this->translateResult($result);
+            print_r($result_infos);
             exit(-1);
         }
     }

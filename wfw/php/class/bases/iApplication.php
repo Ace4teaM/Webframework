@@ -39,7 +39,7 @@ interface iApplication {
     //view
     function makeHTMLView($filename,$attributes);
     function makeXMLView($filename,$attributes,$template_file);
-    static function processLastError();
+    function processLastError();
     function translateResult($result);
 }
 
