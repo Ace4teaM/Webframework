@@ -439,15 +439,17 @@ class cApplication implements iApplication{
     
     /**
      * @brief Fabrique une vue de formulaire
-     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
-     * @param $select Document XML de sélection en entrée (voir cXMLTemplate::Initialise)
-     * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
-     * @param $tmp_file Nom du fichier en cache, null si un fichier temporaire doit être créé
+     * @param $fields Tableau associatif (identifiant/type) des champs obligatoires
+     * @param $fields Tableau associatif (identifiant/type) des champs optionnels
+     * @param $values Tableau associatif des valeurs des champs
+     * @param $template_file Chemin d'accès au fichier template. Si NULL, la valeur est obtenu par le paramétre de configuration "application=>form_template"
+     * @param $tmp_filename Nom du fichier temporaire en cache. Si NULL, le nom de fichier est généré
      * @return string Contenu du template transformé
      * @retval false Une erreur est survenue, voir: cResult::getLast().
      */
     function makeFormView($att,$fields,$opt_fields,$values,$template_file=NULL,$tmp_filename=NULL,$xml_template_file=NULL)
     {
+        //obtient le nom du template
         if($template_file===NULL)
             $template_file = $this->getCfgValue("application", "form_template");
         
@@ -456,6 +458,7 @@ class cApplication implements iApplication{
         
         $template_content = file_get_contents($this->root_path.'/'.$template_file);
         
+        //obtient le fichier default
         $default = NULL;
         $this->getDefaultFile($default);
         

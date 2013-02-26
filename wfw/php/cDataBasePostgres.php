@@ -9,6 +9,11 @@ require_once 'class/bases/iDatabase.php';
 class cDataBasePostgres implements iDatabase {
 
     /**
+     * @brief Ressource de requête
+     */
+    private $res = null;
+    
+    /**
      * @brief Ressource de connexion retournée par pg_connect()
      */
     private $db_conn = null;
@@ -71,14 +76,11 @@ class cDataBasePostgres implements iDatabase {
             }
         }
 
-        $res = pg_query($this->db_conn, "select * from $schema.$func($req);");
-        if(!$res)
+        $this->res = pg_query($this->db_conn, "select * from $schema.$func($req);");
+        if(!$this->res)
             return RESULT(cResult::Failed, iDataBase::QueryFailed, array("message"=>pg_last_error($this->db_conn)));
         
-        $result = pg_fetch_row($res);
-        RESULT_OK();
-        
-        return $result;
+        return RESULT_OK();
     }
 
     /**
@@ -102,6 +104,17 @@ class cDataBasePostgres implements iDatabase {
         return pg_fetch_result($result, $num);
     }
 
+    /**
+     * @copydoc iDatabase::fetchValue
+     */
+    public function fetchRow($result){
+        $result = ($result === NULL) ? $this->res : $result;
+        return pg_fetch_assoc($result);
+    }
+    public function rowCount($result){
+        $result = ($result === NULL) ? $this->res : $result;
+        return pg_num_rows ( $result );
+    }
 }
 
 ?>
