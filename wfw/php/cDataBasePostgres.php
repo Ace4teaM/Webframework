@@ -86,10 +86,10 @@ class cDataBasePostgres implements iDatabase {
     /**
      * @copydoc iDatabase::execute
      */
-    public function execute($query,&$result){
-        $result = pg_query($this->db_conn, $query);
+    public function execute($query){
+        $this->res = pg_query($this->db_conn, $query);
         
-        if(!$result)
+        if(!$this->res)
             return RESULT(cResult::Failed,iDataBase::QueryFailed, array("message"=>pg_last_error($this->db_conn)));
         return RESULT_OK();
     }
@@ -97,23 +97,39 @@ class cDataBasePostgres implements iDatabase {
     /**
      * @copydoc iDatabase::fetchValue
      */
-    public function fetchValue($result,$column_name){
-        $num = pg_field_num($result,$column_name);
+    public function fetchValue($column_name){
+        $num = pg_field_num($this->res,$column_name);
         if($num < 0)
             return RESULT(cResult::Failed, iDataBase::QueryFailed, array("message"=>"Field '$column_name' not found"));
-        return pg_fetch_result($result, $num);
+        return pg_fetch_result($this->res, $num);
     }
 
     /**
      * @copydoc iDatabase::fetchValue
      */
-    public function fetchRow($result){
-        $result = ($result === NULL) ? $this->res : $result;
-        return pg_fetch_assoc($result);
+    public function fetchRow(){
+        return pg_fetch_assoc($this->res);
     }
-    public function rowCount($result){
-        $result = ($result === NULL) ? $this->res : $result;
-        return pg_num_rows ( $result );
+    
+    /**
+     * @copydoc iDatabase::rowCount
+     */
+    public function rowCount(){
+        return pg_num_rows ( $this->res );
+    }
+    
+    /**
+     * @copydoc iDatabase::getResult
+     */
+    public function getResult(){
+        return $this->res;
+    }
+    
+    /**
+     * @copydoc iDatabase::setResult
+     */
+    public function setResult($res){
+        return $this->res=$res;
     }
 }
 

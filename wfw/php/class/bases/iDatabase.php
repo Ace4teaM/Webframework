@@ -65,9 +65,11 @@ interface iDatabase {
      * @param  string  $func      Nom de la fonction
      * @param  array   $arg_list  Tableau associatif des arguments de la fonction, null si aucun
      * 
-     * @return mixed   Résultat de la requête
-     * @retval array   Tableau associatif des données retournées
-     * @retval false   La requête ne peut être executée, voir getResult() pour obtenir plus de détails
+     * @return bool Résultat de la requête
+     * @retval true  La requête à réussie
+     * @retval false La requête ne peut être executée, voir getResult() pour obtenir plus de détails
+     * 
+     * @remarks Pour extraire le résultat retourné par une fonction utilisez les methodes fetchValue ou fetchRow
      */
     public function call($schema, $func, $arg_list);
     
@@ -75,23 +77,35 @@ interface iDatabase {
      * @brief Execute une requete SQL
      * 
      * @param  string  $query    Corps de la requête
-     * @param  mixed   $result   Objet de résultat
      * 
      * @return bool Résultat de la requête
      * @retval true  La requête à réussie
      * @retval false La requête ne peut être executée, voir getResult() pour obtenir plus de détails
+     * 
+     * @remarks Pour extraire le résultat retourné par une fonction utilisez les methodes fetchValue ou fetchRow
      */
-    public function execute($query,&$result);
+    public function execute($query);
     
     /**
-     * @brief Execute une requete SQL
+     * @brief Extrait une valeur du résultat en cours
      * 
-     * @param  string  $result        Objet de résultat (retourné par execute())
+     * @param  string  $result        Objet de résultat. Si NULL, le dernier résultat en cours est utilisé
      * @param  mixed   $column_name   Nom de la colonne à extraire
      * 
      * @return mixed Valeur de la colonne
      */
-    public function fetchValue($result,$column_name);
+    public function fetchValue($column_name);
+    
+    /**
+     * @brief Extrait la prochaine ligne du résultat en cours
+     * @return array Tableau associatif des champs
+     * @remarks Le curseur de résultat est incrémenté
+     */
+    public function fetchRow();
+    
+    public function rowCount();
+    public function getResult();
+    public function setResult($res);
 }
 
 ?>
