@@ -145,7 +145,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 /*
-  Ajoute une entree � une table dynamique
+  Ajoute une entree à une table dynamique
 */
 CREATE OR REPLACE FUNCTION add_table_column(
        p_name varchar(50),
@@ -171,3 +171,20 @@ EXCEPTION
        return false;
 END;
 $$ LANGUAGE plpgsql;
+
+/*
+  @brief Exclue les accents d'une chaine de caractères
+  @param p_text Texte à convertir
+  @return Texte sans accents
+  @remarks Les accents typiques de la langague francaise sont remplacés par des caractères simples. Ex: 'é' devient 'e', 'ç' devient 'c'
+*/
+create or replace function escape_accents( 
+	p_text varchar
+)
+returns varchar
+as $$
+begin
+  return translate(p_text, 'àäâ'||'éèëê'||'ïî'||'ôö'||'ùûü'||'ÿ'||'ç', 'aaa'||'eeee'||'ii'||'oo'||'uuu'||'y'||'c');
+end;
+$$
+LANGUAGE plpgsql;
