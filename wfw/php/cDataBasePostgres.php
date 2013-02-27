@@ -114,10 +114,12 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
     private $query;
     private $res;
     private $db;
+    private $cur_pos;//position du curseur dans le resultat en cours
     
     function cDataBaseQueryPostgres($query, cDataBasePostgres $db){
         $this->query = $query;
         $this->db = $db;
+        $this->cur_pos = 0;
     }
     
     /**
@@ -126,6 +128,7 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
     public function execute(){
         $con = $this->db->getConnectionObject();
         
+        $this->cur_pos = 0;
         $this->res = @pg_query($con, $this->query);
         if(!$this->res)
             return RESULT(cResult::Failed,iDataBase::QueryFailed, array("message"=>pg_last_error($con)));
@@ -146,14 +149,17 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
      * @copydoc iDatabase::fetchValue
      */
     public function fetchRow(){
-        return pg_fetch_assoc($this->res);
+        $data = pg_fetch_assoc($this->res);
+        if(is_array($data))
+            $this->cur_pos++;
+        return $data;
     }
     
     /**
      * @copydoc iDatabase::rowCount
      */
     public function rowCount(){
-        return pg_num_rows ( $this->res );
+        return pg_num_rows( $this->res );
     }
     
     /**
@@ -177,6 +183,30 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
         return $this->res=$res;
     }
     
+    /**
+     * @copydoc iDatabase::seek
+     */
+    public function seek($pos,$origin=iDatabaseQuery::Origin){
+        switch($origin){
+            case iDatabaseQuery::End:
+                $max = pg_num_rows( $this->res );
+                $new_pos = ($max-1)-$pos;
+                break;
+            case iDatabaseQuery::Current:
+                $new_pos = $this->cur_pos+$pos;
+                break;
+            case iDatabaseQuery::Origin:
+            default:
+                $new_pos = $pos;
+                break;
+        }
+        //ok?
+        if(pg_result_seek( $this->res, $new_pos )){
+            $this->cur_pos = $new_pos;
+            return RESULT_OK();
+        }
+        return RESULT(cResult::Failed,iDatabaseQuery::OutOfRangeResult);
+    }
 }
 
 ?>

@@ -109,10 +109,18 @@ interface iDatabase {
 }
 
 interface iDatabaseQuery {
+    //error
+    const OutOfRangeResult = "DB_QUERY_OUT_OF_RANGE_RESULT";
+    //seeking
+    const Origin = 1;
+    const Current = 2;
+    const End = 3;
+    //
     public function fetchValue($column_name);
     public function fetchRow();
     public function rowCount();
     public function getQueryStr();
+    public function seek($pos,$origin=iDatabaseQuery::Origin);
 }
 
 ?>
