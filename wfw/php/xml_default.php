@@ -25,8 +25,13 @@
  */
 
 class cXMLDefault {
-    const InvalidArg = "XML_DEFAULT_INVALID_FUNCTION_ARG";
-    const CantLoadFile = "XML_DEFAULT_CANT_LOAD_FILE";
+    //errors
+    const InvalidArg        = "XML_DEFAULT_INVALID_FUNCTION_ARG";
+    const CantLoadFile      = "XML_DEFAULT_CANT_LOAD_FILE";
+    const UnknownField      = "XML_UNKNOWN_FIELD";
+    //options
+    const FieldFormatClassName = 1;
+    const FieldFormatName = 2;
 
     /** @ brief Instance de la classe XMLDocument */
     public $doc = NULL;
@@ -268,6 +273,25 @@ class cXMLDefault {
         }
 
         return trim($entry_node->nodeValue);
+    }
+
+    /*
+      Obtient le texte associé à une définition de champs
+      @param string $id Identificateur du champs
+      @param string $text Référence recevant le texte
+      @param string $lang Langage utilisé
+      @return Résultat de procédure
+     */
+    public function getFiledText($id, &$text, $lang="fr")
+    {
+        $entry_node = $this->doc->one("fields[lang=$lang]>$id");
+        if($entry_node === NULL){
+            return RESULT(cResult::Failed,cXMLDefault::UnknownField);
+        }
+
+        $text = trim($entry_node->nodeValue);
+        
+        return RESULT_OK();
     }
 
 }

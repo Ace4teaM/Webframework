@@ -66,6 +66,11 @@ class cApplication implements iApplication{
     const UnknownHostname            = "APP_UNKNOWN_HOSTNAME";
     const NoDatabaseConfigured       = "APP_NO_DATABASE_CONFIGURED";
     const UnknownFormTemplateFile    = "APP_UNKNOWN_FORM_TEMPLATE_FILE";
+    const UnknownField               = "APP_UNKNOWN_FIELD";
+    const UnknownFieldClass          = "APP_UNKNOWN_FIELD_CLASS";
+    //options
+    const FieldFormatClassName = 1;
+    const FieldFormatName      = 2;
     //
     protected $template_attributes;
     protected $config;
@@ -564,7 +569,69 @@ class cApplication implements iApplication{
         return $att;
     }
     
+    /** 
+     * Convertie un résultat de procédure en un tableau humainement lisible
+     * 
+     * @param string $result Instance de la classe cResult
+     * @return Tableau associatif contenant les champs traduits
+     */
+    public function fieldType($id)
+    {
+        $default;
+        
+        if($this->getDefaultFile($default)){
+
+            $att["txt_result"]  = $default->getResultText("codes",$result->code);
+            $att["txt_error"]   = $default->getResultText("errors",$result->info);
+            if(isset($att["message"])){
+                $att["txt_message"] = $default->getResultText("messages",$att["message"]);
+                $att["txt_message"] = cHTMLTemplate::transform($att["txt_message"], $att);
+            }
+        }
+        
+        return $att;
+    }
     
+    
+    /*
+      Initialise une liste de champs
+      @param string $types Liste recevant les identifiants et types des champs
+      @param string $fields Liste des identifiants de champs désirés
+      @param string $options Option, FieldFormatName ou FieldFormatClassName
+      @return Résultat de procédure
+     */
+    public function makeFiledList(&$types, $fields, $options=cApplication::FieldFormatName, $lang="fr")
+    {
+        $types = array();
+        
+        //initialise la liste
+        foreach($fields as $key=>$id)
+        {
+            //obtient le type
+            $type = strtolower($this->getCfgValue("fields_formats",$id));
+            if(empty($type))
+                return RESULT(cResult::Failed,cApplication::UnknownField);
+            
+            //format
+            switch($options)
+            {
+                case cApplication::FieldFormatClassName:
+                    $type = "cInput".ucfirst($type);
+                    if(!class_exists($type))
+                        return RESULT(cResult::Failed,cApplication::UnknownFieldClass);
+                    break;
+                case cApplication::FieldFormatName:
+                default:
+                    break;
+            }
+            
+            //ajoute à la liste
+            $types[$id] = $type;
+        }
+        
+        return RESULT_OK();
+    }
+
     
 }
 
