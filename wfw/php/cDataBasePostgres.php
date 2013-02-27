@@ -62,7 +62,7 @@ class cDataBasePostgres implements iDatabase {
     /**
      * @copydoc iDatabase::call
      */
-    public function call($schema, $func, $arg_list) {
+    public function call($schema, $func, $arg_list,&$result) {
         $req = "";
         if ($arg_list !== null) {
             for ($i = 0; $i < count($arg_list); $i++) {
@@ -76,23 +76,62 @@ class cDataBasePostgres implements iDatabase {
             }
         }
 
+        $result = new cDataBaseQueryPostgres("select * from $schema.$func($req);", $this);
+        return $result->execute();
+        /*
         $this->res = pg_query($this->db_conn, "select * from $schema.$func($req);");
         if(!$this->res)
             return RESULT(cResult::Failed, iDataBase::QueryFailed, array("message"=>pg_last_error($this->db_conn)));
         
-        return RESULT_OK();
+        return RESULT_OK();*/
     }
 
     /**
      * @copydoc iDatabase::execute
      */
-    public function execute($query){
-        $this->res = pg_query($this->db_conn, $query);
+    public function execute($query,&$result){
+        $result = new cDataBaseQueryPostgres($query, $this);
+        return $result->execute();
+        /*$this->res = pg_query($this->db_conn, $query);
         if(!$this->res)
             return RESULT(cResult::Failed,iDataBase::QueryFailed, array("message"=>pg_last_error($this->db_conn)));
+        return RESULT_OK();*/
+    }
+    
+    /**
+     * @brief retourne la ressource de connexion à la base Postgres (retourné par pg_connect)
+     */
+    public function getConnectionObject(){
+        return $this->db_conn;
+    }
+}
+
+/**
+ * @brief Interface de connexion avec la base de données PostgreSQL
+ * @copydoc iDatabase
+ */
+class cDataBaseQueryPostgres implements iDatabaseQuery {
+    private $query;
+    private $res;
+    private $db;
+    
+    function cDataBaseQueryPostgres($query, cDataBasePostgres $db){
+        $this->query = $query;
+        $this->db = $db;
+    }
+    
+    /**
+     * @copydoc iDatabase::execute
+     */
+    public function execute(){
+        $con = $this->db->getConnectionObject();
+        
+        $this->res = @pg_query($con, $this->query);
+        if(!$this->res)
+            return RESULT(cResult::Failed,iDataBase::QueryFailed, array("message"=>pg_last_error($con)));
         return RESULT_OK();
     }
-
+    
     /**
      * @copydoc iDatabase::fetchValue
      */
@@ -118,18 +157,26 @@ class cDataBasePostgres implements iDatabase {
     }
     
     /**
+     * @copydoc iDatabase::getQueryStr
+     */
+    public function getQueryStr(){
+        return $this->query;
+    }
+    
+    /**
      * @copydoc iDatabase::getResult
      */
-    public function getResult(){
+    public function getResultObject(){
         return $this->res;
     }
     
     /**
      * @copydoc iDatabase::setResult
      */
-    public function setResult($res){
+    public function setResultObject($res){
         return $this->res=$res;
     }
+    
 }
 
 ?>

@@ -36,6 +36,7 @@ require_once("php/xarg.php");
 require_once("php/class/bases/cResult.php");
 require_once("php/templates/cHTMLTemplate.php");
 require_once("php/templates/xml_template.php");
+require_once("php/xml_default.php");
 
 class FormField
 {

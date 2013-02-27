@@ -71,7 +71,7 @@ interface iDatabase {
      * 
      * @remarks Pour extraire le résultat retourné par une fonction utilisez les methodes fetchValue ou fetchRow
      */
-    public function call($schema, $func, $arg_list);
+    public function call($schema, $func, $arg_list,&$result);
     
     /**
      * @brief Execute une requete SQL
@@ -84,7 +84,7 @@ interface iDatabase {
      * 
      * @remarks Pour extraire le résultat retourné par une fonction utilisez les methodes fetchValue ou fetchRow
      */
-    public function execute($query);
+    public function execute($query,&$result);
     
     /**
      * @brief Extrait une valeur du résultat en cours
@@ -94,26 +94,24 @@ interface iDatabase {
      * 
      * @return mixed Valeur de la colonne
      */
-    public function fetchValue($column_name);
+ //   public function fetchValue($column_name);
     
     /**
      * @brief Extrait la prochaine ligne du résultat en cours
      * @return array Tableau associatif des champs
      * @remarks Le curseur de résultat est incrémenté
      */
-    public function fetchRow();
+ //   public function fetchRow();
     
-    public function rowCount();
-    public function getResult();
-    public function setResult($res);
+ //   public function rowCount();
+ //   public function getResult();
+//    public function setResult($res);
 }
 
 interface iDatabaseQuery {
     public function fetchValue($column_name);
     public function fetchRow();
     public function rowCount();
-    public function getResult();
-    public function setResult($res);
     public function getQueryStr();
 }
 

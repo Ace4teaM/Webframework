@@ -9,11 +9,11 @@ if(!$app->getDB($db))
     exit;
 
 //test une requete
-if($db->execute("SELECT value from globals where name='et_create_user'")){
-    echo "value=".$db->fetchValue("value");
+if($db->execute("SELECT value from globals where name='et_create_user'", $res)){
+    echo "value=".$res->fetchValue("value");
 }
 else{
-    RESULT(cResult::Failed,'execute failed');
+    $app->processLastError();
     exit;
 }
 
