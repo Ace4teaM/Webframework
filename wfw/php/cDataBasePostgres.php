@@ -88,7 +88,6 @@ class cDataBasePostgres implements iDatabase {
      */
     public function execute($query){
         $this->res = pg_query($this->db_conn, $query);
-        
         if(!$this->res)
             return RESULT(cResult::Failed,iDataBase::QueryFailed, array("message"=>pg_last_error($this->db_conn)));
         return RESULT_OK();

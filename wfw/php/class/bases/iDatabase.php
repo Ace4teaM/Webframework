@@ -108,4 +108,13 @@ interface iDatabase {
     public function setResult($res);
 }
 
+interface iDatabaseQuery {
+    public function fetchValue($column_name);
+    public function fetchRow();
+    public function rowCount();
+    public function getResult();
+    public function setResult($res);
+    public function getQueryStr();
+}
+
 ?>
