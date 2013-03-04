@@ -6,6 +6,10 @@
   Objets
 */
 
+drop table globals  CASCADE;
+
+drop table dyn_table  CASCADE;
+
 
 /*
   Stockage des variables globales
