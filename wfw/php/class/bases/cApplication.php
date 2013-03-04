@@ -67,6 +67,7 @@ class cApplication implements iApplication{
     const NoDatabaseConfigured       = "APP_NO_DATABASE_CONFIGURED";
     const UnknownFormTemplateFile    = "APP_UNKNOWN_FORM_TEMPLATE_FILE";
     const UnknownField               = "APP_UNKNOWN_FIELD";
+    const UnknownFieldFormat         = "APP_UNKNOWN_FIELD_FORMAT";
     const UnknownFieldClass          = "APP_UNKNOWN_FIELD_CLASS";
     //options
     const FieldFormatClassName = 1;
@@ -610,7 +611,7 @@ class cApplication implements iApplication{
             //obtient le type
             $type = strtolower($this->getCfgValue("fields_formats",$id));
             if(empty($type))
-                return RESULT(cResult::Failed,cApplication::UnknownField);
+                return RESULT(cResult::Failed,cApplication::UnknownFieldFormat, array("message"=>"APP_MSG_UNDEFINED_FIELD_FORMAT","field_name"=>$id));
             
             //format
             switch($options)
@@ -618,7 +619,7 @@ class cApplication implements iApplication{
                 case cApplication::FieldFormatClassName:
                     $type = "cInput".ucfirst($type);
                     if(!class_exists($type))
-                        return RESULT(cResult::Failed,cApplication::UnknownFieldClass);
+                        return RESULT(cResult::Failed,cApplication::UnknownFieldClass, array("message"=>"APP_MSG_UNDEFINED_FIELD_CLASS","class_name"=>$type));
                     break;
                 case cApplication::FieldFormatName:
                 default:
