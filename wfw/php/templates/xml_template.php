@@ -1199,6 +1199,49 @@ class cXMLTemplateAction_select extends cXMLTemplateAction {
 }
 
 /*
+  Test si un attribut existe, si la selection echoue le noeud et ses enfants est supprime
+  Attributs:
+    action = "exists"
+    name  = nom de l'attribut
+ */
+
+class cXMLTemplateAction_exists extends cXMLTemplateAction {
+
+    public static function check_node($input, $select, $node, $arg) {
+        //traite les arguments pour ce noeud      
+        $input->check_arguments($select, $node, $arg);
+
+        $name = $node->getAttributeNS($input->wfw_template_uri, "name");
+        
+        //clean
+        $input->clean_attributes($node);
+
+        //sauve le noeud suivant		
+        $next = $node->nextSibling;
+
+        //ok? scan le contenu
+        if (!empty($name) && isset($arg[$name])) {
+            $arg['__inner_text__'] = $arg[$name];
+
+            $input->post("cXMLTemplateAction_select", "attribut ok, ajoute et scan le contenu.");
+
+            //scan le contenu avec la nouvelle selection   
+            if ($node->firstChild != NULL)
+                $input->check_node($select, $node->firstChild, $arg);
+        }
+        //sinon, supprime ce noeud
+        else {
+            $input->post("cXMLTemplateAction_select", "attribut introuvable, supprime le noeud de reference.");
+            if ($node->parentNode)
+                $node->parentNode->removeChild($node);
+        }
+
+        return $next;
+    }
+
+}
+
+/*
   Fond les attributs et le contenu texte de la source dans la destination.
   Attributs:
   action = "merge"
