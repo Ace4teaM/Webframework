@@ -64,19 +64,22 @@ YUI.add('wfw-request', function (Y) {
                     switch(obj.status){
                         case "wait":
                             // requête en attente d'execution 
+                            wfw.puts("requête en attente d'execution ");
                             break;
                         case "exec":
                             // requête en cours d'execution 
+                            wfw.puts("requête en cours d'execution ");
                             break;
                         case 200:
                             // requête executée
-                            alert(obj.response);
+                            wfw.puts(obj.response);
                             break;
                         case 400:
                             alert("Requête indisponible");
                             break;
                         default:
                             //autres status...
+                            wfw.puts("autres status ("+obj.status+")");
                             break;
                     }
                 }
