@@ -284,7 +284,7 @@ class cXMLDefault {
      */
     public function getFiledText($id, &$text, $lang="fr")
     {
-        $entry_node = $this->doc->one("fields[lang=$lang]>$id");
+        $entry_node = $this->doc->one("results[lang=$lang]>fields>$id");
         if($entry_node === NULL){
             return RESULT(cResult::Failed,cXMLDefault::UnknownField);
         }
