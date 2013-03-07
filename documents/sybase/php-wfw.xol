@@ -1,0 +1,1061 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1362486383" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
+<!-- Veuillez ne pas modifier ce fichier -->
+
+<DVTL xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
+
+<o:ObjectLanguage Id="o1">
+<a:ObjectID>C37F67C8-679C-48FB-8CA4-2E98B9D416F7</a:ObjectID>
+<a:Name>PHP (WFW)</a:Name>
+<a:Code>PHP (WFW)</a:Code>
+<a:CreationDate>1109836711</a:CreationDate>
+<a:Creator>anter</a:Creator>
+<a:ModificationDate>1109836722</a:ModificationDate>
+<a:Modifier>anter</a:Modifier>
+<a:Family>PHP</a:Family>
+<a:SubFamily>PHP5</a:SubFamily>
+<a:CheckGlobalScript>&#39;******************************************************************************
+&#39;* Purpose:  This VB-Script holds global definitions shared by all the custom-
+&#39;*            checks scripts of the model extension.
+&#39;******************************************************************************
+
+Option Explicit &#39; This is to ensure all used variables are defined
+
+</a:CheckGlobalScript>
+<c:Categories>
+<o:TargetCategory Id="o2">
+<a:ObjectID>6C3DFC6C-B39B-4596-AB20-1B09C419F570</a:ObjectID>
+<a:Name>Settings</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<c:Categories>
+<o:TargetCategory Id="o3">
+<a:ObjectID>2D925E08-4E4F-4D86-B8B4-15EB20867A08</a:ObjectID>
+<a:Name>Namings</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<c:Categories>
+<o:StringTargetItem Id="o4">
+<a:ObjectID>932D0AAA-E6F0-450C-A04B-8147061DD05A</a:ObjectID>
+<a:Name>IllegalChar</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:StringTargetItem.Value>&quot; +-*/!=&lt;&gt;&#39;&quot;&quot;().&quot;</a:StringTargetItem.Value>
+</o:StringTargetItem>
+<o:MapTargetItem Id="o5">
+<a:ObjectID>18CA7B58-72EB-4E38-8524-1924E6295B44</a:ObjectID>
+<a:Name>GetterName</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:MapTargetItem.Value>_*=getProp%Name%</a:MapTargetItem.Value>
+<a:List>_*
+</a:List>
+</o:MapTargetItem>
+<o:MapTargetItem Id="o6">
+<a:ObjectID>BA0E81EE-192C-4F4F-AC20-AF353DAC5823</a:ObjectID>
+<a:Name>GetterCode</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355939732</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:MapTargetItem.Value>_*=getProp%Code%</a:MapTargetItem.Value>
+<a:List>_*
+</a:List>
+</o:MapTargetItem>
+<o:MapTargetItem Id="o7">
+<a:ObjectID>BD3BE80B-789A-4CC3-86F4-691F6FB4F1F9</a:ObjectID>
+<a:Name>SetterName</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:MapTargetItem.Value>_*=setProp%Name%</a:MapTargetItem.Value>
+<a:List>_*
+</a:List>
+</o:MapTargetItem>
+<o:MapTargetItem Id="o8">
+<a:ObjectID>C111A7EC-3118-4DC6-A3E9-85DC850F8A72</a:ObjectID>
+<a:Name>SetterCode</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:MapTargetItem.Value>_*=setProp%Code%</a:MapTargetItem.Value>
+<a:List>_*
+</a:List>
+</o:MapTargetItem>
+</c:Categories>
+</o:TargetCategory>
+<o:TargetCategory Id="o9">
+<a:ObjectID>CBD62457-BFF5-4DD2-8957-24702F8EC5B8</a:ObjectID>
+<a:Name>DataTypes</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<c:Categories>
+<o:MapTargetItem Id="o10">
+<a:ObjectID>62381519-2139-416B-B421-FB9DCEA0ADE4</a:ObjectID>
+<a:Name>BasicDataTypes</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355943518</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:Comment>Basic Data Type</a:Comment>
+<a:MapTargetItem.Value>boolean=BL
+int=I
+float=F
+*=TXT</a:MapTargetItem.Value>
+<a:List>boolean
+int
+float
+</a:List>
+</o:MapTargetItem>
+<o:MapTargetItem Id="o11">
+<a:ObjectID>68298009-17EF-4E71-9F20-5E70FD3ACABA</a:ObjectID>
+<a:Name>AdditionalDataTypes</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355943518</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:Comment>Additional data types added to data type lists.
+The second column indicates the conceptual data type used for CDM and PDM model generations but also in the &#39;Change Object Language&#39; process</a:Comment>
+<a:MapTargetItem.Value>string=TXT
+object=ANY
+array=ANY
+mixed=ANY</a:MapTargetItem.Value>
+<a:List>string
+object
+array
+mixed
+</a:List>
+</o:MapTargetItem>
+<o:MapTargetItem Id="o12">
+<a:ObjectID>BB4F5D5D-1CFE-4054-AA12-1EC20901C716</a:ObjectID>
+<a:Name>ConceptualDataTypes</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355943518</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:Comment>Conceptual Data Types</a:Comment>
+<a:MapTargetItem.Value>A%n=String
+VA%n=String
+LA=String
+LA%n=String
+LVA=String
+LVA%n=String
+BT=short
+BT%n=short
+SI=short
+I=int
+LI=long
+N=double
+N%n=double
+N%s,%p=double
+DC=double
+DC%n=double
+DC%s,%p=double
+SF=float
+F=float
+F%n=float
+LF=double
+MN=double
+MN%n=double
+MN%s,%p=double
+D=Date
+T=Date
+DT=Date
+TS=Date
+BL=boolean
+NO=long
+NO%n=long
+BIN%n=String
+LBIN=String
+LBIN%n=String
+TXT=String
+TXT%n=String
+MBT=char
+MBT%n=String
+VMBT=String
+VMBT%n=String
+PIC=String
+PIC%n=String
+BMP=String
+BMP%n=String
+OLE=String
+OLE%n=String
+ANY=Object
+*=String</a:MapTargetItem.Value>
+<a:List>A%n
+VA%n
+LA
+LA%n
+LVA
+LVA%n
+BT
+BT%n
+SI
+I
+LI
+N
+N%n
+N%s,%p
+DC
+DC%n
+DC%s,%p
+SF
+F
+F%n
+LF
+MN
+MN%n
+MN%s,%p
+D
+T
+DT
+TS
+BL
+NO
+NO%n
+BIN%n
+LBIN
+LBIN%n
+TXT
+TXT%n
+MBT
+MBT%n
+VMBT
+VMBT%n
+PIC
+PIC%n
+BMP
+BMP%n
+OLE
+OLE%n
+ANY
+</a:List>
+</o:MapTargetItem>
+<o:StringTargetItem Id="o13">
+<a:ObjectID>1806DB46-7CB3-4204-88F8-5ACFC04A4627</a:ObjectID>
+<a:Name>Modifiers</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+</o:StringTargetItem>
+</c:Categories>
+</o:TargetCategory>
+<o:TargetCategory Id="o14">
+<a:ObjectID>8AC48DD2-A321-4CF5-A02D-3A7EAB936062</a:ObjectID>
+<a:Name>Constants</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<c:Categories>
+<o:StringTargetItem Id="o15">
+<a:ObjectID>10E53A91-7AC3-4DCA-8CA0-85F2A6251259</a:ObjectID>
+<a:Name>Null</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:Comment>Null (Zero) Constant</a:Comment>
+<a:StringTargetItem.Value>null</a:StringTargetItem.Value>
+</o:StringTargetItem>
+<o:StringTargetItem Id="o16">
+<a:ObjectID>351D3770-FED3-4EC2-B38A-6A015EED3779</a:ObjectID>
+<a:Name>True</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:Comment>True Constant</a:Comment>
+<a:StringTargetItem.Value>true</a:StringTargetItem.Value>
+</o:StringTargetItem>
+<o:StringTargetItem Id="o17">
+<a:ObjectID>2C20A78C-2A3A-4776-81E3-33EE11F6573C</a:ObjectID>
+<a:Name>False</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:Comment>False Constant</a:Comment>
+<a:StringTargetItem.Value>false</a:StringTargetItem.Value>
+</o:StringTargetItem>
+</c:Categories>
+</o:TargetCategory>
+</c:Categories>
+</o:TargetCategory>
+<o:TargetCategory Id="o18">
+<a:ObjectID>0AFC2B7C-7742-404C-8DA2-2B5B63E7AADF</a:ObjectID>
+<a:Name>Generation</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+</o:TargetCategory>
+<o:ProfileTargetItem Id="o19">
+<a:ObjectID>C9AB739E-15B8-415B-81E0-C51D671B1182</a:ObjectID>
+<a:Name>Profile</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<c:Categories>
+<o:TargetCategory Id="o20">
+<a:ObjectID>2D05533C-17D8-4B79-A10B-CD113687A5C1</a:ObjectID>
+<a:Name>Shared</a:Name>
+<a:Code>Shared</a:Code>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:TypedCategoryTargetItem Id="o21">
+<a:TypePublicName>TemplateTargetItem</a:TypePublicName>
+<a:ObjectID>BCD21534-E21C-4842-9364-1E63011DE1B3</a:ObjectID>
+<a:Name>Templates</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:TemplateTargetItem Id="o22">
+<a:ObjectID>DA8AB732-8A93-4841-A853-6B4299022DD2</a:ObjectID>
+<a:Name>++</a:Name>
+<a:TemplateTargetItem.Value>.set_value(v, %*@1%, new)
+.set_value(%@1%, %+(v, 1)%)
+.if (%@2% != false)
+%*@1%
+.endif</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:Comment>Increments the specified local variable and returns the incremented value.
+
+@1 [string] : local variable to be incremented
+@2 [boolean] : return incremented value (default = true)</a:Comment>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o23">
+<a:ObjectID>BDCF86DD-9DB8-491C-9A0F-5C2A319C09E7</a:ObjectID>
+<a:Name>+</a:Name>
+<a:TemplateTargetItem.Value>.vbscript(%*@1%, %*@2%)
+ScriptResult = CInt(ScriptInputArray(0)) + CInt(ScriptInputArray(1))
+.endvbscript</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:Comment>Returns the sum of the input parameters.
+
+@1 [string, int] : local variable or integer value
+@2 [string, int] : local variable or integer value</a:Comment>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o24">
+<a:ObjectID>1A78DCB4-E612-405B-BC36-76F2E0DC092A</a:ObjectID>
+<a:Name>--</a:Name>
+<a:TemplateTargetItem.Value>.set_value(v, %*@1%)
+.set_value(%@1%, %+(v, -1)%)
+.if (%@2% != false)
+%*@1%
+.endif</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:Comment>Decrements the specified local variable and returns the decremented value.
+
+@1 [string] : local variable to be decremented
+@2 [boolean] : return decremented value (default = true)</a:Comment>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o25">
+<a:ObjectID>DC5C7A26-2D8E-477B-A8D9-9CD6228C40CD</a:ObjectID>
+<a:Name>tplVisibility</a:Name>
+<a:TemplateTargetItem.Value>.if (%Visibility% == +)
+public
+.endif
+.if (%Visibility% == #)
+protected
+.endif
+.if (%Visibility% == -)
+private
+.endif</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o26">
+<a:ObjectID>861331AD-80E4-4B7C-BE26-1D8AE82EC509</a:ObjectID>
+<a:Name>phpDocComment</a:Name>
+<a:TemplateTargetItem.Value>\n/**
+.foreach_line(%Comment%, &quot;\n&quot;)
+* %CurrentLine%
+.next(&quot;\n&quot;)
+[%phpDoc%]
+*/</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+</c:Categories>
+</o:TypedCategoryTargetItem>
+</c:Categories>
+</o:TargetCategory>
+<o:MetaClassTargetItem Id="o27">
+<a:ObjectID>3D6ED9B9-B230-4E52-9209-2E0E57AF526A</a:ObjectID>
+<a:Name>Operation</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355938842</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<a:CodeConvention>firstLowerWord</a:CodeConvention>
+<c:Categories>
+<o:TypedCategoryTargetItem Id="o28">
+<a:TypePublicName>TemplateTargetItem</a:TypePublicName>
+<a:ObjectID>A4807A80-5B91-4F27-92F4-BBBBF961CFD9</a:ObjectID>
+<a:Name>Templates</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:TemplateTargetItem Id="o29">
+<a:ObjectID>0DD18F4C-6F3C-4ADB-BA6A-A3B2CF4B4D9C</a:ObjectID>
+<a:Name>definition</a:Name>
+<a:TemplateTargetItem.Value>[%phpDocComment%]
+[%tplVisibility% ][%Abstract%?abstract ][%Final%?final ]function %Code%(%tplParameters%)
+{
+   // TODO: implement
+}</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355939682</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o30">
+<a:ObjectID>93E5257C-3F57-4A77-9559-F669564489AC</a:ObjectID>
+<a:Name>tplParameters</a:Name>
+<a:TemplateTargetItem.Value>.foreach_item (Parameters)
+%definition%
+.next(&quot;, &quot;)</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o31">
+<a:ObjectID>56ED4C74-018B-4CDC-9216-9E55525C7123</a:ObjectID>
+<a:Name>phpDoc</a:Name>
+<a:TemplateTargetItem.Value>.foreach_item(Parameters, &quot;\n* &quot;)
+@param    %DataType% $%Name%    %Comment%
+.next(&quot;\n* &quot;)
+[\n* @return   %ReturnType%]</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355939386</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+</c:Categories>
+</o:TypedCategoryTargetItem>
+</c:Categories>
+</o:MetaClassTargetItem>
+<o:MetaClassTargetItem Id="o32">
+<a:ObjectID>D6965DD8-173D-4FA5-AC2C-6CA542FA3204</a:ObjectID>
+<a:Name>Class</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355938842</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<a:EnableSelectionGeneration>1</a:EnableSelectionGeneration>
+<a:CodeConvention>FirstUpperChar</a:CodeConvention>
+<c:Categories>
+<o:TypedCategoryTargetItem Id="o33">
+<a:TypePublicName>TemplateTargetItem</a:TypePublicName>
+<a:ObjectID>37FC9541-D8C9-48DF-8E78-62604AC4F69A</a:ObjectID>
+<a:Name>Templates</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355942820</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:TemplateTargetItem Id="o34">
+<a:ObjectID>0D914290-9413-4D4F-98CF-B2091A0D83A5</a:ObjectID>
+<a:Name>definition</a:Name>
+<a:TemplateTargetItem.Value>[%phpDocComment%]
+[%Abstract%?abstract ][%Final%?final ]class %Code%[ %extends%][ %implements%]
+{
+    .foreach_item(Attributes, &quot;\n&quot;)
+    %definition%
+    .next(&quot;\n&quot;)
+    .foreach_item(Operations, &quot;\n&quot;)
+    %definition%
+    .next(&quot;\n&quot;)
+    
+\n}
+
+[%classManager%]</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355942847</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:Comment>Class definition.</a:Comment>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o35">
+<a:ObjectID>9675B2D9-5B80-4E59-8597-131C439B411C</a:ObjectID>
+<a:Name>extends</a:Name>
+<a:TemplateTargetItem.Value>.ifnot (%ChildGeneralizations.IsEmpty%)
+extends %ChildGeneralizations.First.ParentCode%
+.endif</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o36">
+<a:ObjectID>C25D1668-65AE-4F69-85F4-D4A23C59A3E1</a:ObjectID>
+<a:Name>implements</a:Name>
+<a:TemplateTargetItem.Value>.foreach_item(Realizations, &quot;implements &quot;)
+%Interface.Code%
+.next(&quot;, &quot;)</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o37">
+<a:ObjectID>9D67F205-7A85-49EC-93A3-BB1F2C9EE17A</a:ObjectID>
+<a:Name>DefaultHeader</a:Name>
+<a:TemplateTargetItem.Value>/*
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    (C)2012-2013 Thomas AUGUEY &lt;contact@aceteam.org&gt;
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
+
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see &lt;http://www.gnu.org/licenses/&gt;.
+    ---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/**
+ *  Webframework Module
+ *  PHP Data-Model Implementation
+*/
+</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1360225905</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o38">
+<a:ObjectID>80AE3521-4DE9-4B5B-8121-2F8D994A02FD</a:ObjectID>
+<a:Name>phpDoc</a:Name>
+<a:TemplateTargetItem.Value>[\n* @author       %Creator%]</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o39">
+<a:ObjectID>C4A1718B-E11E-4A63-BC8C-C38ED092A522</a:ObjectID>
+<a:Name>classManager</a:Name>
+<a:TemplateTargetItem.Value>/*
+   %Name% Class manager
+   
+   This class is optimized for use with the Webfrmework project (www.webframework.fr)
+*/
+class %Code%Mgr
+{
+    /**
+     * @brief Convert existing instance to XML element
+     * @param $inst Entity instance (%Code%)
+     * @param $doc Parent document
+     * @return New element node
+     */
+    public static function toXML(&amp;$inst,$doc) {
+        $node = $doc-&gt;createElement(&quot;%Code%&quot;);
+        
+       .foreach_item(Attributes, &quot;\n&quot;)
+        $node-&gt;appendChild($doc-&gt;createTextElement(&quot;
+.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
+&quot;,$inst-&gt;%Code%));
+       .next(&quot;\n&quot;)
+       \n
+          
+        return $node;
+    }
+    
+    
+    /*
+      @brief Get entry list
+      @param $list Array to receive new instances
+      @param $cond SQL Select condition
+      @param $db iDataBase derived instance
+    */
+    public static function getAll(&amp;$list,$cond,$db=null){
+       $list = array();
+      
+       //obtient la base de donnees courrante
+       global $app;
+       if(!$db &amp;&amp; !$app-&gt;getDB($db))
+         return false;
+      
+      //execute la requete
+       $query = &quot;SELECT * from %Name% where $cond&quot;;
+       if(!$db-&gt;execute($query,$result))
+          return false;
+       
+      //extrait les instances
+       $i=0;
+       while($result-&gt;seek($i)){
+        $inst = new %Code%();
+        %Code%Mgr::bindResult($inst,$result);
+        array_push($list,$inst);
+        $i++;
+       }
+       
+       return true;
+    }
+    
+    /*
+      @brief Get single entry
+      @param $inst %Code% instance pointer to initialize
+      @param $cond SQL Select condition
+      @param $db iDataBase derived instance
+    */
+    public static function bindResult(&amp;$inst,$result){
+          .foreach_item(Attributes, &quot;\n&quot;)
+          $inst-&gt;%Code% = $result-&gt;fetchValue(&quot;
+.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
+&quot;);
+          .next(&quot;\n&quot;)
+          \n
+       return true;
+    }
+    
+    /*
+      @brief Get single entry
+      @param $inst %Code% instance pointer to initialize
+      @param $cond SQL Select condition
+      @param $db iDataBase derived instance
+    */
+    public static function get(&amp;$inst,$cond,$db=null){
+       //obtient la base de donnees courrante
+       global $app;
+       if(!$db &amp;&amp; !$app-&gt;getDB($db))
+         return false;
+      
+      //execute la requete
+       $query = &quot;SELECT * from %Name% where $cond&quot;;
+       if($db-&gt;execute($query,$result)){
+            $inst = new %Code%();
+          return %Code%Mgr::bindResult($inst,$result);
+       }
+       return false;
+    }
+    
+    /*
+      @brief Get single entry by id
+      @param $inst %Code% instance pointer to initialize
+      @param $id Primary unique identifier of entry to retreive
+      @param $db iDataBase derived instance
+    */
+    public static function getById(&amp;$inst,$id,$db=null){
+       //obtient la base de donnees courrante
+       global $app;
+       if(!$db &amp;&amp; !$app-&gt;getDB($db))
+         return false;
+      
+       if(is_string($id))
+           $id = &quot;&#39;$id&#39;&quot;;
+           
+      //execute la requete
+       $query = &quot;SELECT * from %Name% where 
+.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
+_id=$id&quot;;
+       if($db-&gt;execute($query,$result)){
+            $inst = new %Code%();
+          .foreach_item(Attributes, &quot;\n&quot;)
+          $inst-&gt;%Code% = $result-&gt;fetchValue(&quot;
+.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
+&quot;);
+          .next(&quot;\n&quot;)
+          \n
+          return true;
+       }
+       return false;
+    }
+
+   /** @brief Convert name to code */
+    public static function nameToCode($name){
+        for($i=strlen($name)-1;$i&gt;=0;$i--){
+            $c = substr($name, $i, 1);
+            if(strpos(&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;,$c) !== FALSE){
+                $name = substr_replace($name,($i?&quot;_&quot;:&quot;&quot;).strtolower($c), $i, 1);
+            }
+        }
+        return $name;
+    }
+    
+    /**
+      @brief Get entry by id&#39;s relation table
+      @param $inst %Code% instance pointer to initialize
+      @param $obj An another entry class object instance
+      @param $db iDataBase derived instance
+    */
+    public static function getByRelation(&amp;$inst,$obj,$db=null){
+        $objectName = get_class($obj);
+        $objectTableName  = %Code%Mgr::nameToCode($objectName);
+        $objectIdName = lcfirst($objectName).&quot;Id&quot;;
+        
+        /*print_r($objectName.&quot;, &quot;);
+        print_r($objectTableName.&quot;, &quot;);
+        print_r($objectIdName.&quot;, &quot;);
+        print_r($obj-&gt;$objectIdName);*/
+        
+        $select;
+        if(is_string($obj-&gt;$objectIdName))
+            $select = (&quot;
+.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
+_id = (select 
+.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
+_id from $objectTableName where &quot;.$objectTableName.&quot;_id=&#39;&quot;.$obj-&gt;$objectIdName.&quot;&#39;)&quot;);
+        else
+            $select = (&quot;
+.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
+_id = (select 
+.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
+_id  from $objectTableName where &quot;.$objectTableName.&quot;_id=&quot;.$obj-&gt;$objectIdName.&quot;)&quot;);
+
+        return %Code%Mgr::get($inst,$select,$db);
+    }
+\n}</a:TemplateTargetItem.Value>
+<a:CreationDate>1355942741</a:CreationDate>
+<a:Creator>developpement</a:Creator>
+<a:ModificationDate>1362486383</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+</c:Categories>
+</o:TypedCategoryTargetItem>
+<o:TypedCategoryTargetItem Id="o40">
+<a:TypePublicName>GeneratedFileTargetItem</a:TypePublicName>
+<a:ObjectID>4F63174B-4E3D-4281-AFBA-6919742E4CED</a:ObjectID>
+<a:Name>Generated Files</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:GeneratedFileTargetItem Id="o41">
+<a:ObjectID>4591FFA7-54A3-40EA-A3F8-35D38998734A</a:ObjectID>
+<a:Name>PHPSource</a:Name>
+<a:TemplateTargetItem.Value>&lt;?php
+%Header%
+
+%Class::definition%
+
+?&gt;</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<a:Filename>%Code%.php</a:Filename>
+</o:GeneratedFileTargetItem>
+</c:Categories>
+</o:TypedCategoryTargetItem>
+</c:Categories>
+</o:MetaClassTargetItem>
+<o:MetaClassTargetItem Id="o42">
+<a:ObjectID>E76433E4-73EF-4017-9276-1050B53FFCCC</a:ObjectID>
+<a:Name>Interface</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355938842</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<a:EnableSelectionGeneration>1</a:EnableSelectionGeneration>
+<a:CodeConvention>FirstUpperChar</a:CodeConvention>
+<c:Categories>
+<o:TypedCategoryTargetItem Id="o43">
+<a:TypePublicName>TemplateTargetItem</a:TypePublicName>
+<a:ObjectID>74531DD2-08A2-4636-A10B-FA61D23D6A40</a:ObjectID>
+<a:Name>Templates</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:TemplateTargetItem Id="o44">
+<a:ObjectID>D29FDC53-F614-4DEB-833D-0EA9465235F0</a:ObjectID>
+<a:Name>definition</a:Name>
+<a:TemplateTargetItem.Value>[%phpDocComment%]
+interface %Code%[ %extends%]
+{
+    .foreach_item(Operations, &quot;\n&quot;)
+    %definition%
+    .next(&quot;\n&quot;)
+\n}</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355939732</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:Comment>Interface definition</a:Comment>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o45">
+<a:ObjectID>21B4CF97-54F8-497A-8F39-82DF876E7F4C</a:ObjectID>
+<a:Name>extends</a:Name>
+<a:TemplateTargetItem.Value>.ifnot (%ChildGeneralizations.IsEmpty%)
+extends %ChildGeneralizations.First.ParentCode%
+.endif</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o46">
+<a:ObjectID>D90B9D58-E0A5-4026-AEB8-9DCCDEFF3D37</a:ObjectID>
+<a:Name>DefaultHeader</a:Name>
+<a:TemplateTargetItem.Value>//
+// +------------------------------------------------------------------------+
+// | PHP Version 5                                                          |
+// +------------------------------------------------------------------------+
+// | Copyright (c) All rights reserved.                                     |
+// +------------------------------------------------------------------------+
+// | This source file is subject to version 3.00 of the PHP License,        |
+// | that is available at http://www.php.net/license/3_0.txt.               |
+// | If you did not receive a copy of the PHP license and are unable to     |
+// | obtain it through the world-wide-web, please send a note to            |
+// | license@php.net so we can mail you a copy immediately.                 |
+// +------------------------------------------------------------------------+
+// | Author:                                                                |
+// +------------------------------------------------------------------------+
+//
+// $Id$
+//</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o47">
+<a:ObjectID>26D38616-5181-4506-92F7-7E125AF4B94B</a:ObjectID>
+<a:Name>phpDoc</a:Name>
+<a:TemplateTargetItem.Value>[\n* @author       %Creator%]</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+</c:Categories>
+</o:TypedCategoryTargetItem>
+<o:TypedCategoryTargetItem Id="o48">
+<a:TypePublicName>GeneratedFileTargetItem</a:TypePublicName>
+<a:ObjectID>51F63A49-3960-4E63-B188-1142E1D4976B</a:ObjectID>
+<a:Name>Generated Files</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:GeneratedFileTargetItem Id="o49">
+<a:ObjectID>260CB6EE-4C58-46B7-8907-00F687B68275</a:ObjectID>
+<a:Name>PHPSource</a:Name>
+<a:TemplateTargetItem.Value>&lt;?php
+%Header%
+
+%Interface::definition%
+
+?&gt;</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<a:Filename>%Code%.php</a:Filename>
+</o:GeneratedFileTargetItem>
+</c:Categories>
+</o:TypedCategoryTargetItem>
+</c:Categories>
+</o:MetaClassTargetItem>
+<o:MetaClassTargetItem Id="o50">
+<a:ObjectID>204516DE-4983-468F-9FD1-4AC3EAEB7472</a:ObjectID>
+<a:Name>Attribute</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1356018395</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<a:CodeConvention>firstLowerWord</a:CodeConvention>
+<c:Categories>
+<o:TypedCategoryTargetItem Id="o51">
+<a:TypePublicName>TemplateTargetItem</a:TypePublicName>
+<a:ObjectID>8B671669-276F-41BB-AD1C-FAF8A8A1069D</a:ObjectID>
+<a:Name>Templates</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:TemplateTargetItem Id="o52">
+<a:ObjectID>C29C6CBF-641E-4679-8E27-BE6F935717D2</a:ObjectID>
+<a:Name>definition</a:Name>
+<a:TemplateTargetItem.Value>[%phpDocComment%]
+[%tplVisibility% ][%Static%?static ]$%Code%[ = %tplInitialValue%];
+</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355939732</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:Comment>Property definition</a:Comment>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o53">
+<a:ObjectID>A57F4904-038D-4174-AF1F-43915E9E3AF1</a:ObjectID>
+<a:Name>tplInitialValue</a:Name>
+<a:TemplateTargetItem.Value>.if (%InitialValue%)
+   .if (%DataType% == array)
+array(%InitialValue%)
+   .elsif (%DataType% == string)
+&quot;%InitialValue%&quot;
+   .else
+%InitialValue%
+   .endif
+.endif</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o54">
+<a:ObjectID>226BD141-BD7D-44B2-81E1-0D967A7FCE07</a:ObjectID>
+<a:Name>phpDoc</a:Name>
+<a:TemplateTargetItem.Value>[\n* @var      %DataType%]</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+</c:Categories>
+</o:TypedCategoryTargetItem>
+</c:Categories>
+</o:MetaClassTargetItem>
+<o:MetaClassTargetItem Id="o55">
+<a:ObjectID>8AA597FA-D4B6-42A9-959F-BD3DD2E2ED71</a:ObjectID>
+<a:Name>Parameter</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355938842</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<a:CodeConvention>firstLowerWord</a:CodeConvention>
+<c:Categories>
+<o:TypedCategoryTargetItem Id="o56">
+<a:TypePublicName>TemplateTargetItem</a:TypePublicName>
+<a:ObjectID>C29FC382-EDCD-428F-B0AF-72B5F93C5669</a:ObjectID>
+<a:Name>Templates</a:Name>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<c:Categories>
+<o:TemplateTargetItem Id="o57">
+<a:ObjectID>DCA68BD2-C320-42DA-A72F-BADB42443B20</a:ObjectID>
+<a:Name>definition</a:Name>
+<a:TemplateTargetItem.Value>[%tplDataType% ]$%Code%[ = %tplDefaultValue%]</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>1355939732</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:Comment>Parameter of method definition</a:Comment>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o58">
+<a:ObjectID>0A5751BF-F1E5-437A-A6B5-0F9C8E3E3E90</a:ObjectID>
+<a:Name>tplDataType</a:Name>
+<a:TemplateTargetItem.Value>.if (%DataTypeObject%)
+%DataType%
+.endif</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+<o:TemplateTargetItem Id="o59">
+<a:ObjectID>3F68D7CA-265F-4EC0-989B-9BC028EC7F64</a:ObjectID>
+<a:Name>tplDefaultValue</a:Name>
+<a:TemplateTargetItem.Value>.if (%DefaultValue%)
+   .if (%DataType% == array)
+array(%DefaultValue%)
+   .elsif (%DataType% == string)
+&quot;%DefaultValue%&quot;
+   .else
+%DefaultValue%
+   .endif
+.endif</a:TemplateTargetItem.Value>
+<a:CreationDate>0</a:CreationDate>
+<a:Creator/>
+<a:ModificationDate>0</a:ModificationDate>
+<a:Modifier/>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+</o:TemplateTargetItem>
+</c:Categories>
+</o:TypedCategoryTargetItem>
+</c:Categories>
+</o:MetaClassTargetItem>
+</c:Categories>
+</o:ProfileTargetItem>
+</c:Categories>
+</o:ObjectLanguage>
+
+</DVTL>
