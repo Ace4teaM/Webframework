@@ -43,6 +43,22 @@ YUI.add('wfw-xml', function (Y) {
             /*
              * Constructeur
              */
+        },
+        /*
+            Convertie un document XML en tableau associatif
+            Parametres:
+                    [object] obj     : Tableau associatif des arguments 
+                    [bool]   bencode : true si le texte "text" est encodé au format d'une URI
+            Retourne:
+                    [string] Texte au format XARG
+        */
+        nodeToArray : function(xml_element)
+        {
+            var ar = {};
+            xml_element.all("> *").each(function(node){
+                ar[node.get("tagName")] = node.get("text");
+            });
+            return ar;
         }
     };
     
@@ -245,6 +261,30 @@ YUI.add('wfw-xml', function (Y) {
         wfw.puts("wfw.Xml.DEFAULT_FILE: "+title+", "+msg);
     };
 
+    /*
+      Obtient le texte associé à une définition de champs
+      @param string id Identificateur du champs
+      @param string lang Langage utilisé. 'fr' Par défaut
+      @return Texte trouvé. Si vide ou introuvable l'identifiant du champs est retourné
+     */
+    wfw.Xml.DEFAULT_FILE.prototype.getFiledText = function(id, lang)
+    {
+        if(typeof(lang)=="undefined")
+            lang="fr";
+    
+        var entry_node = Y.Node(this.doc.documentElement).one("results[lang="+lang+"] > fields > "+id);
+        if(entry_node == null){
+            wfw.puts("UnknownField "+id);
+            return false;
+//            return RESULT(cResult::Failed,cXMLDefault::UnknownField);
+        }
+
+        var text = trim(entry_node.get("text"));
+        return (empty(text) ? id : text);
+        
+//        return true;
+//        return RESULT_OK();
+    };
 }, '1.0', {
     requires:['base','wfw','wfw-http','wfw-request']
 });
