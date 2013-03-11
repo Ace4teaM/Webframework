@@ -74,6 +74,7 @@ class cApplication implements iApplication{
     const FieldFormatName      = 2;
     //
     protected $template_attributes;
+    protected $template_attributes_xml;
     protected $config;
     protected $root_path;
     protected $default;
@@ -94,7 +95,12 @@ class cApplication implements iApplication{
         //initialise les memebres
         $this->root_path = $root_path;
         $this->config = $config;
+        
+        //template global attributes
         $this->template_attributes = array();
+        //ajoute le fichier de globals (template.xml)
+        $this->template_attributes_xml = new XMLDocument();
+        $this->template_attributes_xml->appendChild($this->template_attributes_xml->createElement('data'));
 
         // initialise la base de données à null
         //( la fonction getDB initialise la connexion si besoin )
@@ -154,6 +160,14 @@ class cApplication implements iApplication{
      */
     function getAttributes(){
         return $this->template_attributes;
+    }
+
+    /**
+     * @brief Retourne le document XML des attributs globaux
+     * @return XMLDocument Le document XML
+     */
+    function getAttributesXML(){
+        return $this->template_attributes_xml;
     }
 
     /**
@@ -402,6 +416,9 @@ class cApplication implements iApplication{
 
         //ajoute le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
+
+        //ajoute le fichier de globals
+        $template->push_xml_file('template.xml',$this->template_attributes_xml);
 
         //initialise la classe template 
         if(!$template->Initialise(

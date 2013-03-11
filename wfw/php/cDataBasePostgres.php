@@ -131,7 +131,7 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
         $this->cur_pos = 0;
         $this->res = @pg_query($con, $this->query);
         if(!$this->res)
-            return RESULT(cResult::Failed,iDataBase::QueryFailed, array("message"=>pg_last_error($con)));
+            return RESULT(cResult::Failed,iDataBase::QueryFailed, array("message"=>pg_last_error($con),"query"=>$this->query));
         return RESULT_OK();
     }
     
