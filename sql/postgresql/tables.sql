@@ -6,9 +6,9 @@
   Objets
 */
 
-drop table globals  CASCADE;
+drop table if exists globals  CASCADE;
 
-drop table dyn_table  CASCADE;
+drop table if exists dyn_table  CASCADE;
 
 
 /*
