@@ -38,6 +38,7 @@ require_once("php/templates/cHTMLTemplate.php");
 require_once("php/templates/xml_template.php");
 require_once("php/xml_default.php");
 
+
 class FormField
 {
     public $title;
@@ -163,7 +164,7 @@ class cApplication implements iApplication{
         //charge la classe du gestionnaire de taches
         $classname = $this->getCfgValue(constant("SYSTEM"), "taskmgr_class");
         if(!empty($classname))
-            require_once($this->getLibPath("wfw")."/php/system/windows/$classname.php");
+            require_once($this->getLibPath("wfw")."/php/system/".strtolower(constant('SYSTEM'))."/$classname.php");
     }
     
     /**
