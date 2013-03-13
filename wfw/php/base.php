@@ -241,4 +241,12 @@ function error_get_last_str() {
     return $str;
 }
 
+//callback de comparaison pour la fonction de tri 'uasort'
+//tri les cles d'un tableau du plus petit nom au plus grand
+function cmp_max_strlen($a, $b) {
+    if (strlen($a) == strlen($b)) {
+        return 0;
+    }
+    return (strlen($a) < strlen($b)) ? -1 : 1;
+}
 ?>
