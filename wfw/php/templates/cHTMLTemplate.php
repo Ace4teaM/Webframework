@@ -183,6 +183,15 @@ class cHTMLTemplate{
             return "";
         }, $string);
 
+        //tri les champs par longeur de cle (evite le remplacement des mots incomplet. Ex: TO_DATE par TO)
+        function cmp($a, $b) {
+            if (strlen($a) == strlen($b)) {
+                return 0;
+            }
+            return (strlen($a) < strlen($b)) ? -1 : 1;
+        }
+        uasort($fields, 'cmp');
+        
         //remplace les valeurs de champs
         foreach ($fields as $key => &$value) {
             //verifie si le champs est une fonction
