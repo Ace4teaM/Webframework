@@ -136,13 +136,25 @@ class cApplication implements iApplication{
         if(isset($path_section)){
             foreach($path_section as $name=>$path){
                 $this->template_attributes["_LIB_PATH_".strtoupper($name)."_"] = $path;
-                if(file_exists($path))
-                    require_path($path);
+                //if(file_exists($path))
+                //    require_path($path);
                 //else
                 //    echo($this->getRootPath()."/$path not exists\n");
             }
         }
 
+        //includes additionnels
+        foreach($this->getCfgSection("includes") as $key=>$path){
+            if(is_dir($path)){
+        //        echo("include_path:$path\n");
+                include_path($path);
+            }
+            else{
+        //        echo("include_once:$path\n");
+                include_once($path);
+            }
+        }
+        
         //charge la classe de la base de données
         $db_classname = $this->getCfgValue("database", "class");
         if(!empty($db_classname))
