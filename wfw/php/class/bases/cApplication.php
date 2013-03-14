@@ -30,6 +30,7 @@ else{
     define('SYSTEM','LINUX');
 }
 
+require_once("php/ini.php");
 require_once("iApplication.php");
 require_once("php/file.php");
 require_once("php/xarg.php");
@@ -159,12 +160,12 @@ class cApplication implements iApplication{
         //charge la classe de la base de données
         $db_classname = $this->getCfgValue("database", "class");
         if(!empty($db_classname))
-            require_once($this->getLibPath("wfw")."/php/$db_classname.php");
+            require_once($this->getLibPath("wfw_local")."/php/$db_classname.php");
 
         //charge la classe du gestionnaire de taches
         $classname = $this->getCfgValue(constant("SYSTEM"), "taskmgr_class");
         if(!empty($classname))
-            require_once($this->getLibPath("wfw")."/php/system/".strtolower(constant('SYSTEM'))."/$classname.php");
+            require_once($this->getLibPath("wfw_local")."/php/system/".strtolower(constant('SYSTEM'))."/$classname.php");
     }
     
     /**
@@ -346,7 +347,7 @@ class cApplication implements iApplication{
      * @retval string Chemin d'accès (sans slash de fin)
      * @retval false  Chemin introuvable dans la configuration
      */
-    function getLibPath($name="wfw",$relatif=false){
+    function getLibPath($name="wfw_local",$relatif=false){
         $path = $this->getCfgValue("path",$name);
         if($path == NULL){
             //$this->result->set(cResult::ERR_FAILED,"config_not_found",array("desc"=>"Library path '$name' not set in configuration file"));

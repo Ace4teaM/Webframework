@@ -2,7 +2,8 @@
 /*
   Configuration php.ini
 */
-ini_set('error_reporting', E_ALL/*E_ERROR|E_WARNING*/);
+error_reporting(E_ALL/*E_ERROR|E_WARNING*/);
+ini_set('display_errors', '1');
 //ini_set('display_errors', stderr);
 
 ini_set('date.timezone', 'Europe/Paris');

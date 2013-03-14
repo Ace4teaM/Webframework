@@ -40,7 +40,7 @@ class Application{
      * @retval string Chemin d'accès (sans slash de fin)
      * @retval false  Chemin introuvable dans la configuration
      */
-    function getLibPath($name="wfw",$relatif=false){
+    function getLibPath($name="wfw_local",$relatif=false){
         if(!isset($this->config["path"][$name])){
             //$this->result->set(cResult::ERR_FAILED,"config_not_found",array("desc"=>"Library path '$name' not set in configuration file"));
             return false;

@@ -105,4 +105,43 @@ function tempnam_s($path, $suffix)
   }
 } 
 
+/**
+ *   @brief Recherche un fichier spécifique
+ *
+ *   @param string $path : chemin d'acces de base
+ *   @param string $name : nom du fichier sans le chemin d'acces 
+ *   @param string $filter : Expression régulière pour filtrer les noms de dossiers
+ *
+ *   @return string Chemin d'accès vers le fichier trouvé. NULL si aucun
+*/
+function file_find($path, $name, $filter) 
+{ 
+    if ($handle = opendir($path)) {
+        while (false !== ($entry = readdir($handle))) {
+            $cur = $path."/".$entry;
+            if ($entry == "." || $entry == "..")
+                continue;
+            if(!preg_match($filter, $entry))
+                continue;
+ //           if(is_dir($cur))
+ //               echo $entry."\n";
+            if(is_dir($cur)){
+                $find = file_find($cur, $name, $filter);
+                if(is_string($find))
+                    return $find;
+            }
+            else{
+                if(is_file($cur) && $entry==$name)
+                    return $cur;
+            }
+            //if($name == dirname($entry))
+            //    return $entry;
+            //if(file_find($path, $name)!==NULL)
+        }
+        closedir($handle);
+    }
+    else echo("not open $path");
+    return NULL;
+} 
+
 ?>

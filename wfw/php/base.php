@@ -27,7 +27,7 @@ if (isset($argc) && ($argc > 1)) {
     }
 }
 
-include('ini.php');
+include_once('ini.php');
 
 function get_cur_script_dir() {//Get Current Script Directory
     return dirname($_SERVER['PHP_SELF']);
