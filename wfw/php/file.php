@@ -109,12 +109,13 @@ function tempnam_s($path, $suffix)
  *   @brief Recherche un fichier spécifique
  *
  *   @param string $path : chemin d'acces de base
- *   @param string $name : nom du fichier sans le chemin d'acces 
+ *   @param string $name : nom du fichier sans le chemin d'acces
+ *   @param string $filetype : Type de fichier recherché (correspondant à la fonction filetype()) 
  *   @param string $filter : Expression régulière pour filtrer les noms de dossiers
  *
  *   @return string Chemin d'accès vers le fichier trouvé. NULL si aucun
 */
-function file_find($path, $name, $filter) 
+function file_find($path, $name, $filetype, $filter) 
 { 
     if ($handle = opendir($path)) {
         while (false !== ($entry = readdir($handle))) {
@@ -125,14 +126,12 @@ function file_find($path, $name, $filter)
                 continue;
  //           if(is_dir($cur))
  //               echo $entry."\n";
+            if(@filetype($cur)==$filetype && $entry==$name)
+                return $cur;
             if(is_dir($cur)){
-                $find = file_find($cur, $name, $filter);
+                $find = file_find($cur, $name, $filetype, $filter);
                 if(is_string($find))
                     return $find;
-            }
-            else{
-                if(is_file($cur) && $entry==$name)
-                    return $cur;
             }
             //if($name == dirname($entry))
             //    return $entry;
@@ -140,8 +139,43 @@ function file_find($path, $name, $filter)
         }
         closedir($handle);
     }
-    else echo("not open $path");
+
     return NULL;
+} 
+
+/**
+ *   @brief Recherche des fichiers
+ *
+ *   @param string $path : Chemin d'acces de base
+ *   @param string $name : Expression régulière des noms de fichier acceptés
+ *   @param string $filetype : Type de fichier recherché (correspondant à la fonction filetype())
+ *   @param string $filter : Expression régulière pour filtrer les noms de dossiers
+ *   @param array &$output : Tableau des fichiers trouvés (chemins complets)
+ *
+ *   @return bool TRUE
+*/
+function file_search($path, $name, $filetype, $filter, &$output) 
+{ 
+    if ($handle = opendir($path)) {
+        while (false !== ($entry = readdir($handle))) {
+            $cur = $path."/".$entry;
+            if ($entry == "." || $entry == "..")
+                continue;
+            if(!preg_match($filter, $entry))
+                continue;
+ //           if(is_dir($cur))
+ //               echo $entry."\n";
+            //ok ?
+            if(@filetype($cur)==$filetype && preg_match($name, $entry))
+                array_push($output,$cur);
+            if(is_dir($cur)){
+                file_search($cur, $name, $filetype, $filter, $output);
+            }
+        }
+        closedir($handle);
+    }
+
+    return true;
 } 
 
 ?>
