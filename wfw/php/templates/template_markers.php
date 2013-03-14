@@ -461,4 +461,31 @@ class cTemplateMarker_node extends cTemplateMarker {
 
 }
 
+/*
+ * @brief Selecteur CSS
+ * @remarks
+ *   - check_selector
+ *           Syntaxe: -{$syntax }
+ *           Retourne la valeur d'un attribut dans la sélection active
+ */
+
+class cTemplateMarker_selector extends cTemplateMarker {
+
+    public static function exp() {
+        return array(('\$(.+)') => 'check_selector');
+    }
+
+    function __construct($input, &$arg) {
+        
+    }
+
+    public function check_selector($input, $select, $matches, &$arg) {
+        $select = $input->doc->one($matches[1], $select);
+        if ($select)
+            return $select->nodeValue;
+        return "";
+    }
+
+}
+
 ?>

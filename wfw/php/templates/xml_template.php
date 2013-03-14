@@ -694,7 +694,7 @@ class cXMLTemplate
                 return NULL;
             }*/
             $file = new XMLDocument();
-            if ($file->load($filename) == NULL) {
+            if (@$file->load($filename) == NULL) {
                 $error = libxml_get_last_error();
                 $this->post("load_xml_file", "$filename can't load");
                 RESULT(cResult::Failed,cXMLTemplate::CantLoadSelectFile,array("libxml_error"=>$error->message));
