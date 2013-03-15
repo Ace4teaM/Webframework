@@ -146,17 +146,19 @@ class cApplication implements iApplication{
         }
 
         //includes additionnels
-        foreach($this->getCfgSection("includes") as $key=>$path){
-            if(is_dir($path)){
-        //        echo("include_path:$path\n");
-                include_path($path);
-            }
-            else{
-        //        echo("include_once:$path\n");
-                include_once($path);
+        $includes = $this->getCfgSection("includes");
+        if($includes){
+            foreach($includes as $key=>$path){
+                if(is_dir($path)){
+            //        echo("include_path:$path\n");
+                    include_path($path);
+                }
+                else{
+            //        echo("include_once:$path\n");
+                    include_once($path);
+                }
             }
         }
-        
         //charge la classe de la base de données
         $db_classname = $this->getCfgValue("database", "class");
         if(!empty($db_classname))
