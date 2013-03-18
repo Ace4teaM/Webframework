@@ -188,7 +188,10 @@ class XMLDocument extends DOMDocument {
         $cur = ($context === NULL) ? $this->documentElement : $context;
 
         //analyse le selecteur
-        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i', $selector, $matches);
+        $spaced_att = '(?:\w+\=\w+)';
+        $exacts_att = '(?:\w+\~\=\w+)';
+        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[('.$spaced_att.'|'.$exacts_att.'(?:\,'.$spaced_att.'|'.$exacts_att.')*)\])?/i', $selector, $matches);
+//        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i', $selector, $matches);
 
 //          echo("begin ($selector)\n");
         foreach ($matches[2] as $key => $tag) {
@@ -211,9 +214,21 @@ class XMLDocument extends DOMDocument {
                             $att_selector = $matches[3][$key];
                             $att_list = strexplode($att_selector, ',', true);
                             foreach ($att_list as $att_pair) {
-                                $att = strexplode($att_pair, '=', true);
-                                if ($att[1] != $node->getAttribute($att[0]))
-                                    return TRUE;
+                                //E[foo~=warning]
+                                //Matches any E element whose "foo" attribute value is a list of space-separated values, one of which is exactly equal to "warning"
+                                if(strstr($att_pair, '~=')){
+                                    $att = strexplode($att_pair, '~=', true);
+                                    $exp = '/((?:\s'.$att[1].'\s)|(?:^'.$att[1].'\s)|(?:\s'.$att[1].'$)|(?:^'.$att[1].'$))/i';
+                                    if (!preg_match($exp,$node->getAttribute($att[0])))
+                                        return TRUE;
+                                }
+                                //E[foo=warning]
+                                //Matches any E element whose "foo" attribute value is exactly equal to "warning".
+                                else{
+                                    $att = strexplode($att_pair, '=', true);
+                                    if ($att[1] != $node->getAttribute($att[0]))
+                                        return TRUE;
+                                }
                             }
                         }
                         if (is_callable($addCheck)) {
