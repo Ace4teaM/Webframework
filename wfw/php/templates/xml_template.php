@@ -778,7 +778,11 @@ class cXMLTemplate
         }
 
         //obtient le fichier en cours
-        $varfile = $current_select->ownerDocument;
+        //$varfile = $current_select->ownerDocument;
+        
+        //cast $current_select->ownerDocument to XMLDocument
+        $varfile = new XMLDocument();
+        cast($varfile, $current_select->ownerDocument);
         
         if(empty($path))
             return $varfile->documentElement;

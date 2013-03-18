@@ -1,0 +1,12 @@
+/* fix images anchor */
+div.Table_01 a{
+    display:block;
+}
+#search_string{
+    width: 100%;
+    background-color: transparent;
+    border: none;
+    line-height: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}

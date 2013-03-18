@@ -19,11 +19,11 @@ if(cInputFields::checkArray(array("page"=>"cInputIdentifier")))
             break;
     }
     //construit le template
-    $app->showXMLView("view/pages/".$_REQUEST["page"].".html",$param);
+    echo $app->createMainTemplate("view/pages/".$_REQUEST["page"].".html",NULL,array())->Make();
     exit;
 }
 
 //construit le template d'accueil
-$app->showXMLView("view/pages/index.html",array());
+echo $app->createMainTemplate("view/pages/index.html",NULL,array())->Make();
 
 ?>

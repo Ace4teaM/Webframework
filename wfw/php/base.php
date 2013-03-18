@@ -249,4 +249,16 @@ function cmp_max_strlen($a, $b) {
     }
     return (strlen($a) < strlen($b)) ? -1 : 1;
 }
+
+
+function cast($destination,  $source)
+{
+    $sourceReflection = new ReflectionObject($source);
+    $sourceProperties = $sourceReflection->getProperties();
+    foreach ($sourceProperties as $sourceProperty) {
+        $name = $sourceProperty->getName();
+        $destination->{$name} = $source->$name;
+    }
+    return $destination;
+}
 ?>

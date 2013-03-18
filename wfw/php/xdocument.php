@@ -32,7 +32,7 @@ require_path("$libdir/php/class/bases/");
 require_path("$libdir/php/inputs/");
 
 class XMLDocument extends DOMDocument {
-
+    
     function make($content) {
         return $this->loadHTML($content);
     }
