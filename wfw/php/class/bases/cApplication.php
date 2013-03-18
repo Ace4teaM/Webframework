@@ -71,6 +71,7 @@ class cApplication implements iApplication{
     const UnknownField               = "APP_UNKNOWN_FIELD";
     const UnknownFieldFormat         = "APP_UNKNOWN_FIELD_FORMAT";
     const UnknownFieldClass          = "APP_UNKNOWN_FIELD_CLASS";
+    const ResourceNotFound           = "APP_RESOURCE_NOT_FOUND";
     //options
     const FieldFormatClassName = 1;
     const FieldFormatName      = 2;
