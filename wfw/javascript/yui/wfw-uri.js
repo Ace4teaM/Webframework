@@ -200,14 +200,11 @@ YUI.add('wfw-uri', function (Y) {
             return queryend;
         },
 
-        /*
-        Convertie un tableau associatif en chaine de paramètres 'Query' sans le séparateur '?'
-
-        Parametres:
-        [object] querytab : Tableau associatif des paramètres
-        [bool]   bencode  : Si true, encode les paramètres
-        Retourne:
-        [string] La chaine de paramètres.
+        /**
+         * @brief Convertie un tableau associatif en chaine de paramètres 'Query' sans le séparateur '?'
+         * @param object querytab   Tableau associatif des paramètres
+         * @parama bool  bencode    Si true, encode les paramètres
+         * @return string La chaine de paramètres
         */
         object_to_query: function (querytab, bencode) {
 
@@ -217,20 +214,22 @@ YUI.add('wfw-uri', function (Y) {
             // if(typeof(bencode)=="undefined")
             //    bencode=true;
 
-            for (var key in querytab) {
-                if (typeof (querytab[key]) != 'string')
-                    continue;
-                //
+            for (var key in querytab)
+            {
+                //force le type string sur la valeur
+                var value = ''+querytab[key];
+                
+                //ajoute le 'ET' ?
                 if (!bfirst)
                     querystr += "&";
                 else
                     bfirst = false;
 
+                //encode la chaine
                 if (bencode)
-                    querystr += escape(key) + "=" + this.encodeUTF8(querytab[key]);
+                    querystr += escape(key) + "=" + this.encodeUTF8(value);
                 else {
                     //encode au moins les carateres speciaux "=" et "&"
-                    var value = querytab[key];
                     value = value.replace(/\&/g, "%26");
                     value = value.replace(/\=/g, "%3D");
                     querystr += key + "=" + value;
