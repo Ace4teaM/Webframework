@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PGSQL80" Family="ANSI" ID="{8AF15AEA-CCBC-4EDC-B468-7DB8DB5300B2}" LastModificationDate="1361364608" Name="PostgreSQL 8 (WFW)" Objects="307" Symbols="0" Type="{4BA9F647-DAB1-11D1-9944-006097355D9B}" signature="XDB_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PGSQL80" Family="ANSI" ID="{8AF15AEA-CCBC-4EDC-B468-7DB8DB5300B2}" LastModificationDate="1363763316" Name="PostgreSQL 8 (WFW)" Objects="307" Symbols="0" Type="{4BA9F647-DAB1-11D1-9944-006097355D9B}" signature="XDB_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DBMS xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -1585,11 +1585,11 @@ les variables système suivantes sont disponibles :
 <o:TextTargetItem Id="o109">
 <a:ObjectID>BBA48FCC-37A4-4976-8F13-14DE45C763F1</a:ObjectID>
 <a:Name>ConstName</a:Name>
-<a:TextTargetItem.Value>FK_%.U8:CHILD%_%.U9:REFR%_%.U8:PARENT%</a:TextTargetItem.Value>
+<a:TextTargetItem.Value>FK_%.U27:REFR%</a:TextTargetItem.Value>
 <a:CreationDate>0</a:CreationDate>
 <a:Creator/>
-<a:ModificationDate>0</a:ModificationDate>
-<a:Modifier/>
+<a:ModificationDate>1363763316</a:ModificationDate>
+<a:Modifier>AceTeaM</a:Modifier>
 <a:Comment>Modèle de nom de contrainte pour des clés étrangères</a:Comment>
 </o:TextTargetItem>
 <o:TextTargetItem Id="o110">
