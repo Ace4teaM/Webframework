@@ -5,9 +5,11 @@ $libdir = realpath("$cwd/../..");
 
 require_once("$libdir/php/class/bases/input.php");
 
-// Chaine de carcteres 
-// Aucun Standard
-class cInputText extends cInput {
+/**
+ * @brief Test une date
+ * @todo Classe non implémentée
+ */
+class cInputDate extends cInput {
 
     public static function isValid($value) {
         if (empty($value))

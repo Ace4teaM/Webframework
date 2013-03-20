@@ -5,8 +5,10 @@ $libdir = realpath("$cwd/../..");
 
 require_once("$libdir/php/class/bases/input.php");
 
-// Chaine de carcteres 
-// Aucun Standard
+/**
+ * @brief Test une URL
+ * @todo Classe non implémentée
+ */
 class cInputUrl extends cInput {
 
     public static function isValid($value) {
