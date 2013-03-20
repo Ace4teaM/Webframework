@@ -210,6 +210,7 @@ YUI.add('wfw-uri', function (Y) {
         [string] La chaine de paramètres.
         */
         object_to_query: function (querytab, bencode) {
+
             var querystr = "";
             var bfirst = true;
 
@@ -219,7 +220,6 @@ YUI.add('wfw-uri', function (Y) {
             for (var key in querytab) {
                 if (typeof (querytab[key]) != 'string')
                     continue;
-
                 //
                 if (!bfirst)
                     querystr += "&";
@@ -489,15 +489,15 @@ YUI.add('wfw-uri', function (Y) {
         },
 
 
-        /*
-        Re-Fabrique une URI
-        Parametres:
-            [string] uri               : URI à transformer. Si null, l'URI en cours est utilisé 
-            [string/object] add_fields : Champs à insérer 
-            [string] att               : Si 0x1 les champs présent sont remplacés, sinon, les nouveaux champs sont associés aux champs présent (les nouveaux champs remplacent les anciens)
-            [string] anchor            : Optionnel, Ancre à insérer
-        Retourne:
-            [string] Nouvelle URI. null est retourné si l'URI ou un des paramétres est invalide
+        /**
+         * @brief Re-Fabrique une URI
+         * @param string uri               URI à transformer. Si null, l'URI en cours est utilisée
+         * @param string/object add_fields Champs à insérer 
+         * @param string att               Optionnel, si 0x1 est spécifié les champs existants seront remplacés
+         * @param string anchor            Optionnel, Ancre à insérer
+         * @return string Nouvelle URI. null est retourné si l'URI ou un des paramétres est invalide
+         * 
+         * @remarks Par défaut, les champs existants sont conservés. Utilisez le paramètre 'att' pour les remplacer.
         */
         remakeURI: function (uri, add_fields, att, anchor) {
             //
@@ -513,7 +513,7 @@ YUI.add('wfw-uri', function (Y) {
             if ((uri_obj = this.cut(uri)) == null)
                 return null;
 
-            //remplace les champs actuel
+            //remplace les champs actuels
             if (att & 0x1) {
                 if (typeof (add_fields) == "object")
                     uri_obj.query = this.object_to_query(add_fields, true);
@@ -524,14 +524,14 @@ YUI.add('wfw-uri', function (Y) {
                     return null;
                 }
             }
-            //ajoute aux champs actuel
+            //ajoute aux champs actuels
             else {
                 var fields = new Object();
                 if (!empty(uri_obj.query)) {
                     fields = this.query_to_object(uri_obj.query, true);
                 }
                 if (typeof (add_fields) == "string") {
-                    fields = this.query_to_object(add_fields, true);
+                    add_fields = this.query_to_object(add_fields, true);
                 }
                 uri_obj.query = this.object_to_query(object_merge(fields, add_fields));
             }
