@@ -1085,7 +1085,7 @@ class cXMLTemplateAction_exp extends cXMLTemplateAction {
         $next = $node->nextSibling;
 
         //ok? scan le contenu
-        if (($select != null || $target_node != null || is_string($target_str)) && $target_exp) {
+        if (($select != null || $target_node != null || is_string($target_str)) && is_string($target_exp)) {
             if ($target_node !== NULL)
                 $exp_target_value = $target_node->nodeValue;
             else if ($target_str !== NULL)
