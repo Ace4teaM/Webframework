@@ -44,19 +44,43 @@ YUI.add('wfw-xml', function (Y) {
              * Constructeur
              */
         },
-        /*
-            Convertie un document XML en tableau associatif
-            Parametres:
-                    [object] obj     : Tableau associatif des arguments 
-                    [bool]   bencode : true si le texte "text" est encodé au format d'une URI
-            Retourne:
-                    [string] Texte au format XARG
+        
+        /**
+         * @brief Convertie les enfants d'un élément XML en tableau associatif (non-récursif)
+         * @param Y.Node xml_element L'Élément parent à scanner
+         * @param object ar Optionel, tableau associatif à initialiser
+         * @return object Tableau associatif correspondant à l'élément XML
         */
         nodeToArray : function(xml_element)
         {
             var ar = {};
             xml_element.all("> *").each(function(node){
                 ar[node.get("tagName")] = node.get("text");
+            });
+            return ar;
+        },
+    
+        /**
+         * @brief Convertie les enfants d'un élément XML en tableau associatif récursif
+         * @param Y.Node xml_element L'Élément parent à scanner
+         * @param object ar Optionel, tableau associatif à initialiser
+         * @return object Tableau associatif correspondant à l'élément XML
+        */
+        nodeToArrayRecursive : function(xml_element,ar)
+        {
+            //première initialisation ?
+            if(typeof(ar)=="undefined")
+                ar = {};
+            //scan les éléments enfants
+            xml_element.all("> *").each(function(node){
+                var name = node.get("tagName");
+                if(node.one("> *") != null){
+                    //alert(node.one("> *"));
+                    ar[name]={};
+                    wfw.Xml.nodeToArrayRecursive(node,ar[name]);
+                }
+                else
+                    ar[name] = node.get("text");
             });
             return ar;
         },
