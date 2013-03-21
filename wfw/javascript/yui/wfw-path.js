@@ -19,6 +19,11 @@
 YUI.add('wfw-path', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Path
+     * @memberof wfw
+     * @brief Fonctions relatives aux noms de fichiers
+     * */
     wfw.Path = {
 
         /*

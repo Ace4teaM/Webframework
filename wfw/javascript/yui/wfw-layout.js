@@ -18,6 +18,11 @@
 YUI.add('wfw-layout', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Layout
+     * @memberof wfw
+     * @brief Fonctions relatives aux placements visuels des éléments HTML
+     * */
     wfw.Layout = {
         LAYOUT : function(att){
             //OBJECT

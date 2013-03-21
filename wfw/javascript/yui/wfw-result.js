@@ -18,6 +18,11 @@
 YUI.add('wfw-result', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Result
+     * @memberof wfw
+     * @brief Interface de résultat
+     * */
     wfw.Result = {
         Ok      : "ERR_OK",
         Success : "ERR_OK",

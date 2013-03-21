@@ -18,6 +18,11 @@
 YUI.add('wfw-search', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Search
+     * @memberof wfw
+     * @brief Fonction relative à la recherche de textes
+     * */
     wfw.Search = {
         MATCH_WORDS : 0x1,//recherche un mot
         MATCH_LINE : 0x0,//recherche la ligne

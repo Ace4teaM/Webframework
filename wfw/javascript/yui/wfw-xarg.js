@@ -18,6 +18,11 @@
 YUI.add('wfw-xarg', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class XArg
+     * @memberof wfw
+     * @brief Format d'échange: Simple arguments
+     * */
     wfw.XArg = {
         XARG_START_OF_TEXT_CODE : 0x02,
         XARG_END_OF_TEXT_CODE   : 0x03,

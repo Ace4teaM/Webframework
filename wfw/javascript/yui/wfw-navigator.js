@@ -18,6 +18,11 @@
 YUI.add('wfw-navigator', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Navigator
+     * @memberof wfw
+     * @brief Fonctions relatives à la navigation HTTP
+     * */
     wfw.Navigator = {
         use         : true,
         doc         : null,//instance de wfw.Xml.DEFAULT_FILE

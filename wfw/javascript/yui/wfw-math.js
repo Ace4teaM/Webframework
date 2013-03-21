@@ -18,6 +18,11 @@
 YUI.add('wfw-math', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Math
+     * @memberof wfw
+     * @brief Fonctions mathématiques
+     * */
     wfw.Math = {
         //converti un caractere hexadecimale (0-F) en entier numerique
         hex_char_to_int : function(hc) {

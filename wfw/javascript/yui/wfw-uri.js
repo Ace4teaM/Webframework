@@ -18,6 +18,11 @@
 YUI.add('wfw-uri', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class URI
+     * @memberof wfw
+     * @brief Fonctions relatives aux adresses web (URI)
+     * */
     wfw.URI = {
         /*
             Classe Adresse (URI)
@@ -203,7 +208,7 @@ YUI.add('wfw-uri', function (Y) {
         /**
          * @brief Convertie un tableau associatif en chaine de paramètres 'Query' sans le séparateur '?'
          * @param object querytab   Tableau associatif des paramètres
-         * @parama bool  bencode    Si true, encode les paramètres
+         * @param bool  bencode    Si true, encode les paramètres
          * @return string La chaine de paramètres
         */
         object_to_query: function (querytab, bencode) {

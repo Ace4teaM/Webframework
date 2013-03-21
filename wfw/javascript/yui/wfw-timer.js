@@ -18,6 +18,11 @@
 YUI.add('wfw-timer', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Timer
+     * @memberof wfw
+     * @brief Gestionnaire de temps
+     * */
     wfw.Timer = {
         /*
          * Globals

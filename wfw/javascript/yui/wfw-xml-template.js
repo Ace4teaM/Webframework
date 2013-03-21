@@ -18,12 +18,11 @@
 YUI.add('wfw-xml-template', function (Y) {
     var wfw = Y.namespace('wfw');
 
-    /*
-    -----------------------------------------------------------------------------------------------
-        Template
-            Template dynamique.
-    -----------------------------------------------------------------------------------------------
-    */
+    /**
+     * @class Template
+     * @memberof wfw
+     * @brief Template XML
+     * */
     wfw.Template = {
         /*
         Insert une copie d'un template dans le document en cours

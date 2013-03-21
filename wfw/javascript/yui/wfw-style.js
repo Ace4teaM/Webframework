@@ -18,6 +18,11 @@
 YUI.add('wfw-style', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Style
+     * @memberof wfw
+     * @brief Gestionnaire de style CSS
+     * */
     wfw.Style = {
         /*
 	        Vérifie si l'élément est attaché à une classe donnée

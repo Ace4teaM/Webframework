@@ -19,6 +19,11 @@
 YUI.add('wfw-event', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Event
+     * @memberof wfw
+     * @brief Gestionnaire d'événements
+     * */
     wfw.Event = {
         /*
         Tableaux des listes d'événements

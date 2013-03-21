@@ -19,6 +19,11 @@
 YUI.add('wfw-utils', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Utils
+     * @memberof wfw
+     * @brief Fonctions utiles
+     * */
     wfw.Utils = {
         /*
             Obtient le prochain Element par son nom de balise

@@ -15,9 +15,15 @@
     Implementation: [11-10-2012] 
 */
 
+
 YUI.add('wfw-request', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Request
+     * @memberof wfw
+     * @brief Gestionnaire de requêtes HTTP
+     * */
     wfw.Request = {
         
         /*
@@ -37,55 +43,62 @@ YUI.add('wfw-request', function (Y) {
         READYSTATE_DONE             : 4,
 
         /**
-            Classe Requête
-        
-            Implémente:
-                WFW.OBJECT
-            Membres:
-                [string] name              : Identificateur de la requête
-                [string] url               : URL cible de la requête
-                [object] args              : Tableau associatif des arguments, contient des champs de types 'string' et/ou 'wfw.HTTP_REQUEST_PART' (voir exemples)
-                [string] response_header   : Reçoit les en-têtes de la réponse HTTP
-                [string] response          : Reçoit la réponse (texte)
-                [string] response_obj      : Reçoit la réponse (objet). null si indisponible
-                [function] callback        : Fonction de rappel (voir exemples)
-                [mixed]  user              : Données utilisateur passé au 'callback'
-                [string] status            : Reçoit le statut de la requête ("wait", "exec", ou [HTML Status Code])
-                [bool]   remove_after_exec : Si true, supprime la requête après l'exécution
-                [bool]   async             : Si true, la requête est exécuté de façon ASynchrone, sinon synchrone
-            Remarques:
-                Callbacks prédéfinit disponibles:
-                    wfw.utils.onCheckRequestResult_XARG : Test le résultat d'une requête Webframework/XARG et retourne les arguments
-                    wfw.utils.onCheckRequestResult_XML  : Test le résultat d'une requête Webframework/XML et retourne le document
-                    wfw.utils.onCheckRequestResult      : Test le statut d'une requête HTTP et retourne la réponse
-            Exemple:
-                // Utilisation du callback
-                var callback = function(obj){
-                    switch(obj.status){
-                        case "wait":
-                            // requête en attente d'execution 
-                            wfw.puts("requête en attente d'execution ");
-                            break;
-                        case "exec":
-                            // requête en cours d'execution 
-                            wfw.puts("requête en cours d'execution ");
-                            break;
-                        case 200:
-                            // requête executée
-                            wfw.puts(obj.response);
-                            break;
-                        case 400:
-                            alert("Requête indisponible");
-                            break;
-                        default:
-                            //autres status...
-                            wfw.puts("autres status ("+obj.status+")");
-                            break;
-                    }
-                }
-            Exemple:
-                //exemple d'intialisation d'arguments
-                my_request.args={
+         * @class REQUEST
+         * @brief Classe d'une requête HTTP
+         * @memberof Request
+         * @implements OBJECT
+         * 
+         * @param name              [string]   Identificateur de la requête
+         * @param url               [string]   URL cible de la requête
+         * @param args              [object]   Tableau associatif des arguments, contient des champs de types 'string' et/ou 'wfw.HTTP_REQUEST_PART' (voir exemples)
+         * @param response_header   [string]   Reçoit les en-têtes de la réponse HTTP
+         * @param response          [string]   Reçoit la réponse (texte)
+         * @param response_obj      [string]   Reçoit la réponse (objet). null si indisponible
+         * @param callback          [function]   Fonction de rappel (voir exemples)
+         * @param user              [mixed]   Données utilisateur passé à la fonction de rappel \p callback
+         * @param status            [int/string]   Reçoit le statut de la requête ("wait", "exec", ou [HTML Status Code])
+         * @param remove_after_exec [bool]   Si true, supprime la requête après l'exécution
+         * @param async             [bool]   Si true, la requête est exécuté de façon ASynchrone, sinon synchrone
+         * 
+         * @see XArg.onCheckRequestResult
+         * @see Xml.onCheckRequestResult
+         * @see Request.onCheckRequestResult
+         * 
+         * @page request Utilisation de l'objet Request
+         * @tableofcontents
+         * hello
+         * @section samples Exemples
+         * @subsection sample_callback Exemple d'implémentation de la fonction de callback
+         * @code{.js}
+            // Utilisation du callback
+            var callback = function(obj){
+               switch(obj.status){
+                   case "wait":
+                      // requête en attente d'execution 
+                       wfw.puts("requête en attente d'execution ");
+                       break;
+                   case "exec":
+                       // requête en cours d'execution 
+                       wfw.puts("requête en cours d'execution ");
+                   break;
+                   case 200:
+                       // requête executée
+                       wfw.puts(obj.response);
+                       break;
+                   case 400:
+                       alert("Requête indisponible");
+                       break;
+                   default:
+                       //autres status...
+                       wfw.puts("autres status ("+obj.status+")");
+                       break;
+               }
+            }
+         * @endcode
+         * @subsection sample_args Exemple d'intialisation d'arguments
+         * @code{.js}
+                var args = {
+                    // paramètre avec en-tête HTTP
                     param_1 : new wfw.HTTP_REQUEST_PART( {
                         headers: [
                             'Content-Disposition: form-data; name="param_1"',
@@ -93,14 +106,16 @@ YUI.add('wfw-request', function (Y) {
                         ],
                         data: "value"
                     }),
+                    // paramètres simples
                     param_2 : "value",
                     param_n : "value"
                 };
+        * @endcode
         */
         REQUEST : function(att){
             //OBJECT
             this.ns                = "wfw_request";
-            //
+            //REQUEST
             this.name              = null;
             this.url               = "";
             this.args              = null;
@@ -174,14 +189,14 @@ YUI.add('wfw-request', function (Y) {
         },
 
         /**
-        Ajoute un objet de requête
-
-        Paramètres:
-            [REQUEST] action : Objet de la requête
-        Retourne:
-            [REQUEST] L'Objet de la requête
-        Remarques:
-            Si la requête existe, elle est remplacé.
+        * @fn REQUEST Insert(action)
+        * @brief Ajoute un objet de requête
+        * @memberof Request
+        *
+        * @param REQUEST action Objet de la requête
+        * @return REQUEST L'Objet de la requête passé en argument
+        * 
+        * @remarks Si la requête existe, elle est remplacé
         */
         Insert: function (action) {
             // la requete existe ?
@@ -212,7 +227,9 @@ YUI.add('wfw-request', function (Y) {
         insert : this.Insert,//naming convention
 
         /**
-        * Ajoute une requête
+        * @fn REQUEST Add(name, url, arg, callback, user_data, async)
+        * @brief Ajoute une requête
+        * @memberof Request
         *
         * Parametres:
         * @param    [string]        name      : Identificateur de requete. Si null, un identifiant unique sera généré

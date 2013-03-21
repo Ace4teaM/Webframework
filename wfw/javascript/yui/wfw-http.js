@@ -19,6 +19,11 @@
 YUI.add('wfw-http', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class HTTP
+     * @memberof wfw
+     * @brief Fonctions de base des requêtes HTTP
+     * */
     wfw.HTTP = {
         /*
          * Globals

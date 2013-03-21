@@ -19,6 +19,11 @@
 YUI.add('wfw-form', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class Form
+     * @memberof wfw
+     * @brief Manipulation des formulaires HTML
+     * */
     wfw.Form = {
         /**
          *

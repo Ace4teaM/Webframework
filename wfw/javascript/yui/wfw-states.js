@@ -18,6 +18,11 @@
 YUI.add('wfw-states', function (Y) {
     var wfw = Y.namespace('wfw');
     
+    /**
+     * @class States
+     * @memberof wfw
+     * @brief Gestionnaire d'objets
+     * */
     wfw.States = {
         /*
         * Données 

@@ -22,10 +22,31 @@
 YUI.add('wfw', function (Y) {
     var wfw = Y.namespace('wfw');
     
-    object_merge(wfw, {
-        
-        /*
-            Classe Objet
+    /**
+     * @class wfw
+     * @memberof Y
+     * @brief Classe mére de la librairie Webframework
+     * 
+     *  */
+    var tmp = {
+        /**
+         * @fn OBJECT createObject(att)
+         * @brief Construit un nouvel objet
+         * @memberof wfw
+         * 
+         * @param att [object] Attributs de l'objet
+         * @return Instance de la classe OBJECT
+        */
+        createObject : function(att){
+            return new this.OBJECT(att);
+        },
+        /**
+         * @class OBJECT
+         * @brief Classe d'un objet de base
+         * @memberof wfw
+         * 
+         * @param id [string] Identificateur de l'instance
+         * @param ns [string] Espace de nommage
         */
         OBJECT : function(att){
             this.id;// Identificateur de l'instance
@@ -198,7 +219,8 @@ YUI.add('wfw', function (Y) {
         copyright: "(C)2010-2012 AceTeaM. All rights reserved.", // empty function
         url: "http://www.aceteam.org"
 
-    },false);
+    };
+    object_merge(wfw,tmp,false);
 
 }, '1.0', {
     requires:['base','wfw-states']

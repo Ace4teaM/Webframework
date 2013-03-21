@@ -31,7 +31,17 @@ var XML_NOTATION_NODE = 12;
 YUI.add('wfw-xml', function (Y) {
     var wfw = Y.namespace('wfw');
 
+    /**
+     * @class Xml
+     * @memberof wfw
+     * @brief XML interface
+     * */
     wfw.Xml = {
+        /**
+         * @class DEFAULT_FILE
+         * @memberof Xml
+         * @brief Fichier default
+         * */
         DEFAULT_FILE : function()
         {
             //OBJECT
@@ -46,9 +56,10 @@ YUI.add('wfw-xml', function (Y) {
         },
         
         /**
+         * @fn object nodeToArray(xml_element)
+         * @memberof Xml
          * @brief Convertie les enfants d'un élément XML en tableau associatif (non-récursif)
-         * @param Y.Node xml_element L'Élément parent à scanner
-         * @param object ar Optionel, tableau associatif à initialiser
+         * @param xml_element [Node] L'Élément parent à scanner
          * @return object Tableau associatif correspondant à l'élément XML
         */
         nodeToArray : function(xml_element)
@@ -61,8 +72,10 @@ YUI.add('wfw-xml', function (Y) {
         },
     
         /**
+         * @fn object nodeToArrayRecursive(xml_element,ar)
+         * @memberof Xml
          * @brief Convertie les enfants d'un élément XML en tableau associatif récursif
-         * @param Y.Node xml_element L'Élément parent à scanner
+         * @param xml_element [Node] L'Élément parent à scanner
          * @param object ar Optionel, tableau associatif à initialiser
          * @return object Tableau associatif correspondant à l'élément XML
         */
@@ -85,6 +98,8 @@ YUI.add('wfw-xml', function (Y) {
             return ar;
         },
         /**
+         * @fn void onCheckRequestResult(obj)
+         * @memberof Xml
          * @brief Traite le résultat d'une requête XML via wfw.Request
          * @param object obj L'Objet wfw.Request.REQUEST
          * @remarks Cette fonction est un callback, elle doit être utilisée en paramètre de l'objet wfw.Request.REQUEST
@@ -166,6 +181,13 @@ YUI.add('wfw-xml', function (Y) {
     * DEFAULT_FILE Class Implementation
     *-----------------------------------------------------------------------------------------------------------------------*/
 
+    /**
+     * @fn object Initialise(doc)
+     * @memberof DEFAULT_FILE
+     * @brief Initialise le document
+     * @param string/object doc Document de base
+     * @return bool Résultat de la procédure
+    */
     wfw.Xml.DEFAULT_FILE.prototype.Initialise = function(doc)
     {
         //Initialise les membres
@@ -195,25 +217,33 @@ YUI.add('wfw-xml', function (Y) {
         return true;
     };
 
-    /*
-    Obtient un noeud de l'index des modules (obselete, utiliser getConfigNode)
-    Arguments:
-        [string] id   : identificateur du module. Si null, retourne le premier noeud 
-    Retourne:
-        [XMLElement] Noeud trouve, null si introuvable
+    /**
+     * @deprecated utiliser getConfigNode
+     * 
+     * @fn XMLElement getModuleConfigNode(id)
+     * @memberof DEFAULT_FILE
+     * 
+     * @brief Obtient un noeud de l'index des modules
+     * @param string id Identifiant du module
+     * @return Noeud correspondant au module
+     * @retval Y.Node Noeud de l'élément trouvé
+     * @retval null L'Elément est introuvable
     */
     wfw.Xml.DEFAULT_FILE.prototype.getModuleConfigNode = function(id)
     {
         return this.getConfigNode("module",id);
     };
 
-    /*
-    Obtient un noeud de la configuration
-    Arguments:
-            [string] type : nom de balise de l'élément enfant
-            [string] id   : identificateur du module. Si null, retourne le premier noeud 
-    Retourne:
-        [XMLElement] Noeud trouve, null si introuvable
+    /**
+     * @fn XMLElement getConfigNode(type,id)
+     * @memberof DEFAULT_FILE
+     * 
+     * @brief Obtient un noeud de la configuration
+     * @param string type Nom de balise de l'élément enfant
+     * @param string id Identifiant du module. Si null, retourne le premier noeud est utilisé
+     * @return Noeud correspondant au module
+     * @retval Y.Node Noeud de l'élément trouvé
+     * @retval null L'Elément est introuvable
     */
     wfw.Xml.DEFAULT_FILE.prototype.getConfigNode = function(type,id)
     {
