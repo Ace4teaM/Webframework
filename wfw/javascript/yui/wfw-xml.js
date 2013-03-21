@@ -59,6 +59,82 @@ YUI.add('wfw-xml', function (Y) {
                 ar[node.get("tagName")] = node.get("text");
             });
             return ar;
+        },
+        /**
+         * @brief Traite le résultat d'une requête XML via wfw.Request
+         * @param object obj L'Objet wfw.Request.REQUEST
+         * @remarks Cette fonction est un callback, elle doit être utilisée en paramètre de l'objet wfw.Request.REQUEST
+         * 
+         * @code{.js}
+         * // Paramètres utilisateurs à passer à la fonction wfw.Request.Add:
+         * var param = {
+         *      no_result : false,                   // Si spécifié, le contenu du fichier est retourné sans traitement des erreurs
+         *      no_msg    : true,                    // Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
+         *      onsuccess : function(obj,xml_doc){}, // Optionnel, callback en cas de succès
+         *      onfailed  : function(obj,xml_doc){}, // Optionnel, callback en cas de échec
+         *      onerror   : function(obj){},         // Optionnel, callback en cas d'erreur de transmition de la requête
+         *      wfw_form_name : "formName"           // Optionnel, nom associé à l'élément FORM recevant les données de retours
+         * };
+         * @endcode
+         * 
+         * @verbatim
+         * La variable xml_doc des callbacks onsuccess() et onfailed() passe le document XML en objet 
+         * onCheckRequestResult() reçoit un format XML en réponse, il convertie en objet puis traite le résultat:
+         * - En cas d'erreur, l'erreur est traité et affiché par la fonction wfw.Document.showRequestMsg (voir documentation)
+         * - En cas d'echec, l'erreur est traité et affiché par la fonction wfw.Form.onFormResult (voir documentation)
+         * [Le nom du formulaire HTML utilisé pour le résultat est définit par l'argument 'wfw_form_name' (si définit), sinon le nom de l'objet de requête]
+         * @endverbatim
+         */
+        onCheckRequestResult: function (obj) {
+            var bErrorFunc = 0;
+            var bSuccessFunc = 0;
+            var bFailedFunc = 0;
+            var bCheckResult = 1;
+
+            if (obj.user != null) {
+                bCheckResult = (typeof (obj.user["no_result"]) != "undefined") ? 0 : 1;
+                bErrorFunc = (typeof (obj.user["onerror"]) == "function") ? 1 : 0;
+                bSuccessFunc = (typeof (obj.user["onsuccess"]) == "function") ? 1 : 0;
+                bFailedFunc = (typeof (obj.user["onfailed"]) == "function") ? 1 : 0;
+            }
+
+            if (!wfw.Request.onCheckRequestStatus(obj))
+                return;
+
+            //convertie le document
+            var xml_doc = xml_parse(obj.response);
+            if (xml_doc == null) {
+                wfw.Document.showRequestMsg(obj, "Document XML mal formé", obj.response);
+                if (bErrorFunc)
+                    obj.user.onerror(obj);
+                return;
+            }
+            var xml_root = Y.Node(xml_doc.documentElement);
+
+            //callback
+            if (bCheckResult) {
+                var result = xml_root.one("result");
+                var info = xml_root.one("info");
+                if (result != null) {
+                    var args =
+                    {
+                        result: result.get('text'),
+                        info: ((info != null) ? info.get('text') : "")
+                    };
+                    if (args.result != "ERR_OK") {
+                        //message
+                        var result_form_id = ((typeof obj.args["wfw_form_name"] == "string") ? obj.args.wfw_form_name : obj.name);
+                        wfw.Form.onFormResult(result_form_id, args, obj);
+
+                        //failed callback
+                        if (bFailedFunc)
+                            obj.user.onfailed(obj, xml_doc);
+                    }
+                    return;
+                }
+            }
+            if (bSuccessFunc)
+                obj.user.onsuccess(obj, xml_doc);
         }
     };
     
