@@ -1221,6 +1221,13 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
 
         $name = $node->getAttributeNS($input->wfw_template_uri, "name");
         
+        // si le nom est précédé de '!', l'action réussie si l'item n'existe pas
+        $not_exist = false;
+        if($name[0]=='!'){//negtive
+            $name = substr($name,1);
+            $not_exist = true;
+        }
+        
         //clean
         $input->clean_attributes($node);
 
@@ -1228,7 +1235,17 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
         $next = $node->nextSibling;
 
         //ok? scan le contenu
-        if (!empty($name) && isset($arg[$name])) {
+        if (!empty($name) && $not_exist && !isset($arg[$name])) {
+            $arg['__inner_text__'] = "";
+
+            $input->post("cXMLTemplateAction_select", "attribut ok, ajoute et scan le contenu.");
+
+            //scan le contenu avec la nouvelle selection   
+            if ($node->firstChild != NULL)
+                $input->check_node($select, $node->firstChild, $arg);
+        }
+        //ok? scan le contenu
+        else if (!empty($name) && !$not_exist && isset($arg[$name])) {
             $arg['__inner_text__'] = $arg[$name];
 
             $input->post("cXMLTemplateAction_select", "attribut ok, ajoute et scan le contenu.");
