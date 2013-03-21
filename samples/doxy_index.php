@@ -17,7 +17,7 @@ $attributes = array();
 
 //transforme le fichier
 if(!$template->Initialise(
-        $app->getRootPath().'/view/doxyindex.html',
+        $app->getRootPath().'/view/doxy_index.html',
         NULL,
         $select,
         NULL,

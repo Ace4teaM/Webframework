@@ -413,6 +413,13 @@ class cApplication implements iApplication{
     }
     
     /**
+     * @brief Evenement appellé par la méthode makeXMLView
+     */
+    function onMakeXMLTemplate(&$template,&$select,&$attributes)
+    {
+    }
+    
+    /**
      * @brief Fabrique une vue XML/XHTML
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
@@ -436,7 +443,9 @@ class cApplication implements iApplication{
 
         //ajoute le fichier de globals
         $template->push_xml_file('template.xml',$this->template_attributes_xml);
-
+        
+        $this->onMakeXMLTemplate($template,$select,$attributes);
+        
         //initialise la classe template 
         if(!$template->Initialise(
                     $template_file,

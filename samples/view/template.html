@@ -22,6 +22,7 @@
         <script type="text/javascript" language="javascript" src="-{_LIB_PATH_YUI_}/yui/yui-min.js"></script>
         <script type="text/javascript" language="javascript" src="-{_LIB_PATH_WFW_}/javascript/yui/yui_config.js"></script>
         <script type="text/javascript">var wfw_yui_base_path = "-{_LIB_PATH_WFW_}/javascript/yui/";</script>
+        <script type="text/javascript" language="javascript" src="js/app.js"></script>
 
         <!-- header -->
         <style type="text/css" template:action="merge" template:path=":header.xml:head>style"></style>
@@ -55,6 +56,8 @@
                 maring:0;
             }
             #header{
+                position:relative;
+                height:185px;
                 display:table-row;
             }
             #middle{
@@ -62,6 +65,8 @@
                 background-color:#ffffff;
             }
             #footer{
+                position:relative;
+                height:310px;
                 display:table-row;
             }
         </style>
@@ -72,7 +77,7 @@
         <div id="container">
             <div id="header">
                 <!-- header -->
-                <div id="header_layout" style="position:relative; height:185px;" template:action="include" template:path=":header.xml:body>div"></div></div>
+                <div id="header_layout" style="position:relative;" template:action="include" template:path=":header.xml:body>div"></div></div>
             <div id="middle">
                 <!-- content -->
                 <div id="content" template:action="merge" template:path=">body"></div>
@@ -80,7 +85,7 @@
             </div>
             <div id="footer">
                 <!-- footer -->
-                <div id="footer_layout" style="position:relative; height:310px;" template:action="include" template:path=":footer.xml:body>div"></div></div>
+                <div id="footer_layout" style="position:relative;" template:action="include" template:path=":footer.xml:body>div"></div></div>
 
         </div>
     </body>
