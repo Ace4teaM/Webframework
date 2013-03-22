@@ -121,19 +121,6 @@ class cApplication implements iApplication{
         //( la fonction getHostName initialise l'instance si besoin )
         $this->hostname = NULL;
         
-        // Configuration par défaut
-        /*$this->config = array(
-            "TMP_DIR" => "tmp",
-            "UPLOAD_DIR" => "tmp"
-        );
-        array_merge($this->config, parse_ini_file($this->root_path."/cfg/config.ini", true));*/
-        
-        // Charge la configuration
-        //$this->config = parse_ini_file($this->root_path."/cfg/config.ini", true);
-        $this->config = array_change_key_case($this->config, CASE_UPPER);
-        foreach($this->config as $section=>&$params)
-            $params = array_change_key_case($params, CASE_UPPER);
-        
         //ajoute les chemins d'accès aux attributs de template
         $path_section = $this->getCfgSection("path");
         if(isset($path_section)){
