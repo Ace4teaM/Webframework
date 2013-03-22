@@ -318,7 +318,7 @@ wfw.ext.tabMenu = {
         //options
         var att = {
             remove:"after", // (after|before) Sens de recherche
-            removeRef:false, //(true|false) Supprime la reference 'tabRef'
+            removeRef:false //(true|false) Supprime la reference 'tabRef'
         };
         if(typeof(options)!="undefined")
             att=object_merge(att,options);

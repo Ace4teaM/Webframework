@@ -250,6 +250,7 @@ YUI.add('wfw-request', function (Y) {
         **/
         Add: function (name, url, arg, callback, user_data, async) {
 
+
             // fabrique l'objet
             var action = new wfw.Request.REQUEST( {
                 name              : name,

@@ -43,8 +43,8 @@ YUI.add('wfw-result', function (Y) {
             //OBJECT
             this.ns            = "wfw_result";
             //
-            this.error         = 0;
-            this.error_str     = "no_error";
+            this.result        = "ERR_OK";
+            this.error         = "SUCCESS";
             this.args          = null;
 
             /*
@@ -57,9 +57,9 @@ YUI.add('wfw-result', function (Y) {
          * Crée un objet résultat depuis un objet X-Argument
          **/
         fromXArg : function(xarg_object){
-            return new wfw.Request.RESULT({
+            return new wfw.Result.RESULT({
+                result:xarg_object.result, 
                 error:xarg_object.error, 
-                error_str:xarg_object.error_str, 
                 args:xarg_object
             });
         },
@@ -68,7 +68,12 @@ YUI.add('wfw-result', function (Y) {
          * Crée un objet résultat depuis un objet XML
          **/
         fromXML : function(xml_object){
-            return null;
+            var obj = wfw.Xml.nodeToArray(xml_object);
+            return new wfw.Result.RESULT({
+                result:obj.result, 
+                error:obj.error, 
+                args:obj
+            });
         }
     };
     
@@ -83,6 +88,29 @@ YUI.add('wfw-result', function (Y) {
         return (typeof(this.args)!=null && typeof(this.args[name])!="undefined" ? this.args[name] : "");
     };
     
+    //retourne la valeur d'un argument
+    wfw.Result.RESULT.prototype.getError = function(){
+        if(this.args && typeof(this.args.txt_error))
+            return this.args.txt_error;
+        return this.error;
+    };
+    
+    //retourne la valeur d'un argument
+    wfw.Result.RESULT.prototype.getResult = function(){
+        if(this.args && typeof(this.args.txt_result))
+            return this.args.txt_result;
+        return this.result;
+    };
+    
+    //retourne la valeur d'un argument
+    wfw.Result.RESULT.prototype.getMessage = function(){
+        if(this.args && typeof(this.args.txt_message))
+            return this.args.txt_message;
+        if(this.args && typeof(this.args.message))
+            return this.args.message;
+        return "";
+    };
+    
 }, '1.0', {
-    requires:['base']
+    requires:['base', 'wfw-xml']
 });
