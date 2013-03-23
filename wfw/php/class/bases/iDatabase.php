@@ -87,6 +87,15 @@ interface iDatabase {
     public function execute($query,&$result);
     
     /**
+     * @brief Convertie un objet PHP en type SQL
+     * 
+     * @param  mixed  $value  Objet à convertir
+     * 
+     * @return string Valeur comptatible avec le type SQL correspondant
+     */
+    public static function parseValue($value);
+    
+    /**
      * @brief Extrait une valeur du résultat en cours
      * 
      * @param  string  $result        Objet de résultat. Si NULL, le dernier résultat en cours est utilisé

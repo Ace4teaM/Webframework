@@ -26,12 +26,13 @@
 
 class cInput {
 
-    const EmptyText     = "EMPTY_TEXT";
-    const InvalidChar   = "INVALID_CHAR";
-    const InvalidFormat = "INVALID_FORMAT";
-    const InvalidRange  = "INVALID_RANGE";
-    const Oversized     = "OVERSIZED";
-    const Undersized    = "UNDERSIZED";
+    const EmptyText      = "EMPTY_TEXT";
+    const InvalidChar    = "INVALID_CHAR";
+    const InvalidFormat  = "INVALID_FORMAT";
+    const InvalidRange   = "INVALID_RANGE";
+    const Oversized      = "OVERSIZED";
+    const Undersized     = "UNDERSIZED";
+    const TooSmallString = "TOO_SMALL_STRING";
 
     /**
      * @brief Vérifie la validité du format d'un champ

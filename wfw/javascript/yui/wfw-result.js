@@ -111,6 +111,13 @@ YUI.add('wfw-result', function (Y) {
         return "";
     };
     
+    //retourne la valeur d'un argument
+    wfw.Result.RESULT.prototype.toString = function(){
+        return ("Result: "+this.getResult()
+                +"; "+this.getError()
+                +"; "+this.getMessage());
+    };
+    
 }, '1.0', {
     requires:['base', 'wfw-xml']
 });

@@ -69,10 +69,7 @@ class cDataBasePostgres implements iDatabase {
                 //ajoute la virgule si besion
                 $req .= ($i ? "," : '');
                 //ajoute la valeur
-                if(is_null($arg_list[$i]))
-                    $req .= "NULL"; //echaper les apostrophes
-                else
-                    $req .= "'" . pg_escape_string($arg_list[$i]) . "'"; //echaper les apostrophes
+                $req .= "'" . pg_escape_string(cDataBasePostgres::parseValue($arg_list[$i])) . "'"; //echaper les apostrophes
             }
         }
 
@@ -86,6 +83,19 @@ class cDataBasePostgres implements iDatabase {
         return RESULT_OK();*/
     }
 
+    /**
+     * @copydoc iDatabase::parseValue
+     */
+    public static function parseValue($value){
+        if(is_null($value))
+            return "NULL";
+        if(is_string($value))
+            return $value;
+        if($value instanceof DateTime)
+            return $value->format("Y-m-d H:i:s");
+        return "".$value;
+    }
+    
     /**
      * @copydoc iDatabase::execute
      */

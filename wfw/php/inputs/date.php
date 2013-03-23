@@ -11,19 +11,33 @@ require_once("$libdir/php/class/bases/input.php");
  */
 class cInputDate extends cInput {
 
-    public static function isValid($value) {
+    public static function isValid($value/*,&$output*/) {
         if (empty($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
 
-        return RESULT_OK();
+        $fmt = cInputDate::regExp();
+        foreach($fmt as $fmt=>$regex){
+            if (preg_match($regex, $value, $matches)){
+                /*$output = new DateTime($value);*/
+                return RESULT_OK();
+            }
+        }
+
+        return RESULT(cResult::Failed, cInput::InvalidFormat);
     }
 
     public static function toObject($string) {
-        return date('d-m-Y', strtotime($string));
+        $date = new DateTime ($string);
+        return $date;
     }
     
     public static function regExp() {
-        return '.*';
+        $sep = '[\-\/\\\s]';
+        
+        return array(
+            "DMY"=>"/^([0-9]{1,2})$sep([0-9]{1,2})$sep([0-9]+)$/",
+            "YMD"=>"/^([0-9]+)$sep([0-9]{1,2})$sep([0-9]{1,2})$/"
+        );
     }
 
     public static function getMaxLength() {
