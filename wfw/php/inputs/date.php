@@ -18,6 +18,10 @@ class cInputDate extends cInput {
         return RESULT_OK();
     }
 
+    public static function toObject($string) {
+        return date('d-m-Y', strtotime($string));
+    }
+    
     public static function regExp() {
         return '.*';
     }

@@ -21,6 +21,10 @@ class cInputFloat extends cInput
 	public static function regExp(){
 		return '(?:[1-9]{1}[0-9]*)(?:[\.\,][0-9]*)?';
 	}
+        public static function toObject($string) {
+            return floatval($string);
+        }
+
 	public static function getMaxLength(){
 		return 128;
 	}

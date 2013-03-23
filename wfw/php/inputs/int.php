@@ -57,6 +57,10 @@ class cInputInteger extends cInput {
         return RESULT_OK();
     }
 
+    public static function toObject($string) {
+        return intval($string);
+    }
+
     public static function regExp() {
         return '0|[1-9]{1}[0-9]*';
     }

@@ -22,6 +22,11 @@ class cInputNumeric extends cInput {
         return RESULT_OK();
     }
 
+    public static function toObject($string) {
+        if(strstr($string, ",."))
+            return cInputFloat::toObject($string);
+        return cInputInteger::toObject($string);
+    }
     public static function regExp() {
         return cInputInteger::regExp() . '|' . cInputFloat::regExp();
     }
