@@ -36,6 +36,9 @@ class cInputBool extends cInput
 	public static function getMaxLength(){
 		return 128;
 	}
+	public static function toObject($value){
+		return cInputBool::toBool($value);
+	}
 	//extra
 	public static function toBool($value){
 		switch(strtolower($value)){

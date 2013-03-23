@@ -62,6 +62,13 @@ class cInput {
         return 0;
     }
 
+    /**
+     * @brief Convertie une chaine en objet PHP
+     * @return Objet ou chaine
+     */
+    public static function toObject($value){
+        return $value;
+    }
 }
 
 ?>

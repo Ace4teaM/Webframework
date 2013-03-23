@@ -13,12 +13,14 @@ class cInputFields {
     const MsgInvalidInput = "INPUT_MSG_INVALID_FIELD";
 
     /*
-     * @brief Check format of inputs fields
-     * @return Result success boolean
-     * @retval true Function succed, all input fields is valid
-     * @retval false Function failed, check cResult::getLast() for more informations
+     * @brief Test les formats d'un tableau de champs
+     * @param array $required_arg  Liste des défintions de champs requis. Si NULL, aucun.
+     * @param array $optionnal_arg Liste des défintions de champs optionnels. Si NULL, aucun.
+     * @param array $fields        Tableau associatif des valeurs de champs. Si NULL, $_REQUEST est utilisé
+     * @param array $output        Référence sur l'objet recevant l'ensemble des valeurs converties en objets PHP 
+     * @return bool Succès de la procédure. Voir cResult::getLast() pour plus d'informations le résultat
      */
-    public static function checkArray($required_arg, $optionnal_arg=NULL, $fields=NULL) {
+    public static function checkArray($required_arg, $optionnal_arg=NULL, $fields=NULL, &$output=NULL) {
 
         if($fields===NULL && isset($_REQUEST))
             $fields = $_REQUEST;
@@ -27,8 +29,8 @@ class cInputFields {
         if($fields===NULL)
             return RESULT(cInputFields::NoInputFileds);
 
-        //verifie les elements requis...
-        //ils doivent existés, etre valide et ne pas etre une chaine vide
+        //vérifie les elements requis...
+        //ils doivent existés, être valide et ne pas être une chaine vide
         if (is_array($required_arg)) {
             foreach ($required_arg as $arg_name => $arg_type) {
                 //existe?
@@ -59,6 +61,26 @@ class cInputFields {
                     }
                 }
             }
+        }
+
+        //convertie les valeurs en objets ?
+        if(is_array($output))
+        {
+            $all = array_merge(
+                    is_array($optionnal_arg) ? $optionnal_arg : array(),
+                    is_array($required_arg) ? $required_arg : array()
+            );
+            if (is_array($all)) {
+                foreach ($all as $arg_name => $arg_type) {
+                    //existe ?
+                    if (isset($fields[$arg_name]) && !empty($fields[$arg_name]) && !empty($arg_type))
+                        $all[$arg_name] = $arg_type::toObject($fields[$arg_name]);
+                    else
+                        $all[$arg_name] = NULL;
+                }
+            }
+            $output = (object) $all;
+ //           print_r($output);
         }
 
         //ok
