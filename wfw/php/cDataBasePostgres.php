@@ -69,10 +69,9 @@ class cDataBasePostgres implements iDatabase {
                 //ajoute la virgule si besion
                 $req .= ($i ? "," : '');
                 //ajoute la valeur
-                $req .= "'" . pg_escape_string(cDataBasePostgres::parseValue($arg_list[$i])) . "'"; //echaper les apostrophes
+                $req .= cDataBasePostgres::parseValue($arg_list[$i]); //echaper les apostrophes
             }
         }
-
         $result = new cDataBaseQueryPostgres("select * from $schema.$func($req);", $this);
         return $result->execute();
         /*
@@ -89,11 +88,9 @@ class cDataBasePostgres implements iDatabase {
     public static function parseValue($value){
         if(is_null($value))
             return "NULL";
-        if(is_string($value))
-            return $value;
         if($value instanceof DateTime)
             return $value->format("Y-m-d H:i:s");
-        return "".$value;
+        return "'".pg_escape_string($value)."'";
     }
     
     /**
