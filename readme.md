@@ -5,6 +5,12 @@
 -   Mail   : dev@aceteam.org
 
 ---------------------------------------------------------------------------------------------------------------------------------------
+ Quoi de neuf ?
+---------------------------------------------------------------------------------------------------------------------------------------
+- Transtypage automatique du model de données entre PHP et le SGBD
+- Nouveau script d'archivage. Permet d'exporter des archives par nom de tag
+
+---------------------------------------------------------------------------------------------------------------------------------------
  BUG et comportements hasardeux à resoudre
 ---------------------------------------------------------------------------------------------------------------------------------------
 - `wfw.http.get()`                   [IE9] Ajoute un parametre supplementaire sur l'URL pour ignorer la prise en compte du cache
@@ -13,12 +19,6 @@
 - `date()`                           Ne retourne pas tous les types de formats supportés par la version PHP
 - `cXMLTemplate.merge_arguments()`   [IE9] Lors d'une action "merge" si un attribut est définit vide (ex: style="") il n'est pas definit dans Javascript par le navigateur (utilisez par exemple `style="color:inherit;"` pour le rendre non vide et sans effet)
 - `wfw.Template.makeDoc()`           [IE9] Le chargement échoue si le doctype du document n'est pas de type XML (ex: HTML, XHTML, etc...)
-
-
----------------------------------------------------------------------------------------------------------------------------------------
- Quoi de neuf ?
----------------------------------------------------------------------------------------------------------------------------------------
-- Les données du model de données sont maintenant typés avec PHP 
 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
