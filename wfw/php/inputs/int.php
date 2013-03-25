@@ -63,7 +63,7 @@ class cInputInteger extends cInput {
     }
 
     public static function regExp() {
-        return '0|[1-9]{1}[0-9]*';
+        return '(?:0|[1-9]{1}[0-9]*)';
     }
 
     public static function getMaxLength() {
