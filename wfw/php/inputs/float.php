@@ -13,7 +13,7 @@ class cInputFloat extends cInput
 			return RESULT(cResult::Failed,cInput::EmptyText);
 		
 		// chaine valide ?
-		if(preg_match("/^".cInputFolat::regExp()."$/",$value)==0)
+		if(preg_match("/^".cInputFloat::regExp()."$/",$value)==0)
 			return RESULT(cResult::Failed,cInput::InvalidChar);
 
 		return RESULT_OK();
