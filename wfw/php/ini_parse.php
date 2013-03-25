@@ -102,7 +102,7 @@ function parse_ini_string_ex($content){
         //item typé ?
         else if(preg_match('/\s*(\w+)\s*\=\s*([^\n\r\;]*)/', $text, $matches)){
             $value = trim($matches[2]);
-            switch($value){
+            switch(strtolower($value)){
                 case "false":
                 case "no":
                     $value = FALSE;
