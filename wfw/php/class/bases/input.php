@@ -24,6 +24,8 @@
  * Formatage et verification de champs de données
  */
 
+require_once("php/class/bases/cResult.php");
+
 class cInput {
 
     const EmptyText      = "EMPTY_TEXT";
