@@ -8,6 +8,7 @@ $libdir = realpath(dirname(__FILE__)."/../..");
 
 require_once("$libdir/php/class/bases/input.php");
 require_once("$libdir/php/string.php");
+require_once("$libdir/php/base.php");
 
 class cInputBool extends cInput
 {
