@@ -69,6 +69,22 @@
                 height:310px;
                 display:table-row;
             }
+            #toc{
+               float:right;
+               margin:8px;
+               margin-top:20px;
+               padding:12px;
+               background-color: #eeeeee;
+               border:1px solid black;
+            }
+            #toc label{
+               font-size:1.3em;
+               font-weight: bold;
+            }
+            #toc a{
+               display:block;
+               padding-top:6px;
+            }
         </style>
     </head>
 
@@ -79,9 +95,8 @@
                 <!-- header -->
                 <div id="header_layout" style="position:relative;" template:action="include" template:path=":header.xml:body>div"></div></div>
             <div id="middle">
-                <!-- content -->
+                <!-- contenu -->
                 <div id="content" template:action="merge" template:path=">body"></div>
-                
             </div>
             <div id="footer">
                 <!-- footer -->

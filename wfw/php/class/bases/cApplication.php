@@ -422,9 +422,12 @@ class cApplication implements iApplication{
         $template = new cXMLTemplate();
         
         //charge le contenu en selection
-        $select = new XMLDocument("1.0", "utf-8");
-        $select->load($filename);
-
+        /*$select = $filename;
+        if(is_string($filename)){
+            $select = new XMLDocument("1.0", "utf-8");
+            $select->load($filename);
+        }*/
+        
         //ajoute le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
 
@@ -437,7 +440,7 @@ class cApplication implements iApplication{
         if(!$template->Initialise(
                     $template_file,
                     NULL,
-                    $select,
+                    $filename,
                     NULL,
                     array_merge($attributes,$this->template_attributes) ) )
                 return false;

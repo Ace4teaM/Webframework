@@ -109,7 +109,7 @@ class cXMLTemplate
     
     /**
      * @brief Prépare un template à être transformé
-     * @param string/cXMLDocument $input_file Nom ou instance du document à charger
+     * @param string/XMLDocument $input_file Nom ou instance du document à charger
      * @param XMLElement $input_element Elément de départ à transformer. Si NULL, l'élément racine du document $input_file est selectionné.
      * @param type $select_file Nom ou instance du document à charger en selection
      * @param type $select_element Elément de selection par défaut. Si NULL, l'élément racine du document $select_file est selectionné.

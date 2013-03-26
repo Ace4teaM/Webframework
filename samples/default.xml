@@ -15,9 +15,13 @@
         <page id="samples" name="Exemples">index.php?page=samples</page>
         <page id="download" name="Téléchargements">index.php?page=telechargements</page>
         <page id="resources" name="Ressources">index.php?page=resources</page>
-        <!-- Guide -->
-        <page id="wfw-request" name="Requêtes HTTP (coté client)">guide.php?page=wfw-request</page>
-        <page id="client_dialog" name="Dialogue">guide.php?page=client_dialog</page>
+        <!-- Guide (Application) -->
+        <page id="application" name="Concevoir une application basée sur Webframework">guide.php?chapter=Application</page>
+        <!-- Guide (Librairie) -->
+        <page id="librairie" name="Programmer avec les librairies Webframework">guide.php?chapter=Librairie</page>
+        <page id="template_xml" name="Template XML">guide.php?chapter=_Toc352055122</page>
+        <page id="data_model" name="Model de données">guide.php?chapter=_Toc352055116</page>
+        <page id="result" name="Model de données">guide.php?chapter=_Toc352055121</page>
         <!-- JS/YUI samples -->
         <page id="js" name="Javascript">js_samples.php</page>
         <page id="base" name="Fonctions de base">js_samples.php?sample=base</page>
@@ -54,7 +58,12 @@
 
     <tree>
         <index></index>
-        <guide></guide>
+        <guide>
+            <data_model/>
+            <template_xml/>
+            <data_model/>
+            <data_model/>
+        </guide>
         <samples>
             <js> 
                 <base/>

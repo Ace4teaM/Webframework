@@ -382,7 +382,11 @@ class XMLDocument extends DOMDocument {
             // $ref has no brother next to him : insert newnode as last child of his parent 
             return $ref->parentNode->appendChild($newnode);
         }
-    }
+    } 
+
+    public static function prependNode($newnode, $ref) {
+        $ref->insertBefore($newnode, $ref->firstChild);
+    } 
 
     /*    public static function appendPrevious($newnode, $ref) 
       {
