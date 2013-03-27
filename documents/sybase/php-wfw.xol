@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1364400632" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1364400817" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DVTL xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -508,7 +508,7 @@ private
 [%Abstract%?abstract ][%Final%?final ]class %Code%[ %extends%][ %implements%]
 {
     .foreach_item(Attributes, &quot;\n&quot;)
-    %definition% // (%DataType%)
+    %definition%
     .next(&quot;\n&quot;)
     .foreach_item(Operations, &quot;\n&quot;)
     %definition%
@@ -519,7 +519,7 @@ private
 [%classManager%]</a:TemplateTargetItem.Value>
 <a:CreationDate>0</a:CreationDate>
 <a:Creator/>
-<a:ModificationDate>1364398890</a:ModificationDate>
+<a:ModificationDate>1364400817</a:ModificationDate>
 <a:Modifier>AceTeaM</a:Modifier>
 <a:Comment>Class definition.</a:Comment>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
