@@ -71,7 +71,7 @@ class Application extends cApplication
         $doc = new XMLDocument("1.0", "utf-8");
         $content = file_get_contents($filename);
         if($content === FALSE)
-            return RESULT(cResult::Failed,cApplication::ResourceNotFound,array("message"=>"APP_MSG_RESOURCE_NOT_FOUND","FILE"=>$filename));
+            return RESULT(cResult::Failed,cApplication::ResourceNotFound,array("message"=>true,"FILE"=>$filename));
         $content = str_replace('src="', "src=\"$path/", $content);//fix images path
         if($doc->loadHTML($content) === FALSE)
             return RESULT(cResult::Failed,XMLDocument::loadHTML);
