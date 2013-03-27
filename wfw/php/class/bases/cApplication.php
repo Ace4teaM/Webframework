@@ -607,7 +607,13 @@ class cApplication implements iApplication{
             $att["txt_result"]  = $default->getResultText("codes",$result->code);
             $att["txt_error"]   = $default->getResultText("errors",$result->info);
             if(isset($att["message"])){
-                $att["txt_message"] = $default->getResultText("messages",$att["message"]);
+                //charge le message correspondant à l'erreur
+                if($att["message"] === true)
+                    $att["txt_message"] = $default->getResultText("messages",$result->info);
+                //charge un message specifique
+                else
+                    $att["txt_message"] = $default->getResultText("messages",$att["message"]);
+                //transforme le template
                 $att["txt_message"] = cHTMLTemplate::transform($att["txt_message"], $att);
             }
         }
