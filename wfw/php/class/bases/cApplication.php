@@ -457,6 +457,7 @@ class cApplication implements iApplication{
                 return false;
 
         //transforme le fichier
+        RESULT_OK();
 	return $template->Make();
     }
     

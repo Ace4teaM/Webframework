@@ -70,15 +70,18 @@ class Application extends cApplication
         //charge le contenu en selection
         $doc = new XMLDocument("1.0", "utf-8");
         $content = file_get_contents($filename);
+        if($content === FALSE)
+            return RESULT(cResult::Failed,cApplication::ResourceNotFound,array("message"=>"APP_MSG_RESOURCE_NOT_FOUND","FILE"=>$filename));
         $content = str_replace('src="', "src=\"$path/", $content);//fix images path
-        $doc->loadHTML($content);
+        if($doc->loadHTML($content) === FALSE)
+            return RESULT(cResult::Failed,XMLDocument::loadHTML);
         $body = $doc->one("body");
         
         //obtient le titre de l"ancre
         $anchor = $doc->one("a[name=$chapter]");
         if(is_null($anchor)){
             //echo("chapter not found (a[name=$chapter])");
-            return false;
+            return RESULT(cResult::Failed,"CHAPTER_NOT_FOUND");
         }
         $title = $anchor->parentNode;
         $parent = $title->parentNode;
@@ -150,6 +153,7 @@ class Application extends cApplication
         //sortie
         $template->Make();
         
+        RESULT_OK();
         return $doc;
     }
     

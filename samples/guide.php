@@ -22,6 +22,8 @@ if(cInputFields::checkArray($fields,NULL,$_REQUEST,$p))
     );
     //construit le template depuis le fichier généré par Word
     $select = $app->makeGuideTemplate("../documents/Dossier Technique.htm",$p->chapter,NULL,$param);
+    if($select===FALSE)
+        $app->processLastError();
     //print_r($select);
     $app->showXMLView($select,$param);
     exit;

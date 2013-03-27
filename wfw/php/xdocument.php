@@ -33,6 +33,9 @@ require_path("$libdir/php/inputs/");
 
 class XMLDocument extends DOMDocument {
     
+    const loadFile = "CANT_LOAD_HTML_FILE";
+    const loadHTML = "CANT_LOAD_HTML_CONTENT";
+    
     function make($content) {
         return $this->loadHTML($content);
     }
