@@ -71,7 +71,14 @@ class cApplication implements iApplication{
     const UnknownField               = "APP_UNKNOWN_FIELD";
     const UnknownFieldFormat         = "APP_UNKNOWN_FIELD_FORMAT";
     const UnknownFieldClass          = "APP_UNKNOWN_FIELD_CLASS";
+    const InvalidArgument            = "APP_INVALID_ARGUMENT";
+
+    /** 
+     * Résultat: Ressource introuvable
+     * @param FILE Nom du fichier/ressource concernée
+     */
     const ResourceNotFound           = "APP_RESOURCE_NOT_FOUND";
+    
     //options
     const FieldFormatClassName = 1;
     const FieldFormatName      = 2;
@@ -422,11 +429,15 @@ class cApplication implements iApplication{
         $template = new cXMLTemplate();
         
         //charge le contenu en selection
-        /*$select = $filename;
+        $select = $filename;
         if(is_string($filename)){
             $select = new XMLDocument("1.0", "utf-8");
-            $select->load($filename);
-        }*/
+            if(!$select->load($filename))
+                return RESULT(cResult::Failed,XMLDocument::loadFile,array("message"=>XMLDocument::loadFile,"FILE"=>$filename));
+        }
+        if(!$select instanceof XMLDocument){
+            return RESULT(cResult::Failed,cApplication::InvalidArgument,array("message"=>cApplication::InvalidArgument,"ARG_NAME"=>"filename"));
+        }
         
         //ajoute le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
@@ -440,7 +451,7 @@ class cApplication implements iApplication{
         if(!$template->Initialise(
                     $template_file,
                     NULL,
-                    $filename,
+                    $select,
                     NULL,
                     array_merge($attributes,$this->template_attributes) ) )
                 return false;
