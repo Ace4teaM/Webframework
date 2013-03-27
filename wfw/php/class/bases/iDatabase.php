@@ -120,6 +120,7 @@ interface iDatabase {
 interface iDatabaseQuery {
     //error
     const OutOfRangeResult = "DB_QUERY_OUT_OF_RANGE_RESULT";
+    const EmptyResult      = "DB_QUERY_NO_RESULT";
     //seeking
     const Origin = 1;
     const Current = 2;

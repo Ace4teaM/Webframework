@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1362996879" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1364400632" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DVTL xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -508,7 +508,7 @@ private
 [%Abstract%?abstract ][%Final%?final ]class %Code%[ %extends%][ %implements%]
 {
     .foreach_item(Attributes, &quot;\n&quot;)
-    %definition%
+    %definition% // (%DataType%)
     .next(&quot;\n&quot;)
     .foreach_item(Operations, &quot;\n&quot;)
     %definition%
@@ -519,8 +519,8 @@ private
 [%classManager%]</a:TemplateTargetItem.Value>
 <a:CreationDate>0</a:CreationDate>
 <a:Creator/>
-<a:ModificationDate>1355942847</a:ModificationDate>
-<a:Modifier>developpement</a:Modifier>
+<a:ModificationDate>1364398890</a:ModificationDate>
+<a:Modifier>AceTeaM</a:Modifier>
 <a:Comment>Class definition.</a:Comment>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
 </o:TemplateTargetItem>
@@ -686,6 +686,8 @@ class %Code%Mgr
        $query = &quot;SELECT * from %Name% where $cond&quot;;
        if($db-&gt;execute($query,$result)){
             $inst = new %Code%();
+             if(!$result-&gt;rowCount())
+                 return RESULT(cResult::Failed,iDatabaseQuery::EmptyResult);
           return %Code%Mgr::bindResult($inst,$result);
        }
        return false;
@@ -703,26 +705,53 @@ class %Code%Mgr
        if(!$db &amp;&amp; !$app-&gt;getDB($db))
          return false;
       
-       if(is_string($id))
-           $id = &quot;&#39;$id&#39;&quot;;
-           
       //execute la requete
        $query = &quot;SELECT * from %Name% where 
 .convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
-_id=$id&quot;;
+_id=&quot;.$db-&gt;parseValue($id);
        if($db-&gt;execute($query,$result)){
             $inst = new %Code%();
-          .foreach_item(Attributes, &quot;\n&quot;)
-          $inst-&gt;%Code% = $result-&gt;fetchValue(&quot;
-.convert_name(%Name%,&quot;_&quot;,&quot; &quot;)
-&quot;);
-          .next(&quot;\n&quot;)
-          \n
+             if(!$result-&gt;rowCount())
+                 return RESULT(cResult::Failed,iDatabaseQuery::EmptyResult);
+             self::bindResult($inst,$result);
           return true;
        }
        return false;
     }
+    
+   /*
+      @brief Update single entry by id
+      @param $inst WriterDocument instance pointer to initialize
+      @param $id Primary unique identifier of entry to retreive
+      @param $db iDataBase derived instance
+    */
+    public static function update(&amp;$inst,$db=null){
+       //obtient la base de donnees courrante
+       global $app;
+       if(!$db &amp;&amp; !$app-&gt;getDB($db))
+         return false;
+      
+       //id initialise ?
+       if(!isset($inst-&gt;
+.convert_name(%Code%,&quot;_&quot;,&quot; &quot;,firstLowerWord)
+Id))
+           return RESULT(cResult::Failed, cApplication::entityMissingId);
+      
+      //execute la requete
+       $query = &quot;UPDATE %Name% SET&quot;;
+       .foreach_item(Attributes, &quot;\n&quot;, &quot;\n&quot;)
+       $query .= &quot; %Name% =&quot;.$db-&gt;parseValue($inst-&gt;%Code%).&quot;,&quot;;
+       .next(&quot;\n&quot;)
+       $query = substr($query,0,-1);//remove last &#39;,&#39;
+       $query .= &quot; where %Name%_id=&quot;.$db-&gt;parseValue($inst-&gt;
+.convert_name(%Code%,&quot;_&quot;,&quot; &quot;,firstLowerWord)
+Id);
+       if($db-&gt;execute($query,$result))
+          return true;
 
+       return false;
+    }
+    
    /** @brief Convert name to code */
     public static function nameToCode($name){
         for($i=strlen($name)-1;$i&gt;=0;$i--){
@@ -769,8 +798,8 @@ _id  from $objectTableName where &quot;.$objectTableName.&quot;_id=&quot;.$obj-&
 \n}</a:TemplateTargetItem.Value>
 <a:CreationDate>1355942741</a:CreationDate>
 <a:Creator>developpement</a:Creator>
-<a:ModificationDate>1362996879</a:ModificationDate>
-<a:Modifier>developpement</a:Modifier>
+<a:ModificationDate>1364400632</a:ModificationDate>
+<a:Modifier>AceTeaM</a:Modifier>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
 </o:TemplateTargetItem>
 </c:Categories>

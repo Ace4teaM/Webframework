@@ -149,6 +149,7 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
         $num = pg_field_num($this->res,$column_name);
         if($num < 0)
             return RESULT(cResult::Failed, iDataBase::QueryFailed, array("message"=>"Field '$column_name' not found"));
+
         return pg_fetch_result($this->res, $num);
     }
 

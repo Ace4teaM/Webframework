@@ -68,6 +68,7 @@ class cApplication implements iApplication{
     const UnknownHostname            = "APP_UNKNOWN_HOSTNAME";
     const NoDatabaseConfigured       = "APP_NO_DATABASE_CONFIGURED";
     const UnknownFormTemplateFile    = "APP_UNKNOWN_FORM_TEMPLATE_FILE";
+    const EntityMissingId            = "APP_ENTITY_MISSING_ID";
     /**
      * Champ inconnue
      * @param FIELD_NAME Nom du champ
