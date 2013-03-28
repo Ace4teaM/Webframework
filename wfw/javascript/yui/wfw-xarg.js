@@ -147,58 +147,49 @@ YUI.add('wfw-xarg', function (Y) {
                 [Le nom de la form utilisé pour le résultat est définit par l'argument 'wfw_form_name' (si définit) sinon le nom de l'objet de requête]
             */
         onCheckRequestResult_XARG : function (obj) {
-            var bErrorFunc = 0;
-            var bSuccessFunc = 0;
-            var bFailedFunc = 0;
-            var bCheckResult = 1;
-            var bShowError = 1;
-
-            if (obj.user != null) {
-                bCheckResult = (typeof (obj.user["no_result"]) != "undefined") ? 0 : 1;
-                bShowError = (typeof (obj.user["no_output"]) != "undefined") ? 0 : 1;
-                bErrorFunc = (typeof (obj.user["onerror"]) == "function") ? 1 : 0;
-                bSuccessFunc = (typeof (obj.user["onsuccess"]) == "function") ? 1 : 0;
-                bFailedFunc = (typeof (obj.user["onfailed"]) == "function") ? 1 : 0;
-            }
-
+            var param = object_merge({
+               no_result : false,                   // Si spécifié, le contenu du fichier est retourné sans traitement des erreurs
+               no_msg    : true,                    // Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
+               onsuccess : function(obj,args){}, // Optionnel, callback en cas de succès
+               onfailed  : function(obj,args){}, // Optionnel, callback en cas de échec
+               onerror   : function(obj){},         // Optionnel, callback en cas d'erreur de transmition de la requête
+               wfw_form_name : "formName"           // Optionnel, nom associé à l'élément FORM recevant les données de retours
+            },obj.user);
+            
             if (!wfw.Request.onCheckRequestStatus(obj))
                 return;
 
             //resultat ?
             var args = wfw.XArg.to_object(obj.response, false);
             if (!args) {
-                if (bShowError)
+                if (!param.no_msg)
                     wfw.Document.showRequestMsg(obj, "Erreur de requête", obj.response);
-                if (bErrorFunc)
-                    obj.user.onerror(obj);
+                param.onerror(obj);
                 return;
             }
 
             //non x-argument result !
-            if (bCheckResult && typeof (args.result) == 'undefined') {
-                if (bShowError)
+            if ((!param.no_result) && typeof(args.result) == 'undefined') {
+                if (!param.no_msg)
                     wfw.Document.showRequestMsg(obj, "Résultat de requête non spécifié", obj.response);
-                if (bErrorFunc)
-                    obj.user.onerror(obj);
+                param.onerror(obj);
                 return;
             }
 
             //erreur ?
-            if (bCheckResult && (args.result != wfw.Result.Ok)) {
+            if ((!param.no_result) && (args.result != "ERR_OK")) {
                 //message
-                if (bShowError){
+                if (!param.no_msg){
                     var result_form_id = ((typeof obj.args["wfw_form_name"] == "string") ? obj.args.wfw_form_name : obj.name);
                     wfw.Form.onFormResult(result_form_id, args, obj);
                 }
                 //failed callback
-                if (bFailedFunc)
-                    obj.user.onfailed(obj, args);
+                param.onfailed(obj, args);
                 return;
             }
 
             //success callback
-            if (bSuccessFunc)
-                obj.user.onsuccess(obj, args);
+            param.onsuccess(obj, args);
         }
     };
 }, '1.0', {
