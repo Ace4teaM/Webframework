@@ -110,8 +110,8 @@ YUI.add('wfw-xml', function (Y) {
          * var param = {
          *      no_result : false,                   // Si spécifié, le contenu du fichier est retourné sans traitement des erreurs
          *      no_msg    : false,                   // Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
-         *      onsuccess : function(obj,xml_doc){}, // Optionnel, callback en cas de succès
-         *      onfailed  : function(obj,xml_doc){}, // Optionnel, callback en cas de échec
+         *      onsuccess : function(obj,xml_doc, xml_root){}, // Optionnel, callback en cas de succès
+         *      onfailed  : function(obj,xml_doc, xml_root){}, // Optionnel, callback en cas de échec
          *      onerror   : function(obj){},         // Optionnel, callback en cas d'erreur de transmition de la requête
          *      wfw_form_name : "formName"           // Optionnel, nom associé à l'élément FORM recevant les données de retours
          * };
@@ -129,8 +129,8 @@ YUI.add('wfw-xml', function (Y) {
             var param = object_merge({
                no_result : false,                   // Si spécifié, le contenu du fichier est retourné sans traitement des erreurs
                no_msg    : true,                    // Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
-               onsuccess : function(obj,xml_doc){}, // Optionnel, callback en cas de succès
-               onfailed  : function(obj,xml_doc){}, // Optionnel, callback en cas de échec
+               onsuccess : function(obj,xml_doc, xml_root){}, // Optionnel, callback en cas de succès
+               onfailed  : function(obj,xml_doc, xml_root){}, // Optionnel, callback en cas de échec
                onerror   : function(obj){},         // Optionnel, callback en cas d'erreur de transmition de la requête
                wfw_form_name : "formName"           // Optionnel, nom associé à l'élément FORM recevant les données de retours
             },obj.user);
@@ -177,12 +177,12 @@ YUI.add('wfw-xml', function (Y) {
                     //echec ?
                     if (args.result != "ERR_OK") {
                         // failed callback
-                        param.onfailed(obj, xml_doc);
+                        param.onfailed(obj, xml_doc, xml_root);
                         return;
                     }
                 }
             }
-            param.onsuccess(obj, xml_doc);
+            param.onsuccess(obj, xml_doc, xml_root);
         }
     };
     
