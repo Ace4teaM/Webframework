@@ -97,108 +97,6 @@ Ext.define('MyApp.Loading', {
     }
 });
 
-/*------------------------------------------------------------------------------------------------------------------*/
-/**
- * @brief Initialise le viewport
- * @remarks convertie le HTML existant en layout dynamique
- * */
-/*------------------------------------------------------------------------------------------------------------------*/
-
-MyApp.onInitLayout = function(Y)
-{
-    var wfw = Y.namespace("wfw");
-    var g = MyApp.global.Vars;
-
-    //l'élément de résultat n'est plus utilisé
-    Y.Node.one("#result").hide();
-    
-    // Nord
-    g.statusPanel = Ext.create('Ext.Panel', {
-        header:false,
-        layout: 'hbox',
-        region: 'north',     // position for region
-        split: true,         // enable resizing
-        margins: '0 5 5 5',
-        /*html: Y.Node.one("#menu").get("innerHTML")*/
-        items: [{
-            header:false,
-            border: false,
-            width:200,
-            contentEl: Y.Node.one("#header").getDOMNode()
-        },{
-            header:false,
-            width:"100%",
-            border: false,
-            contentEl: Y.Node.one("#status").getDOMNode()
-        }],
-        renderTo: Ext.getBody()
-    });
-
-    // Centre
-    g.contentPanel = Ext.create('Ext.Panel', {
-        header :false,
-        //title: 'Content',
-        region: 'center',     // position for region
-        split: true,         // enable resizing
-        margins: '0',
-        layout: 'fit',
-        autoScroll:true,
-        //html: Y.Node.one("#content").get("innerHTML")
-        items: [{
-            header:false,
-            border: false,
-            contentEl: Y.Node.one("#content").getDOMNode()
-        }],
-        renderTo: Ext.getBody()
-    });
-
-    // Ouest
-    g.menuPanel = Ext.create('Ext.Panel', {
-        title: 'Menu',
-        layout: {
-            // layout-specific configs go here
-            type: 'accordion',
-            titleCollapse: false,
-            animate: true,
-            activeOnTop: true
-        },
-        region: 'west',     // position for region
-        width: 200,
-        split: true,         // enable resizing
-        margins: '0 5 5 5',
-        /*html: Y.Node.one("#menu").get("innerHTML")*/
-        items: [{
-            title: 'Administrateur',
-            contentEl: Y.Node.one("#menu1").getDOMNode()
-        },{
-            title: 'Visiteur',
-            contentEl: Y.Node.one("#menu2").getDOMNode()
-        },{
-            title: 'Utilisateur',
-            contentEl: Y.Node.one("#menu3").getDOMNode()
-        }],
-        renderTo: Ext.getBody()
-    });
-
-    // Sud
-    g.footerPanel = Ext.create('Ext.Panel', {
-        header :false,
-        //title: 'Pied de page',
-        region: 'south',     // position for region
-        split: true,         // enable resizing
-        margins: '0 5 5 5',
-        contentEl: Y.Node.one("#footer").getDOMNode()
-    });
-
-    //viewport
-    g.viewport = Ext.create('Ext.Viewport', {
-        layout: 'border',
-        items: [g.contentPanel,g.menuPanel,g.statusPanel,g.footerPanel]
-    });
-
-    //original.remove();
-}
-
 
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
@@ -371,6 +269,87 @@ MyApp.onInitForm = function(Y)
 }
 
 
-//
-MyApp.Loading.callback_list.push(MyApp.onInitLayout);
-MyApp.Loading.callback_list.push(MyApp.onInitForm);
+
+/*------------------------------------------------------------------------------------------------------------------*/
+/**
+ * @brief Convertie les formulaires HTML présents en formulaire dynamique ExtJS
+ * @remarks Le forumalire HTML original doit être généré via la methode PHP Application.makeFormView()
+ **/
+/*------------------------------------------------------------------------------------------------------------------*/
+
+MyApp.makeForm = function(Y,title,fields,op_fields)
+{
+    var wfw = Y.namespace("wfw");
+    var g = MyApp.global.Vars;
+    
+    var form = Ext.create('widget.form', {
+        title:title
+    });
+    
+    for(var key in fields){
+        form.add({
+            xtype: 'textfield',
+            id:key,
+            name:key,
+            fieldLabel: key,
+            height:20
+        });
+    }
+    
+    return form;
+}
+
+MyApp.makeField = function(Y,id,type,label)
+{
+    var wfw = Y.namespace("wfw");
+    var g = MyApp.global.Vars;
+    
+    if(typeof(label) == "undefined")
+        label = wfw.Navigator.doc.getFiledText(id);
+    
+    if(typeof(type) == "undefined")
+        type = wfw.Navigator.doc.getFiledType(id);
+    
+    var item = {
+        name:id,
+        fieldLabel: label
+    };
+    
+    switch(type){
+        case "html":
+        case "cInputHTML":
+            object_merge(item,{
+                xtype: 'htmleditor',
+                fieldLabel: label.get("text"),
+                height:250,
+                enableColors: false,
+                enableAlignments: false
+            },false);
+            break;
+        case "text":
+        case "cInputText":
+            object_merge(item,{
+                xtype: 'textarea',
+                height:250
+            },false);
+            break;
+        case "date":
+        case "cInputDate":
+            object_merge(item,{
+                xtype: 'datefield',
+                format: 'd-m-Y',
+                submitFormat:'Y-m-d',
+                value: new Date()
+            },false);
+            break;
+        case "string":
+        case "cInputString":
+        default:
+            object_merge(item,{
+                xtype: 'textfield'
+            },false);
+            break;
+    }
+    
+    return item;//Ext.create('widget.form.field',item);
+}

@@ -37,5 +37,5 @@ MyApp.showResultToMsg = function(result)
            obj.icon = Ext.Msg.ERROR;
            break;
    }
-    Ext.Msg.show(obj);
+    Ext.MessageBox.show(obj);
 }
