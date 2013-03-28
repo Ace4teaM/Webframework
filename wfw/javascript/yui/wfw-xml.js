@@ -134,18 +134,6 @@ YUI.add('wfw-xml', function (Y) {
                onerror   : function(obj){},         // Optionnel, callback en cas d'erreur de transmition de la requête
                wfw_form_name : "formName"           // Optionnel, nom associé à l'élément FORM recevant les données de retours
             },obj.user);
-/*
-            var bErrorFunc = 0;
-            var bSuccessFunc = 0;
-            var bFailedFunc = 0;
-            var bCheckResult = 1;
-
-            if (obj.user != null) {
-                bCheckResult = (typeof (obj.user["no_result"]) != "undefined") ? 0 : 1;
-                bErrorFunc = (typeof (obj.user["onerror"]) == "function") ? 1 : 0;
-                bSuccessFunc = (typeof (obj.user["onsuccess"]) == "function") ? 1 : 0;
-                bFailedFunc = (typeof (obj.user["onfailed"]) == "function") ? 1 : 0;
-            }*/
 
             if (!wfw.Request.onCheckRequestStatus(obj))
                 return;
