@@ -47,7 +47,7 @@ YUI.add('wfw-navigator', function (Y) {
             if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test( navigator.userAgent)) {
                 this.probablyMobileNavigator = true;
             }
-		
+            
             // Initialise le document xml
             this.doc = new wfw.Xml.DEFAULT_FILE();
             this.doc.Initialise("default.xml");

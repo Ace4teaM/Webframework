@@ -389,6 +389,18 @@ YUI.add('wfw-xml', function (Y) {
     };
 
     /*
+      @fixme Fonction à implémenté
+      Obtient le type associé à une définition de champs
+      @param string id Identificateur du champs
+      @param string lang Langage utilisé. 'fr' Par défaut
+      @return type trouvé. Si vide ou introuvable 'string' est retourné
+     */
+    wfw.Xml.DEFAULT_FILE.prototype.getFiledType = function(id)
+    {
+        return 'string';
+    };
+    
+    /*
       Obtient le texte associé à une définition de champs
       @param string id Identificateur du champs
       @param string lang Langage utilisé. 'fr' Par défaut
@@ -401,8 +413,8 @@ YUI.add('wfw-xml', function (Y) {
     
         var entry_node = Y.Node(this.doc.documentElement).one("results[lang="+lang+"] > fields > "+id);
         if(entry_node == null){
-            wfw.puts("UnknownField "+id);
-            return false;
+            wfw.puts("getFiledText: UnknownField "+id);
+            return id;
 //            return RESULT(cResult::Failed,cXMLDefault::UnknownField);
         }
 
