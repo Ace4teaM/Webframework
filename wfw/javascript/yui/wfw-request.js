@@ -633,18 +633,22 @@ YUI.add('wfw-request', function (Y) {
             En cas d'echec, l'erreur est traité et affiché par la fonction wfw.Document.showRequestMsg (voir documentation)
         */
         onCheckRequestStatus: function (obj) {
-            var bErrorFunc = (obj.user != null && typeof (obj.user["onerror"]) == "function") ? 1 : 0;
-
+            var param = object_merge({
+               oncontent : function(obj,content){}, // Optionnel, callback appelé une fois le contenu recupere
+               onerror   : function(obj){}          // Optionnel, callback en cas d'erreur de transmition de la requête
+            },obj.user);
+            
             if (obj.status == 404) {
                 wfw.Document.showRequestMsg(obj, "Requête indisponible (erreur 404)");
-                if (bErrorFunc)
-                    obj.user.onerror(obj);
+                param.onerror(obj);
                 return false;
             }
 
             if (obj.status != 200)
                 return false;
 
+            param.oncontent(obj,obj.response);
+            
             return true;
         }
     };
