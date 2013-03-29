@@ -38,13 +38,13 @@
     along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
+var Y;//requis pour la librairie Webframework
 
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
  * Implémentation de l'application ExtJS
  **/
 /*------------------------------------------------------------------------------------------------------------------*/
-
 
 //application class
 Ext.application({
@@ -55,7 +55,7 @@ Ext.application({
     ],
     autoCreateViewport: false,
     launch: function() {
-        MyApp.global.Vars.yui = YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'event', 'wfw-result','wfw-xml-template', 'wfw-user', 'loading-box', 'io', 'wfw-navigator', 'wfw-request', 'wfw-xml','datatype-xml', function (Y)
+        Y = YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'event', 'wfw-result','wfw-xml-template', 'wfw-user', 'loading-box', 'io', 'wfw-navigator', 'wfw-request', 'wfw-xml','datatype-xml', function (Y)
         {
             var wfw = Y.namespace("wfw");
             
@@ -98,6 +98,129 @@ Ext.define('MyApp.Loading', {
 });
 
 
+
+/*------------------------------------------------------------------------------------------------------------------*/
+//
+// Construit un formulaire avec les champs du dictionnaire de données
+//
+/*------------------------------------------------------------------------------------------------------------------*/
+Ext.define('MyApp.FieldsForm', {
+    extend: 'Ext.form.Panel',
+    alias: 'fieldsform',
+        
+    config:{
+        bodyStyle:'padding:5px 5px 0',
+        fieldDefaults: {
+            msgTarget: 'side',
+            labelWidth: 220
+        },
+        defaultType: 'textfield',
+        defaults: {
+            anchor: '100%'
+        },
+        wfw_fields:[],
+        items:[]
+    },
+        
+        
+    initComponent: function()
+    {
+        //initalise les items de champs
+        var items=[];
+        for(var key in this.initialConfig.wfw_fields){
+            items.push(MyApp.makeField(this.initialConfig.wfw_fields[key]));
+        }
+            
+        Ext.apply(this, {
+            items: items
+        });
+
+        this.superclass.initComponent.apply(this, arguments);
+    },
+        
+    constructor: function(config) {
+        Ext.apply(this, this.config);
+        this.superclass.constructor.call(this,config);
+        return this;
+    },
+        
+    test:function(){
+        return 'dfdfsdf'
+        }
+});
+    
+/*------------------------------------------------------------------------------------------------------------------*/
+//
+// Construit un formulaire avec les champs du dictionnaire de données
+//
+/*------------------------------------------------------------------------------------------------------------------*/
+Ext.define('MyApp.FieldsDialog', {
+    extend: 'Ext.window.Window',
+
+    requires: [
+    'MyApp.FieldsForm'
+    ],
+        
+    config:{
+        closable: true,
+        width: 600,
+        layout:'fit',
+        bodyStyle: 'padding: 5px;',
+        modal:true,
+        items: [],
+        buttons: [],
+        //fieldsform:{xtype:'fieldsform'},
+        //wfw_fields:[],
+        fieldsform:false,
+        callback:function(data){}
+    },
+        
+    initComponent: function()
+    {
+        var me=this;
+            
+        if(!this.fieldsform)
+            return false;
+            
+        Ext.apply(this, {
+            items: this.fieldsform
+        });
+
+            
+        //this.form = Ext.create('MyApp.FieldsForm',config);
+        this.btnCancel = Ext.create('Ext.Button',{
+            text:"Annuler",
+            handler: function() {
+                me.close();
+            }
+        });
+            
+        this.btnOK = Ext.create('Ext.Button',{
+            text:"OK",
+            handler: function() {
+                me.callback(me.fieldsform.getValues());
+                me.close();
+            }
+        });
+            
+        Ext.apply(this, {
+            buttons: [
+            this.btnCancel,
+            '->',
+            this.btnOK
+            ]
+        });
+            
+        this.superclass.initComponent.apply(this, arguments);
+    },
+        
+    constructor: function(config) {
+        Ext.apply(this, this.config);
+        this.superclass.constructor.call(this,config);
+        return this;
+    }
+});
+   
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
  * @brief Convertie les formulaires HTML présents en formulaire dynamique ExtJS
@@ -194,7 +317,7 @@ MyApp.onInitForm = function(Y)
     formEl.all("#buttons input[type=button]").each(function(btnElement){
         buttons.push({
             text: btnElement.get("value")
-            });
+        });
     });
                 
     //submit button
@@ -209,9 +332,11 @@ MyApp.onInitForm = function(Y)
                 null,
                 form.url,
                 object_merge(
-                    {output:"xml"},
-                    form.getValues()
-                ),
+                {
+                    output:"xml"
+                },
+                form.getValues()
+                    ),
                 wfw.Xml.onCheckRequestResult,
                 {
                     no_msg    : true,
@@ -223,11 +348,13 @@ MyApp.onInitForm = function(Y)
                         var result = wfw.Result.fromXML( Y.Node(xml_doc.documentElement) );
                         MyApp.showResultToMsg(result);
                     },
-                    onerror   : function(obj){alert("onerror");}
+                    onerror   : function(obj){
+                        alert("onerror");
+                    }
                 },
                 false
-            );
-            /*
+                );
+        /*
             if (form.isValid()) {
                 form.submit({
                     success: function(form, action) {
@@ -277,50 +404,38 @@ MyApp.onInitForm = function(Y)
  **/
 /*------------------------------------------------------------------------------------------------------------------*/
 
-MyApp.makeForm = function(Y,title,fields,op_fields)
+MyApp.makeField = function(att)
 {
     var wfw = Y.namespace("wfw");
     var g = MyApp.global.Vars;
     
-    var form = Ext.create('widget.form', {
-        title:title
-    });
-    
-    for(var key in fields){
-        form.add({
-            xtype: 'textfield',
-            id:key,
-            name:key,
-            fieldLabel: key,
-            height:20
-        });
-    }
-    
-    return form;
-}
+    att = object_merge(
+    {
+        id:false,
+        type:false,
+        label:false,
+        optional:false
+    },att,false);
 
-MyApp.makeField = function(Y,id,type,label)
-{
-    var wfw = Y.namespace("wfw");
-    var g = MyApp.global.Vars;
+    if(!att.label)
+        att.label = wfw.Navigator.doc.getFiledText(att.id);
     
-    if(typeof(label) == "undefined")
-        label = wfw.Navigator.doc.getFiledText(id);
-    
-    if(typeof(type) == "undefined")
-        type = wfw.Navigator.doc.getFiledType(id);
+    if(!att.type)
+        att.type = wfw.Navigator.doc.getFiledType(att.type);
     
     var item = {
-        name:id,
-        fieldLabel: label
+        name:att.id,
+        fieldLabel: att.label
     };
     
-    switch(type){
+    if(att.optional)
+        item.allowBlank = true;
+    
+    switch(att.type){
         case "html":
         case "cInputHTML":
             object_merge(item,{
                 xtype: 'htmleditor',
-                fieldLabel: label.get("text"),
                 height:250,
                 enableColors: false,
                 enableAlignments: false
@@ -331,6 +446,12 @@ MyApp.makeField = function(Y,id,type,label)
             object_merge(item,{
                 xtype: 'textarea',
                 height:250
+            },false);
+            break;
+        case "bool":
+        case "cInputBool":
+            object_merge(item,{
+                xtype: 'checkboxfield'
             },false);
             break;
         case "date":
@@ -351,5 +472,5 @@ MyApp.makeField = function(Y,id,type,label)
             break;
     }
     
-    return item;//Ext.create('widget.form.field',item);
+    return item;//Ext.create('Ext.form.field',item);
 }
