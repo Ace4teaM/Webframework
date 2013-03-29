@@ -29,12 +29,16 @@ class cXMLDefault {
     const InvalidArg        = "XML_DEFAULT_INVALID_FUNCTION_ARG";
     const CantLoadFile      = "XML_DEFAULT_CANT_LOAD_FILE";
     const UnknownField      = "XML_UNKNOWN_FIELD";
+    const PageNotFound      = "XML_PAGE_NOT_FOUND";
+    const NoFileName        = "XML_SAVE_NO_FILENAME";
+    const CantSaveFile      = "XML_CANT_SAVE_FILE";
     //options
     const FieldFormatClassName = 1;
     const FieldFormatName = 2;
 
     /** @ brief Instance de la classe XMLDocument */
     public $doc = NULL;
+    public $fileName = NULL;
 
     /**
      * @brief Charge le document XML
@@ -47,6 +51,7 @@ class cXMLDefault {
 
         //charge le document
         if (is_string($doc)) {
+            $this->fileName = $doc;
             $this->doc = new XMLDocument();
             if (!$this->doc->load($doc))
                 return RESULT(cResult::Failed, cXMLDefault::CantLoadFile);
@@ -55,6 +60,18 @@ class cXMLDefault {
             return RESULT(cResult::Failed, cXMLDefault::InvalidArg);
         }
 
+        return RESULT_OK();
+    }
+
+    /**
+     * @brief SAuvegarde le document dans son fichier d'origine
+     * @return Résultat de procédure
+     */
+    public function save() {
+        if(!is_string($this->fileName))
+            return RESULT_OK(cResult::Failed, cXMLDefault::NoFileName);
+        if(FALSE===$this->doc->save($this->fileName))
+            return RESULT(cResult::Failed, cXMLDefault::CantSaveFile);
         return RESULT_OK();
     }
 
@@ -197,6 +214,26 @@ class cXMLDefault {
         return $node;
     }
 
+    /**
+     * @brief Définit un noeud de l'index
+     * @param [string] type : type de noeud (nom de balise)
+     * @param [string] id   : identificateur
+     * @param [string] value: Valeur du noeud
+     * @return [XMLElement] Noeud inséré, null en cas d'erreur
+     * @remarks Si le noeud n'existe pas il est créé
+     */
+    public function setIndex($type, $id, $value) {
+        $node = $this->doc->one(">index>$type"."[id=$id]");
+        if($node){
+            $node->nodeValue = $value;
+            return $node;
+        }
+        $node = $this->addIndexNode($type, $id);
+        if($node)
+            $node->nodeValue = $value;
+        return $node;
+    }
+
     /*
       Obtient un noeud de l'arbre de navigation
       Arguments:
@@ -207,8 +244,10 @@ class cXMLDefault {
 
     public function getTreeNode($page_id) {
         $tree_node;
-        if (($tree_node = $this->doc->getNode('site/tree')) == NULL)
+        if (($tree_node = $this->doc->getNode('site/tree')) == NULL){
+            RESULT(cResult::Failed,  cXMLDefault::PageNotFound);
             return NULL;
+        }
         if ($page_id == NULL)
             return $tree_node;
         //enumere les noeuds
@@ -220,9 +259,11 @@ class cXMLDefault {
                 }, true
         );
 
-        if ($ret === TRUE)
+        if ($ret === TRUE){
+            RESULT(cResult::Failed,  cXMLDefault::PageNotFound);
             return NULL;
-
+        }
+        RESULT_OK();
         return $ret;
     }
 
@@ -233,28 +274,38 @@ class cXMLDefault {
       [string] page_id   : identificateur de la page à inserer
       Retourne:
       [XMLElement] Noeud insere, null en cas d'erreur
+     * @remarks Si le noeud existe dans l'arbre, il est déplacé
      */
 
     public function addTreeNode($parent_id, $page_id) {
         $tree_node;
-        if (($tree_node = $this->doc->getNode('site/tree')) == NULL)
+        if (($tree_node = $this->doc->getNode('site/tree')) == NULL){
+            RESULT(cResult::Failed,  cXMLDefault::PageNotFound);
             return NULL;
+        }
         //obtient le parent
         $parent_node;
         if ($parent_id == NULL)
             $parent_node = $tree_node;
-        else if (($parent_node = $this->getTreeNode($parent_id)) == NULL)
+        else if (($parent_node = $this->getTreeNode($parent_id)) == NULL){
+            RESULT(cResult::Failed,  cXMLDefault::PageNotFound);
             return NULL;
+        }
         //initialise l'enfant
         $page_node = $this->getTreeNode($page_id);
         if ($page_node == NULL) {
-            if (($page_node = $this->doc->createElement($page_id)) == NULL)
+            if (($page_node = $this->doc->createElement($page_id)) == NULL){
+                RESULT(cResult::Failed,  cXMLDefault::PageNotFound);
                 return NULL;
+            }
         }
         //insert le noeud
-        if ($parent_node->appendChild($page_node) == NULL)
+        if ($parent_node->appendChild($page_node) == NULL){
+            RESULT(cResult::Failed,  cXMLDefault::PageNotFound);
             return NULL;
+        }
 
+        RESULT_OK();
         return $page_node;
     }
 
