@@ -124,16 +124,16 @@ function copy(a){
             if (!a) {
                 new_var = a;
             }
+            else if(a instanceof Array){
+                new_var = [];
+                for(var key=0; key<a.length; key++)
+                    new_var[key] = copy(a[key]);
+            }
             else {
                 new_var = {};
                 for (var key in a)
                     new_var[key] = copy(a[key]);
             }
-            break;
-        case 'array'://?
-            new_var = [];
-            for(var key=0; key<a.length; key++)
-                new_var[key] = copy(a[key]);
             break;
         default:
 //        case 'string':
