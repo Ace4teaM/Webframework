@@ -32,6 +32,7 @@ else{
 
 require_once("php/ini.php");
 require_once("iApplication.php");
+require_once("cApplicationCtrl.php");
 require_once("php/file.php");
 require_once("php/xarg.php");
 require_once("php/class/bases/cResult.php");
@@ -69,6 +70,7 @@ class cApplication implements iApplication{
     const NoDatabaseConfigured       = "APP_NO_DATABASE_CONFIGURED";
     const UnknownFormTemplateFile    = "APP_UNKNOWN_FORM_TEMPLATE_FILE";
     const EntityMissingId            = "APP_ENTITY_MISSING_ID";
+    const CtrlNotFound               = "APP_CTRL_NOT_FOUND";
     /**
      * Champ inconnue
      * @param FIELD_NAME Nom du champ
@@ -696,7 +698,107 @@ class cApplication implements iApplication{
         
         return RESULT_OK();
     }
+    
+    
+    public function execCtrl($ctrl,$app=null)
+    {
+        //résultat de la requete
+        RESULT_OK();
+        $result = cResult::getLast();
+        
+        if(!isset($app))
+            $app = "application";
 
+        //inclue le controleur
+        if(cInputIdentifier::isValid($ctrl)){
+            $basepath = $this->getCfgValue($app,"path");
+            $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
+            if(!file_exists($path)){
+                RESULT(cResult::Failed,cApplication::CtrlNotFound);
+                $this->processLastError();
+            }
+            //execute...
+            include($path);
+            $class = new Ctrl();
+            // Résultat de la requete
+            RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
+            $result = cResult::getLast();
+
+            // Champs requis
+            $fields=NULL;
+            if(is_array($class->fields) && !$this->makeFiledList(
+                    $fields,
+                    $class->fields,
+                    cXMLDefault::FieldFormatClassName )
+               ) $this->processLastError();
+
+            // Champs optionnels
+            $op_fields=NULL;
+            if(is_array($class->op_fields) && !$this->makeFiledList(
+                    $op_fields,
+                    $class->op_fields,
+                    cXMLDefault::FieldFormatClassName )
+               ) $this->processLastError();
+
+            // vérifie la validitée des champs
+            $p = array();
+            if(!cInputFields::checkArray($fields,$op_fields,$_REQUEST,$p))
+                $this->processLastError();
+            
+            //execute le controleur
+            $class->main($this, $basepath, $p);
+            $result = cResult::getLast();    
+        }
+
+        // Traduit le nom du champ concerné
+        if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
+            $result->att["field_name"] = $default->getResultText("fields",$result->att["field_name"]);
+
+        // Traduit le résultat
+        $att = $this->translateResult($result);
+
+        // Ajoute les arguments reçues en entrée au template
+        $att = array_merge($att,$_REQUEST);
+
+        /* Génére la sortie */
+        $format = "html";
+        if(cInputFields::checkArray(array("output"=>"cInputIdentifier")))
+            $format = $_REQUEST["output"] ;
+
+        switch($format){
+            case "xarg":
+                header("content-type: text/xarg");
+                echo xarg_encode_array($att);
+                break;
+            case "xml":
+                header("content-type: text/xml");
+                $doc = new XMLDocument();
+                $rootEl = $doc->createElement('data');
+                $doc->appendChild($rootEl);
+                $doc->appendAssocArray($rootEl,$att);
+                echo '<?xml version="1.0" encoding="UTF-8" ?>'.$doc->saveXML( $doc->documentElement );
+                break;
+            case "html":
+                if(isset($_GET["page"]))
+                    $content = $this->makeFormView($att, isset($fields)?$fields:NULL, isset($op_fields)?$op_fields:NULL, $_REQUEST);
+                else
+                    $content = $this->makeXMLView("view/writer/pages/index.html",$att);
+
+                if($content === false)
+                    $this->processLastError();
+
+                echo $content;
+                break;
+            default:
+                RESULT(cResult::Failed,Application::UnsuportedFeature);
+                $this->processLastError();
+                break;
+        }
+
+
+        // ok
+        exit($result->isOk() ? 0 : 1);
+    }
     
 }
 
