@@ -596,6 +596,47 @@ class cApplication implements iApplication{
     public function processLastError(){
 
         $result = cResult::getLast();
+        // Traduit le nom du champ concerné
+        if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
+            $result->att["field_name"] = $default->getResultText("fields",$result->att["field_name"]);
+
+        // Traduit le résultat
+        $att = $this->translateResult($result);
+
+        /* Génére la sortie */
+        $format = "html";
+        if(cInputFields::checkArray(array("output"=>"cInputIdentifier")))
+            $format = $_REQUEST["output"] ;
+
+        switch($format){
+            case "xarg":
+                header("content-type: text/xarg");
+                echo xarg_encode_array($att);
+                break;
+            case "xml":
+                header("content-type: text/xml");
+                $doc = new XMLDocument();
+                $rootEl = $doc->createElement('data');
+                $doc->appendChild($rootEl);
+                $doc->appendAssocArray($rootEl,$att);
+                echo '<?xml version="1.0" encoding="UTF-8" ?>'.$doc->saveXML( $doc->documentElement );
+                break;
+            case "text":
+            default:
+                header("content-type: text/plain");
+                if($result->code != cResult::Ok){
+                    echo("The application encountered a fatal error.\n");
+                    echo("L'application à rencontrée une erreur fatale.\n");
+                }
+                $result_infos = $this->translateResult($result);
+                print_r($result_infos);
+                break;
+        }
+
+        // ok
+        exit($result->isOk() ? 0 : 1);
+        /*
+        $result = cResult::getLast();
         if($result->code != cResult::Ok){
             header("content-type: text/plain");
             echo("The application encountered a fatal error.\n");
@@ -603,7 +644,7 @@ class cApplication implements iApplication{
             $result_infos = $this->translateResult($result);
             print_r($result_infos);
             exit(-1);
-        }
+        }*/
     }
 
     /** 
