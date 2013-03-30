@@ -820,14 +820,9 @@ class cApplication implements iApplication{
                 echo '<?xml version="1.0" encoding="UTF-8" ?>'.$doc->saveXML( $doc->documentElement );
                 break;
             case "html":
-                if(isset($_GET["page"]))
-                    $content = $this->makeFormView($att, isset($fields)?$fields:NULL, isset($op_fields)?$op_fields:NULL, $_REQUEST);
-                else
-                    $content = $this->makeXMLView("view/writer/pages/index.html",$att);
-
+                $content = $this->makeFormView($att, isset($fields)?$fields:NULL, isset($op_fields)?$op_fields:NULL, $_REQUEST);
                 if($content === false)
                     $this->processLastError();
-
                 echo $content;
                 break;
             default:
