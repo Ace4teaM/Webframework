@@ -598,7 +598,7 @@ class cApplication implements iApplication{
         $result = cResult::getLast();
         // Traduit le nom du champ concerné
         if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
-            $result->att["field_name"] = $default->getResultText("fields",$result->att["field_name"]);
+            $result->att["txt_field_name"] = $default->getResultText("fields",$result->att["field_name"]);
 
         // Traduit le résultat
         $att = $this->translateResult($result);
