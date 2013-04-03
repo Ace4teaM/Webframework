@@ -198,6 +198,12 @@ MyApp.DataModel.makeField = function(att)
                 xtype: 'checkboxfield'
             },false);
             break;
+        case "integer":
+        case "cInputInteger":
+            object_merge(item,{
+                xtype: 'numberfield'
+            },false);
+            break;
         case "date":
         case "cInputDate":
             object_merge(item,{
