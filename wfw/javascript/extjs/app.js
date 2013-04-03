@@ -38,8 +38,11 @@ Ext.application({
         Y = YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'event', 'wfw-result','wfw-xml-template', 'wfw-user', 'loading-box', 'io', 'wfw-navigator', 'wfw-request', 'wfw-xml','datatype-xml', function (Y)
         {
             var wfw = Y.namespace("wfw");
+
+            //initialise le viewport
+            MyApp.Loading.onInitLayout(Y);
             
-            //appel les fonctions d'initialisation
+            //appel les fonctions d'initialisations
             for(var index in MyApp.Loading.callback_list){
                 var func = MyApp.Loading.callback_list[index];
                 func(Y);
@@ -51,7 +54,6 @@ Ext.application({
         });
     },
     onCheckUserConnection: null,
-    onInitMainLayout: null,
     createFrameDialog: null,
     showFormDialog: null,
     makeForm: null
@@ -71,12 +73,20 @@ Ext.define('MyApp.global.Vars', {
 
 //loading functions
 //ajoutez à ce global les fonctions d'initialisations
+Ext.define('MyApp.callback', {callback:{}
+});
+
+//loading functions
+//ajoutez à ce global les fonctions d'initialisations
 Ext.define('MyApp.Loading', {
     statics: {
+        onInitLayout: function(Y){},
         callback_list : []
     }
 });
 
+Ext.apply(MyApp.Loading, {onInitLayout:function(Y){
+}});
 
 
 /*------------------------------------------------------------------------------------------------------------------*/
