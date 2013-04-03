@@ -278,17 +278,41 @@ function cast($destination, $sourceObject)
     }
     return $destination;
 }
-/*
-function cast($destination,  $source)
-{
-    $sourceReflection = new ReflectionObject($source);
-    $sourceProperties = $sourceReflection->getProperties();
-    foreach ($sourceProperties as $sourceProperty) {
-        $name = $sourceProperty->getName();
-        $destination->{$name} = $source->$name;
-    }
-    return $destination;
-}*/
 
+function objectToArray($d) {
+        if (is_object($d)) {
+                // Gets the properties of the given object
+                // with get_object_vars function
+                $d = get_object_vars($d);
+        }
+
+        if (is_array($d)) {
+                /*
+                * Return array converted to object
+                * Using __FUNCTION__ (Magic constant)
+                * for recursive call
+                */
+                return array_map(__FUNCTION__, $d);
+        }
+        else {
+                // Return array
+                return $d;
+        }
+}
+
+function arrayToObject($d) {
+        if (is_array($d)) {
+                /*
+                * Return array converted to object
+                * Using __FUNCTION__ (Magic constant)
+                * for recursive call
+                */
+                return (object) array_map(__FUNCTION__, $d);
+        }
+        else {
+                // Return object
+                return $d;
+        }
+}
 
 ?>
