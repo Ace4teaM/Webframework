@@ -63,7 +63,7 @@ class cResult {
 
     /**
      * @brief Obtient une instance de la dernière erreur
-     * @return Instance d'une classe cResult initialisé avec les paramétres de la dernière erreur
+     * @return Instance de cResult initialisée avec les paramétres de la dernière erreur
      */
     public static function getLast(){
         $result = new cResult(self::$last_code,self::$last_info);
@@ -102,8 +102,17 @@ class cResult {
 }
 
 /**
- * @brief Initialise le résultat en coours
- * @param string $code Contexte de l'erreur. Généralement une des constantes suivantes [cResult::Ok, cResult::Failed, cResult::System]
+ * @brief Initialise le résultat en cours
+ * @param cResult $result Instance d'un autre résultat
+ * @return bool true si $code == cResult::Ok, sinon false
+ */
+function RESULT_INST($result){
+    return cResult::last($result->code,$result->info,$result->att);
+}
+
+/**
+ * @brief Initialise le résultat en cours
+ * @param string $code Contexte de l'erreur. Généralement une des constantes suivantes: [cResult::Ok, cResult::Failed, cResult::System]
  * @param string $info Code de l'erreur
  * @param array $att Tableau associatif des attributs supplémentaires
  * @return bool true si $code == cResult::Ok, sinon false
