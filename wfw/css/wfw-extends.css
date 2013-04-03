@@ -794,71 +794,71 @@ code.path
 }
 
 /* ligne 0 */
-.bottom{ background-position: 0px 0px !important; }
-.left{ background-position: -16px 0px !important; }
-.right{ background-position: -32px 0px !important; }
-.top{ background-position: -48px 0px !important; }
-.print{ background-position: -64px 0px !important; }
-.save{ background-position: -80px 0px !important; }
-.configure{ background-position: -96px 0px !important; }
-.new{ background-position: -112px 0px !important; }
-.open{ background-position: -128px 0px !important; }
-.publish{ background-position: -144px 0px !important; }
+.wfw_icon[class~=bottom]{ background-position: 0px 0px !important; }
+.wfw_icon[class~=left]{ background-position: -16px 0px !important; }
+.wfw_icon[class~=right]{ background-position: -32px 0px !important; }
+.wfw_icon[class~=top]{ background-position: -48px 0px !important; }
+.wfw_icon[class~=print]{ background-position: -64px 0px !important; }
+.wfw_icon[class~=save]{ background-position: -80px 0px !important; }
+.wfw_icon[class~=configure]{ background-position: -96px 0px !important; }
+.wfw_icon[class~=new]{ background-position: -112px 0px !important; }
+.wfw_icon[class~=open]{ background-position: -128px 0px !important; }
+.wfw_icon[class~=publish]{ background-position: -144px 0px !important; }
 
 /* ligne 1 */
-.no{ background-position: 0px -16px !important; }
-.yes{ background-position: -16px -16px !important; }
-.warning{ background-position: -32px -16px !important; }
-.information, .help{ background-position: -48px -16px !important; }
-.error{ background-position: -64px -16px !important; }
+.wfw_icon[class~=no]{ background-position: 0px -16px !important; }
+.wfw_icon[class~=yes]{ background-position: -16px -16px !important; }
+.wfw_icon[class~=warning]{ background-position: -32px -16px !important; }
+.wfw_icon[class~=information], .wfw_icon[class~=help]{ background-position: -48px -16px !important; }
+.wfw_icon[class~=error]{ background-position: -64px -16px !important; }
 
 /* ligne 2 */
-.add{ background-position: 0px -32px !important; }
-.sub{ background-position: -16px -32px !important; }
-.edit{ background-position: -32px -32px !important; }
-.delete,.remove{ background-position: -48px -32px !important; }
-.separator{ background-position: -64px -32px !important; }
-.refresh, .update{ background-position: -80px -32px !important; }
-.find, .view{ background-position: -96px -32px !important; }
-.send{ background-position: -112px -32px !important; }
-.send_diff{ background-position: -128px -32px !important; }
+.wfw_icon[class~=add]{ background-position: 0px -32px !important; }
+.wfw_icon[class~=sub]{ background-position: -16px -32px !important; }
+.wfw_icon[class~=edit]{ background-position: -32px -32px !important; }
+.wfw_icon[class~=delete],.wfw_icon[class~=remove]{ background-position: -48px -32px !important; }
+.wfw_icon[class~=separator]{ background-position: -64px -32px !important; }
+.wfw_icon[class~=refresh],.wfw_icon[class~=update]{ background-position: -80px -32px !important; }
+.wfw_icon[class~=find], .wfw_icon[class~=view]{ background-position: -96px -32px !important; }
+.wfw_icon[class~=send]{ background-position: -112px -32px !important; }
+.wfw_icon[class~=send_diff]{ background-position: -128px -32px !important; }
 
 /* ligne 3 */
-.fmt_pdf{ background-position: 0px -48px !important; }
-.fmt_txt{ background-position: -16px -48px !important; }
-.file_empty{ background-position: -32px -48px !important; }
-.file_detail{ background-position: -48px -48px !important; }
-.fmt_xml{ background-position: -64px -48px !important; }
-.date{ background-position: -80px -48px !important; }
-.add_file{ background-position: -96px -48px !important; }
-.user_list{ background-position: -112px -48px !important; }
-.fmt_jpg, .fmt_jpeg, .fmt_bmp, .fmt_gif, .fmt_png, .fmt_wbmp, .fmt_tiff{ background-position: -128px -48px !important; }
-.fmt_css{ background-position: -144px -48px !important; }
+.wfw_icon[class~=fmt_pdf]{ background-position: 0px -48px !important; }
+.wfw_icon[class~=fmt_txt]{ background-position: -16px -48px !important; }
+.wfw_icon[class~=file_empty]{ background-position: -32px -48px !important; }
+.wfw_icon[class~=file_detail]{ background-position: -48px -48px !important; }
+.wfw_icon[class~=fmt_xml]{ background-position: -64px -48px !important; }
+.wfw_icon[class~=date]{ background-position: -80px -48px !important; }
+.wfw_icon[class~=add_file]{ background-position: -96px -48px !important; }
+.wfw_icon[class~=user_list]{ background-position: -112px -48px !important; }
+.wfw_icon[class~=fmt_jpg], .wfw_icon[class~=fmt_jpeg], .wfw_icon[class~=fmt_bmp], .wfw_icon[class~=fmt_gif], .wfw_icon[class~=fmt_png], .wfw_icon[class~=fmt_wbmp], .wfw_icon[class~=fmt_tiff]{ background-position: -128px -48px !important; }
+.wfw_icon[class~=fmt_css]{ background-position: -144px -48px !important; }
 
 /* ligne 4*/
-.fmt_rss, .type_rss{ background-position: 0px -64px !important; }
-.user{ background-position: -16px -64px !important; }
-.remove_file{ background-position: -32px -64px !important; }
-.upload{ background-position: -48px -64px !important; }
-.download{ background-position: -64px -64px !important; }
-.task{ background-position: -80px -64px !important; }
-.view_list{ background-position: -96px -64px !important; }
-.view_thumbs{ background-position: -112px -64px !important; }
-.clone{ background-position: -128px -64px !important; }
+.wfw_icon[class~=fmt_rss], .wfw_icon[class~=type_rss]{ background-position: 0px -64px !important; }
+.wfw_icon[class~=user]{ background-position: -16px -64px !important; }
+.wfw_icon[class~=remove_file]{ background-position: -32px -64px !important; }
+.wfw_icon[class~=upload]{ background-position: -48px -64px !important; }
+.wfw_icon[class~=download]{ background-position: -64px -64px !important; }
+.wfw_icon[class~=task]{ background-position: -80px -64px !important; }
+.wfw_icon[class~=view_list]{ background-position: -96px -64px !important; }
+.wfw_icon[class~=view_thumbs]{ background-position: -112px -64px !important; }
+.wfw_icon[class~=clone]{ background-position: -128px -64px !important; }
 
 /* ligne 5*/
-.connect{ background-position: 0px -80px !important; }
-.disconnect{ background-position: -16px -80px !important; }
-.lock,.locked{ background-position: -32px -80px !important; }
-.unlock,.unlocked{ background-position: -48px -80px !important; }
-.pwd{ background-position: -64px -80px !important; }
-.category{ background-position: -80px -80px !important; }
-.fields{ background-position: -96px -80px !important; }
-.map{ background-position: -112px -80px !important; }
+.wfw_icon[class~=connect]{ background-position: 0px -80px !important; }
+.wfw_icon[class~=disconnect]{ background-position: -16px -80px !important; }
+.wfw_icon[class~=lock],.wfw_icon[class~=locked]{ background-position: -32px -80px !important; }
+.wfw_icon[class~=unlock],.wfw_icon[class~=unlocked]{ background-position: -48px -80px !important; }
+.wfw_icon[class~=pwd]{ background-position: -64px -80px !important; }
+.wfw_icon[class~=category]{ background-position: -80px -80px !important; }
+.wfw_icon[class~=fields]{ background-position: -96px -80px !important; }
+.wfw_icon[class~=map]{ background-position: -112px -80px !important; }
 
 /* ligne 6*/
-.lang_en{ background-position: 0px -96px !important; }
-.lang_fr{ background-position: -16px -96px !important; }
+.wfw_icon[class~=lang_en]{ background-position: 0px -96px !important; }
+.wfw_icon[class~=lang_fr]{ background-position: -16px -96px !important; }
 
 .loading{
 	display:inline-block;
