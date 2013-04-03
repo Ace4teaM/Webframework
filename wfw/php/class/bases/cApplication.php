@@ -764,7 +764,7 @@ class cApplication implements iApplication{
             // Résultat de la requete
             RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
             $result = cResult::getLast();
-
+            
             // Champs requis
             $fields=NULL;
             if(is_array($class->fields) && !$this->makeFiledList(
@@ -781,19 +781,18 @@ class cApplication implements iApplication{
                     cXMLDefault::FieldFormatClassName )
                ) $this->processLastError();
 
-            // vérifie la validitée des champs
+            // execute le controleur si les champs sont valides
             $p = array();
-            if(!cInputFields::checkArray($fields,$op_fields,$_REQUEST,$p))
-                $this->processLastError();
+            if(cInputFields::checkArray($fields,$op_fields,$_REQUEST,$p))
+                $class->main($this, $basepath, $p);
             
-            //execute le controleur
-            $class->main($this, $basepath, $p);
+            //recupére le resultat
             $result = cResult::getLast();    
         }
 
         // Traduit le nom du champ concerné
         if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
-            $result->att["field_name"] = $default->getResultText("fields",$result->att["field_name"]);
+            $result->att["txt_field_name"] = $default->getResultText("fields",$result->att["field_name"]);
 
         // Traduit le résultat
         $att = $this->translateResult($result);
