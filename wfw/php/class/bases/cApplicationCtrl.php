@@ -23,6 +23,7 @@
 class cApplicationCtrl{
     public $fields    = null; /**< Identifiants des champs requis */
     public $op_fields = null; /**< Identifiants des champs optionnels */
+    public $att       = null; /**< Source des champs en entrées, si NULL $_REQUEST est utilisé */
 //  public $role      = Role::Visitor | Role::User;
     
     /**

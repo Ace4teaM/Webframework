@@ -783,7 +783,7 @@ class cApplication implements iApplication{
 
             // execute le controleur si les champs sont valides
             $p = array();
-            if(cInputFields::checkArray($fields,$op_fields,$_REQUEST,$p))
+            if(cInputFields::checkArray($fields,$op_fields,isset($class->att) ? $class->att : $_REQUEST,$p))
                 $class->main($this, $basepath, $p);
             
             //recupére le resultat
