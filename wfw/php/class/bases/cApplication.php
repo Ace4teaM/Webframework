@@ -829,6 +829,33 @@ output:
         exit($result->isOk() ? 0 : 1);
     }
     
+    public function queryToXML($query,&$doc)
+    {
+        // Crée le document XML (template)
+        if(!isset($doc)){
+            $doc = new XMLDocument();
+            $doc->appendChild($doc->createElement('data'));
+        }
+        
+        $rootEl = $doc->documentElement;
+        
+        //obtient la bdd
+        if(!$this->getDB($db))
+            return false;
+        
+        if(!$db->execute($query, $result))
+            return false;
+        
+        $row = $result->fetchRow();
+        if(!is_array($row))
+            return RESULT(cResult::Failed, iDatabaseQuery::EmptyResult);
+        
+        foreach($row as $id=>$value)
+            $rootEl->appendChild( $doc->createtextElement($id,$value) );
+        
+        return RESULT_OK();
+    }
+    
 }
 
 ?>
