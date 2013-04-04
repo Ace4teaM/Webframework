@@ -829,15 +829,17 @@ output:
         exit($result->isOk() ? 0 : 1);
     }
     
-    public function queryToXML($query,&$doc)
+    public function queryToXML($query,&$doc,$node)
     {
         // Crée le document XML (template)
         if(!isset($doc)){
             $doc = new XMLDocument();
             $doc->appendChild($doc->createElement('data'));
+            $node = $doc->documentElement;
         }
         
-        $rootEl = $doc->documentElement;
+        if(!$node)
+            $node = $doc->documentElement;
         
         //obtient la bdd
         if(!$this->getDB($db))
@@ -851,7 +853,7 @@ output:
             return RESULT(cResult::Failed, iDatabaseQuery::EmptyResult);
         
         foreach($row as $id=>$value)
-            $rootEl->appendChild( $doc->createtextElement($id,$value) );
+            $node->appendChild( $doc->createtextElement($id,$value) );
         
         return RESULT_OK();
     }
