@@ -751,6 +751,7 @@ class cApplication implements iApplication{
             $app = "application";
 
         //inclue le controleur
+        $class = NULL;
         if(cInputIdentifier::isValid($ctrl)){
             $basepath = $this->getCfgValue($app,"path");
             $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
@@ -772,6 +773,7 @@ class cApplication implements iApplication{
                     $class->fields,
                     cXMLDefault::FieldFormatClassName )
                ) $this->processLastError();
+            $class->fields = $fields;
 
             // Champs optionnels
             $op_fields=NULL;
@@ -780,10 +782,15 @@ class cApplication implements iApplication{
                     $class->op_fields,
                     cXMLDefault::FieldFormatClassName )
                ) $this->processLastError();
-
+            $class->op_fields = $op_fields;
+            
+            //attributs d'entree
+            if(!isset($class->att))
+                $class->att = $_REQUEST;
+            
             // execute le controleur si les champs sont valides
             $p = array();
-            if(cInputFields::checkArray($fields,$op_fields,isset($class->att) ? $class->att : $_REQUEST,$p))
+            if(cInputFields::checkArray($class->fields,$class->op_fields,$class->att,$p))
                 $class->main($this, $basepath, $p);
             
             //recupére le resultat
@@ -805,32 +812,18 @@ class cApplication implements iApplication{
         if(cInputFields::checkArray(array("output"=>"cInputIdentifier")))
             $format = $_REQUEST["output"] ;
 
-        switch($format){
-            case "xarg":
-                header("content-type: text/xarg");
-                echo xarg_encode_array($att);
-                break;
-            case "xml":
-                header("content-type: text/xml");
-                $doc = new XMLDocument();
-                $rootEl = $doc->createElement('data');
-                $doc->appendChild($rootEl);
-                $doc->appendAssocArray($rootEl,$att);
-                echo '<?xml version="1.0" encoding="UTF-8" ?>'.$doc->saveXML( $doc->documentElement );
-                break;
-            case "html":
-                $content = $this->makeFormView($att, isset($fields)?$fields:NULL, isset($op_fields)?$op_fields:NULL, $_REQUEST);
-                if($content === false)
-                    $this->processLastError();
-                echo $content;
-                break;
-            default:
-                RESULT(cResult::Failed,Application::UnsuportedFeature);
-                $this->processLastError();
-                break;
-        }
-
-
+        //initialise un controleur générique pour la sortie ?
+        if(!$class)
+            $class = new cApplicationCtrl();
+        
+        //génére la sortie
+        $content = $class->output($this, $format, $att);
+        if($content === false)
+            $this->processLastError();
+        
+        header("content-type: text/$format");
+        echo($content);
+        
         // ok
         exit($result->isOk() ? 0 : 1);
     }

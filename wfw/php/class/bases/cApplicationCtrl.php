@@ -23,7 +23,7 @@
 class cApplicationCtrl{
     public $fields    = null; /**< Identifiants des champs requis */
     public $op_fields = null; /**< Identifiants des champs optionnels */
-    public $att       = null; /**< Source des champs en entrées, si NULL $_REQUEST est utilisé */
+    public $att       = null; /**< Source des champs en entrée, si NULL $_REQUEST est utilisé */
 //  public $role      = Role::Visitor | Role::User;
     
     /**
@@ -36,6 +36,32 @@ class cApplicationCtrl{
     function main(iApplication $app, $app_path, $p) {
         return RESULT_OK();
     }
+    
+    /**
+     * Génére la sortie du controleur
+     * @param iApplication $app       Instance de l'application
+     * @param string       $format    Format de sortie attendue (type MIME)
+     * @param StdClass     $att       Attribut de résultat
+     * @return string Données en sortie
+     * @retval false La génération à échoué, l'application attend un résultat de procédure
+     */
+    function output(iApplication $app, $format, $att) {
+        switch($format){
+            case "xarg":
+                return xarg_encode_array($att);
+            case "xml":
+                $doc = new XMLDocument();
+                $rootEl = $doc->createElement('data');
+                $doc->appendChild($rootEl);
+                $doc->appendAssocArray($rootEl,$att);
+                return '<?xml version="1.0" encoding="UTF-8" ?>'.$doc->saveXML( $doc->documentElement );
+            case "html":
+                return $app->makeFormView($att, $this->fields, $this->op_fields, $att);
+        }
+        return RESULT(cResult::Failed,Application::UnsuportedFeature);
+    }
+    
+    
 };
 
 ?>
