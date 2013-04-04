@@ -594,7 +594,7 @@ class cApplication implements iApplication{
      * @brief Traitement a appliquer en cas d'erreur
      */
     public function processLastError(){
-
+/*
         $result = cResult::getLast();
         // Traduit le nom du champ concerné
         if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
@@ -603,7 +603,7 @@ class cApplication implements iApplication{
         // Traduit le résultat
         $att = $this->translateResult($result);
 
-        /* Génére la sortie */
+        // Génére la sortie
         $format = "html";
         if(cInputFields::checkArray(array("output"=>"cInputIdentifier")))
             $format = $_REQUEST["output"] ;
@@ -634,8 +634,8 @@ class cApplication implements iApplication{
         }
 
         // ok
-        exit($result->isOk() ? 0 : 1);
-        /*
+        exit($result->isOk() ? 0 : 1);*/
+        
         $result = cResult::getLast();
         if($result->code != cResult::Ok){
             header("content-type: text/plain");
@@ -644,7 +644,7 @@ class cApplication implements iApplication{
             $result_infos = $this->translateResult($result);
             print_r($result_infos);
             exit(-1);
-        }*/
+        }
     }
 
     /** 
@@ -757,7 +757,8 @@ class cApplication implements iApplication{
             $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
             if(!file_exists($path)){
                 RESULT(cResult::Failed,cApplication::CtrlNotFound);
-                $this->processLastError();
+                goto output;
+//                $this->processLastError();
             }
             //execute...
             include($path);
@@ -772,7 +773,7 @@ class cApplication implements iApplication{
                     $fields,
                     $class->fields,
                     cXMLDefault::FieldFormatClassName )
-               ) $this->processLastError();
+               ) goto output; /*$this->processLastError();*/
             $class->fields = $fields;
 
             // Champs optionnels
@@ -781,21 +782,21 @@ class cApplication implements iApplication{
                     $op_fields,
                     $class->op_fields,
                     cXMLDefault::FieldFormatClassName )
-               ) $this->processLastError();
+               ) goto output; /*$this->processLastError();*/
             $class->op_fields = $op_fields;
             
             //attributs d'entree
-            if(!isset($class->att))
-                $class->att = $_REQUEST;
+            /*if(!isset($class->att))
+                $class->att = $_REQUEST;*/
             
             // execute le controleur si les champs sont valides
             $p = array();
             if(cInputFields::checkArray($class->fields,$class->op_fields,$class->att,$p))
                 $class->main($this, $basepath, $p);
-            
-            //recupére le resultat
-            $result = cResult::getLast();    
         }
+output:
+        //recupére le resultat
+        $result = cResult::getLast(); 
 
         // Traduit le nom du champ concerné
         if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
@@ -817,7 +818,7 @@ class cApplication implements iApplication{
             $class = new cApplicationCtrl();
         
         //génére la sortie
-        $content = $class->output($this, $format, $att);
+        $content = $class->output($this, $format, $att, $result);
         if($content === false)
             $this->processLastError();
         

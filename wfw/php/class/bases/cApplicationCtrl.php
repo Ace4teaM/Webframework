@@ -33,6 +33,17 @@ class cApplicationCtrl{
      * @param StdClass     $p         Paramétres d'entrée
      * @return bool Résutat de procédure
      */
+    function cApplicationCtrl() {
+        $this->att = $_REQUEST;
+    }
+    
+    /**
+     * Point d'entree du controleur
+     * @param iApplication $app       Instance de l'application
+     * @param string       $app_path  Chemin d'accés à l'application qui à définit le controleur
+     * @param StdClass     $p         Paramétres d'entrée
+     * @return bool Résutat de procédure
+     */
     function main(iApplication $app, $app_path, $p) {
         return RESULT_OK();
     }
@@ -45,7 +56,7 @@ class cApplicationCtrl{
      * @return string Données en sortie
      * @retval false La génération à échoué, l'application attend un résultat de procédure
      */
-    function output(iApplication $app, $format, $att) {
+    function output(iApplication $app, $format, $att, $result) {
         switch($format){
             case "xarg":
                 return xarg_encode_array($att);
@@ -56,7 +67,7 @@ class cApplicationCtrl{
                 $doc->appendAssocArray($rootEl,$att);
                 return '<?xml version="1.0" encoding="UTF-8" ?>'.$doc->saveXML( $doc->documentElement );
             case "html":
-                return $app->makeFormView($att, $this->fields, $this->op_fields, $att);
+                return $app->makeFormView($att, $this->fields, $this->op_fields, $this->att);
         }
         return RESULT(cResult::Failed,Application::UnsuportedFeature);
     }
