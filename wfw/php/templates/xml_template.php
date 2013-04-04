@@ -1361,7 +1361,82 @@ class cXMLTemplateAction_include extends cXMLTemplateAction {
         }
         //sinon, supprime ce noeud
         else {
-            $input->post("check_node_includeNS", "selection introuvable, supprime le noeud de reference.");
+            $input->post("cXMLTemplateAction_include", "selection introuvable, supprime le noeud de reference.");
+            if ($node->parentNode)
+                $node->parentNode->removeChild($node);
+        }
+
+        return $next;
+    }
+
+}
+
+/*
+  Fabrique un sous contenu dans la destination
+  Attributs:
+  action = "make"
+  path   = selection en cours.
+  import = chemin d'acces a l'element cible.
+ */
+
+class cXMLTemplateAction_make extends cXMLTemplateAction {
+
+    public static function check_node($input, $select, $node, $arg) {
+        
+        //obtient la selection a importer
+        $import = $node->getAttributeNS($input->wfw_template_uri, "import");
+        if(empty($import))
+            return;
+        
+        $import = $input->get_xml_selection($select, $arg, $import);
+        
+        //echo("import=");print_r($import);
+        //obtient les options de formatage
+        $opt = $node->getAttributeNS($input->wfw_template_uri, "option");
+        //options
+        if (!empty($opt)) {
+            $opt_list = explode(" ", $opt);
+            $opt_list = array_flip($opt_list);
+        }
+        else
+            $opt = null; //tout
+
+
+        //traite les arguments pour ce noeud
+        $input->check_arguments($select, $node, $arg);
+
+        //clean
+        $input->clean_attributes($node);
+
+        //sauve le noeud suivant
+        $next = $node->nextSibling;
+
+        if ($import != NULL) {
+            if (isset($opt_list["include_att"]))
+                $input->include_arguments($import, $node, $arg);
+
+            //insert le contenu seulement
+            if (isset($opt_list["content_only"])) {
+                $import_node_list = $input->import_node_content($input->doc, $node, $import->firstChild);
+
+                //scan le contenu
+                foreach ($import_node_list as $i => $cur) {
+                    $input->check_node($select, $cur, $arg);
+                }
+            }
+            //insert le noeud + son contenu
+            else {
+                $import_node = $input->doc->importNode($import, TRUE);
+                $node->appendChild($import_node);
+
+                //scan le contenu                    
+                if ($import_node->firstChild != NULL)
+                    $input->check_node($select, $import_node->firstChild, $arg);
+            }
+        }
+        //sinon, supprime ce noeud
+        else {
+            $input->post("cXMLTemplateAction_make", "selection introuvable, supprime le noeud de reference.");
             if ($node->parentNode)
                 $node->parentNode->removeChild($node);
         }
