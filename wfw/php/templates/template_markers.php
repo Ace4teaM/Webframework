@@ -417,9 +417,9 @@ class cTemplateMarker_node extends cTemplateMarker {
     }
 
     public function find_node($input, $select, $matches, &$arg) {
-        echo("find_node");
+        /*echo("find_node");
         print_r($matches);
-        /* 	$type  = $matches[1];
+         	$type  = $matches[1];
           $Id    = $matches[2];
 
           $first = XMLDocument::getNextChildNode($select,$type);
