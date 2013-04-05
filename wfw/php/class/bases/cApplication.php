@@ -402,6 +402,9 @@ class cApplication implements iApplication{
      * @return string Contenu du template transformé
      */
     function makeHTMLView($filename,$attributes){
+        //Assure le type array pour l'utilisation de array_merge()
+        if(!is_array($attributes)) $attributes=array();
+        
 	return cHTMLTemplate::transform(
            //fichier..
            file_get_contents($this->root_path.'/'.$filename),
@@ -437,6 +440,9 @@ class cApplication implements iApplication{
      */
     function makeXMLView($filename,$attributes,$template_file=NULL)
     {
+        //Assure le type array pour l'utilisation de array_merge()
+        if(!is_array($attributes)) $attributes=array();
+        
         //fichier template
         if($template_file === NULL)
             $template_file = $this->getCfgValue ("application", "main_template");
@@ -516,6 +522,10 @@ class cApplication implements iApplication{
      */
     function makeFormView($att,$fields,$opt_fields,$values,$template_file=NULL,$tmp_filename=NULL,$xml_template_file=NULL)
     {
+        //Assure le type array pour l'utilisation de array_merge()
+        if(!is_array($att)) $att=array();
+        if(!is_array($values)) $values=array();
+        
         //obtient le nom du template
         if($template_file===NULL)
             $template_file = $this->getCfgValue("application", "form_template");
