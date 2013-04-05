@@ -868,6 +868,29 @@ output:
         return RESULT_OK();
     }
     
+    /*
+     * Execute une procédure normalisé en base de données
+     * @param string $name Nom de la procédure SQL
+     * @param mixed ... Paramétres correspondant à la procédure SQL
+     * @return bool Résultat de procédure
+     * @remarks La procédure SQL doit retourner un résultat de type RESULT
+     */
+    public static function callStoredProc($name/*,...*/){ 
+        global $app;
+        $db=null;
+        
+        if(!$app->getDB($db))
+            return RESULT(cResult::Failed, Application::DatabaseConnectionNotFound);
+
+        $params = array_slice(func_get_args(), 1);
+        if(!$db->call($app->getCfgValue("database","schema"), $name, $params, $result))
+            return false;
+        
+        $row = $result->fetchRow();
+
+        //return $result;
+        return RESULT($row["err_code"], $row["err_str"], stra_to_array($row["ext_fields"]));
+    }
 }
 
 ?>
