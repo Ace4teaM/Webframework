@@ -88,6 +88,8 @@ class cDataBasePostgres implements iDatabase {
     public static function parseValue($value){
         if(is_null($value))
             return "NULL";
+        if(is_numeric($value))
+            return $value;
         if($value instanceof DateTime)
             return $value->format("Y-m-d H:i:s");
         return "'".pg_escape_string($value)."'";
