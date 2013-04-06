@@ -868,6 +868,24 @@ output:
         return RESULT_OK();
     }
     
+    public function queryToObject($query,&$obj)
+    {
+        //obtient la bdd
+        if(!$this->getDB($db))
+            return false;
+        
+        if(!$db->execute($query, $result))
+            return false;
+        
+        $row = $result->fetchRow();
+        if(!is_array($row))
+            return RESULT(cResult::Failed, iDatabaseQuery::EmptyResult);
+        
+        $obj = (object) $row;
+        
+        return RESULT_OK();
+    }
+    
     /*
      * Execute une procédure normalisé en base de données
      * @param string $name Nom de la procédure SQL
