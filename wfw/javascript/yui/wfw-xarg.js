@@ -146,6 +146,11 @@ YUI.add('wfw-xarg', function (Y) {
                 En cas d'echec, l'erreur est traité et affiché par la fonction wfw.Form.onFormResult (voir documentation)
                 [Le nom de la form utilisé pour le résultat est définit par l'argument 'wfw_form_name' (si définit) sinon le nom de l'objet de requête]
             */
+           
+           /**
+            * @fixme Rename onCheckRequestResult_XARG by onCheckRequestResult 
+            */
+        onCheckRequestResult : function (obj) { return wfw.XArg.onCheckRequestResult_XARG(obj); },
         onCheckRequestResult_XARG : function (obj) {
             var param = object_merge({
                no_result : false,                   // Si spécifié, le contenu du fichier est retourné sans traitement des erreurs
