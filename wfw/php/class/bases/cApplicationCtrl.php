@@ -64,6 +64,7 @@ class cApplicationCtrl{
                 $doc = new XMLDocument();
                 $rootEl = $doc->createElement('data');
                 $doc->appendChild($rootEl);
+                //print_r($att);
                 $doc->appendAssocArray($rootEl,$att);
                 return '<?xml version="1.0" encoding="UTF-8" ?>'.$doc->saveXML( $doc->documentElement );
             case "html":
