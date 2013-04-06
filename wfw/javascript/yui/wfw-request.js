@@ -463,7 +463,8 @@ YUI.add('wfw-request', function (Y) {
             var callback = action["callback"];
             if (callback != null)
                 callback(action);
-            //convertie les argument en corps de requete    
+            
+            //convertie les argument en part de requete (HTTP_REQUEST_PART)  
             var multipart_args = [];
             if (action["args"] != null) {
                 for (var x in action["args"]) {
@@ -485,11 +486,15 @@ YUI.add('wfw-request', function (Y) {
                             break;
                         case "object":
                             //passe directement l'objet de requete
-                            multipart_args.push(user_arg);
+                            if(user_arg instanceof wfw.HTTP.HTTP_REQUEST_PART)
+                                multipart_args.push(user_arg);
+                            else
+                                wfw.puts("wfw.Request.ExecuteNext: Warning, non HTTP_REQUEST_PART object found");
                             break;
                     }
                 }
             }
+            
             //asynchrone
             if (action["async"] == true) {
                 if (action["args"] == null)
