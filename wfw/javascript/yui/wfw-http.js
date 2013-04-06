@@ -236,7 +236,7 @@ YUI.add('wfw-http', function (Y) {
                 this.httpRequest.setRequestHeader("Content-type", "multipart/"+multipart_type+"; boundary="+boundary_keyword);
                 this.httpRequest.setRequestHeader("MIME-Version", "1.0");
                 this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
-                //ajoute les contenus (parts) à la requête'
+                // ajoute les contenus (HTTP_REQUEST_PART) à la requête
                 var body = "";
                 for(var x in contents)
                 {
@@ -283,7 +283,7 @@ YUI.add('wfw-http', function (Y) {
             this.httpRequest.setRequestHeader("Content-type", "multipart/"+multipart_type+"; boundary="+boundary_keyword);
             this.httpRequest.setRequestHeader("MIME-Version", "1.0");
             this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
-            //
+            // ajoute les contenus (HTTP_REQUEST_PART) à la requête
             var body = "";
             for(var x in contents)
             {
