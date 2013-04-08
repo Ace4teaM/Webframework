@@ -35,7 +35,7 @@ Ext.application({
     ],
     autoCreateViewport: false,
     launch: function() {
-        Y = YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'event', 'wfw-result','wfw-xml-template', 'wfw-user', 'loading-box', 'io', 'wfw-navigator', 'wfw-request', 'wfw-xml','datatype-xml', function (Y)
+        Y = YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'event', 'wfw-io','wfw-result','wfw-xml-template', 'wfw-user', 'loading-box', 'io', 'wfw-navigator', 'wfw-request', 'wfw-xml','datatype-xml', function (Y)
         {
             var wfw = Y.namespace("wfw");
 
@@ -88,6 +88,15 @@ Ext.define('MyApp.Loading', {
 Ext.apply(MyApp.Loading, {onInitLayout:function(Y){
 }});
 
+MyApp.Loading.addCallback = function(cb)
+{
+    this.callback_list.push(cb);
+};
+
+MyApp.addCallback = function(cb)
+{
+    MyApp.Loading.addCallback(cb);
+};
 
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
