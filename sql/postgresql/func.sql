@@ -12,7 +12,7 @@ drop type if exists result cascade;
 create type result as (
 	err_code varchar(20),   -- contexte de l'erreur ( ERR_OK, ERR_FAILED, ERR_SYSTEM, ... )
 	err_str varchar(80),    -- l'erreur ( OPEN_FILE, INVALID_CHAR, ... )
-	ext_fields varchar(280) -- autres champs ( "name:value;nameB:valueB;..." )
+	ext_fields TEXT         -- autres champs ( "name:value;nameB:valueB;..." )
 );
 
 /*
