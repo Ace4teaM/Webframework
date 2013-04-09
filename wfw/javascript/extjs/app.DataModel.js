@@ -227,9 +227,183 @@ MyApp.DataModel.makeField = function(att)
 
 /*------------------------------------------------------------------------------------------------------------------*/
 /**
- * @brief Charge le model de données
+ * @brief Convertie un type de champ Webframework en type Extjs
+ * @return Type de champ compatible avec 'Ext.data.Field.type'
+ * @remarks Si le type est inconnu 'auto' est retourné
  **/
 /*------------------------------------------------------------------------------------------------------------------*/
+
+MyApp.DataModel.convertFieldType = function(type)
+{
+    var wfw = Y.namespace("wfw");
+    
+    switch(type){
+        case "float":
+        case "cInputFloat":
+            return 'float';
+        case "bool":
+        case "cInputBool":
+            return 'boolean';
+        case "integer":
+        case "cInputInteger":
+            return 'int';
+        case "date":
+        case "cInputDate":
+            return 'date';
+        case "html":
+        case "cInputHTML":
+        case "text":
+        case "cInputText":
+        case "string":
+        case "cInputString":
+        default:
+            return 'string';
+    }
+    
+    return "auto";
+}
+
+/*------------------------------------------------------------------------------------------------------------------*/
+/**
+ * @brief Récupére des données d'une table SQL
+ * @param string table_name Nom de table
+ * @param array cols Liste des identifiants de colonnes
+ * @remarks Cette fonction utilise le contrôleur 'datafetch' pour obtenir les données.
+ * @remarks Pour fonctionner, l'index de page 'datafetch' avec l'URL valide doit être définit dans le fichier 'default.xml' de votre application
+ **/
+/*------------------------------------------------------------------------------------------------------------------*/
+
+MyApp.DataModel.fetchData = function(table_name, cols)
+{
+    var wfw = Y.namespace("wfw");
+    var myData=[];
+    var param = {
+        table_name : table_name,
+        cols_names : cols.join(",")
+    };
+    wfw.Request.Add(
+        null,
+        wfw.Navigator.getURI("datafetch"),
+        param,
+        wfw.Xml.onCheckRequestResult,{
+            onsuccess:function(req,doc,root){
+                root.all(table_name).each(function(node){
+                    var data = [];
+                    for( var col in cols){
+                        data.push( [node.one(">"+cols[col]).get("text")] );
+                    }
+                    myData.push( data );
+                });
+            }
+        },false
+    );
+    return myData;
+}
+
+/**
+ ------------------------------------------------------------------------------------------------------------------
+ * @brief Initialise un model de stockage basé sur le dictionnaire de données
+ * @param array cols Liste des identifiants de colonnes (tel que definit dans la configuration [fields_formats])
+ * @param array data Liste des tableaux de données. Utilisez MyApp.DataModel.fetchData pour obtenir les données depuis la BDD
+ * @return Ext.data.ArrayStore Stockage de données
+ ------------------------------------------------------------------------------------------------------------------
+ **/
+
+MyApp.DataModel.createArrayStore = function(cols, data)
+{
+    var wfw = Y.namespace("wfw");
+    var fieldsList = [];
+    for( var col in cols){
+        var att = MyApp.DataModel.getFieldInfos(cols[col]);
+        if(att)
+            fieldsList.push({
+                name : att.id,
+                type : MyApp.DataModel.convertFieldType(att.type)
+            });
+    }
+//  wfw.puts(fieldsList);
+    return Ext.create('Ext.data.ArrayStore', {fields:fieldsList, data: data});
+}
+
+/**
+ ------------------------------------------------------------------------------------------------------------------
+ * @brief Initialise un model de stockage basé sur le dictionnaire de données
+ * @param array cols Liste des identifiants de colonnes (tel que definit dans la configuration [fields_formats])
+ * @param array data Liste des tableaux de données. Utilisez MyApp.DataModel.fetchData pour obtenir les données depuis la BDD
+ * @return Ext.data.ArrayStore Stockage de données
+ ------------------------------------------------------------------------------------------------------------------
+ **/
+Ext.define('MyApp.DataModel.Grid', {
+    extend: 'Ext.grid.Panel',
+    
+    config:{
+        stateful: true,
+        stateId: 'stateGrid',
+        cols:[],
+        viewConfig: {
+            stripeRows: true
+        }
+    },
+
+    constructor: function(config) {
+        Ext.apply(this, this.config);
+        this.superclass.constructor.call(this,config);
+        return this;
+    },
+
+    initComponent: function()
+    {
+        var wfw = Y.namespace("wfw");
+        var me=this;
+        
+        var gridCol = [];
+        for(var i in this.cols){
+            wfw.puts(this.cols[i]);
+            var att = MyApp.DataModel.getFieldInfos(this.cols[i]);
+            gridCol.push({
+                text     : att.label,
+                flex     : 1,
+                sortable : true,
+                dataIndex: att.id
+            });
+        }
+
+        //Boutons
+        Ext.apply(this, {
+            columns: gridCol
+        });
+        
+        this.superclass.initComponent.apply(this, arguments);
+        
+        //initialise les evenements
+        this.getSelectionModel().on('selectionchange', this.onSelectChange, this);
+    },
+
+    onSelectChange: function(selModel, selections){
+        //alert(selections.length ? false : true);
+        //this.deleteBtn.setDisabled(selections.length ? false : true);
+    }
+
+});
+
+
+/**
+ ------------------------------------------------------------------------------------------------------------------
+ * @brief Obtient des informations sur un champ
+ * @param string id Identifiant du champ
+ * @return object Tableau associatif contenant les informations sur le champ
+ * 
+ * ## Retour
+ * Détail sur le format de l'objet retourné
+ * @code{.js}
+ * var obj = {
+ *  id    : string // Identifiant du champ (passé en argument)
+ *  label : string // Nom du champ
+ *  type  : string // Type du champ (tel que definit dans la configuration [fields_formats])
+ * };
+ * @endcode
+ ------------------------------------------------------------------------------------------------------------------
+ **/
 
 MyApp.DataModel.getFieldInfos = function(id)
 {
