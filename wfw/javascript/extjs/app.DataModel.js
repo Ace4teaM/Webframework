@@ -53,17 +53,76 @@ Ext.define('MyApp.DataModel.FieldsForm', {
         
     initComponent: function()
     {
+        var wfw = Y.namespace("wfw");
+        var me = this;
+        
         //initalise les items de champs
         var items=[];
         for(var key in this.wfw_fields){
-            this.items.push(MyApp.DataModel.makeField(this.wfw_fields[key]));
+            items.push(MyApp.DataModel.makeField(this.wfw_fields[key]));
         }
-            
+
         Ext.apply(this, {
-            items: this.items
+            items: items
         });
 
+        Ext.apply(this,{
+            dockedItems:[{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                items: ['->',{
+                    iconCls: 'wfw_icon save',
+                    text: 'Sauvegarder',
+                    scope:me,
+                    handler:function(){
+                        var wfw = Y.namespace("wfw");
+                        //appel le controleur
+                        wfw.Request.Add(null,this.url,
+                            object_merge(this.add_args,this.getValues(),true),
+                            wfw.XArg.onCheckRequestResult,
+                            {
+                                onsuccess:function(req,args){
+                                    MyApp.showResultToMsg(wfw.Result.fromXArg(args));
+                                    //window.location.reload();
+                                },
+                                onfailed:function(req,args){
+                                    MyApp.showResultToMsg(wfw.Result.fromXArg(args));
+                                }
+                            },
+                            false
+                        );
+                    }
+                }]
+            }]
+        });
+
+        if(this.get_url != null){
+        }
+        
         this.superclass.initComponent.apply(this, arguments);
+    },
+    
+    loadFormData: function(url){
+        var wfw = Y.namespace("wfw");
+            var form = this.getForm();
+            //appel le controleur
+            wfw.Request.Add(null,url,
+                {output:"xarg"},
+                wfw.XArg.onCheckRequestResult,
+                {
+                    onsuccess:function(req,args){
+                        form.setValues(args);
+//                        wfw.puts(args);
+                    },
+                    onfailed:function(req,args){
+                        MyApp.showResultToMsg(wfw.Result.fromXArg(args));
+                    },
+                    onerror:function(req){
+                        wfw.puts("get_url data error");
+                    }
+                },
+                false
+            );
     },
         
     constructor: function(config) {
