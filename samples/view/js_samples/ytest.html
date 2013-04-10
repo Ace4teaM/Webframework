@@ -26,10 +26,17 @@
             YUI(wfw_yui_config).use('base', 'wfw', 'wfw-xml', 'wfw-request', 'wfw-states', 'wfw-utils','node', 'event', 'dom', function (Y)
             {Y.one('window').on('load', function(){
                 var wfw = Y.namespace("wfw");
+                /*wfw.HTTP.get_async("ctrl.php?app=wfw&ctrl=datamodel", function(e,c){wfw.puts("req1")}, this);
+                wfw.HTTP.get_async("ctrl.php?app=wfw&ctrl=datamodel", function(e,c){wfw.puts("req1B")}, this);
+                wfw.HTTP.get("ctrl.php?app=wfw&ctrl=datamodel");
+                wfw.puts("req2");
+                wfw.HTTP.get("ctrl.php?app=wfw&ctrl=datamodel");
+                wfw.puts("req3");*/
+                
                 wfw.Request.Add("req1", "ctrl.php?app=wfw&ctrl=datamodel", null, wfw.Xml.onCheckRequestResult, {onsuccess:function(){}}, true);
                 wfw.Request.Add("req2", "ctrl.php?app=wfw&ctrl=datamodel", null, wfw.Xml.onCheckRequestResult, {onsuccess:function(){}}, false);
                 wfw.Request.Add("req3", "ctrl.php?app=wfw&ctrl=datamodel", null, wfw.Xml.onCheckRequestResult, {onsuccess:function(){}}, false);
-                wfw.puts("xfdsdf");
+                wfw.puts("end");
             });});
 
             // ]]>
