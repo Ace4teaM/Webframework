@@ -93,7 +93,7 @@ class cDataBasePostgres implements iDatabase {
         if(is_numeric($value))
             return $value;
         if($value instanceof DateTime)
-            return $value->format("Y-m-d H:i:s");
+            $value = $value->format("Y-m-d H:i:s");
         return "'".pg_escape_string($value)."'";
     }
     
