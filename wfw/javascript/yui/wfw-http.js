@@ -28,7 +28,7 @@ YUI.add('wfw-http', function (Y) {
         /*
          * Globals
          */
-        httpRequest  : null, // l'objet HttpRequest
+        httpRequest  : null, // l'objet HttpRequest (utilisé pour les requetes synchrones uniquement)
         http_user    : "",
         http_pwd     : "",
 
@@ -58,6 +58,28 @@ YUI.add('wfw-http', function (Y) {
          *Initialise l'interface HTTP
          **/
         init : function(){
+            
+            // assigne l'interface a l'objet WebFrameWork
+            this.httpRequest = this.createHttpRequest();
+            this.http_user = "";
+            this.http_pwd = "";
+            
+            
+            //debug
+            if (this.httpRequest==null){
+                wfw.puts("Error creating the XMLHttpRequest object.");
+                return false;
+            }
+            
+            return true;
+        },
+        
+        /**
+         * @brief Initialise une interface XMLHttpRequest
+         * @return XMLHttpRequest Instance de la classe XMLHttpRequest
+         * @retval false La fonction à échouée
+         **/
+        createHttpRequest : function(){
             var http;
             
             // Mozilla, Safari, ...
@@ -97,18 +119,10 @@ YUI.add('wfw-http', function (Y) {
             }
 
             //debug
-            if (http==null){
-                wfw.puts("Error creating the XMLHttpRequest object.");
+            if (http==null)
                 return false;
-            }
             
-            // assigne l'interface a l'objet WebFrameWork
-            this.httpRequest = http;
-            this.http_user = "";
-            this.http_pwd = "";
-            
-            
-            return true;
+            return http;
         },
         
         /*
@@ -157,6 +171,22 @@ YUI.add('wfw-http', function (Y) {
             }
         },
 
+        getReqResponse : function(req){
+            //wfw.Request.print();
+            //wfw.puts('this.getResponse: '+this.httpRequest.status);
+            if(req.status != 200)
+                return null;
+            //attention a ne pas utiliser this.httpRequest.responseText avec un contenu autre que du texte, ceci engendre un bug
+            switch(MIME_lowerType(req.getResponseHeader('Content-type'))){
+                case 'application':
+                case 'text':
+                    return req.responseText;
+                case 'xml':alert('xml');
+                    return req.responseXML;
+                default:
+                    return req.responseBody;
+            }
+        },
         /*
             Envoie une requête HTTP avec méthode GET (bloquante)
             Arguments:
@@ -195,6 +225,7 @@ YUI.add('wfw-http', function (Y) {
                 [string] Réponse
         */
         post : function(url, params) {
+            //this.httpRequest = this.createHttpRequest();
             try{
                 if(typeof(params)=='object')
                     params = wfw.URI.object_to_query(params/*,true*/);//encode l'UTF 8
@@ -225,6 +256,7 @@ YUI.add('wfw-http', function (Y) {
                 L'Argument 'multipart_type' définit un des types MIME multipart standard : (mixed, digest, alternative, parallel) ou étendu : (encrypted, byteranges, etc...)
         */
         post_multipart : function(url, contents, multipart_type) {
+            //this.httpRequest = this.createHttpRequest();
             try{
                 var boundary_keyword = "end-of-body";
 
@@ -265,24 +297,29 @@ YUI.add('wfw-http', function (Y) {
                 [string]   url            : URL de requête
                 [array]    contents       : Tableau indexé des contenus (HTTP_REQUEST_PART)
                 [string]   multipart_type : Type MIME multipart. Par défault "form-data" (voir remarques)
-                [function] callback       : Fonction de rappel
+                [function] callback(e,context)   : Fonction de rappel (appelé dans le context XMLHttpRequest)
+                [function] context       : Context de données passé au callback
             Retourne:
                 [bool] true
             Remarques:
                 L'Argument 'multipart_type' définit un des types MIME multipart standard : (mixed, digest, alternative, parallel) ou étendu : (encrypted, byteranges, etc...)
         */
-        post_multipart_async : function (url, contents, multipart_type, callback) {
+        post_multipart_async : function (url, contents, multipart_type, callback, context) {
+            // Instancie une nouvelle interface XMLHTTpRequest
+            // Attention: Dans le cas contraire, la requete en cours Asynchrone annule la requete précédente (si elle n'est pas terminé)
+            var http = this.createHttpRequest();
+            //prepare le contenu
             var crlf = "\r\n";
             var boundary_keyword = "end-of-body";
 
             if(typeof(multipart_type)=="undefined")
                 multipart_type="form-data";
 
-            this.httpRequest.onreadystatechange = callback;
-            this.httpRequest.open('POST', url, true, this.http_user, this.http_pwd);
-            this.httpRequest.setRequestHeader("Content-type", "multipart/"+multipart_type+"; boundary="+boundary_keyword);
-            this.httpRequest.setRequestHeader("MIME-Version", "1.0");
-            this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
+            http.onreadystatechange = function(e){return callback.call(http,e,context)};
+            http.open('POST', url, true, this.http_user, this.http_pwd);
+            http.setRequestHeader("Content-type", "multipart/"+multipart_type+"; boundary="+boundary_keyword);
+            http.setRequestHeader("MIME-Version", "1.0");
+            http.setRequestHeader("Cache-Control","no-cache"); 
             // ajoute les contenus (HTTP_REQUEST_PART) à la requête
             var body = "";
             for(var x in contents)
@@ -300,7 +337,7 @@ YUI.add('wfw-http', function (Y) {
             wfw.puts("body=\n");
             wfw.puts(body);
             */
-            this.httpRequest.send(body);
+            http.send(body);
             return true;
         },
         
@@ -308,21 +345,25 @@ YUI.add('wfw-http', function (Y) {
             Requete GET (non-bloquante)
             Argument:
                 [string]   url      : URL de requête
-                [function] callback : Fonction de rappel
+                [function] callback(e,context)   : Fonction de rappel (appelé dans le context XMLHttpRequest)
+                [function] context       : Context de données passé au callback
             Retourne:
                 [bool] true
         */
-        get_async : function(url, callback){
+        get_async : function(url, callback, context){
+            // Instancie une nouvelle interface XMLHTTpRequest
+            // Attention: Dans le cas contraire, la requete en cours Asynchrone annule la requete précédente (si elle n'est pas terminé)
+            var http = this.createHttpRequest();
             //Ceci est l'unique solution trouvé pour actualiser le cache sous I.E
             //Cette solution doit être provisoire.
             //En effet, l'ajout d'un argument a l'uri peut provoquer un comportement inattendu dans un script serveur
             //(ne pas utiliser URI.remakeURI, qui ne prend pas encharge les chemins sans nom de domaine)
             url += ((url.indexOf('?')!=-1) ? "&" : "?")+"random="+(parseInt(Math.random()*1000).toString());
             //
-            this.httpRequest.onreadystatechange = callback;
-            this.httpRequest.open('GET', url, true, this.http_user, this.http_pwd);
-            this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
-            this.httpRequest.send(null);
+            http.onreadystatechange = function(e){return callback.call(http,e,context)};
+            http.open('GET', url, true, this.http_user, this.http_pwd);
+            http.setRequestHeader("Cache-Control","no-cache"); 
+            http.send(null);
             return true;
         },
         
@@ -331,20 +372,25 @@ YUI.add('wfw-http', function (Y) {
             Argument:
                 [string]   url      : URL de requête
                 [object]   params   : Tableau associatif ou URI encodée des paramètres
-                [function] callback : Fonction de rappel
+                [function] callback(e,context)   : Fonction de rappel (appelé dans le context XMLHttpRequest)
+                [function] context       : Context de données passé au callback
             Retourne:
                 [bool] true
         */
-        post_async : function(url, params, callback) {
+        post_async : function(url, params, callback, context) {
+            // Instancie une nouvelle interface XMLHTTpRequest
+            // Attention: Dans le cas contraire, la requete en cours Asynchrone annule la requete précédente (si elle n'est pas terminé)
+            var http = this.createHttpRequest();
+            //
             if(typeof(params)=='object')
                 params = wfw.URI.object_to_query(params/*,true*/);//encode l'UTF 8
-            this.httpRequest.onreadystatechange = callback;
-            this.httpRequest.open('POST', url, true, this.http_user, this.http_pwd);
-            this.httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            //this.httpRequest.setRequestHeader("Content-length", params.length);
-            this.httpRequest.setRequestHeader("Cache-Control","no-cache"); 
-            //this.httpRequest.setRequestHeader("Connection", "close");
-            this.httpRequest.send(params);
+            http.onreadystatechange = function(e){return callback.call(http,e,context)};
+            http.open('POST', url, true, this.http_user, this.http_pwd);
+            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            //http.setRequestHeader("Content-length", params.length);
+            http.setRequestHeader("Cache-Control","no-cache"); 
+            //http.setRequestHeader("Connection", "close");
+            http.send(params);
             return true;
         }
     };

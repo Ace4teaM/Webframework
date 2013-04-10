@@ -219,7 +219,7 @@ YUI.add('wfw-request', function (Y) {
 
             //execute la requete ?
             //[Note: si la requete est asynchrone elle doit être immediatement executée pour eviter d'attendre la fin d'une requete synchrone]
-            if (this.auto_start && (!this.working || !action.async)){
+            if (this.auto_start && (!this.working/* || !action.async*/)){
                 this.Start(this.async);
             }
 
@@ -282,7 +282,7 @@ YUI.add('wfw-request', function (Y) {
                 if (req.name == name) {
                     if (req.status == "wait")
                         wfw.puts("Remove Request: warning! request " + name + " is currently executed");
-                    wfw.puts("Remove Request: " + name + ", " + this.exec_list[i].url);
+//                    wfw.puts("Remove Request: " + name + ", " + this.exec_list[i].url);
                     this.exec_list.splice(i, 1);
                     return true;
                 }
@@ -499,9 +499,9 @@ YUI.add('wfw-request', function (Y) {
             //asynchrone
             if (action["async"] == true) {
                 if (action["args"] == null)
-                    wfw.HTTP.get_async(action["url"], this.onResult);
+                    wfw.HTTP.get_async(action["url"], this.onResult, action);
                 else
-                    wfw.HTTP.post_multipart_async(action["url"], multipart_args, "form-data", this.onResult);
+                    wfw.HTTP.post_multipart_async(action["url"], multipart_args, "form-data", this.onResult, action);
             }
             //synchrone
             else {
@@ -510,10 +510,13 @@ YUI.add('wfw-request', function (Y) {
                 else
                     wfw.HTTP.post_multipart(action["url"], multipart_args, "form-data");
 
-                wfw.Request.onResult(null);
+                wfw.Request.onResult.call(wfw.HTTP.httpRequest,null,action);
             }
 
-            return true;
+            // Execute la prochaine requete
+            // Si la derniére requête est asynchrone alors, il ne faut pas attendre car si la prochaine est synchrone elle sera mise en attente (ce qui ne doit pas etre le cas)
+            // Si la derniére requête est synchrone alors, inutile d'attendre car elle est deja execute (bloquante)
+            return wfw.Request.ExecuteNext();
         },
 
         /*
@@ -556,41 +559,40 @@ YUI.add('wfw-request', function (Y) {
         /*
             [PRIVATE]
             Callback de résultat interne
+            @remarks Le contexte de la fonction est un objet XMLHttpRequest
         */
-        onResult: function (e)// attention! executé dans le context global (pas de this)
+        onResult: function (e,action)
         {
-            var action = wfw.Request.CurrentAction();
-            if (action == null) {
-                wfw.puts("wfw.request.onResult: This request has already been deleted from the list. ID:" + wfw.Request.cur_action);
-                return;
-            }
-
             //met a jour le status
-            action["status"] = wfw.HTTP.httpRequest.readyState; //met a jour l'etat
+            action["status"] = this.readyState; //met a jour l'etat
 
-            switch (wfw.HTTP.httpRequest.readyState) {
+            switch (this.readyState) {
+                /*
                 case wfw.Request.READYSTATE_UNSENT:
-                    //wfw.puts(action.name+' READYSTATE_UNSENT '+wfw.HTTP.httpRequest.readyState);
+                    wfw.puts(action.name+' READYSTATE_UNSENT '+wfw.HTTP.httpRequest.readyState);
                     break;
 
                 case wfw.Request.READYSTATE_OPENED:
-                    //wfw.puts(action.name+' READYSTATE_OPENED '+wfw.HTTP.httpRequest.readyState);
+                    wfw.puts(action.name+' READYSTATE_OPENED '+wfw.HTTP.httpRequest.readyState);
+                    if(action.async)
+                        wfw.Request.ExecuteNext();
                     break;
 
                 case wfw.Request.READYSTATE_HEADERS_RECEIVED:
-                    //wfw.puts(action.name+' READYSTATE_HEADERS_RECEIVED '+wfw.HTTP.httpRequest.readyState);
+                    wfw.puts(action.name+' READYSTATE_HEADERS_RECEIVED '+wfw.HTTP.httpRequest.readyState);
                     break;
 
                 case wfw.Request.READYSTATE_LOADING:
-                    //wfw.puts(action.name+' READYSTATE_LOADING '+wfw.HTTP.httpRequest.readyState);
-                    break;
+                    wfw.puts(action.name+' READYSTATE_LOADING '+wfw.HTTP.httpRequest.readyState);
+                    break;*/
 
                 case wfw.Request.READYSTATE_DONE:
                     {
+                        wfw.puts("wfw.request.onResult: Done > "+action.name);
                         //wfw.puts(action.name+' READYSTATE_DONE '+wfw.HTTP.httpRequest.readyState);
-                        action["status"] = wfw.HTTP.httpRequest.status; //met a jour l'etat
-                        action["response_header"] = wfw.HTTP.httpRequest.getAllResponseHeaders();
-                        action["response"] = wfw.HTTP.getResponse();
+                        action["status"] = this.status; //met a jour l'etat
+                        action["response_header"] = this.getAllResponseHeaders();
+                        action["response"] = wfw.HTTP.getReqResponse(this);
                         action["response_obj"] = null;
 
                         //cree l'objet associe si possible
@@ -616,12 +618,13 @@ YUI.add('wfw-request', function (Y) {
 
                         //passe a l'action suivante (non-bloquante)
                         //window.setTimeout("wfw.request.ExecuteNext();",0);
-                        wfw.Request.ExecuteNext();
+                        //if(!action.async)
+                        //    return wfw.Request.ExecuteNext();
                     }
                     break;
-                default:
-                    wfw.puts("wfw.request.onResult: '"+action.name+"' unknown state: "+wfw.HTTP.httpRequest.readyState);
-                    break;
+                /*default:
+                    wfw.puts("wfw.request.onResult: '"+action.name+"' state: "+this.readyState);
+                    break;*/
             }
         },
 
