@@ -210,7 +210,7 @@ YUI.add('wfw-request', function (Y) {
                 this.exec_list[i_old_action] = action;
             }
 
-            wfw.puts("wfw.request.Insert: " + action.name + ", " + action.url);
+            wfw.puts("wfw.request.Insert: " + action.name + ", " + action.url + " (async:"+ action.async +")");
 
             //appel du callback callback
             if (action.callback != null){
@@ -218,7 +218,8 @@ YUI.add('wfw-request', function (Y) {
             }
 
             //execute la requete ?
-            if (this.auto_start && !this.working){
+            //[Note: si la requete est asynchrone elle doit être immediatement executée pour eviter d'attendre la fin d'une requete synchrone]
+            if (this.auto_start && (!this.working || !action.async)){
                 this.Start(this.async);
             }
 
