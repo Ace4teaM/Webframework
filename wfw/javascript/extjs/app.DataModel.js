@@ -26,15 +26,16 @@ Ext.define('MyApp.DataModel', {
 
 
 
-/*------------------------------------------------------------------------------------------------------------------*/
-//
-// Construit un formulaire avec les champs du dictionnaire de données
-//
-/*------------------------------------------------------------------------------------------------------------------*/
+/*
+ *------------------------------------------------------------------------------------------------------------------
+ * @brief Construit un formulaire de champs
+ * @param array wfw_fields Liste des définitions de champs (voir MyApp.DataModel.makeField)
+ *------------------------------------------------------------------------------------------------------------------
+ */
 Ext.define('MyApp.DataModel.FieldsForm', {
     extend: 'Ext.form.Panel',
     alias: 'fieldsform',
-        
+
     config:{
         bodyStyle:'padding:5px 5px 0',
         fieldDefaults: {
@@ -54,12 +55,12 @@ Ext.define('MyApp.DataModel.FieldsForm', {
     {
         //initalise les items de champs
         var items=[];
-        for(var key in this.initialConfig.wfw_fields){
-            items.push(MyApp.DataModel.makeField(this.initialConfig.wfw_fields[key]));
+        for(var key in this.wfw_fields){
+            this.items.push(MyApp.DataModel.makeField(this.wfw_fields[key]));
         }
             
         Ext.apply(this, {
-            items: items
+            items: this.items
         });
 
         this.superclass.initComponent.apply(this, arguments);
@@ -407,6 +408,8 @@ Ext.define('MyApp.DataModel.Grid', {
 
 MyApp.DataModel.getFieldInfos = function(id)
 {
+    var wfw = Y.namespace("wfw");
+    
     if(MyApp.DataModel.datamodel==false)
         MyApp.DataModel.loadDataModel();
     if(MyApp.DataModel.datamodel==null)
@@ -414,6 +417,10 @@ MyApp.DataModel.getFieldInfos = function(id)
 
     var root = Y.Node(MyApp.DataModel.datamodel.documentElement);
     var fieldNode = root.one(">"+id);
+    if(fieldNode == null){
+        wfw.puts("getFieldInfos: unknown "+id+" filed");
+        return false;
+    }
     return {
         id    : id,
         type  : fieldNode.get("text"),
@@ -430,6 +437,7 @@ MyApp.DataModel.getFieldInfos = function(id)
 MyApp.DataModel.loadDataModel = function()
 {
     var wfw = Y.namespace("wfw");
+    MyApp.DataModel.datamodel = null;
     wfw.Request.Add(
         null,
         wfw.Navigator.getURI("datamodel"),
@@ -438,12 +446,15 @@ MyApp.DataModel.loadDataModel = function()
         {
             no_result : true,
             no_msg    : true,
-            onsuccess : function(obj,xml_doc){
+            onsuccess : function(obj,xml_doc,xml_root){
                 MyApp.DataModel.datamodel = xml_doc;
                 wfw.puts("Datamodel loaded");
             },
+            onfailed   : function(obj,xml_doc,xml_root){
+                wfw.puts("Datamodel not loaded (failed)");
+            },
             onerror   : function(obj){
-                wfw.puts("Datamodel not loaded");
+                wfw.puts("Datamodel not loaded (error)");
             }
         },
         false
