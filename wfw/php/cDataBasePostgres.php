@@ -88,6 +88,8 @@ class cDataBasePostgres implements iDatabase {
     public static function parseValue($value){
         if(is_null($value))
             return "NULL";
+        if(is_string($value))
+            return "'".pg_escape_string($value)."'";
         if(is_bool($value))
             return ($value ? 'TRUE' : 'FALSE');
         if(is_numeric($value))
