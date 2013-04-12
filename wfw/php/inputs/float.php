@@ -19,7 +19,7 @@ class cInputFloat extends cInput
 		return RESULT_OK();
 	}     
 	public static function regExp(){
-		return '(?:[0-9]+)(?:[\.\,][0-9]*)?';
+		return '\-(?:[0-9]+)(?:[\.\,][0-9]*)?';
 	}
         public static function toObject($string) {
             return floatval($string);
