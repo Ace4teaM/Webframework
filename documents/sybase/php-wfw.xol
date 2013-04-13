@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1364458862" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1365842090" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DVTL xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -720,6 +720,38 @@ _id=&quot;.$db-&gt;parseValue($id);
     }
     
    /*
+      @brief Insert single entry by id
+      @param $inst WriterDocument instance pointer to initialize
+      @param $id Primary unique identifier of entry to retreive
+      @param $db iDataBase derived instance
+    */
+    public static function insert(&amp;$inst,$db=null){
+       //obtient la base de donnees courrante
+       global $app;
+       if(!$db &amp;&amp; !$app-&gt;getDB($db))
+         return false;
+      
+       //id initialise ?
+       if(!isset($inst-&gt;
+.convert_name(%Code%,&quot;_&quot;,&quot; &quot;,firstLowerWord)
+Id))
+           return RESULT(cResult::Failed, cApplication::EntityMissingId);
+      
+      //execute la requete
+       $query = &quot;INSERT INTO %Name% (&quot;;
+       .foreach_item(Attributes, &quot;\n&quot;, &quot;\n&quot;)
+       $query .= &quot; %Name% =&quot;.$db-&gt;parseValue($inst-&gt;%Code%).&quot;,&quot;;
+       .next(&quot;\n&quot;)
+       $query = substr($query,0,-1);//remove last &#39;,&#39;
+       $query .= &quot;)&quot;;
+       
+       if($db-&gt;execute($query,$result))
+          return true;
+
+       return false;
+    }
+    
+   /*
       @brief Update single entry by id
       @param $inst WriterDocument instance pointer to initialize
       @param $id Primary unique identifier of entry to retreive
@@ -735,7 +767,7 @@ _id=&quot;.$db-&gt;parseValue($id);
        if(!isset($inst-&gt;
 .convert_name(%Code%,&quot;_&quot;,&quot; &quot;,firstLowerWord)
 Id))
-           return RESULT(cResult::Failed, cApplication::entityMissingId);
+           return RESULT(cResult::Failed, cApplication::EntityMissingId);
       
       //execute la requete
        $query = &quot;UPDATE %Name% SET&quot;;
@@ -798,8 +830,8 @@ _id  from $objectTableName where &quot;.$objectTableName.&quot;_id=&quot;.$obj-&
 \n}</a:TemplateTargetItem.Value>
 <a:CreationDate>1355942741</a:CreationDate>
 <a:Creator>developpement</a:Creator>
-<a:ModificationDate>1364458862</a:ModificationDate>
-<a:Modifier>AceTeaM</a:Modifier>
+<a:ModificationDate>1365842090</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
 </o:TemplateTargetItem>
 </c:Categories>
