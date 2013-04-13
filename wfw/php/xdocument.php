@@ -145,9 +145,9 @@ class XMLDocument extends DOMDocument {
     }
 
     /*
-     * @brief Obtient un élément du document
+     * @brief Obtient plusieurs éléments du document
      * @param selector Sélecteur, de style CSS (voir Remarques)
-     * @return Retourne le noeud trouvé (DOMNode), NULL si introuvable
+     * @return Liste des noeuds trouvés (DOMNode), tableau vide si introuvable
      * 
      * @remarks Le selecteur peut prendre la forme suivante ( > TAGNAME [ATT_NAME=ATT_VALUE,...] )
      */
