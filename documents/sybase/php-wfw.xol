@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1365843208" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1365847580" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DVTL xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -507,6 +507,17 @@ private
 <a:TemplateTargetItem.Value>[%phpDocComment%]
 [%Abstract%?abstract ][%Final%?final ]class %Code%[ %extends%][ %implements%]
 {
+   public function getId(){
+      return $this-&gt;
+      .convert_name(%Code%,&quot;_&quot;,&quot; &quot;,firstLowerWord)
+Id;
+  }
+   public function setId($id){
+      return $this-&gt;
+      .convert_name(%Code%,&quot;_&quot;,&quot; &quot;,firstLowerWord)
+Id = $id;
+  }
+
     .foreach_item(Attributes, &quot;\n&quot;)
     %definition%
     .next(&quot;\n&quot;)
@@ -519,8 +530,8 @@ private
 [%classManager%]</a:TemplateTargetItem.Value>
 <a:CreationDate>0</a:CreationDate>
 <a:Creator/>
-<a:ModificationDate>1364400817</a:ModificationDate>
-<a:Modifier>AceTeaM</a:Modifier>
+<a:ModificationDate>1365847580</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
 <a:Comment>Class definition.</a:Comment>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
 </o:TemplateTargetItem>
@@ -740,7 +751,14 @@ Id))
       //execute la requete
        $query = &quot;INSERT INTO %Name% (&quot;;
        .foreach_item(Attributes, &quot;\n&quot;, &quot;\n&quot;)
-       $query .= &quot; %Name% =&quot;.$db-&gt;parseValue($inst-&gt;%Code%).&quot;,&quot;;
+       $query .= &quot; %Name%,&quot;;
+       .next(&quot;\n&quot;)
+       $query = substr($query,0,-1);//remove last &#39;,&#39;
+       $query .= &quot;)&quot;;
+       
+       $query .= &quot; VALUES(&quot;;
+       .foreach_item(Attributes, &quot;\n&quot;, &quot;\n&quot;)
+       $query .= $db-&gt;parseValue($inst-&gt;%Code%).&quot;,&quot;;
        .next(&quot;\n&quot;)
        $query = substr($query,0,-1);//remove last &#39;,&#39;
        $query .= &quot;)&quot;;
@@ -830,7 +848,7 @@ _id  from $objectTableName where &quot;.$objectTableName.&quot;_id=&quot;.$obj-&
 \n}</a:TemplateTargetItem.Value>
 <a:CreationDate>1355942741</a:CreationDate>
 <a:Creator>developpement</a:Creator>
-<a:ModificationDate>1365843208</a:ModificationDate>
+<a:ModificationDate>1365844030</a:ModificationDate>
 <a:Modifier>developpement</a:Modifier>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
 </o:TemplateTargetItem>
