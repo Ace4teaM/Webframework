@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1365847580" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1365850711" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DVTL xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -733,10 +733,10 @@ _id=&quot;.$db-&gt;parseValue($id);
    /*
       @brief Insert single entry by id
       @param $inst WriterDocument instance pointer to initialize
-      @param $id Primary unique identifier of entry to retreive
+      @param $add_fields Array of columns names/columns values of additional fields
       @param $db iDataBase derived instance
     */
-    public static function insert(&amp;$inst,$db=null){
+    public static function insert(&amp;$inst,$add_fields=null,$db=null){
        //obtient la base de donnees courrante
        global $app;
        if(!$db &amp;&amp; !$app-&gt;getDB($db))
@@ -753,6 +753,8 @@ Id))
        .foreach_item(Attributes, &quot;\n&quot;, &quot;\n&quot;)
        $query .= &quot; %Name%,&quot;;
        .next(&quot;\n&quot;)
+       if(is_array($add_fields))
+           $query .= implode(&#39;,&#39;,array_keys($add_fields)).&#39;,&#39;;
        $query = substr($query,0,-1);//remove last &#39;,&#39;
        $query .= &quot;)&quot;;
        
@@ -760,6 +762,8 @@ Id))
        .foreach_item(Attributes, &quot;\n&quot;, &quot;\n&quot;)
        $query .= $db-&gt;parseValue($inst-&gt;%Code%).&quot;,&quot;;
        .next(&quot;\n&quot;)
+       if(is_array($add_fields))
+           $query .= implode(&#39;,&#39;,$add_fields).&#39;,&#39;;
        $query = substr($query,0,-1);//remove last &#39;,&#39;
        $query .= &quot;)&quot;;
        
@@ -772,7 +776,6 @@ Id))
    /*
       @brief Update single entry by id
       @param $inst WriterDocument instance pointer to initialize
-      @param $id Primary unique identifier of entry to retreive
       @param $db iDataBase derived instance
     */
     public static function update(&amp;$inst,$db=null){
@@ -848,7 +851,7 @@ _id  from $objectTableName where &quot;.$objectTableName.&quot;_id=&quot;.$obj-&
 \n}</a:TemplateTargetItem.Value>
 <a:CreationDate>1355942741</a:CreationDate>
 <a:Creator>developpement</a:Creator>
-<a:ModificationDate>1365844030</a:ModificationDate>
+<a:ModificationDate>1365850711</a:ModificationDate>
 <a:Modifier>developpement</a:Modifier>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
 </o:TemplateTargetItem>
