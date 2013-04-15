@@ -39,28 +39,9 @@ class Ctrl extends cApplicationCtrl{
     public $op_fields = null;
 
     function main(iApplication $app, $app_path, $p) {
-        $lang = "fr";
 
-        // Initialise le document de sortie
-        $doc = new XMLDocument("1.0", "utf-8");
-        $rootEl = $doc->createElement('data');
-        $doc->appendChild($rootEl);
-
-        $app->getDefaultFile($def);
-
-        //types et ids
-        foreach ($app->getCfgSection('fields_formats') as $id => $type) {
-            $id = strtolower($id);
-            $type = strtolower($type);
-            $node = $doc->createTextElement($id, $type);
-            if ($def && $def->getFiledText($id, $text, $lang))
-                $node->setAttribute("label", $text);
-            $rootEl->appendChild($node);
-        }
-
-        //textes
-        header("content-type: text/xml");
-        echo '<?xml version="1.0" encoding="UTF-8" ?>' . $doc->saveXML($doc->documentElement);
+        header("content-type: text/javascript");
+        echo 'var wfw_yui_base_path = "'.$app->getCfgValue('path','wfw').'/javascript/yui/";';
 
         //termine ici
         exit(0);
