@@ -94,6 +94,12 @@ class cApplication implements iApplication{
      */
     const ResourceNotFound           = "APP_RESOURCE_NOT_FOUND";
     
+    /** 
+     * Résultat: Impossible de créer une ressource
+     * @param FILE Nom du fichier/ressource concernée
+     */
+    const CantCreateResource           = "APP_CANT_CREATE_RESOURCE";
+    
     //options
     const FieldFormatClassName = 1;
     const FieldFormatName      = 2;
