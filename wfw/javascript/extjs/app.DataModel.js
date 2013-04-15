@@ -46,6 +46,7 @@ Ext.define('MyApp.DataModel.FieldsForm', {
         defaults: {
             anchor: '100%'
         },
+        defaults_buttons:true,
         wfw_fields:[],
         items:[]
     },
@@ -66,38 +67,36 @@ Ext.define('MyApp.DataModel.FieldsForm', {
             items: items
         });
 
-        Ext.apply(this,{
-            dockedItems:[{
-                xtype: 'toolbar',
-                dock: 'bottom',
-                items: ['->',{
-                    iconCls: 'wfw_icon save',
-                    text: 'Sauvegarder',
-                    scope:me,
-                    handler:function(){
-                        var wfw = Y.namespace("wfw");
-                        //appel le controleur
-                        wfw.Request.Add(null,this.url,
-                            object_merge(this.add_args,this.getValues(),true),
-                            wfw.XArg.onCheckRequestResult,
-                            {
-                                onsuccess:function(req,args){
-                                    MyApp.showResultToMsg(wfw.Result.fromXArg(args));
-                                    //window.location.reload();
+        if(this.defaults_buttons)
+            Ext.apply(this,{
+                dockedItems:[{
+                    xtype: 'toolbar',
+                    dock: 'bottom',
+                    items: ['->',{
+                        iconCls: 'wfw_icon save',
+                        text: 'Sauvegarder',
+                        scope:me,
+                        handler:function(){
+                            var wfw = Y.namespace("wfw");
+                            //appel le controleur
+                            wfw.Request.Add(null,this.url,
+                                object_merge(this.add_args,this.getValues(),true),
+                                wfw.XArg.onCheckRequestResult,
+                                {
+                                    onsuccess:function(req,args){
+                                        MyApp.showResultToMsg(wfw.Result.fromXArg(args));
+                                        //window.location.reload();
+                                    },
+                                    onfailed:function(req,args){
+                                        MyApp.showResultToMsg(wfw.Result.fromXArg(args));
+                                    }
                                 },
-                                onfailed:function(req,args){
-                                    MyApp.showResultToMsg(wfw.Result.fromXArg(args));
-                                }
-                            },
-                            false
-                        );
-                    }
+                                false
+                            );
+                        }
+                    }]
                 }]
-            }]
-        });
-
-        if(this.get_url != null){
-        }
+            });
         
         this.superclass.initComponent.apply(this, arguments);
     },
@@ -196,7 +195,11 @@ Ext.define('MyApp.DataModel.FieldsDialog', {
             
         this.superclass.initComponent.apply(this, arguments);
     },
-        
+       
+    getFieldsForm: function(){
+        return this.fieldsform;
+    },
+         
     constructor: function(config) {
         Ext.apply(this, this.config);
         this.superclass.constructor.call(this,config);
