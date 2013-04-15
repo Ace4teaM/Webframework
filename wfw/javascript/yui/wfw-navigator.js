@@ -223,20 +223,40 @@ YUI.add('wfw-navigator', function (Y) {
             return this.navNode.one("> "+type.toLowerCase()+"[id='"+id+"']");
         },
     
-        /*
-        Obtient l'URI d'une page
-        Parametres:
-            [string] id   : Identificateur de la page
-        Retourne:
-            [string] URI de la page, null si introuvable.
-        Remarque:
-            L'Argument 'id' est sensible à la case.
-        */
-        getURI : function(id){
+       /**
+        * @brief Obtient l'URI d'une page
+        * @param string id Identificateur de la page
+        * @param object remakeAtt Optionnel, attributs utilisés pour modifier l'URI de base
+        * @return URI de la page
+        * @retval null La page est introuvable dans l'index
+        * @remarks L'Argument 'id' est sensible à la case
+        * 
+        * ## Exemple d'utilisation du paramètre 'remakeAtt'
+        * Les paramétres suivants sont passés à la méthode 'wfw.URI.remakeURI()'.
+        * @code{.js}
+        * var remakeAtt = {
+        *   add_fields : { id:'465', type:'foo' },
+        *   att        : null,
+        *   anchor     : 'sectionB'
+        * }
+        * @endcode
+        * */
+        getURI : function(id,remakeAtt){
+            //obtient l'URI depuis le fichier default
             var node;
             if((node = this.getIndex("page",id))==null)
                 return null;
-            return node.get("text");
+            var uri = node.get("text");
+
+            //refabrique l'URI ?
+            if(remakeAtt instanceof Object){
+                remakeAtt = object_merge({add_fields:null, att:null, anchor:null},remakeAtt,false);
+                if(uri != null)
+                    uri = wfw.URI.remakeURI(uri,remakeAtt.add_fields,remakeAtt.att,remakeAtt.anchor);
+            }
+            
+            //
+            return uri;
         },
     
         /*
