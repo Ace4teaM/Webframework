@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1365850711" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1366043364" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DVTL xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -731,7 +731,7 @@ _id=&quot;.$db-&gt;parseValue($id);
     }
     
    /*
-      @brief Insert single entry by id
+      @brief Insert single entry with generated id
       @param $inst WriterDocument instance pointer to initialize
       @param $add_fields Array of columns names/columns values of additional fields
       @param $db iDataBase derived instance
@@ -745,9 +745,16 @@ _id=&quot;.$db-&gt;parseValue($id);
        //id initialise ?
        if(!isset($inst-&gt;
 .convert_name(%Code%,&quot;_&quot;,&quot; &quot;,firstLowerWord)
-Id))
-           return RESULT(cResult::Failed, cApplication::EntityMissingId);
-      
+Id)){
+            $table_name = &#39;%Name%&#39;;
+            $table_id_name = $table_name.&#39;_id&#39;;
+           if(!$db-&gt;execute(&quot;select * from new_id(&#39;$table_name&#39;,&#39;$table_id_name&#39;);&quot;,$result))
+              return RESULT(cResult::Failed, cApplication::EntityMissingId);
+           $inst-&gt;
+.convert_name(%Code%,&quot;_&quot;,&quot; &quot;,firstLowerWord)
+Id = intval($result-&gt;fetchValue(&quot;new_id&quot;));
+       }
+       
       //execute la requete
        $query = &quot;INSERT INTO %Name% (&quot;;
        .foreach_item(Attributes, &quot;\n&quot;, &quot;\n&quot;)
@@ -851,8 +858,8 @@ _id  from $objectTableName where &quot;.$objectTableName.&quot;_id=&quot;.$obj-&
 \n}</a:TemplateTargetItem.Value>
 <a:CreationDate>1355942741</a:CreationDate>
 <a:Creator>developpement</a:Creator>
-<a:ModificationDate>1365850711</a:ModificationDate>
-<a:Modifier>developpement</a:Modifier>
+<a:ModificationDate>1366043364</a:ModificationDate>
+<a:Modifier>AceTeaM</a:Modifier>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
 </o:TemplateTargetItem>
 </c:Categories>
