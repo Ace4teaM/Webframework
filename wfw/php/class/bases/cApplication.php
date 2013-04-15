@@ -459,8 +459,14 @@ class cApplication implements iApplication{
         $select = $filename;
         if(is_string($filename)){
             $select = new XMLDocument("1.0", "utf-8");
-            if(!$select->load($filename))
+            $ext = strtolower(file_ext($filename));
+            if($ext=="html"||$ext=="xhtml"||$ext=="htm"){
+                if(!$select->loadHTMLFile($filename))
+                    return RESULT(cResult::Failed,XMLDocument::loadFile,array("message"=>XMLDocument::loadFile,"FILE"=>$filename));
+            }
+            else if(!$select->load($filename)){
                 return RESULT(cResult::Failed,XMLDocument::loadFile,array("message"=>XMLDocument::loadFile,"FILE"=>$filename));
+            }
         }
         if(!$select instanceof XMLDocument){
             return RESULT(cResult::Failed,cApplication::InvalidArgument,array("message"=>cApplication::InvalidArgument,"ARG_NAME"=>"filename"));
