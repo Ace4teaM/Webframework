@@ -216,22 +216,19 @@ class cXMLDefault {
 
     /**
      * @brief Définit un noeud de l'index
-     * @param [string] type : type de noeud (nom de balise)
-     * @param [string] id   : identificateur
-     * @param [string] value: Valeur du noeud
-     * @return [XMLElement] Noeud inséré, null en cas d'erreur
+     * @param string $type  Type de noeud (nom de balise)
+     * @param string $id    Identificateur
+     * @param string $value Valeur du noeud
+     * @return DOMElement Noeud inséré, null en cas d'erreur
      * @remarks Si le noeud n'existe pas il est créé
      */
-    public function setIndex($type, $id, $value) {
+    public function setIndex($type, $id, $value)
+    {
         $node = $this->doc->one(">index>$type"."[id=$id]");
-        if($node){
-            $node->nodeValue = $value;
-            return $node;
-        }
-        $node = $this->addIndexNode($type, $id);
-        if($node)
-            $node->nodeValue = $value;
-        return $node;
+        if(!$node)
+            $node = $this->addIndexNode($type, $id);
+
+        return $this->doc->setValue($node,$value);
     }
 
     /*

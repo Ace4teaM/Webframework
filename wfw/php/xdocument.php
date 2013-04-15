@@ -119,9 +119,26 @@ class XMLDocument extends DOMDocument {
     // retourne: le valeur du noeud trouvé (DOMNode), -1 si introuvable, NULL en cas d'erreur
     public function setNodeValue($path, $value, $bcreate_missing = FALSE) {
         $node = $this->getNode($path, $bcreate_missing);
-        if ($node !== NULL && $node !== -1)
-            return ($node->nodeValue = $value);
+        if ($node !== NULL && $node !== -1){
+            $this->setValue($value);
+            return $value;
+        }
         return NULL;
+    }
+
+    /*
+     * Définit la valeur (texte) d'un élément
+     * @param DOMElement $node Element a modifier
+     * @param string $value Valeur à insérer
+     * @remarks Le contenu de l'élément '$node' est remplacé
+     * 
+     * @return L'Element modifié
+     */
+    public function setValue($node, $value) {
+        $valueEl = $this->createTextNode($value);
+        $this->removeChildNodes($node);
+        $node->appendChild($valueEl);
+        return $node;
     }
 
     //obtient la valeur d'un attribut
@@ -410,9 +427,12 @@ class XMLDocument extends DOMDocument {
         return true;
     }
 
-    //supprime l'element par son contenu
-    //node:noeud parent a remplacer par son contenu
-    // retourne: premier noeud enfant deplace, NULL si aucun
+    /**
+     * Remplace l'element par son contenu
+     * @param DOMNode $node noeud à remplacer
+     * @return Premier noeud enfant deplacé
+     * @retval false L'élément est l'élément racine (il ne peut pas être remplacé
+     */
     public function replaceNodeByContent($node) {
         $parent = $node->parentNode;
         if (!$parent) {
