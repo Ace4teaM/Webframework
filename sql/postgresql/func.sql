@@ -236,3 +236,23 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+
+/*
+  Initialialise un nouvel id numerique
+*/
+CREATE OR REPLACE FUNCTION new_id(
+        p_table_name varchar,
+        p_id_name varchar
+)
+RETURNS INT AS
+$$
+DECLARE
+	v_id int;
+	v_query varchar;
+BEGIN
+    v_query = 'select coalesce(max('||p_id_name||')+1,1) from '||p_table_name||';';
+    execute v_query into v_id;
+    return v_id;
+END;
+$$
+LANGUAGE plpgsql;
