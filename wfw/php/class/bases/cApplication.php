@@ -756,6 +756,16 @@ class cApplication implements iApplication{
         return RESULT_OK();
     }
     
+    /**
+     * @brief Fabrique l'URL d'un contrôleur
+     * @param string $app_name    Nom de l'application, "application" si locale
+     * @param string $ctrl        Nom du contrôleur
+     * @param string $add_params  Chaine contenant les paramètres supplémentaires à passer à l'URL (encodé)
+     */
+    public function makeCtrlURI($app_name,$ctrl,$add_params)
+    {
+        return "ctrl.php?app=$app_name&ctrl=$ctrl" . (is_string($add_params)?"&".$add_params:"");
+    }
     
     public function execCtrl($ctrl,$app=null)
     {
