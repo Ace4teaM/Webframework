@@ -446,6 +446,20 @@ class cApplication implements iApplication{
      */
     function makeXMLView($filename,$attributes,$template_file=NULL)
     {
+        $template = $this->createXMLView($filename,$attributes,$template_file=NULL);
+        //transforme le fichier
+	return $template->Make();
+    }
+    
+    /**
+     * @brief Fabrique un template de vue XML/XHTML
+     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
+     * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
+     * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
+    * @return string Contenu du template transformé
+     */
+    function createXMLView($filename,$attributes,$template_file=NULL)
+    {
         //Assure le type array pour l'utilisation de array_merge()
         if(!is_array($attributes)) $attributes=array();
         
@@ -456,22 +470,8 @@ class cApplication implements iApplication{
         $template = new cXMLTemplate();
         
         //charge le contenu en selection
-        $select = $filename;
-        if(is_string($filename)){
-            $select = new XMLDocument("1.0", "utf-8");
-            $ext = strtolower(file_ext($filename));
-            if($ext=="html"||$ext=="xhtml"||$ext=="htm"){
-                if(!$select->loadHTMLFile($filename))
-                    return RESULT(cResult::Failed,XMLDocument::loadFile,array("message"=>XMLDocument::loadFile,"FILE"=>$filename));
-            }
-            else if(!$select->load($filename)){
-                return RESULT(cResult::Failed,XMLDocument::loadFile,array("message"=>XMLDocument::loadFile,"FILE"=>$filename));
-            }
-        }
-        if(!$select instanceof XMLDocument){
-            return RESULT(cResult::Failed,cApplication::InvalidArgument,array("message"=>cApplication::InvalidArgument,"ARG_NAME"=>"filename"));
-        }
-        
+        $select = $template->load_xml_file(basename($filename),  $this->root_path."/".dirname($filename));
+
         //ajoute le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
 
@@ -491,7 +491,7 @@ class cApplication implements iApplication{
 
         //transforme le fichier
         RESULT_OK();
-	return $template->Make();
+	return $template;
     }
     
     /**
