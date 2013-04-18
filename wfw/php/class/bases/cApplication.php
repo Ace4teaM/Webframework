@@ -470,8 +470,12 @@ class cApplication implements iApplication{
         $template = new cXMLTemplate();
         
         //charge le contenu en selection
-        $select = $template->load_xml_file(basename($filename),  $this->root_path."/".dirname($filename));
-
+        $select = NULL;
+        if(is_string($filename))
+            $select = $template->load_xml_file(basename($filename),  dirname($filename));
+        else if($filename instanceof XMLDocument)
+            $select = $filename;
+        
         //ajoute le fichier de configuration
         $template->load_xml_file('default.xml',$this->root_path);
 
