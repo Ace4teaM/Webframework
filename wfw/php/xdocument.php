@@ -496,6 +496,17 @@ class XMLDocument extends DOMDocument {
         return $parentNode;
     }
 
+    /**
+     * @brief Ajoute un ensemble d'élément depuis un tableau associatif
+     * @param type $parentNode Elément recevant les éléements créés
+     * @param type $assocArray Tableau associatif conenant les valeurs à ajouter
+     * @return DOMElement L'Element parent
+     */
+    function out() {
+        header("content-type:text/xml");
+        echo($this->saveXML());
+    }
+
 }
 
 ?>
