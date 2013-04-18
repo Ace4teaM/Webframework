@@ -1,0 +1,15 @@
+
+#header{
+    height:80px;
+    display:table-row;
+    background-color:#dd0000;
+}
+#content{
+    display:table-row;
+    background-color:#00dd00;
+}
+#footer{
+    height:80px;
+    display:table-row;
+    background-color:#0000dd;
+}

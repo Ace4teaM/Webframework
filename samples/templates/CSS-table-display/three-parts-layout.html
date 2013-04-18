@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <meta http-equiv="content-language" content="fr" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" /><!-- Internet explorer CSS compatible -->
+        <meta http-equiv="content-script-type" content="text/javascript" /><!-- Default script langage -->
+
+        <!-- Author -->
+        <meta name="Author" lang="fr" content="Thomas AUGUEY" />
+        <meta name="Publisher" lang="fr" content="Thomas AUGUEY" />
+        <meta name="Copyright" content="(C)2013 Thomas AUGUEY" />
+
+        <!-- J-Query -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+        <!-- Layers positions -->
+        <link rel="stylesheet" href="container.css" type="text/css" />
+        <link rel="stylesheet" href="three-parts-content.css" type="text/css" />
+        <!-- Uncomment for vertical center
+        <link rel="stylesheet" href="vertical-margin.css" type="text/css" /> -->
+        
+        <script>
+            // <!CDATA[
+            $(function(){
+                $("#showBtn").click(function(){
+                    if($("#hiddenText").css("display") == "none")
+                        $("#hiddenText").css("display","block");
+                    else
+                        $("#hiddenText").css("display","none");
+                });
+            });
+            // ]]>
+        </script>
+    </head>
+
+    <!-- Document -->
+    <body>
+        <div id="bg">BG</div>
+        <div id="container">
+            <div id="header">
+                <p>HEADER - Fixed Height</p>
+            </div>
+            <div id="content">
+                <p>CONTENT</p>
+                <p>Flexible Height</p>
+                <input id="showBtn" type="button" value="Show Big Content" />
+                <div id="hiddenText" style="display:none; padding:8px;">
+                    <p>Hacque adfabilitate confisus cum eadem postridie feceris, ut incognitus haerebis et repentinus, hortatore illo hesterno clientes numerando, qui sis vel unde venias diutius ambigente agnitus vero tandem et adscitus in amicitiam si te salutandi adsiduitati dederis triennio indiscretus et per tot dierum defueris tempus, reverteris ad paria perferenda, nec ubi esses interrogatus et quo tandem miser discesseris, aetatem omnem frustra in stipite conteres summittendo.</p>
+                    <p>Eius populus ab incunabulis primis ad usque pueritiae tempus extremum, quod annis circumcluditur fere trecentis, circummurana pertulit bella, deinde aetatem ingressus adultam post multiplices bellorum aerumnas Alpes transcendit et fretum, in iuvenem erectus et virum ex omni plaga quam orbis ambit inmensus, reportavit laureas et triumphos, iamque vergens in senium et nomine solo aliquotiens vincens ad tranquilliora vitae discessit.</p>
+                    <p>Quod cum ita sit, paucae domus studiorum seriis cultibus antea celebratae nunc ludibriis ignaviae torpentis exundant, vocali sonu, perflabili tinnitu fidium resultantes. denique pro philosopho cantor et in locum oratoris doctor artium ludicrarum accitur et bybliothecis sepulcrorum ritu in perpetuum clausis organa fabricantur hydraulica, et lyrae ad speciem carpentorum ingentes tibiaeque et histrionici gestus instrumenta non levia.</p>
+                    <p>Hac ex causa conlaticia stipe Valerius humatur ille Publicola et subsidiis amicorum mariti inops cum liberis uxor alitur Reguli et dotatur ex aerario filia Scipionis, cum nobilitas florem adultae virginis diuturnum absentia pauperis erubesceret patris.</p>
+                    <p>Quod cum ita sit, paucae domus studiorum seriis cultibus antea celebratae nunc ludibriis ignaviae torpentis exundant, vocali sonu, perflabili tinnitu fidium resultantes. denique pro philosopho cantor et in locum oratoris doctor artium ludicrarum accitur et bybliothecis sepulcrorum ritu in perpetuum clausis organa fabricantur hydraulica, et lyrae ad speciem carpentorum ingentes tibiaeque et histrionici gestus instrumenta non levia.</p>
+                </div>
+            </div>
+            <div id="footer">
+                <p>FOOTER - Fixed Height</p>
+            </div>
+        </div>
+    </body>
+</html>

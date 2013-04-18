@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr" dir="ltr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+        <meta http-equiv="content-language" content="fr" />
+        <meta http-equiv="X-UA-Compatible" content="IE=8" /><!-- Internet explorer CSS compatible -->
+        <meta http-equiv="content-script-type" content="text/javascript" /><!-- Default script langage -->
+
+        <!-- Author -->
+        <meta name="Author" lang="fr" content="Thomas AUGUEY" />
+        <meta name="Publisher" lang="fr" content="Thomas AUGUEY" />
+        <meta name="Copyright" content="(C)2013 Thomas AUGUEY" />
+
+        <!-- J-Query -->
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+        <!-- Layers positions -->
+        <link rel="stylesheet" href="container.css" type="text/css" />
+        <link rel="stylesheet" href="grid-parts-content.css" type="text/css" />
+        <!-- Uncomment for vertical center -->
+        <link rel="stylesheet" href="vertical-margin.css" type="text/css" />
+        
+        <script>
+            // <!CDATA[
+            $(function(){
+                $("#showBtn").click(function(){
+                    if($("#hiddenText").css("display") == "none")
+                        $("#hiddenText").css("display","block");
+                    else
+                        $("#hiddenText").css("display","none");
+                });
+            });
+            // ]]>
+        </script>
+        
+        <style type="text/css">
+            
+        .row > .col{
+            background-color:#ffdd00;
+            text-align: center;
+        }
+
+        </style>
+    </head>
+
+    <!-- Document -->
+    <body>
+        <div id="bg">BG</div>
+        <div id="container">
+            <div class="row">
+                <div class="col two">A</div>
+                <div class="col two">B</div>
+            </div>
+            <div class="row">
+                <div class="col two">C</div>
+                <div class="col two">D</div>
+            </div>
+        </div>
+    </body>
+</html>

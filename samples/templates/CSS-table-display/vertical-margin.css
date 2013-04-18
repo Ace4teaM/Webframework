@@ -1,0 +1,6 @@
+
+/* Centrer verticalement */
+body{
+    height:80%; /* hauteur utilisé par rapport à la zone cliente */
+    top:10%;    /* utile pour center verticalement */
+}
