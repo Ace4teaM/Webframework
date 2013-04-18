@@ -103,7 +103,7 @@ class cXMLTemplate
     //Element de selection principale (entrée)
     public $input_element = NULL;
     //Decodes les entites HTML lors du chargement d'un document (load_xml_file)
-    public $resolve_html_entites = false;
+    public $resolve_html_entites = true;
 
     public function setRootPath($path) {
         $this->var_path = $path;
@@ -669,7 +669,29 @@ class cXMLTemplate
             }
         }
     }
-
+    
+    /**
+     * @brief Convertie les entités HTML seulement, les entités XML sont ignorées
+     * @param string $myHTML Text à convertir
+     * @return Text à convertie
+     * @remarks Les entités (amp, lt, gt, quot, apos) ne sont pas converties
+     */
+    function htmlentities_only($myHTML) {
+       return preg_replace_callback("/&([A-Za-z]{0,4}\w{2,3}|#[0-9]{2,3});/",function($matches){
+           //ignore les entites XML
+           switch(strtolower($matches[1])){
+               case "amp":
+               case "lt":
+               case "gt":
+               case "quot":
+               case "apos":
+                return $matches[0];
+           }
+ //          echo($matches[1]."=".html_entity_decode($matches[0])." , ");
+           return html_entity_decode($matches[0]);
+       } , $myHTML); 
+    } 
+    
     /**
      * @brief Charge un fichier de selection
      * @param string $name Nom du fichier (sans chemin)
@@ -699,16 +721,16 @@ class cXMLTemplate
 
             $content = file_get_contents($filename);
             //résoud les entités HTML, la methode loadXML() ne le fait pas
-            if($this->resolve_html_entites){
+            if($this->resolve_html_entites)
+            {
                 $ext = strtolower(file_ext($filename));
                 if($ext=="html"||$ext=="xhtml"||$ext=="htm"){
-                    //echo html_entity_decode("&gt; &nbsp;");
-                    $content = html_entity_decode($content,ENT_NOQUOTES|ENT_XHTML);
+                    $content = $this->htmlentities_only($content);
                 }
             }
             //@todo: ne pas utiliser loadHTML() ou loadHTMLFile() car les espaces de noms (namespace) ne sont pas résolues et empéche le bon fonctionnement du template
             //@todo: la suppression des warning est indispensable pour ignorer les entités HTML non reconnues par le standard XML
-            if(!@$file->loadXML($content,LIBXML_NOWARNING)){
+            if(!$file->loadXML($content)){
                 $error = libxml_get_last_error();
                 $this->post("load_xml_file", "$filename can't load");
                 RESULT(cResult::Failed,cXMLTemplate::CantLoadSelectFile,array("libxml_error"=>$error->message));
