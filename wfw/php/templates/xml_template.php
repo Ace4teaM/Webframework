@@ -102,6 +102,8 @@ class cXMLTemplate
     public $doc = NULL;
     //Element de selection principale (entrée)
     public $input_element = NULL;
+    //Decodes les entites HTML lors du chargement d'un document (load_xml_file)
+    public $resolve_html_entites = false;
 
     public function setRootPath($path) {
         $this->var_path = $path;
@@ -689,12 +691,24 @@ class cXMLTemplate
         //charge le fichier ?
         if (!isset($this->xml_files[$name])) {
             /* ! retourne false avec les fichiers distants (suivant configuration !
-             if (!file_exists($filename)) {
-                $this->post("load_xml_file", "$filename does not exists");
-                return NULL;
-            }*/
-            $file = new XMLDocument();
-            if (@$file->load($filename) == NULL) {
+-             if (!file_exists($filename)) {
+-                $this->post("load_xml_file", "$filename does not exists");
+-                return NULL;
+-            }*/
+            $file = new XMLDocument("1.0", "utf-8");
+
+            $content = file_get_contents($filename);
+            //résoud les entités HTML, la methode loadXML() ne le fait pas
+            if($this->resolve_html_entites){
+                $ext = strtolower(file_ext($filename));
+                if($ext=="html"||$ext=="xhtml"||$ext=="htm"){
+                    //echo html_entity_decode("&gt; &nbsp;");
+                    $content = html_entity_decode($content,ENT_NOQUOTES|ENT_XHTML);
+                }
+            }
+            //@todo: ne pas utiliser loadHTML() ou loadHTMLFile() car les espaces de noms (namespace) ne sont pas résolues et empéche le bon fonctionnement du template
+            //@todo: la suppression des warning est indispensable pour ignorer les entités HTML non reconnues par le standard XML
+            if(!@$file->loadXML($content,LIBXML_NOWARNING)){
                 $error = libxml_get_last_error();
                 $this->post("load_xml_file", "$filename can't load");
                 RESULT(cResult::Failed,cXMLTemplate::CantLoadSelectFile,array("libxml_error"=>$error->message));
@@ -1293,13 +1307,12 @@ class cXMLTemplateAction_merge extends cXMLTemplateAction {
             //merge le contenu text
             //  $node->nodeValue = $node->nodeValue.$select->nodeValue;
             $input->import_node_content($input->doc, $node, $select->firstChild);
-
         }
         
         //scan les enfants meme si la selection échoue
         if ($node->firstChild != NULL)
             $input->check_node(NULL, $node->firstChild, $arg);
-                    
+
         return $next;
     }
 
