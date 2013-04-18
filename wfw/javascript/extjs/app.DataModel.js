@@ -20,8 +20,7 @@
 */
 
 Ext.define('MyApp.DataModel', {
-    singleton: true,
-    datamodel:false//doc xml (false==en attente d'un premier chargement, null==chargement echoué)
+    singleton: true
 });
 
 
@@ -226,7 +225,7 @@ MyApp.DataModel.makeField = function(att)
     };
     
     if(att.id)
-        def = object_merge(def,MyApp.DataModel.getFieldInfos(att.id),false);
+        def = object_merge(def,wfw.DataModel.getFieldInfos(att.id),false);
     
     att = object_merge(def,att,false);
 
@@ -326,48 +325,11 @@ MyApp.DataModel.convertFieldType = function(type)
     return "auto";
 }
 
-/*------------------------------------------------------------------------------------------------------------------*/
-/**
- * @brief Récupére des données d'une table SQL
- * @param string table_name Nom de table
- * @param array cols Liste des identifiants de colonnes
- * @remarks Cette fonction utilise le contrôleur 'datafetch' pour obtenir les données.
- * @remarks Pour fonctionner, l'index de page 'datafetch' avec l'URL valide doit être définit dans le fichier 'default.xml' de votre application
- **/
-/*------------------------------------------------------------------------------------------------------------------*/
-
-MyApp.DataModel.fetchData = function(table_name, cols)
-{
-    var wfw = Y.namespace("wfw");
-    var myData=[];
-    var param = {
-        table_name : table_name,
-        cols_names : cols.join(",")
-    };
-    wfw.Request.Add(
-        null,
-        wfw.Navigator.getURI("datafetch"),
-        param,
-        wfw.Xml.onCheckRequestResult,{
-            onsuccess:function(req,doc,root){
-                root.all(table_name).each(function(node){
-                    var data = [];
-                    for( var col in cols){
-                        data.push( [node.one(">"+cols[col]).get("text")] );
-                    }
-                    myData.push( data );
-                });
-            }
-        },false
-    );
-    return myData;
-}
-
 /**
  ------------------------------------------------------------------------------------------------------------------
  * @brief Initialise un model de stockage basé sur le dictionnaire de données
  * @param array cols Liste des identifiants de colonnes (tel que definit dans la configuration [fields_formats])
- * @param array data Liste des tableaux de données. Utilisez MyApp.DataModel.fetchData pour obtenir les données depuis la BDD
+ * @param array data Liste des tableaux de données. Utilisez wfw.DataModel.fetchData pour obtenir les données depuis la BDD
  * @return Ext.data.ArrayStore Stockage de données
  ------------------------------------------------------------------------------------------------------------------
  **/
@@ -377,7 +339,7 @@ MyApp.DataModel.createArrayStore = function(cols, data)
     var wfw = Y.namespace("wfw");
     var fieldsList = [];
     for( var col in cols){
-        var att = MyApp.DataModel.getFieldInfos(cols[col]);
+        var att = wfw.DataModel.getFieldInfos(cols[col]);
         if(att)
             fieldsList.push({
                 name : att.id,
@@ -392,7 +354,7 @@ MyApp.DataModel.createArrayStore = function(cols, data)
  ------------------------------------------------------------------------------------------------------------------
  * @brief Initialise un model de stockage basé sur le dictionnaire de données
  * @param array cols Liste des identifiants de colonnes (tel que definit dans la configuration [fields_formats])
- * @param array data Liste des tableaux de données. Utilisez MyApp.DataModel.fetchData pour obtenir les données depuis la BDD
+ * @param array data Liste des tableaux de données. Utilisez wfw.DataModel.fetchData pour obtenir les données depuis la BDD
  * @return Ext.data.ArrayStore Stockage de données
  ------------------------------------------------------------------------------------------------------------------
  **/
@@ -422,7 +384,7 @@ Ext.define('MyApp.DataModel.Grid', {
         var gridCol = [];
         for(var i in this.cols){
             wfw.puts(this.cols[i]);
-            var att = MyApp.DataModel.getFieldInfos(this.cols[i]);
+            var att = wfw.DataModel.getFieldInfos(this.cols[i]);
             gridCol.push({
                 text     : att.label,
                 flex     : 1,
@@ -449,77 +411,3 @@ Ext.define('MyApp.DataModel.Grid', {
 
 });
 
-
-/**
- ------------------------------------------------------------------------------------------------------------------
- * @brief Obtient des informations sur un champ
- * @param string id Identifiant du champ
- * @return object Tableau associatif contenant les informations sur le champ
- * 
- * ## Retour
- * Détail sur le format de l'objet retourné
- * @code{.js}
- * var obj = {
- *  id    : string // Identifiant du champ (passé en argument)
- *  label : string // Nom du champ
- *  type  : string // Type du champ (tel que definit dans la configuration [fields_formats])
- * };
- * @endcode
- ------------------------------------------------------------------------------------------------------------------
- **/
-
-MyApp.DataModel.getFieldInfos = function(id)
-{
-    var wfw = Y.namespace("wfw");
-    
-    if(MyApp.DataModel.datamodel==false)
-        MyApp.DataModel.loadDataModel();
-    if(MyApp.DataModel.datamodel==null)
-        return null;
-
-    var root = Y.Node(MyApp.DataModel.datamodel.documentElement);
-    var fieldNode = root.one(">"+id);
-    if(fieldNode == null){
-        wfw.puts("getFieldInfos: unknown "+id+" filed");
-        return false;
-    }
-    return {
-        id    : id,
-        type  : fieldNode.get("text"),
-        label : fieldNode.getAttribute("label")
-    };
-}
-
-/*------------------------------------------------------------------------------------------------------------------*/
-/**
- * @brief Charge le model de données
- **/
-/*------------------------------------------------------------------------------------------------------------------*/
-
-MyApp.DataModel.loadDataModel = function()
-{
-    var wfw = Y.namespace("wfw");
-    MyApp.DataModel.datamodel = null;
-    wfw.Request.Add(
-        null,
-        wfw.Navigator.getURI("datamodel"),
-        null,
-        wfw.Xml.onCheckRequestResult,
-        {
-            no_result : true,
-            no_msg    : true,
-            onsuccess : function(obj,xml_doc,xml_root){
-                MyApp.DataModel.datamodel = xml_doc;
-                wfw.puts("Datamodel loaded");
-            },
-            onfailed   : function(obj,xml_doc,xml_root){
-                wfw.puts("Datamodel not loaded (failed)");
-            },
-            onerror   : function(obj){
-                wfw.puts("Datamodel not loaded (error)");
-            }
-        },
-        false
-        );
-    return MyApp.DataModel.datamodel;
-}

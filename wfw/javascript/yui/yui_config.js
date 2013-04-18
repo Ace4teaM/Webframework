@@ -118,6 +118,10 @@ function wfw_yui_config(base_path){
                     'wfw-xml': {
                         path: 'wfw-xml.js',
                         requires: [ 'base','wfw','wfw-http','wfw-request' ]
+                    },
+                    'wfw-datamodel': {
+                        path: 'wfw-datamodel.js',
+                        requires: [ 'base','wfw','wfw-http','wfw-xml','wfw-request','wfw-navigator' ]
                     }
                 }
             }
