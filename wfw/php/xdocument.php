@@ -299,7 +299,8 @@ class XMLDocument extends DOMDocument {
         //analyse le selecteur
         $spaced_att = '(?:\w+\=\w+)';
         $exacts_att = '(?:\w+\~\=\w+)';
-        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[('.$spaced_att.'|'.$exacts_att.'(?:\,'.$spaced_att.'|'.$exacts_att.')*)\])?/i', $selector, $matches);
+        $exists_att = '(?:\w+)';
+        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[('.$spaced_att.'|'.$exacts_att.'|'.$exists_att.'(?:\,'.$spaced_att.'|'.$exacts_att.'|'.$exists_att.')*)\])?/i', $selector, $matches);
 //        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i', $selector, $matches);
 
 //          echo("begin ($selector)\n");
@@ -333,9 +334,15 @@ class XMLDocument extends DOMDocument {
                                 }
                                 //E[foo=warning]
                                 //Matches any E element whose "foo" attribute value is exactly equal to "warning".
-                                else{
+                                else if(strstr($att_pair, '=')){
                                     $att = strexplode($att_pair, '=', true);
                                     if ($att[1] != $node->getAttribute($att[0]))
+                                        return TRUE;
+                                }
+                                //E[foo]
+                                //Matches any E element have "foo" attribute
+                                else{
+                                    if (!$node->hasAttribute($att_pair))
                                         return TRUE;
                                 }
                             }
