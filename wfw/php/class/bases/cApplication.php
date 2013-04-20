@@ -478,7 +478,8 @@ class cApplication implements iApplication{
             $select = $filename;
         
         //ajoute le fichier de configuration
-        $template->load_xml_file('default.xml',$this->root_path);
+        if($this->getDefaultFile($default))
+            $template->push_xml_file('default.xml',$default);
 
         //ajoute le fichier de globals
         $template->push_xml_file('template.xml',$this->template_attributes_xml);
