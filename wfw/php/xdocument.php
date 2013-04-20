@@ -36,6 +36,19 @@ class XMLDocument extends DOMDocument {
     const loadFile = "CANT_LOAD_HTML_FILE";
     const loadHTML = "CANT_LOAD_HTML_CONTENT";
     
+    //attribute
+    const Replace = "replace";
+    const Ignore  = "ignore";
+    const Merge   = "replace";
+    
+    //compareNode attribute
+    const SameNode    = 0;
+    const ArgDiffer   = 0x1;
+    const ValueDiffer = 0x2;
+    const TypeDiffer  = 0x4;
+    const TagDiffer   = 0x8;
+    const NSDiffer    = 0x10;
+    
     function make($content) {
         return $this->loadHTML($content);
     }
@@ -76,6 +89,85 @@ class XMLDocument extends DOMDocument {
         return $result;
     }
 
+    /*
+     * @brief Fusionne recursivement deux éléments
+     * @param XMLElement $select     Elément source
+     * @param XMLElement $node       Elément de destination
+     * @param string     $merge_type Type de fusion. Callback ou l'une des valeurs suivantes: "replace", "after", "before"
+     * @return XMLElement Noeud modifié
+     */
+    public static function mergeNodesByTagName($in, $out, $src, $dst) {
+        //merge les messages
+        foreach($in->all(">*",$src) as $child_key=>$child_node)
+        {
+    //                    echo("test $child_node->tagName\n");
+
+            $out_child_node  = $out->one('>'.$child_node->tagName,$dst);
+            // si il n'existe pas, clone
+            if($out_child_node == null){
+    //                        echo("clone $child_node->tagName\n");
+                $dst->appendChild( $out->importNode($child_node,TRUE) );
+                continue;
+            }
+            else{
+                XMLDocument::mergeNodesByTagName($in,$out,$child_node, $out_child_node);
+            }
+        }
+        return TRUE;
+    }
+    
+    /*
+     * @brief Compare deux noeuds
+     * @param XMLElement $src     Elément source
+     * @param XMLElement $dst     Elément de destination
+     * @return int Masque de bits définissant les differences entre les deux noeuds
+     * @retval XMLDocument::SameNode Les deux noeuds sont identiques
+     * 
+     * ## Masque de différence
+     * Le masque de retour peut prendre l'une des valeurs suivantes:
+     * @code{.php}
+     * ArgDiffer   = 0x1;   // Un ou plusieurs arguments différes
+     * ValueDiffer = 0x2;   // La valeur du noeud différe
+     * TypeDiffer  = 0x4;   // Le type du noeud différe
+     * TagDiffer   = 0x8;   // Le nom de balise du noeud différe
+     * NSDiffer    = 0x10;  // L'espace de nom différe
+     * @endcode
+     */
+    function compareNode($src, $dst) {
+        $dif = XMLDocument::SameNode;
+        if($src->nodeType != $dst->nodeType)
+            return XMLDocument::TypeDiffer;
+        if($src->nodeType == XML_ELEMENT_NODE){
+            //compare les arguments
+            if (!is_null($src->attributes)) {
+                foreach ($src->attributes as $index => $attr) {
+                    if(!$dst->hasAttribute($attr)){
+                        $dif |= XMLDocument::ArgDiffer;
+                        break;
+                    }
+                }
+            }
+            //compare le nom de balise
+            if($src->tagName != $dst->tagName)
+                $dif |= XMLDocument::TagDiffer;
+        }
+        //compare le contenu
+        if($src->nodeValue != $dst->nodeValue)
+            $dif |= XMLDocument::ArgDiffer;
+        //compare le namespace
+        if($src->namespaceURI != $dst->namespaceURI)
+            $dif |= XMLDocument::NSDiffer;
+        
+        return $dif;
+    }
+    
+    /*
+     * @brief Fusionne les arguments de deux éléments
+     * @param XMLElement $select     Elément source
+     * @param XMLElement $node       Elément de destination
+     * @param string     $merge_type Type de fusion. Callback ou l'une des valeurs suivantes: "replace", "after", "before"
+     * @return XMLElement Noeud modifié
+     */
     function mergeArguments($select, $node, $merge_type) {
         //importe les arguments
         $attributes = $node->attributes;
@@ -100,11 +192,8 @@ class XMLDocument extends DOMDocument {
                 }
             }
         }
+        return $node;
     }
-
-    /*  function XMLDocument() {
-      $this->formatOutput=true;
-      } */
 
     //obtient le contenu d'un noeud specifique
     // retourne: le valeur du noeud trouvé (DOMNode), -1 si introuvable, NULL en cas d'erreur
