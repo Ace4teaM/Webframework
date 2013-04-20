@@ -26,7 +26,7 @@ YUI.add('wfw-navigator', function (Y) {
     wfw.Navigator = {
         use         : true,
         doc         : null,//instance de wfw.Xml.DEFAULT_FILE
-        navDoc      : "default.xml",
+        navDoc      : "default.xml",//xml document
         navNode     : "> index", // noeud parent de l'index
         cfgNode     : "> config", // noeud parent de la configuration
         modNode     : "> config > module", // premier noeud de module
