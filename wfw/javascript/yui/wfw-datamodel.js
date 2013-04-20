@@ -30,7 +30,64 @@ YUI.add('wfw-datamodel', function (Y) {
     wfw.DataModel = {
 
         datamodel:false,//doc xml (false==en attente d'un premier chargement, null==chargement echoué)
-    
+
+        /**
+         * @class FIELD
+         * @brief Définition d'un champ de données
+         * @memberof DataModel
+         * 
+         * @param string id    Identifiant 
+         * @param string type  Format (integer, string, float, mail, ...)
+         * @param string label Texte définition
+        */
+        FIELD : function(att){
+            //
+            this.id     = null; // identifiant 
+            this.type   = null; // format (integer, string, float, mail, ...)
+            this.label  = null; // text definition
+            
+            /*
+             * Constructeur
+             */
+            if(typeof(att)=="string")
+                object_merge(this,wfw.DataModel.getFieldInfos(att),false);
+            else{
+                object_merge(this,att,false);
+                if(this.id)
+                    object_merge(this,wfw.DataModel.getFieldInfos(this.id),false);
+            }
+        },
+        
+        /**
+         * @class FORM
+         * @brief Construit un formulaire de champs
+         * @memberof DataModel
+         * @implements OBJECT
+         * 
+         * @param FIELD[] fields Liste des définitions de champs (voir wfw.DataModel.makeField)
+        */
+        FORM : function(att){
+            //OBJECT
+            this.ns                = "wfw_datamodel";
+            //FORM
+            this.fields            = [];
+            this.panel             = null;
+
+            /*
+             * Constructeur
+             */
+            wfw.DataModel.FORM.superclass.constructor.call(this, att);
+            
+            //parse les champs
+            for(var i in this.fields){
+                var field = this.fields[i];
+                if(!(field instanceof wfw.DataModel.FIELD))
+                    this.fields[i] = new wfw.DataModel.FIELD(this.fields[i]);
+            }
+            
+            this.createHTML();
+        },
+        
         /*------------------------------------------------------------------------------------------------------------------*/
         /**
          * @brief Récupére des données d'une table SQL
@@ -141,6 +198,40 @@ YUI.add('wfw-datamodel', function (Y) {
 
     };
 
+    /*-----------------------------------------------------------------------------------------------------------------------
+     * FIELD Class Implementation
+     *-----------------------------------------------------------------------------------------------------------------------*/
+    
+    /*
+    * Génére un nom unique dans le membre 'name'
+    * Retourne:
+    *  [void]
+    * */
+    wfw.DataModel.FIELD.prototype.createHTML = function(){
+        return Y.Node.create('<input type="text" name="'+this.id+'">');
+    };
+    
+    /*-----------------------------------------------------------------------------------------------------------------------
+     * FORM Class Implementation
+     *-----------------------------------------------------------------------------------------------------------------------*/
+    
+    Y.extend(wfw.DataModel.FORM,wfw.OBJECT);
+
+    /*
+    * Génére un nom unique dans le membre 'name'
+    * Retourne:
+    *  [void]
+    * */
+    wfw.DataModel.FORM.prototype.createHTML = function(){
+        wfw.puts(this.fields);return;
+        for(var i in this.fields){
+            var field = this.fields[i];
+            
+            var containerEl = Y.Node.create("<div></div>");
+            containerEl.append("<label>"+field.label+"</label>");
+            containerEl.append(field.toHTML());
+        }
+    };
 }, '1.0', {
     requires:['base','wfw','wfw-event','wfw-utils','wfw-navigator']
 });
