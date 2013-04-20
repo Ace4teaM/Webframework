@@ -479,7 +479,7 @@ class cApplication implements iApplication{
         
         //ajoute le fichier de configuration
         if($this->getDefaultFile($default))
-            $template->push_xml_file('default.xml',$default);
+            $template->push_xml_file('default.xml',$default->doc);
 
         //ajoute le fichier de globals
         $template->push_xml_file('template.xml',$this->template_attributes_xml);
