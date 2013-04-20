@@ -43,9 +43,31 @@ class Ctrl extends cApplicationCtrl{
             if(!$in->load($filename))
                 return false;
 
-            //pages
-        
-            //results
+            //
+            // pages
+            //
+            $out_index = $out->one(">index");
+            $in_index  = $in->one(">index");
+            // si il n'existe pas, clone
+            if($out_index == null && $in_index != null){
+                $out->documentElement->appendChild( $out->importNode($in_index,TRUE) );
+            }
+            else if($out_index != null && $in_index != null){
+                foreach($in->all(">page[role]",$in_index) as $key=>$node){
+                    $id = $node->getAttribute("id");
+
+                    // si il n'existe pas, clone
+                    $out_node  = $out->one(">page[id=$id]",$out_index);
+                    if($out_node == null){
+                        $out_index->appendChild( $out->importNode($node,TRUE) );
+                        continue;
+                    }
+                }
+            }
+            
+            //
+            // results
+            //
             foreach($in->all(">results") as $key=>$node){
                 $lang = $node->getAttribute("lang");
                 
