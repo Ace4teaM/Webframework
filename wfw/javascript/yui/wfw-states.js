@@ -1,19 +1,24 @@
 /*
-    (C)2012 AceTeaM, WebFrameWork(R). All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
-    Warning this script is protected by copyright, if you want to use this code you must ask permission:
-    Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        MR AUGUEY THOMAS
-        dev@aceteam.org
+    (C)2012,2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-    Etats de données
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    JS  Dependences: base.js
-    YUI Dependences: base, node
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-    Implementation: [11-10-2012] 
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
 */
+
 
 YUI.add('wfw-states', function (Y) {
     var wfw = Y.namespace('wfw');
@@ -22,6 +27,15 @@ YUI.add('wfw-states', function (Y) {
      * @class States
      * @memberof wfw
      * @brief Gestionnaire d'objets
+     * 
+     * States permet de manipuler des structures de données
+     * |----------------------|
+     * |      OBJECT          |
+     * |----------------------|
+     * |    namespace1        | --> {OBJECT DATA..}
+     * |    namespace2        | --> {OBJECT DATA..}
+     * |    etc...            |
+     * |----------------------|
      * */
     wfw.States = {
         /*
@@ -72,7 +86,7 @@ YUI.add('wfw-states', function (Y) {
             return false;
         },
         /*
-        Crée un objet de donnée depuis un élément
+        Crée un objet de données assigné à un élémentHTML
         Parametres:
             [YUI.Node] element : L'Element HTML
             [object]   states  : Données à assigner
@@ -80,7 +94,7 @@ YUI.add('wfw-states', function (Y) {
         Retourne:
             [objet] Pointeur sur l'objet de données
         Remarques:
-            Si l'élément ne possède pas d'identificateur, il seras généré et assigné automatiquement
+            Si l'élément ne possède pas d'identificateur, il sera généré et assigné automatiquement
         */
         fromElement: function(element, states, options){
             if (typeof(options) == "undefined")
@@ -98,6 +112,7 @@ YUI.add('wfw-states', function (Y) {
 
             return this.fromId(id, states, options);
         },
+        
         /*
         Crée un objet de donnée depuis un identifiant
         Parametres:

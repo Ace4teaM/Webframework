@@ -45,8 +45,13 @@ YUI.add('wfw', function (Y) {
          * @brief Classe d'un objet de base
          * @memberof wfw
          * 
-         * @param id [string] Identificateur de l'instance
-         * @param ns [string] Espace de nommage
+         * @param string/object att Données de l'objet, Peut être un objet associatif ou un identifiant wfw.States
+         * 
+         * @property string id Identificateur de l'instance
+         * @property string ns Espace de nommage
+         * 
+         * ## Initialiser les données depuis une instance wfw.States
+         * 
         */
         OBJECT : function(att){
             this.id;// Identificateur de l'instance
