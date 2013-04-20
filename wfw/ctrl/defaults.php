@@ -22,65 +22,48 @@
  */
 
 /**
- * @page datafetch Extrait des données d'une table
- * 
- * # Retourne les données d'une table
- * 
- * | Informations |                          |
- * |--------------|--------------------------|
- * | PageId       | -
- * | Rôle         | Administrateur
- * | UC           | datafetch
+ * @page defaults Fusionne les fichiers defaults de tous les modules puis affiche le contenu
  * 
  */
 class Ctrl extends cApplicationCtrl{
-    public $fields    = array('table_name');
-    public $op_fields = array('cols_names','row_offset','row_count');
+    public $fields    = null;
+    public $op_fields = null;
 //    public $role      = Role::Administrator;
 
-    function main(iApplication $app, $app_path, $p) {
-        $lang = "fr";
-        
-        if(!$app->getDB($db))
-            return false;
-        
-        if(!$p->row_offset)
-            $p->row_offset = 0;
-        
-        if(!$p->row_count)
-            $p->row_count = 9999;
-
+    function main(iApplication $app, $app_path, $p)
+    {
         // Initialise le document de sortie
-        $doc = new XMLDocument("1.0", "utf-8");
-        $rootEl = $doc->createElement('data');
-        $doc->appendChild($rootEl);
-
-        //initialise la requete SQL
-        if(!$p->cols_names)
-            $p->cols_names = "*";
-        $query = "SELECT $p->cols_names FROM $p->table_name";
-
-        //execute la requete
-        if(!$db->execute($query, $result))
+        $out = new XMLDocument("1.0", "utf-8");
+        if(!$out->load("default.xml"))
             return false;
         
-        //offset
-        if(!$result->seek($p->row_offset,iDatabaseQuery::Origin))
-            return false;
+        foreach($app->getCfgSection("defaults") as $key=>$filename){
+            // Initialise le document de sortie
+            $in = new XMLDocument("1.0", "utf-8");
+            if(!$in->load($filename))
+                return false;
+
+            //pages
         
-        //extrait les instances
-        $i=0;
-        while( $p->row_count-- ){
-            $el = $doc->createElement(strtolower($p->table_name));
-            $doc->appendAssocArray($el, $result->fetchRow());
-            $rootEl->appendChild($el);
-            if(!$result->seek(1,iDatabaseQuery::Current))
-                break;
+            //results
+            foreach($in->all(">results") as $key=>$node){
+                $lang = $node->getAttribute("lang");
+                
+                // si il n'existe pas, clone
+                $out_node  = $out->one(">results[lang=$lang]");
+                if($out_node == null){
+                    $out->documentElement->appendChild( $out->importNode($node,TRUE) );
+                    continue;
+                }
+                
+                //fusionne le restant
+                XMLDocument::mergeNodesByTagName($in, $out, $node, $out_node);
+            }
         }
 
         //sortie XML
         header("content-type: text/xml");
-        echo '<?xml version="1.0" encoding="UTF-8" ?>' . $doc->saveXML($doc->documentElement);
+        echo '<?xml version="1.0" encoding="UTF-8" ?>' . $out->saveXML($out->documentElement);
 
         //termine ici
         exit(0);
