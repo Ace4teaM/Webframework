@@ -273,6 +273,7 @@ class cApplication implements iApplication{
         //charge le fichier
         $this->default = new cXMLDefault();
         $uri = $this->getBaseURI()."/".$this->makeCtrlURI('wfw','defaults',null);
+
         if(!$this->default->Initialise($uri)){
             $this->default = FALSE;
             return FALSE;//passe le résultat
@@ -330,7 +331,10 @@ class cApplication implements iApplication{
             $uri .= $server;
             
             //chemin
-            $path = dirname($_SERVER["REQUEST_URI"]);
+            $path = $_SERVER["REQUEST_URI"];
+            //utilise dirname() si le chemain possède un fichier
+            if(!(substr($path, -1) == '/' || substr($path, -1) == '\\'))
+                $path = dirname($_SERVER["REQUEST_URI"]);
             if(!empty($path) && $path!="/")
                 $uri .= $path;
         }
