@@ -6,6 +6,14 @@
     <description>Webframework Exemples HTML/Javascript</description>
 
     <index>
+        <!-- **************************************************************
+               Webframework
+        ************************************************************** -->
+        <page id="yui_config" role="visitor" name="Configuration YUI">ctrl.php?app=wfw&amp;ctrl=yui_config</page>
+        <page id="datamodel" role="visitor" name="Obtient le model de données">ctrl.php?app=wfw&amp;ctrl=datamodel</page>
+        <!-- **************************************************************
+               Pages
+        ************************************************************** -->
         <page id="api" name="API">doxy_index.php</page>
         <page id="index" name="Accueil">index.php</page>
         <page id="guide" name="Guide">index.php?page=guide</page>
@@ -30,7 +38,7 @@
         <page id="dialog" name="Dialogue">js_samples.php?sample=dialog</page>
         <page id="dialog_messageBox" name="Dialogues (boite de message)">js_samples.php?sample=dialog-messageBox</page>
         <page id="fieldbar" name="Barre de champs">js_samples.php?sample=fieldbar</page>
-        <page id="form" name="Formulaire">js_samples.php?sample=form.html</page>
+        <page id="form" name="Formulaire">js_samples.php?sample=form</page>
         <page id="layout" name="Positionnement (Layout)">js_samples.php?sample=layout</page>
         <page id="layout_full" name="Positionnement encré (Layout)">js_samples.php?sample=layout_full</page>
         <page id="request" name="Requête HTTP">js_samples.php?sample=request</page>
@@ -39,6 +47,7 @@
         <page id="xarg" name="X-Argument (Format d'échange de données)">js_samples.php?sample=xarg</page>
         <page id="default_file" name="Fichier Défaut">js_samples.php?sample=default_file</page>
         <page id="xml_template" name="Templates XML/XHTML">js_samples.php?sample=xml_template</page>
+        <page id="fieldsform" name="Formulaire de champs">js_samples.php?sample=fieldsform</page>
         <!-- liens -->
         <link id="wfw_projet">http://wfw.aceteam.org</link>
         <link id="wfw_js_api">http://wfw.aceteam.org/api/js</link>
@@ -81,6 +90,7 @@
                 <xarg/>
                 <default_file/>
                 <xml_template/>
+                <fieldsform/>
             </js>
             <php> 
             </php>
@@ -92,4 +102,14 @@
         <licence></licence>
     </tree>
 
+    <results lang="fr">
+        <codes></codes>
+
+        <errors></errors>
+
+        <messages></messages>
+        
+        <fields>
+        </fields>
+    </results>
 </site>
