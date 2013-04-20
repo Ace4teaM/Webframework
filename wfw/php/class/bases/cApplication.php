@@ -270,9 +270,10 @@ class cApplication implements iApplication{
         if($this->default === FALSE)
             return RESULT(cResult::Failed,cApplication::CantLoadDefaultFile);
 
-        //tente le chargement
+        //charge le fichier
         $this->default = new cXMLDefault();
-        if(!$this->default->Initialise("default.xml")){
+        $uri = $this->getBaseURI()."/".$this->makeCtrlURI('wfw','defaults',null);
+        if(!$this->default->Initialise($uri)){
             $this->default = FALSE;
             return FALSE;//passe le résultat
         }
