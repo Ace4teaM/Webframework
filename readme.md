@@ -10,6 +10,7 @@
 - Transtypage automatique du model de données entre PHP et le SGBD
 - Nouveau script d'archivage. Permet d'exporter des archives par nom de tag
 - Model Application/Controleur
+- Fusion automatique des fichiers default.xml
 
 ---------------------------------------------------------------------------------------------------------------------------------------
  BUG et comportements hasardeux à resoudre
