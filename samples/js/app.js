@@ -35,7 +35,7 @@ Ext.application({
     ],
     autoCreateViewport: false,
     launch: function() {
-        MyApp.global.Vars.yui = YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'event', 'wfw-xml-template', 'etape_regionale-region', 'wfw-user', 'loading-box', 'io', 'wfw-navigator', 'wfw-request', 'wfw-xml','datatype-xml', function (Y)
+        MyApp.global.Vars.yui = YUI(wfw_yui_config(wfw_yui_base_path)).use('node', 'event', 'wfw-xml-template', 'io', 'wfw-navigator', 'wfw-request', 'wfw-xml','datatype-xml', function (Y)
         {
             var wfw = Y.namespace("wfw");
             
