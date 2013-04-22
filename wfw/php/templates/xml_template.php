@@ -484,7 +484,7 @@ class cXMLTemplate
 
     /**
      * @brief Transforme un noeuds, ses enfants et tout les noeuds suivants
-     * @param $select Curseur sur le noeud en cours dans la sélection
+     * @param $select Curseur sur le noeud en cours de sélection
      * @param $node Curseur sur le noeud en cours de transformation
      * @param $arg Pointeur sur le tableau associatif des arguments
      */

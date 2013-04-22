@@ -1,9 +1,9 @@
 <?php
 
 /*
-  ---------------------------------------------------------------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
   (C)2013 Thomas AUGUEY <contact@aceteam.org>
-  ---------------------------------------------------------------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
   This file is part of WebFrameWork.
 
   WebFrameWork is free software: you can redistribute it and/or modify
@@ -18,20 +18,18 @@
 
   You should have received a copy of the GNU General Public License
   along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
-  ---------------------------------------------------------------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
  */
 
-/**
- * @brief Entier numérique 32bits signée
- * @author Thomas AUGUEY
- */
 $libdir = realpath(dirname(__FILE__) . "/../..");
 
 require_once("$libdir/php/class/bases/input.php");
 require_once("$libdir/php/base.php");
 
-// Entier numerique 
-// Aucun Standard
+/**
+ * @brief Entier numérique 32bits signée
+ * @copydoc cInput
+ */
 class cInputInteger extends cInput {
 
     public static function isValid($value) {
