@@ -14,10 +14,28 @@ test( "cInputInteger" , function() {
     equal( cInputInteger.isValid("2013"), true, "Number" );
     equal( cInputInteger.isValid("0"), true, "Zero" );
     equal( cInputInteger.isValid("-456"), true, "Negative" );
-//    equal( cInputInteger.isValid(null), false, "Not NULL" );
     equal( cInputInteger.isValid(""), false, "Not empty" );
     equal( cInputInteger.isValid("456.0"), false, "Not integer" );
     equal( cInputInteger.isValid("5456454444444444444444444444440"), false, "Not Big" );
+});
+
+/* cInputFloat
+test( "cInputFloat" , function() {
+    equal( cInputFloat.isValid("2013.0"), true, "Number" );
+    equal( cInputFloat.isValid("0.0"), true, "Zero" );
+    equal( cInputFloat.isValid("-456.0"), true, "Negative" );
+    equal( cInputFloat.isValid("456"), true, "Integer" );
+    equal( cInputFloat.isValid(""), false, "Not empty" );
+}); */
+
+/* cInputFactor */
+test( "cInputFactor" , function() {
+    equal( cInputFactor.isValid("1"), true, "One" );
+    equal( cInputFactor.isValid("1.0"), true, "One" );
+    equal( cInputFactor.isValid("0.0"), true, "Zero" );
+    equal( cInputFactor.isValid("1"), true, "One" );
+    equal( cInputFactor.isValid("-1.0"), false, "Negative" );
+    equal( cInputFactor.isValid(""), false, "Not empty" );
 });
 
 /* cInputDate */

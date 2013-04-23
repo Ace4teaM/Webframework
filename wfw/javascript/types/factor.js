@@ -20,33 +20,25 @@
 */
 
 
-var cInputDate={
+var cInputFactor={
     isValid : function(value){
         if (empty_string(value))
             return RESULT(cResult.Failed, cInput.EmptyText);
 
-        //test les differents formats
-        var fmt = this.regExp();
-        for(var i in  fmt){
-            var regex = fmt[i];
-            if ( (new RegExp(regex)).test(value) )
-                return RESULT_OK();
-        }
-
-        return RESULT(cResult.Failed, cInput.InvalidFormat);
+        //test le format
+        var regex = '^'+this.regExp()+'$';
+        if ( !(new RegExp(regex)).test(value) )
+            return RESULT(cResult.Failed, cInput.InvalidChar);
+        
+        return RESULT_OK();
     }
     ,
     regExp : function(){
-        var sep = '[\\-\\/\\\\\\s]';
-        
-        return {
-            "DMY":"^([0-9]{1,2})"+sep+"([0-9]{1,2})"+sep+"([0-9]+)$",
-            "YMD":"^([0-9]+)"+sep+"([0-9]{1,2})"+sep+"([0-9]{1,2})$"
-        };
+        return '(?:0|1)(?:\\.[0-9]+)?';
     }
     ,
     getMaxLength : function(){
-        return -1;
+        return 128;
     }
     ,
     getMinLength : function(){
@@ -55,8 +47,7 @@ var cInputDate={
 
     ,
     toObject : function(value){
-        var date = new Date(value);
-        return date;
+        return parseFloat(value);
     }
 }
-cInputdate = cInputDate; //global insensitive scope
+cInputfactor = cInputFactor; //global insensitive scope
