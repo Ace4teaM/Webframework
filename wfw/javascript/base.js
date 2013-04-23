@@ -460,6 +460,17 @@ function lstrcmp(text,find){
 }
 
 /**
+    @brief Vérifie si une chaine est vide
+    @param string str Chaine à analyser
+    @return bool true Si l'objet est vide, sinon false
+*/
+function empty_string(str){
+    if(trim(str)=='')
+        return true;
+    return false;
+}
+
+/**
     Vérifie si un objet ou une chaine est vide
     Arguments:
         [object] obj : Objet à tester
@@ -469,12 +480,7 @@ function lstrcmp(text,find){
 function empty(obj){
     //text
     if(typeof(obj)=='string')
-    {
-        var rest = trim(obj);
-        if(rest == "")
-            return true;
-        return false;
-    }
+        return empty_string(obj);
     //objet
     if(typeof(obj)=='object')
     {
