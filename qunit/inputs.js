@@ -19,14 +19,14 @@ test( "cInputInteger" , function() {
     equal( cInputInteger.isValid("5456454444444444444444444444440"), false, "Not Big" );
 });
 
-/* cInputFloat
+/* cInputFloat */
 test( "cInputFloat" , function() {
     equal( cInputFloat.isValid("2013.0"), true, "Number" );
     equal( cInputFloat.isValid("0.0"), true, "Zero" );
     equal( cInputFloat.isValid("-456.0"), true, "Negative" );
     equal( cInputFloat.isValid("456"), true, "Integer" );
     equal( cInputFloat.isValid(""), false, "Not empty" );
-}); */
+});
 
 /* cInputFactor */
 test( "cInputFactor" , function() {

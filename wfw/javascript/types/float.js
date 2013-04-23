@@ -20,7 +20,7 @@
 */
 
 
-var cInputFactor={
+var cInputFloat={
     isValid : function(value){
         if (empty_string(value))
             return RESULT(cResult.Failed, cInput.EmptyText);
@@ -34,7 +34,7 @@ var cInputFactor={
     }
     ,
     regExp : function(){
-        return '(?:0|1)(?:\\.[0-9]+)?';
+        return '\\-?[0-9]+(?:[\\.\\,][0-9]+)?';
     }
     ,
     getMaxLength : function(){
@@ -50,4 +50,4 @@ var cInputFactor={
         return parseFloat(value);
     }
 }
-cInputfactor = cInputFactor; //global insensitive scope
+cInputfloat = cInputFloat; //global insensitive scope
