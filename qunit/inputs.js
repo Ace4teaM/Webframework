@@ -52,3 +52,13 @@ test( "cInputIdentifier" , function() {
     equal( cInputIdentifier.isValid("stack house"), false, "Not space" );
     equal( cInputIdentifier.isValid("1One"), false, "Not begin by number" );
 });
+
+/* cInputMail */
+test( "cInputMail" , function() {
+    equal( cInputMail.isValid("foo@bar.com"), true, "Simple" );
+    equal( cInputMail.isValid("foo.foo@bar.com"), true, "Sub Domain" );
+    equal( cInputMail.isValid("foo@bar"), true, "Without extension" );
+    equal( cInputMail.isValid("foo@"), false, "Not empty domain" );
+    equal( cInputMail.isValid("@foo"), false, "Not empty name" );
+    equal( cInputMail.isValid("bar..foo@foo"), false, "Not double point" );
+});
