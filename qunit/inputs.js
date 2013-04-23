@@ -43,3 +43,12 @@ test( "cInputDate" , function() {
     equal( cInputDate.isValid("2013-01-05"), true, "Format YYYY-MM-DD" );
     equal( cInputDate.isValid("12-12-2029"), true, "Format DD-MM-YYYY" );
 });
+
+/* cInputIdentifier */
+test( "cInputIdentifier" , function() {
+    equal( cInputIdentifier.isValid("stack"), true, "Simple" );
+    equal( cInputIdentifier.isValid("stack_house"), true, "Underscore" );
+    equal( cInputIdentifier.isValid("stack-house"), false, "Not -" );
+    equal( cInputIdentifier.isValid("stack house"), false, "Not space" );
+    equal( cInputIdentifier.isValid("1One"), false, "Not begin by number" );
+});
