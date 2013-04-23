@@ -194,8 +194,45 @@ YUI.add('wfw-datamodel', function (Y) {
                 false
                 );
             return this.datamodel;
-        }
+        },
 
+        /*------------------------------------------------------------------------------------------------------------------*/
+        /**
+         * @brief Convertie une valeur en type Javascript
+         **/
+        /*------------------------------------------------------------------------------------------------------------------*/
+
+        bindValue : function(type,value)
+        {
+            var className = "cInput"+type.toLowerCase();
+            if (eval("typeof "+className) == 'object'){
+                var input = eval(className);
+                return input.toObject(value);
+            }
+            return null;
+        },
+        
+        /*------------------------------------------------------------------------------------------------------------------*/
+        /**
+         * @brief Convertie une valeur en type wfw
+         **/
+        /*------------------------------------------------------------------------------------------------------------------*/
+
+        parseValue : function(value)
+        {
+            if(value == null)
+                return null;
+            if(typeof(value) == "string")
+                return value;
+            if(value instanceof Boolean)
+                return (value ? 'TRUE' : 'FALSE');
+            if(value instanceof String)
+                return value.toString();
+            if(value instanceof Date)
+                return value.toString('yyyy-MM-dd');
+            
+            return ""+value;//autres
+        }
     };
 
     /*-----------------------------------------------------------------------------------------------------------------------
