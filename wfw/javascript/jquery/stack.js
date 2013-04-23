@@ -59,9 +59,17 @@
  * @code{.js}
  * { wrap : true }
  * @endcode
- * Les éléments sélectionnés ne serons pas modifié, un nouvel élément SPAN contiendera les attributs de styles
- * Utile pour permettre à l'élément source d'utiliser les attributs 'padding' et 'margin' sans affecter la position des éléments
+ * Les éléments sélectionnés ne seront pas modifiés, un nouvel élément SPAN contiendera les attributs de styles.
+ * Utile pour permettre à l'élément source d'utiliser les attributs 'padding' et 'margin' sans affecter la position des éléments.
  * 
+ * #Exemple
+ * @code{.js}
+ * $("#date-layout").stack({
+ *     mode:"rows",
+ *     selector : [ "#dateLabel", "#beginDate, #endDate" ],
+ *     size:[null,"20px"]
+ * });
+ * @endcode{.js}
  * **/
 (function($)
 {
