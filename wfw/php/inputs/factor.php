@@ -20,7 +20,7 @@ class cInputFactor extends cInput
             return floatval($string);
         }
 	public static function regExp(){
-            return '(0|1|0\\.[0-9]*)?';
+            return '(?:0|1)(?:\\.[0-9]+)?';
 	}
 	public static function getMaxLength(){
             return 128;
