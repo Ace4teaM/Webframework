@@ -19,7 +19,18 @@ class cInputUrl extends cInput {
     }
 
     public static function regExp() {
-        return '.*';
+        //compositions
+        $scheme   = '[A-Za-z]{1}[A-Za-z0-9+\.\-]*';
+        $port     = '[0-9]+';
+        $domain   = '[A-Za-z]{1}[A-Za-z0-9_\.:\-]*'; //Registry-based
+        $path     = '[A-Za-z0-9_\.+%\-]*';
+        $query    = '[A-Za-z0-9_\.&=+;%\-\(\)\:\/]*';
+        $fragment = '[A-Za-z0-9_+%\-]*';
+        //var fragment = '(?:'.$alpha.'|'.$digit.'|'.$safe.'|'.$extra.'|'.$escape.')';
+ 
+        return '((' . $scheme . '):/+)?'
+                +'(' . $domain . ')?'
+                +'^([/' . $path . ']*)([?' . $query . ']?)([#' . $fragment . ']?)';
     }
 
     public static function getMaxLength() {
