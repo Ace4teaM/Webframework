@@ -119,3 +119,10 @@ test( "cInputPassword" , function() {
     equal( cInputPassword.isValid("azAZ09_-@#&+~"), true, "Specials chars" );
     equal( cInputPassword.isValid("12"), false, "Not To Small" );
 });
+
+/* cInputString */
+test( "cInputString" , function() {
+    equal( cInputString.isValid("azerty"), true, "Minimal" );
+    equal( cInputString.isValid("Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression."), true, "Specials chars" );
+    equal( cInputString.isValid("Hello \"World\""), false, "Not double comma" );
+});
