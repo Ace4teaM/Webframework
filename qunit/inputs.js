@@ -125,4 +125,11 @@ test( "cInputString" , function() {
     equal( cInputString.isValid("azerty"), true, "Minimal" );
     equal( cInputString.isValid("Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression."), true, "Specials chars" );
     equal( cInputString.isValid("Hello \"World\""), false, "Not double comma" );
+    equal( cInputString.isValid("Hello \n World"), false, "Not line feed" );
+    equal( cInputString.isValid("Hello \r World"), false, "Not carriage return" );
+});
+
+/* cInputText */
+test( "cInputText" , function() {
+    equal( cInputText.isValid("Le Lorem \n\r Ipsum est \"simplement\" du faux texte employé dans la composition et la mise en page avant impression."), true, "Accept all chars" );
 });
