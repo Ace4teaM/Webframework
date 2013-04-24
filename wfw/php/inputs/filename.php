@@ -22,7 +22,7 @@ class cInputWindowsFileName extends cInput
 		if( empty($value) )
                     return RESULT(cResult::Failed,cInput::InvalidChar);
 		// 2. carateres invalides
-		if(!is_not_strof($value,'\/:*?"<>|'))
+		if(!is_not_strof($value,'\/\\:*?"<>|'))
                     return RESULT(cResult::Failed,cInput::InvalidChar);
 		// 3. pas de point '.' ni au debut, ni a la fin, ni de double point
 		if((substr($value,0,1)=='.') || (substr($value,-1,1)=='.') || (strpos($value,'..')!==FALSE))
@@ -51,7 +51,7 @@ class cInputUNIXFileName extends cInput
 		if( empty($value) )
                     return RESULT(cResult::Failed,cInput::InvalidChar);
 		// 2. carateres invalides
-		if(!is_not_strof($value,'\/:*?"<>|'))
+		if(!is_not_strof($value,'\/\\:*?"<>|'))
                     return RESULT(cResult::Failed,cInput::InvalidChar);
 		// 3. pas de point '.' ni au debut, ni a la fin, ni de double point
 		if((substr($value,0,1)=='.') || (substr($value,-1,1)=='.') || (strpos($value,'..')!==FALSE))
