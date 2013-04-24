@@ -20,78 +20,37 @@
 */
 
 
-var cInputUNIXFileName={
+var cInputIPv4={
     isValid : function(value){
-        //
-        //Valide la part local:
-        //
         // 1. non vide
         if (empty_string(value))
             return RESULT(cResult.Failed, cInput.EmptyText);
-        // 2. carateres invalides
-        if(value.match(/[\/\\:*?"<>|]/))
-            return RESULT(cResult.Failed,cInput.InvalidChar);
-        // 3. pas de point '.' ni au debut, ni a la fin, ni de double point
-        if((value.substr(0,1)=='.') || (value.substr(-1,1)=='.') || (value.indexOf('..') != -1))
-            return RESULT(cResult.Failed,cInput.InvalidChar);
-
+        
+        // 2. test le format
+        var regex = '^'+this.regExp()+'$';
+        if ( !(new RegExp(regex)).test(value) )
+            return RESULT(cResult.Failed, cInput.InvalidChar);
+        
         return RESULT_OK();
     }
     ,
     regExp : function(){
-        return null;
+        return '(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'+'\\.'
+              +'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'+'\\.'
+              +'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'+'\\.'
+              +'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])';
     }
     ,
     getMaxLength : function(){
-        return 128;
+        return (3*4)+4;
     }
     ,
     getMinLength : function(){
-        return 1;
+        return getMaxLength();
     }
-
     ,
     toObject : function(value){
         return value;
     }
 }
-cInputunixfilename = cInputUNIXFileName; //global insensitive scope
-
-
-
-var cInputWindowsFileName={
-    isValid : function(value){
-        //
-        //Valide la part local:
-        //
-        // 1. non vide
-        if (empty_string(value))
-            return RESULT(cResult.Failed, cInput.EmptyText);
-        // 2. carateres invalides
-        if(value.match(/[\/\\:*?"<>|]/))
-            return RESULT(cResult.Failed,cInput.InvalidChar);
-        // 3. pas de point '.' ni au debut, ni a la fin, ni de double point
-        if((value.substr(0,1)=='.') || (value.substr(-1,1)=='.') || (value.indexOf('..') != -1))
-            return RESULT(cResult.Failed,cInput.InvalidChar);
-
-        return RESULT_OK();
-    }
-    ,
-    regExp : function(){
-        return null;
-    }
-    ,
-    getMaxLength : function(){
-        return 128;
-    }
-    ,
-    getMinLength : function(){
-        return 1;
-    }
-
-    ,
-    toObject : function(value){
-        return value;
-    }
-}
-cInputwindowsfilename = cInputWindowsFileName; //global insensitive scope
+cInputipv4 = cInputIPv4; //global insensitive scope

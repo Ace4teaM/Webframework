@@ -79,3 +79,17 @@ test( "cInputWindowsFileName" , function() {
     equal( cInputWindowsFileName.isValid("..\\setup.exe"), false, "Not return path" );
     equal( cInputWindowsFileName.isValid("base\\setup.exe"), false, "Not path" );
 });
+
+/* cInputIPv4 */
+test( "cInputIPv4" , function() {
+    equal( cInputIPv4.isValid("0.0.0.0"), true, "Simple" );
+    equal( cInputIPv4.isValid("192.168.1.1"), true, "Simple" );
+    equal( cInputIPv4.isValid("192.168.1.100"), true, "Simple" );
+    equal( cInputIPv4.isValid("192.168.1.199"), true, "Simple" );
+    equal( cInputIPv4.isValid("192.168.1.249"), true, "Simple" );
+    equal( cInputIPv4.isValid("192.168.1.255"), true, "Simple" );
+    equal( cInputIPv4.isValid("255.255.255.255"), true, "Simple" );
+    equal( cInputIPv4.isValid("255.255.999.255"), false, "Not Invalid Number Range" );
+    equal( cInputIPv4.isValid("192.168.1"), false, "Not Uncomplete" );
+    equal( cInputIPv4.isValid("192.168.1.x"), false, "Not Non Number" );
+});
