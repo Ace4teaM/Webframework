@@ -577,7 +577,8 @@ YUI.add('wfw-form', function (Y) {
             //options
             var att = {
                 selectByAtt:"name",
-                getStaticNode:false
+                getStaticNode:false,
+                forceAttLowerCase:false
             };
             if(typeof(options)!="undefined")
                 att = object_merge(att,options);
@@ -597,7 +598,9 @@ YUI.add('wfw-form', function (Y) {
                         // element name ?
                         if ( empty(element_name = node.getAttribute(att.selectByAtt)) ) // custom (ex: 'name' in DIV)
                             return; //continue
-                        element_name = element_name.toLowerCase();
+                        
+                        if(att.forceAttLowerCase)
+                            element_name = element_name.toLowerCase();
                             
                         switch (node.get("tagName").toLowerCase()) {
                             case 'input':

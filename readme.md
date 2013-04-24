@@ -5,12 +5,17 @@
 -   Mail   : dev@aceteam.org
 
 ---------------------------------------------------------------------------------------------------------------------------------------
- Quoi de neuf ?
+ [1.8] Quoi de neuf 
 ---------------------------------------------------------------------------------------------------------------------------------------
 - Transtypage automatique du model de données entre PHP et le SGBD
 - Nouveau script d'archivage. Permet d'exporter des archives par nom de tag
 - Model Application/Controleur
 - Fusion automatique des fichiers default.xml
+
+---------------------------------------------------------------------------------------------------------------------------------------
+ [1.8] Mise a jour
+---------------------------------------------------------------------------------------------------------------------------------------
+- YUI.wfw.Form.get_elements(): Retourne les noms d'éléments dans leurs casse d'origine (auparavant forcé en minuscule). Utilisez l'option 'forceAttLowerCase:true' pour rétablir l'ancien comportement.
 
 ---------------------------------------------------------------------------------------------------------------------------------------
  BUG et comportements hasardeux à resoudre
