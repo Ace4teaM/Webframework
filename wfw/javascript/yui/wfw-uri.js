@@ -1,19 +1,24 @@
 /*
-    (C)2012 AceTeaM, WebFrameWork(R). All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
-    Warning this script is protected by copyright, if you want to use this code you must ask permission:
-    Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        MR AUGUEY THOMAS
-        dev@aceteam.org
+    (C)2012,2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-    X-Arguments
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    JS  Dependences: base.js
-    YUI Dependences: base, wfw, wfw-math
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-    Implementation: [11-10-2012] 
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
 */
+
 
 YUI.add('wfw-uri', function (Y) {
     var wfw = Y.namespace('wfw');
@@ -24,18 +29,21 @@ YUI.add('wfw-uri', function (Y) {
      * @brief Fonctions relatives aux adresses web (URI)
      * */
     wfw.URI = {
-        /*
-            Classe Adresse (URI)
-
-            Implémente:
-                WFW.OBJECT
-            Membres:
-                [string] addr      : Adresse complète de l'URI
-                [string] scheme    : Schéma sans "://". Si aucun, une chaine vide
-                [string] authority : Nom de domaine ou adresse IP
-                [string] path      : Chemin d'accès (sans "/" en début). Si aucun, une chaine vide
-                [string] query     : Paramètres (sans "?" au début). Si aucun, une chaine vide
-                [string] fragment  : Ancre (sans "#" au début). Si aucun, une chaine vide
+        /**
+         * @brief Adresse (URI)
+         * @class ADDRESS
+         * @memberof URI
+         * @implements OBJECT
+         * 
+         * @param att Attributs de l'objet
+         * 
+         * #Membres
+         * @param string addr      Adresse complète de l'URI
+         * @param string scheme    Schéma sans "://". Si aucun, une chaine vide
+         * @param string authority Nom de domaine ou adresse IP
+         * @param string path      Chemin d'accès (sans "/" en début). Si aucun, une chaine vide
+         * @param string query     Paramètres (sans "?" au début). Si aucun, une chaine vide
+         * @param string fragment  Ancre (sans "#" au début). Si aucun, une chaine vide
         */
         ADDRESS : function(att){
             //OBJECT
@@ -52,27 +60,23 @@ YUI.add('wfw-uri', function (Y) {
                 Constructeur
             */
             wfw.URI.ADDRESS.superclass.constructor.call(this, att);
-
-            this.makeAddress();
         },
 
-        /*
-        Découpe une adresse web (URI) en sections
-        Le format est basé sur le standard RFC-2396 (http://tools.ietf.org/html/rfc2396#section-3.1)
-
-        Paramètres:
-            [string] uri : l'URI
-        Retourne:
-            [wfw.uri.ADDRESS] Objet de l'adresse. null si l'URI est invalide
+        /**
+         * @brief Découpe une adresse web (URI) en sections
+         * @remarks Le format est basé sur le standard RFC-2396 (http://tools.ietf.org/html/rfc2396#section-3.1)
+         * 
+         * @param string uri : l'URI
+         * @return wfw.uri.ADDRESS Objet de l'adresse. null si l'URI est invalide
         */
         cut: function (uri) {
-            // !! FONCTION A METTE A JOUR RFC-3986 !!
+            //@fixme: !! FONCTION A METTRE A JOUR RFC-3986 !!
             //caracteres authorisés par le RFC-3986 (http://tools.ietf.org/html/rfc3986)
             var c_sub_delims = "[!$&'()*+,;=]";
             var c_pct_encoded = "%[0-9]{2}";
             var c_unreserved = "[A-Za-z0-9-._~]";
             var c_query = c_unreserved + c_pct_encoded + c_sub_delims + "[:@]*";
-            // !! FONCTION A METTE A JOUR RFC-3986 !!
+            // !! FONCTION A METTRE A JOUR RFC-3986 !!
 
             //cree l'objet ADDRESS
             var obj = new wfw.URI.ADDRESS( {
@@ -121,70 +125,46 @@ YUI.add('wfw-uri', function (Y) {
             return obj;
         },
 
-        /*
-        Construit la chaine d'une URI à partir d'un objet
-
-        Paramètres:
-            [wfw.uri.ADDRESS] uri : Objet de l'adresse
-        Retourne:
-            [string] Chaine de l'URI
+        /**
+         * @deprecated Utilisez la méthode wfw.URI.ADDRESS.makeAddress
+         * 
+         * @brief Construit une URI avec un objet
+         * @param wfw.URI.ADDRESS uri Objet de l'adresse
+         * @return string Chaine de l'URI
+         * @remark Equivaut à utiliser la méthode 'makeAddress' de l'objet 'wfw.URI.ADDRESS'
         */
         paste: function (uri) {
-            var query = "";
-            //protocol
-            if (!empty(uri.scheme))
-                query += uri.scheme + '://';
-            //domain
-            query += uri.authority;
-            //chemin
-            if (!empty(uri.path))
-                query += '/' + uri.path;
-            //parametres
-            if (!empty(uri.query))
-                query += '?' + uri.query;
-            //ancre
-            if (!empty(uri.fragment))
-                query += '#' + uri.fragment;
-            return query;
+            return uri.makeAddress();
         },
 
-        /*
-        Construit la chaine d'une URI à partir des arguments
-
-        Parametres:
-        [string] scheme,authority,path,query,fragment
-        Retourne:
-        Chaine contenant l'URI.
-        Remarques:
-        Format d'une URI: "scheme.authority://path?query#fragment"
+        /**
+         * @brief Construit une URI avec des arguments
+         * @param string scheme    Schéma sans "://". Si aucun, une chaine vide
+         * @param string authority Nom de domaine ou adresse IP
+         * @param string path      Chemin d'accès (sans "/" en début). Si aucun, une chaine vide
+         * @param string query     Paramètres (sans "?" au début). Si aucun, une chaine vide
+         * @param string fragment  Ancre (sans "#" au début). Si aucun, une chaine vide
+         * @return string Chaine de l'URI
+         * @remarks Format d'une URI: "scheme.authority://path?query#fragment"
         */
         make: function (scheme, authority, path, query, fragment) {
-            var query = "";
-            //protocol
-            if (!empty(scheme))
-                query += scheme + '://';
-            //domain
-            query += authority;
-            //chemin
-            if (!empty(path))
-                query += '/' + path;
-            //parametres
-            if (!empty(query))
-                query += '?' + query;
-            //ancre
-            if (!empty(fragment))
-                query += '#' + fragment;
-            return query;
+            var uri = new wfw.URI.ADDRESS({scheme:scheme, authority:authority, path:path, query:query, fragment:fragment});
+            return uri.makeAddress();
         },
 
-        /*
-        Convertie une chaine de paramètres 'Query' en tableau associatif
-
-        Parametres:
-        [string] querystr : La chaine du query, ex: "voiture=alpha&lieu=paris"
-        [bool]   bdecode  : Si true, le texte des paramètres est décodé (encodage URI)
-        Retourne:
-        [object] Tableau associatif des paramètres
+        /**
+         * @brief Convertie une chaine de paramètres 'Query' en tableau associatif
+         * @param string querystr La chaine de paramètres
+         * @param bool   bDecode  Si true, querystr est décodé avant traitement
+         * @return object Tableau associatif des paramètres
+         * 
+         * @remarks object_to_query utilise wfw.URI.decodeUTF8() pour décoder les caractères
+         * 
+         * @code{.js}
+         * var query = wfw.URI.query_to_object("voiture=alpha&lieu=paris");
+         * query.voiture == "alpha";
+         * query.lieu    == "paris";
+         * @endcode
         */
         query_to_object: function (querystr, bdecode) {
             var query = querystr.split("&");
@@ -208,8 +188,10 @@ YUI.add('wfw-uri', function (Y) {
         /**
          * @brief Convertie un tableau associatif en chaine de paramètres 'Query' sans le séparateur '?'
          * @param object querytab   Tableau associatif des paramètres
-         * @param bool  bencode    Si true, encode les paramètres
+         * @param bool  bencode    Si true, les paramètres sont encodés
          * @return string La chaine de paramètres
+         * 
+         * @remarks object_to_query utilise wfw.URI.encodeUTF8() pour encoder les caractères
         */
         object_to_query: function (querytab, bencode) {
 
@@ -244,16 +226,14 @@ YUI.add('wfw-uri', function (Y) {
             return querystr;
         },
 
-        /*
-        Encode les caractères dans une URI
-
-        Parametres:
-        [string] text : La chaine à encoder
-        Retourne:
-        [string] La chaine encodé au format d'une URI.
-        Remarque:
-        Encode tous les caractères supérieurs à 0x7f et ignore les caractères inferieur à 0x1f (dit, de contrôle)
-        Encode les caractères supperieur à un octet (0xFF) sur plusieurs fragements ex: 0x4520 = "%45%20"
+        /**
+         * @brief Encode les caractères dans une URI
+         * 
+         * @param string text La chaine à encoder
+         * @return string La chaine encodé au format d'une URI.
+         * 
+         * @remarks Encode tous les caractères supérieurs à 0x7f et ignore les caractères inferieur à 0x1f (dit, de contrôle)
+         * @remarks Encode les caractères supperieur à un octet (0xFF) sur plusieurs fragements ex: 0x4520 = "%45%20"
         */
         encode: function (text) {
             var string = "";
@@ -286,15 +266,14 @@ YUI.add('wfw-uri', function (Y) {
 
             return string;
         },
-        /*
-        Décode les caractères d'une URI
-
-        Parametres:
-        [string] text : La chaine à décoder
-        Retourne:
-        [string] La chaine décodé.
-        Remarque:
-        Les caractères ASCII sont encodés avec un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
+        
+        /**
+         * @brief Décode les caractères d'une URI
+         * 
+         * @param string text La chaine à décoder
+         * @return string La chaine décodé.
+         * 
+         * @remarks Les caractères ASCII sont encodés avec un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
         */
         decode: function (text) {
             var string = "";
@@ -326,17 +305,15 @@ YUI.add('wfw-uri', function (Y) {
             return string;
         },
 
-        /*
-        Encode les caractères dans une URI (UTF-8)
-
-        Parametres:
-        [string] text : La chaine à encoder
-        Retourne:
-        [string] La chaine encodé au format d'une URI.
-        Remarque:
-        Les caractères inférieur à 0x1F (de contrôle) sont ignorés
-        Les caractères ASCII sont encodés avec un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
-        Les caractères UTF-8 sont encodés avec un à quatre '%' suivit du nombre hexadécimal sur un octet. ex: "%D0%89"
+        /**
+         * @brief Encode les caractères dans une URI (UTF-8)
+         * 
+         * @param string text La chaine à encoder
+         * @return string La chaine encodé au format d'une URI.
+         * 
+         * @remarks Les caractères inférieur à 0x1F (de contrôle) sont ignorés
+         * @remarks Les caractères ASCII sont encodés avec un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
+         * @remarks Les caractères UTF-8 sont encodés avec un à quatre '%' suivit du nombre hexadécimal sur un octet. ex: "%D0%89"
         */
         encodeUTF8: function (text) {
             var string = "";
@@ -391,22 +368,20 @@ YUI.add('wfw-uri', function (Y) {
 
             return string;
         },
-        /*
-        Décode les caractères d'une URI (UTF-8)
-
-        Parametres:
-        [string] text : La chaine à décoder
-        Retourne:
-        [string] La chaine décodé.
-        Remarque:
-        Les caractères ASCII sont encodés avec un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
-        Les caractères UTF-8 sont encodés avec un à quatre '%' suivit du nombre hexadécimal sur un octet. ex: "%D0%89"
-
-        UTF8 bits encoding :
-        0 [CCCCxxxx|TTxxxxxx|TTxxxxxx|TTxxxxxx] 32bits
-        C  = Forment une suite de 1 d'une longueur égale au nombre d'octets utilisés pour coder le caractère (1000,1100,1110 ou 1111)
-        TT = Les deux premiers bits de poids fort identifie les octets suivants (Egale à 10b )
-        x  = Constitue les bits de la valeur final une fois contracté
+        
+        /**
+         * @brief Décode les caractères d'une URI (UTF-8)
+         * 
+         * @param string text La chaine à décoder
+         * @return string La chaine décodé.
+         * @remarks Les caractères ASCII sont encodés d'un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
+         * @remarks Les caractères UTF-8 sont encodés de un à quatre '%' suivit du nombre hexadécimal sur un octet. ex: "%D0%89"
+         * 
+         * ##UTF8 bits encoding
+         *   0 [CCCCxxxx|TTxxxxxx|TTxxxxxx|TTxxxxxx] 32bits
+         *   C  = Forment une suite de 1 d'une longueur égale au nombre d'octets utilisés pour coder le caractère (1000,1100,1110 ou 1111)
+         *   TT = Les deux premiers bits de poids fort identifie les octets suivants (Egale à 10b )
+         *   x  = Constitue les bits de la valeur final une fois contracté
         */
         decodeUTF8: function (text) {
             var string = "";
@@ -483,10 +458,9 @@ YUI.add('wfw-uri', function (Y) {
             return string;
         },
 
-        /*
-        Obtient l'URI en cours
-        Retourne:
-            [string] URI de la fenetre en cours
+        /**
+         * @brief Obtient l'URI en cours
+         * @return string URI de la fenetre en cours
         */
         getCurURI: function () {
             return Y.Node.one("window").get("location.href");
@@ -497,12 +471,13 @@ YUI.add('wfw-uri', function (Y) {
          * @brief Re-Fabrique une URI
          * @param string uri               URI à transformer. Si null, l'URI en cours est utilisée
          * @param string/object add_fields Champs à insérer 
-         * @param string att               Optionnel, si 0x1 est spécifié les champs existants seront remplacés
+         * @param string att               Optionnel, si 'ReplaceQuery' est spécifié les champs existants seront remplacés
          * @param string anchor            Optionnel, Ancre à insérer
          * @return string Nouvelle URI. null est retourné si l'URI ou un des paramétres est invalide
          * 
          * @remarks Par défaut, les champs existants sont conservés. Utilisez le paramètre 'att' pour les remplacer.
         */
+        ReplaceQuery : 0x1,
         remakeURI: function (uri, add_fields, att, anchor) {
             //
             if (typeof (add_fields) == "number")
@@ -518,7 +493,7 @@ YUI.add('wfw-uri', function (Y) {
                 return null;
 
             //remplace les champs actuels
-            if (att & 0x1) {
+            if (att & this.ReplaceQuery) {
                 if (typeof (add_fields) == "object")
                     uri_obj.query = this.object_to_query(add_fields, true);
                 else if (typeof (add_fields) == "string")
@@ -547,10 +522,9 @@ YUI.add('wfw-uri', function (Y) {
             return this.paste(uri_obj);
         },
 
-        /*
-        Obtient le nom de domaine de l'URI en cours
-        Retourne:
-            [string] Nom de domaine, si introuvable
+        /**
+         * @brief Obtient le domaine de l'URI en cours
+         * @return string Nom de domaine, si introuvable
         */
         getDomainName: function () {
             var uri = this.cut(this.getCurURI());
@@ -559,10 +533,9 @@ YUI.add('wfw-uri', function (Y) {
             return uri.authority;
         },
 
-        /*
-        Obtient l'ancre de l'URI en cours
-        Retourne:
-            [string] L'Ancre, null si introuvable
+        /**
+         * @brief Obtient l'ancre de l'URI en cours
+         * @return string L'Ancre, null si introuvable
         */
         getURIAnchor: function () {
             var uri = this.cut(this.getCurURI());
@@ -571,22 +544,19 @@ YUI.add('wfw-uri', function (Y) {
             return uri.fragment;
         },
 
-        /*
-        Obtient les champs du query pour l'URI en cours
-        Retourne:
-            [object] Tableau associatif des champs, null si introuvable
+        /**
+         * @brief Obtient les paramètres de l'URI en cours
+         * @return object Tableau associatif des champs, null si introuvable
         */
         getURIFields: function () {
             var uri = this.cut(this.getCurURI());
             return ((uri != null && !empty(uri.query)) ? this.query_to_object(uri.query, true) : null);
         },
 
-        /*
-        Obtient un champs du query pour l'URI en cours
-        Parametres:
-            [string] name : Nom du champs à retourner 
-        Retourne:
-            [string] Valeur du champs, null si introuvable
+        /**
+         * @brief Obtient un paramètre de l'URI en cours
+         * @param string name Nom du champs à retourner 
+         * @return string Valeur du champs, null si introuvable
         */
         getURIField: function (name) {
             var fields = this.getURIFields();
@@ -604,26 +574,27 @@ YUI.add('wfw-uri', function (Y) {
 
     Y.extend(wfw.URI.ADDRESS, wfw.OBJECT);
 
-    /* 
+    /**
     * Fabrique le champ adresse 'addr'
     * */
     wfw.URI.ADDRESS.prototype.makeAddress = function () {
-        this.addr = "";
+        var addr = "";
         //protocol
         if (!empty(this.scheme))
-            this.addr += this.scheme + '://';
+            addr += this.scheme + '://';
         //domain
-        this.addr += this.authority;
+        addr += this.authority;
         //chemin
         if (!empty(this.path))
-            this.addr += '/' + this.path;
+            addr += '/' + this.path;
         //parametres
         if (!empty(this.query))
-            this.addr += '?' + this.query;
+            addr += '?' + this.query;
         //ancre
         if (!empty(this.fragment))
-            this.addr += '#' + this.fragment;
-        return this.addr;
+            addr += '#' + this.fragment;
+
+        return addr;
     };
     
 }, '1.0', {
