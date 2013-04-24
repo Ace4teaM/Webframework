@@ -67,6 +67,9 @@ YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path',
         equal( uri.path     , 'Webframework/qunit/yui.html', "Path" );
         equal( uri.query    , 'a=b', "Query" );
         equal( uri.fragment , 'hello', "Fragment" );
+        
+        //Object
+        var uri = wfw.URI.toObject(uri_str);
         equal( uri.makeAddress() , uri_str, "Make Address" );
         
         //Decode
@@ -82,20 +85,20 @@ YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path',
         equal( wfw.URI.encodeUTF8(uri_str), 'Hello%CE%A3World', "Encode UTF8" );
         
         //Make
-        equal( wfw.URI.make('http','aceteam.org','index.html','foo=bar','test'), 'http://aceteam.org/index.html?foo=bar#test', "Make" );
+        equal( wfw.URI.make('http','aceteam.org','index.html',{foo:'bar'},'test'), 'http://aceteam.org/index.html?foo=bar#test', "Make" );
         
         //Query
-        deepEqual( wfw.URI.query_to_object("voiture=alpha&lieu=paris"), {voiture:"alpha",lieu:"paris"}, "Query to object");
-        deepEqual( wfw.URI.query_to_object("voiture=alpha%20romeo", true), {voiture:"alpha romeo"}, "Query to object (encoded)");
+        deepEqual( wfw.URI.queryToObject("voiture=alpha&lieu=paris"), {voiture:"alpha",lieu:"paris"}, "Query to object");
+        deepEqual( wfw.URI.queryToObject("voiture=alpha%20romeo", true), {voiture:"alpha romeo"}, "Query to object (encoded)");
         
         //Query
-        equal( wfw.URI.object_to_query({voiture:"alpha",lieu:"paris"}), "voiture=alpha&lieu=paris", "Object to query");
-        equal( wfw.URI.object_to_query({voiture:"alpha romeo"}, true), "voiture=alpha%20romeo", "Object to query (encoded)");
+        equal( wfw.URI.objectToQuery({voiture:"alpha",lieu:"paris"}), "voiture=alpha&lieu=paris", "Object to query");
+        equal( wfw.URI.objectToQuery({voiture:"alpha romeo"}, true), "voiture=alpha%20romeo", "Object to query (encoded)");
         
         //Remake
         equal( wfw.URI.remakeURI('http://www.aceteam.org?foo=bar',{foo:"foo",bar:"bar"}), "http://www.aceteam.org?foo=foo&bar=bar", "Remake URI");
         equal( wfw.URI.remakeURI('http://www.aceteam.org?foo=bar',{bar:"bar"},wfw.URI.ReplaceQuery,'test'), "http://www.aceteam.org?bar=bar#test", "Remake URI (replace)");
         equal( wfw.URI.remakeURI('http://www.aceteam.org?foo=bar',null,wfw.URI.ReplaceQuery,'test'), "http://www.aceteam.org#test", "Remake URI (anchor)");
-        
+
     });
 });

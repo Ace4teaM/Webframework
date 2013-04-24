@@ -27,9 +27,17 @@ function wfw_yui_config(base_path){
             js: {
                 base: base_path,     
                 modules: {
+                    'wfw-base-math': {
+                        path: '../math.js'
+                    },
+                    'wfw-base-uri': {
+                        path: '../uri.js',
+                        requires: [ 'wfw-base-math' ]
+                    },
+                    //
                     'wfw': {
                         path: 'wfw-base.js',
-                        requires: [ 'base', 'wfw' ]
+                        requires: [ 'base', 'wfw-base-uri' ]
                     },
                     'wfw-event': {
                         path: 'wfw-event.js',
