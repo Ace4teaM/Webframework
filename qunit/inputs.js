@@ -93,3 +93,12 @@ test( "cInputIPv4" , function() {
     equal( cInputIPv4.isValid("192.168.1"), false, "Not Uncomplete" );
     equal( cInputIPv4.isValid("192.168.1.x"), false, "Not Non Number" );
 });
+
+
+/* cInputName */
+test( "cInputName" , function() {
+    equal( cInputName.isValid("setup.exe"), true, "Simple" );
+    equal( cInputName.isValid("doxygen_1.8.3.1-setup.exe"), true, "Complex" );
+    equal( cInputName.isValid("setup$1.exe"), false, "Not Special Char" );
+    equal( cInputName.isValid("setup 1.exe"), false, "Not Spacing Char" );
+});
