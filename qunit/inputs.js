@@ -110,3 +110,12 @@ test( "cInputNumeric" , function() {
     equal( cInputNumeric.isValid("12"), true, "Integer" );
     equal( cInputNumeric.isValid("3.1"), true, "Float" );
 });
+
+/* cInputPassword */
+test( "cInputPassword" , function() {
+    equal( cInputPassword.isValid("azerty"), true, "Minimal" );
+    equal( cInputPassword.isValid("-------------"), true, "Repetitive" );
+    equal( cInputPassword.isValid("@titi-lolo"), true, "Exemple" );
+    equal( cInputPassword.isValid("azAZ09_-@#&+~"), true, "Specials chars" );
+    equal( cInputPassword.isValid("12"), false, "Not To Small" );
+});
