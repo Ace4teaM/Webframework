@@ -1,5 +1,5 @@
 
-YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form',function(Y){
+YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path',function(Y){
     var wfw = Y.namespace("wfw");
 
     /* wfw */
@@ -16,7 +16,7 @@ YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form',function(Y){
     
     
     /* wfw-form */
-    module( "wfw-form" );
+    module( "wfw.Form" );
     test( "Form" , function() {
         //obtient les valeurs
         deepEqual( wfw.Form.get_fields('form'), {foo:'bar', bar:'foo'}, "Get Values" );
@@ -39,5 +39,15 @@ YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form',function(Y){
         ok( elements.fooInput, "Get Elements By Id (real case)" );
         var elements = wfw.Form.get_elements('form',{selectByAtt:'id', forceAttLowerCase:true});
         ok( elements.fooinput, "Get Elements By Id (lower case)" );
+    });
+    
+    /* wfw-form */
+    module( "wfw.Path" );
+    test( "Path" , function() {
+        //nom de fichier
+        equal( wfw.Path.filename('/Webframework/qunit/yui.html'), 'yui', "Get Filename" );
+        equal( wfw.Path.filename('yui.html'), 'yui', "Get Filename without path" );
+        equal( wfw.Path.filename('yui'), 'yui', "Get Filename without extension" );
+        equal( wfw.Path.filename('yui.html',{include_ext:true}), 'yui.html', "Get Filename include extension" );
     });
 });
