@@ -18,7 +18,10 @@ class cInputIPv4 extends cInput
 		return RESULT_OK();
 	}
 	public static function regExp(){
-		return '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}';  
+		return '(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'.'\.'
+                        .'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'.'\.'
+                        .'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'.'\.'
+                        .'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])';
 	}
 	public static function getMaxLength(){
 		return (3*4)+4;
