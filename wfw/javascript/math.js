@@ -219,6 +219,7 @@ function math_int_to_hex_char(i) {
  * @return Equivalent hexadécimal
  * 
  * ## Exemple
+ * 
  * @code{.js}
  * alert( math_int32_to_hex(15) ); // print '000F'
  * @endcode
@@ -239,8 +240,9 @@ function math_int32_to_hex(num) {
  * @return Equivalent hexadécimal
  * 
  * ## Exemple
+ * 
  * @code{.js}
- * alert( math_int32_to_hex(15) ); // print '0F'
+ * alert( math_char_to_hex(15) ); // print '0F'
  * @endcode
 */
 function math_char_to_hex(num) {
