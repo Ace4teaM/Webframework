@@ -21,11 +21,13 @@ test( "cInputInteger" , function() {
 
 /* cInputFloat */
 test( "cInputFloat" , function() {
-    equal( cInputFloat.isValid("2013.0"), true, "Number" );
+    equal( cInputFloat.isValid("2013.0"), true, "Number with point" );
+    equal( cInputFloat.isValid("2013,45"), true, "Number with comma" );
     equal( cInputFloat.isValid("0.0"), true, "Zero" );
     equal( cInputFloat.isValid("-456.0"), true, "Negative" );
     equal( cInputFloat.isValid("456"), true, "Integer" );
     equal( cInputFloat.isValid(""), false, "Not empty" );
+    equal( cInputFloat.isValid("123.456.14"), false, "Not multiple points" );
 });
 
 /* cInputFactor */
@@ -101,4 +103,10 @@ test( "cInputName" , function() {
     equal( cInputName.isValid("doxygen_1.8.3.1-setup.exe"), true, "Complex" );
     equal( cInputName.isValid("setup$1.exe"), false, "Not Special Char" );
     equal( cInputName.isValid("setup 1.exe"), false, "Not Spacing Char" );
+});
+
+/* cInputNumeric */
+test( "cInputNumeric" , function() {
+    equal( cInputNumeric.isValid("12"), true, "Integer" );
+    equal( cInputNumeric.isValid("3.1"), true, "Float" );
 });
