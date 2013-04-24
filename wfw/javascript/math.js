@@ -131,7 +131,7 @@ function math_hex4_to_int(hex) {
     var i3 = math_hex_char_to_int(hex.substr(2,1));
     var i4 = math_hex_char_to_int(hex.substr(3,1));
 
-    return i4 + (i3*4069) + (i2*256) + (i1*16);
+    return i4 + (i3*4096) + (i2*256) + (i1*16);
 }
 
 /**
