@@ -20,17 +20,41 @@
 */
 
 
-var cInputText={
+var cInputURL={
     isValid : function(value){
         // 1. non vide
         if (empty_string(value))
             return RESULT(cResult.Failed, cInput.EmptyText);
         
+        // 2. test le format
+        var regex = '^'+this.regExp()+'$';
+        if ( !(new RegExp(regex)).test(value) )
+            return RESULT(cResult.Failed, cInput.InvalidChar);
+        
         return RESULT_OK();
     }
     ,
     regExp : function(){
-        return '.*';
+        //char list
+        /*var alpha  = '[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ]';
+        var safe   = '[\\$\\-\\_\\@\\.\\&\\+\\-]';
+        var digit  = '[0123456789]';
+        var extra  = '[\\!\\*\\"\\\'\\(\\)\\,]';
+        var hex    = '(?:'+digit+'|[abcdefABCDEF]'+')';
+        var escape = '%'+hex+hex;*/
+        
+        //compositions
+        var scheme   = '[A-Za-z]{1}[A-Za-z0-9+\\.\\-]*';
+        var port     = '[0-9]+';
+        var domain   = '[A-Za-z]{1}[A-Za-z0-9_\\.:\\-]*'; //Registry-based
+        var path     = '[A-Za-z0-9_\\.+%\\-]*';
+        var query    = '[A-Za-z0-9_\\.&=+;%\\-\\(\\)\\:\\/]*';
+        var fragment = '[A-Za-z0-9_+%\\-]*';
+        //var fragment = '(?:'+alpha+'|'+digit+'|'+safe+'|'+extra+'|'+escape+'';
+ 
+        return '((' + scheme + '):/+)?'
+                +'(' + domain + ')?'
+                +'^([/' + path + ']*)([?' + query + ']?)([#' + fragment + ']?)';
     }
     ,
     getMaxLength : function(){
@@ -41,4 +65,4 @@ var cInputText={
         return ""+value;
     }
 }
-cInputtext = cInputText; //global insensitive scope
+cInputurl = cInputURL; //global insensitive scope
