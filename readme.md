@@ -11,6 +11,7 @@
 - Nouveau script d'archivage. Permet d'exporter des archives par nom de tag
 - Model Application/Controleur
 - Fusion automatique des fichiers default.xml
+- Création d'une librairie JavaScript de base indépendante de YUI (permet d'étendre l'utilisation avec d'autres Framework ou non)
 
 ---------------------------------------------------------------------------------------------------------------------------------------
  [1.8] Mise a jour
@@ -18,6 +19,8 @@
 - YUI.wfw.Form.get_elements(): Retourne les noms d'éléments dans leurs casse d'origine (auparavant forcé en minuscule). Utilisez l'option 'forceAttLowerCase:true' pour rétablir l'ancien comportement.
 - YUI.wfw.URI.makeAddress()  : Ne construit plus l'URI dans le membre 'addr', retourne une variable indépendante.
 - YUI.wfw.URI.ADDRESS        : Le membre 'addr' est utilisé pour stocké l'URI originelle (auparavant construite automatiquement par le constructeur)
+- YUI.wfw.URI.ADDRESS        : Le membre 'query' est maintenant de type Object
+- YUI.wfw.URI.cut            : Retourne un objet simple et non une classe ADDRESS (utilisez wfw.URI.toObject() pour créer une classe ADDRESS) 
 
 ---------------------------------------------------------------------------------------------------------------------------------------
  BUG et comportements hasardeux à resoudre
