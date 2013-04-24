@@ -216,13 +216,16 @@ function uri_object_to_query(querytab, encode_func) {
 }
 
 /**
+ * @fn string uri_encode(string text)
+ * @memberof window
+ * 
  * @brief Encode les caractères dans une URI
  * 
- * @param string text La chaine à encoder
- * @return string La chaine encodé au format d'une URI.
+ * @param text La chaine à encoder
+ * @return La chaine encodée au format d'une URI.
  * 
  * @remarks Encode tous les caractères supérieurs à 0x7f et ignore les caractères inferieur à 0x1f (dit, de contrôle)
- * @remarks Encode les caractères supperieur à un octet (0xFF) sur plusieurs fragements ex: 0x4520 = "%45%20"
+ * @remarks Encode les caractères supérieurs à un octet (0xFF) sur plusieurs fragements ex: 0x4520 = "%45%20"
 */
 function uri_encode(text) {
     var string = "";
@@ -257,10 +260,13 @@ function uri_encode(text) {
 }
 
 /**
+ * @fn string uri_decode(string text)
+ * @memberof window
+ * 
  * @brief Décode les caractères d'une URI
  * 
- * @param string text La chaine à décoder
- * @return string La chaine décodé.
+ * @param text La chaine à décoder
+ * @return La chaine décodé.
  * 
  * @remarks Les caractères ASCII sont encodés avec un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
 */
@@ -295,10 +301,13 @@ function uri_decode(text) {
 }
 
 /**
+ * @fn string uri_encodeUTF8(string text)
+ * @memberof window
+ * 
  * @brief Encode les caractères dans une URI (UTF-8)
  * 
- * @param string text La chaine à encoder
- * @return string La chaine encodé au format d'une URI.
+ * @param text La chaine à encoder
+ * @return La chaine encodé au format d'une URI.
  * 
  * @remarks Les caractères inférieur à 0x1F (de contrôle) sont ignorés
  * @remarks Les caractères ASCII sont encodés avec un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
@@ -359,18 +368,27 @@ function uri_encodeUTF8(text) {
 }
 
 /**
+ * @fn string uri_decodeUTF8(string text)
+ * @memberof window
+ * 
  * @brief Décode les caractères d'une URI (UTF-8)
  * 
- * @param string text La chaine à décoder
- * @return string La chaine décodé.
+ * @param text La chaine à décoder
+ * @return La chaine décodé.
  * @remarks Les caractères ASCII sont encodés d'un '%' suivit du nombre hexadécimal sur un octet. ex: "%E9"
  * @remarks Les caractères UTF-8 sont encodés de un à quatre '%' suivit du nombre hexadécimal sur un octet. ex: "%D0%89"
  * 
- * ##UTF8 bits encoding
- *   0 [CCCCxxxx|TTxxxxxx|TTxxxxxx|TTxxxxxx] 32bits
- *   C  = Forment une suite de 1 d'une longueur égale au nombre d'octets utilisés pour coder le caractère (1000,1100,1110 ou 1111)
- *   TT = Les deux premiers bits de poids fort identifie les octets suivants (Egale à 10b )
- *   x  = Constitue les bits de la valeur final une fois contracté
+ * ## Encodage des caractères
+ * 
+ * UTF8 bits encoding:
+ * 
+ * | bits | BYTE 0 | BYTE 1 | BYTE 2 | BYTE 3 |  bits  |
+ * |------|--------|--------|--------|--------|--------|
+ * |   0  |CCCCxxxx|TTxxxxxx|TTxxxxxx|TTxxxxxx|   32   |
+ * 
+ * - C  = Forment une suite de 1 d'une longueur égale au nombre d'octets utilisés pour coder le caractère (1000,1100,1110 ou 1111)
+ * - TT = Les deux premiers bits de poids fort identifie les octets suivants (Egale à 10b )
+ * - x  = Constitue les bits de la valeur final une fois concaténé
 */
 function uri_decodeUTF8(text) {
     var string = "";

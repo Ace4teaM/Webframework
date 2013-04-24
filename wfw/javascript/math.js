@@ -24,7 +24,15 @@
  * Fonctions utiles aux mathematiques
  */
 
-//converti un caractere hexadecimale (0-F) en entier numerique
+/**
+ * @fn int math_hex_char_to_int(string hc)
+ * @memberof window
+ * 
+ * @brief Converti un caractère hexadécimal (0-F) en entier numerique
+ * 
+ * @param hc Le caractère hexadécimal
+ * @return Equivalent décimale
+*/
 function math_hex_char_to_int(hc) {
     switch(hc){
         case '0':
@@ -75,7 +83,15 @@ function math_hex_char_to_int(hc) {
     return null;
 }
 
-//converti un nombre hexadecimale (2 caracteres) en entier
+/**
+ * @fn int math_hex2_to_int(string hex)
+ * @memberof window
+ * 
+ * @brief Converti un nombre hexadecimale (2 caractères) en entier
+ * 
+ * @param hex Les caractères hexadécimal
+ * @return Equivalent décimale
+*/
 function math_hex2_to_int(hex) {
     var i1 = math_hex_char_to_int(hex.substr(0,1));
     var i2 = math_hex_char_to_int(hex.substr(1,1));
@@ -83,7 +99,15 @@ function math_hex2_to_int(hex) {
     return i2 + (i1*16);
 }
 
-//converti un nombre hexadecimale (3 caracteres) en entier
+/**
+ * @fn int math_hex3_to_int(string hex)
+ * @memberof window
+ * 
+ * @brief Converti un nombre hexadecimale (3 caractères) en entier
+ * 
+ * @param hex Les caractères hexadécimal
+ * @return Equivalent décimale
+*/
 function math_hex3_to_int(hex) {
     var i1 = math_hex_char_to_int(hex.substr(0,1));
     var i2 = math_hex_char_to_int(hex.substr(1,1));
@@ -92,7 +116,15 @@ function math_hex3_to_int(hex) {
     return i3 + (i2*256) + (i1*16);
 }
 
-//converti un nombre hexadecimale (4 caracteres) en entier
+/**
+ * @fn int math_hex4_to_int(string hex)
+ * @memberof window
+ * 
+ * @brief Converti un nombre hexadecimale (4 caractères) en entier
+ * 
+ * @param hex Les caractères hexadécimal
+ * @return Equivalent décimale
+*/
 function math_hex4_to_int(hex) {
     var i1 = math_hex_char_to_int(hex.substr(0,1));
     var i2 = math_hex_char_to_int(hex.substr(1,1));
@@ -102,7 +134,15 @@ function math_hex4_to_int(hex) {
     return i4 + (i3*4069) + (i2*256) + (i1*16);
 }
 
-//converti un nombre hexadecimale (texte) en entier numerique
+/**
+ * @fn int math_hex_to_int(string hex)
+ * @memberof window
+ * 
+ * @brief Converti un nombre hexadecimale (texte) en entier numerique
+ * 
+ * @param hex Les caractères hexadécimal
+ * @return Equivalent décimale
+*/
 function math_hex_to_int(hex) {
     var hex_length = hex.length;
     var integer = 0;
@@ -120,7 +160,15 @@ function math_hex_to_int(hex) {
     return integer;
 }
 
-//converti un entier numerique en caractere hexadecimale (0-15)
+/**
+ * @fn string math_int_to_hex_char(int i)
+ * @memberof window
+ * 
+ * @brief Converti un entier numerique en caractère hexadecimale
+ * 
+ * @param i Entier numérique entre 0 et 15
+ * @return Equivalent hexadécimal
+*/
 function math_int_to_hex_char(i) {
     switch(parseInt(i)){
         case 0:
@@ -159,10 +207,42 @@ function math_int_to_hex_char(i) {
     return null;
 }
 
+/**
+ * @fn string math_int32_to_hex(int num)
+ * @memberof window
+ * 
+ * @brief Converti un entier numérique en caractères hexadecimales
+ * @remarks La valeur de sortie est aligné sur 32bits avec des zeros à gauche
+ * @remarks La valeur est retournée sans préfix (e: '0x')
+ * 
+ * @param i Entier numérique
+ * @return Equivalent hexadécimal
+ * 
+ * ## Exemple
+ * @code{.js}
+ * alert( math_int32_to_hex(15) ); // print '000F'
+ * @endcode
+*/
 function math_int32_to_hex(num) {
     return zerolead(num.toString(16), 4).toUpperCase();
 }
 
+/**
+ * @fn string math_char_to_hex(int num)
+ * @memberof window
+ * 
+ * @brief Converti un entier numerique en caractères hexadecimales
+ * @remarks La valeur de sortie est aligné sur 8bits avec des zeros à gauche
+ * @remarks La valeur est retournée sans préfix (e: '0x')
+ * 
+ * @param i Entier numérique
+ * @return Equivalent hexadécimal
+ * 
+ * ## Exemple
+ * @code{.js}
+ * alert( math_int32_to_hex(15) ); // print '0F'
+ * @endcode
+*/
 function math_char_to_hex(num) {
     return zerolead(num.toString(16), 2).toUpperCase();
 }
