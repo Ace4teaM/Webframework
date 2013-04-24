@@ -20,10 +20,15 @@
 */
 
 /**
+ * @file
+ * Fonctions utiles pour manipuler les addresses Internet (URI)
+ */
+
+/**
  * @page wfw-uri YUI-3 [URI Module]
  * 
  * Ce module permet de gérer facilement les adresses relative au web
- * Les méthodes sont disponible via la classe @link wfw.URI
+ * Les méthodes sont disponible via la classe @link URI
  */
 YUI.add('wfw-uri', function (Y) {
     var wfw = Y.namespace('wfw');
@@ -42,25 +47,60 @@ YUI.add('wfw-uri', function (Y) {
          * 
          * @brief Adresse (URI)
          * 
+         * ## Constructeur
          * @param att Attributs de l'objet
          * 
-         * ## Membres
-         * @param string addr      Adresse complète de l'URI
-         * @param string scheme    Schéma sans "://". Si aucun, une chaine vide
-         * @param string authority Nom de domaine ou adresse IP
-         * @param string path      Chemin d'accès (sans "/" en début). Si aucun, une chaine vide
-         * @param string query     Paramètres (sans "?" au début). Si aucun, une chaine vide
-         * @param string fragment  Ancre (sans "#" au début). Si aucun, une chaine vide
+         * ## Exemple
+         * 
+         * @code{.js}
+         * var obj = new wfw.URI.ADDRESS({
+         *  scheme    : 'http',
+         *  authority : 'www.aceteam.org',
+         *  path      : 'index.html',
+         *  query     : { foo:'bar' },
+         *  fragment  : 'anchor_name'
+         * });
+         * @endcode
         */
         ADDRESS : function(att){
             //OBJECT
             this.ns        = "wfw_uri_address";
-            //
+
+            /** 
+             * @var string addr
+             * @memberof ADDRESS
+             * @brief Adresse complète de l'URI
+             * */
             this.addr      = "";
+            /** 
+             * @var string scheme
+             * @memberof ADDRESS
+             * @brief Protocole (ex: 'http'). Si aucun, une chaine vide.
+             * */
             this.scheme    = "";
+            /** 
+             * @var string authority
+             * @memberof ADDRESS
+             * @brief Nom de domaine ou adresse IP
+             * */
             this.authority = "";
+            /** 
+             * @var string path
+             * @memberof ADDRESS
+             * @brief Chemin d'accès (sans "/" au début). Si aucun, une chaine vide
+             * */
             this.path      = "";
+            /** 
+             * @var object query
+             * @memberof ADDRESS
+             * @brief Tableau associatif des paramètres. Si aucun, un objet vide
+             * */
             this.query     = {};
+            /** 
+             * @var string fragment
+             * @memberof ADDRESS
+             * @brief Ancre (sans "#" au début). Si aucun, une chaine vide
+             * */
             this.fragment  = "";
 
             /*
@@ -141,6 +181,9 @@ YUI.add('wfw-uri', function (Y) {
         },
         
         /**
+         * @fn object query_to_object(string queryStr, bool bDecode)
+         * @memberof URI
+         * 
          * @deprecated Utilisez la méthode queryToObject
          */
         query_to_object: function (querystr, bdecode) {
@@ -148,6 +191,9 @@ YUI.add('wfw-uri', function (Y) {
         },
 
         /**
+         * @fn string objectToQuery(object queryTab, bool bEncode)
+         * @memberof URI
+         * 
          * @brief Convertie un tableau associatif en chaine de paramètres 'Query' sans le séparateur '?'
          * @param object querytab  Tableau associatif des paramètres
          * @param bool  bencode    Si true, les paramètres sont encodés
@@ -160,6 +206,9 @@ YUI.add('wfw-uri', function (Y) {
         },
         
         /**
+         * @fn string object_to_query(object queryTab, bool bEncode)
+         * @memberof URI
+         * 
          * @deprecated Utilisez la méthode objectToQuery
          */
         object_to_query: function (querytab, bencode) {
@@ -183,6 +232,9 @@ YUI.add('wfw-uri', function (Y) {
         encode: uri_encode,
         
         /**
+         * @fn string getCurURI()
+         * @memberof URI
+         * 
          * @brief Obtient l'URI en cours
          * @return string URI de la fenetre en cours
         */
@@ -191,6 +243,9 @@ YUI.add('wfw-uri', function (Y) {
         },
 
         /**
+         * @fn ADDRESS toObject(string uri, bool bDecode)
+         * @memberof URI
+         * 
          * @brief Convertie une URI en objet
          * @return Objet 
         */
@@ -202,12 +257,15 @@ YUI.add('wfw-uri', function (Y) {
         },
 
         /**
+         * @fn string remakeURI(string uri, string/object add_fields, int att, string anchor)
+         * @memberof URI
+         * 
          * @brief Re-Fabrique une URI
-         * @param string uri               URI à transformer. Si null, l'URI en cours est utilisée
-         * @param string/object add_fields Champs à insérer 
-         * @param string att               Optionnel, si 'ReplaceQuery' est spécifié les champs existants seront remplacés
-         * @param string anchor            Optionnel, Ancre à insérer
-         * @return string Nouvelle URI. null est retourné si l'URI ou un des paramétres est invalide
+         * @param uri               URI à transformer. Si null, l'URI en cours est utilisée
+         * @param add_fields Champs à insérer 
+         * @param att               Optionnel, si 'ReplaceQuery' est spécifié les champs existants seront remplacés
+         * @param anchor            Optionnel, Ancre à insérer
+         * @return Nouvelle URI. null est retourné si l'URI ou un des paramétres est invalide
          * 
          * @remarks Par défaut, les champs existants sont conservés. Utilisez le paramètre 'att' pour les remplacer.
         */
@@ -292,8 +350,11 @@ YUI.add('wfw-uri', function (Y) {
         },
 
         /**
+         * @fn string getDomainName()
+         * @memberof URI
+         * 
          * @brief Obtient le domaine de l'URI en cours
-         * @return string Nom de domaine, si introuvable
+         * @return Nom de domaine, null si introuvable
         */
         getDomainName: function () {
             var uri = this.cut(this.getCurURI());
@@ -303,8 +364,11 @@ YUI.add('wfw-uri', function (Y) {
         },
 
         /**
+         * @fn string getURIAnchor()
+         * @memberof URI
+         * 
          * @brief Obtient l'ancre de l'URI en cours
-         * @return string L'Ancre, null si introuvable
+         * @return L'Ancre, null si introuvable
         */
         getURIAnchor: function () {
             var uri = this.cut(this.getCurURI());
@@ -314,8 +378,11 @@ YUI.add('wfw-uri', function (Y) {
         },
 
         /**
+         * @fn object getURIFields()
+         * @memberof URI
+         * 
          * @brief Obtient les paramètres de l'URI en cours
-         * @return object Tableau associatif des champs, null si introuvable
+         * @return Tableau associatif des champs, null si introuvable
         */
         getURIFields: function () {
             var uri = this.cut(this.getCurURI());
@@ -323,9 +390,12 @@ YUI.add('wfw-uri', function (Y) {
         },
 
         /**
+         * @fn string getURIField(string name)
+         * @memberof URI
+         * 
          * @brief Obtient un paramètre de l'URI en cours
-         * @param string name Nom du champs à retourner 
-         * @return string Valeur du champs, null si introuvable
+         * @param name Nom du champs à retourner 
+         * @return Valeur du champs, null si introuvable
         */
         getURIField: function (name) {
             var fields = this.getURIFields();
@@ -378,7 +448,7 @@ YUI.add('wfw-uri', function (Y) {
     * @brief Définit les paramétres de l'uri
     * @param query    Chaine des paramètres
     * @param bDecode  Si true, \c query est décodé avant traitement
-    * @return Chaine erepresentant l'adresse
+    * @return Chaine représentant l'adresse
     * */
     wfw.URI.ADDRESS.prototype.setQueryString = function (query,bDecode) {
          this.query = wfw.URI.queryToObject(query, bDecode);
