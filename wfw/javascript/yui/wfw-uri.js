@@ -19,25 +19,32 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-
+/**
+ * @page wfw-uri YUI-3 [URI Module]
+ * 
+ * Ce module permet de gérer facilement les adresses relative au web
+ * Les méthodes sont disponible via la classe @link wfw.URI
+ */
 YUI.add('wfw-uri', function (Y) {
     var wfw = Y.namespace('wfw');
     
     /**
      * @class URI
      * @memberof wfw
+     * 
      * @brief Fonctions relatives aux adresses web (URI)
      * */
     wfw.URI = {
         /**
-         * @brief Adresse (URI)
          * @class ADDRESS
          * @memberof URI
          * @implements OBJECT
          * 
+         * @brief Adresse (URI)
+         * 
          * @param att Attributs de l'objet
          * 
-         * #Membres
+         * ## Membres
          * @param string addr      Adresse complète de l'URI
          * @param string scheme    Schéma sans "://". Si aucun, une chaine vide
          * @param string authority Nom de domaine ou adresse IP
@@ -63,14 +70,16 @@ YUI.add('wfw-uri', function (Y) {
         },
 
         /**
+         * @fn ADDRESS cut(string uri)
+         * 
          * @brief Découpe une adresse web (URI) en sections
          * @remarks Le format est basé sur le standard RFC-2396 (http://tools.ietf.org/html/rfc2396#section-3.1)
          * 
-         * @param string uri : l'URI
-         * @return wfw.uri.ADDRESS Objet de l'adresse. null si l'URI est invalide
+         * @param uri Adresse à analyser
+         * @return Objet de l'adresse. null si l'URI est invalide
         */
         cut: function (uri) {
-            //@fixme: !! FONCTION A METTRE A JOUR RFC-3986 !!
+            //@todo: !! FONCTION A METTRE A JOUR RFC-3986 !!
             //caracteres authorisés par le RFC-3986 (http://tools.ietf.org/html/rfc3986)
             var c_sub_delims = "[!$&'()*+,;=]";
             var c_pct_encoded = "%[0-9]{2}";
@@ -575,7 +584,11 @@ YUI.add('wfw-uri', function (Y) {
     Y.extend(wfw.URI.ADDRESS, wfw.OBJECT);
 
     /**
-    * Fabrique le champ adresse 'addr'
+    * @fn string makeAddress()
+    * @memberof ADDRESS
+    * 
+    * @brief Fabrique l'adresse compléte de l'URI
+    * @return Chaine erepresentant l'adresse
     * */
     wfw.URI.ADDRESS.prototype.makeAddress = function () {
         var addr = "";
@@ -596,7 +609,6 @@ YUI.add('wfw-uri', function (Y) {
 
         return addr;
     };
-    
 }, '1.0', {
     requires:['base','wfw','wfw-math']
 });

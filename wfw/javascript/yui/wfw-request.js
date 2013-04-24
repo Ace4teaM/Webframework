@@ -52,17 +52,20 @@ YUI.add('wfw-request', function (Y) {
          * @memberof Request
          * @implements OBJECT
          * 
-         * @param name              [string]   Identificateur de la requête
-         * @param url               [string]   URL cible de la requête
-         * @param args              [object]   Tableau associatif des arguments, contient des champs de types 'string' et/ou 'wfw.HTTP_REQUEST_PART' (voir exemples)
-         * @param response_header   [string]   Reçoit les en-têtes de la réponse HTTP
-         * @param response          [string]   Reçoit la réponse (texte)
-         * @param response_obj      [string]   Reçoit la réponse (objet). null si indisponible
-         * @param callback          [function]   Fonction de rappel (voir exemples)
-         * @param user              [mixed]   Données utilisateur passé à la fonction de rappel \p callback
-         * @param status            [int/string]   Reçoit le statut de la requête ("wait", "exec", ou [HTML Status Code])
-         * @param remove_after_exec [bool]   Si true, supprime la requête après l'exécution
-         * @param async             [bool]   Si true, la requête est exécuté de façon ASynchrone, sinon synchrone
+         * @param att Attributs de l'objet
+         * 
+         * ## Membres
+         * @param string     name              Identificateur de la requête
+         * @param string     url               URL cible de la requête
+         * @param object     args              Tableau associatif des arguments, contient des champs de types 'string' et/ou 'wfw.HTTP_REQUEST_PART' (voir exemples)
+         * @param string     response_header   Reçoit les en-têtes de la réponse HTTP
+         * @param string     response          Reçoit la réponse (texte)
+         * @param string     response_obj      Reçoit la réponse (objet). null si indisponible
+         * @param function   callback          Fonction de rappel (voir exemples)
+         * @param mixed      user              Données utilisateur passé à la fonction de rappel \p callback
+         * @param int/string status            Reçoit le statut de la requête ("wait", "exec", ou [HTML Status Code])
+         * @param bool       remove_after_exec Si true, supprime la requête après l'exécution
+         * @param bool       async             Si true, la requête est exécuté de façon ASynchrone, sinon synchrone
          * 
          * @see XArg.onCheckRequestResult
          * @see Xml.onCheckRequestResult

@@ -56,11 +56,13 @@ YUI.add('wfw-xml', function (Y) {
         },
         
         /**
-         * @fn object nodeToArray(xml_element)
+         * @fn object nodeToArray(Node xml_element)
          * @memberof Xml
+         * 
          * @brief Convertie les enfants d'un élément XML en tableau associatif (non-récursif)
-         * @param xml_element [Node] L'Élément parent à scanner
-         * @return object Tableau associatif correspondant à l'élément XML
+         * 
+         * @param xml_element L'Élément parent à scanner
+         * @return Tableau associatif correspondant à l'élément XML
         */
         nodeToArray : function(xml_element)
         {
@@ -73,12 +75,14 @@ YUI.add('wfw-xml', function (Y) {
         },
     
         /**
-         * @fn object nodeToArrayRecursive(xml_element,ar)
+         * @fn object nodeToArrayRecursive(Node xml_element, object ar)
          * @memberof Xml
+         * 
          * @brief Convertie les enfants d'un élément XML en tableau associatif récursif
-         * @param xml_element [Node] L'Élément parent à scanner
-         * @param object ar Optionel, tableau associatif à initialiser
-         * @return object Tableau associatif correspondant à l'élément XML
+         * 
+         * @param xml_element L'Élément parent à scanner
+         * @param ar          Optionel, tableau associatif à initialiser
+         * @return Tableau associatif correspondant à l'élément XML
         */
         nodeToArrayRecursive : function(xml_element,ar)
         {
@@ -99,10 +103,11 @@ YUI.add('wfw-xml', function (Y) {
             return ar;
         },
         /**
-         * @fn void onCheckRequestResult(obj)
+         * @fn void onCheckRequestResult(object obj)
          * @memberof Xml
+         * 
          * @brief Traite le résultat d'une requête XML via wfw.Request
-         * @param object obj L'Objet wfw.Request.REQUEST
+         * @param obj L'Objet wfw.Request.REQUEST
          * @remarks Cette fonction est un callback, elle doit être utilisée en paramètre de l'objet wfw.Request.REQUEST
          * 
          * @code{.js}
@@ -179,11 +184,13 @@ YUI.add('wfw-xml', function (Y) {
     *-----------------------------------------------------------------------------------------------------------------------*/
 
     /**
-     * @fn object Initialise(doc)
+     * @fn bool Initialise(string/object doc)
      * @memberof DEFAULT_FILE
+     * 
      * @brief Initialise le document
-     * @param string/object doc Document de base
-     * @return bool Résultat de la procédure
+     * 
+     * @param doc Instance ou chemin d'accès au document XML
+     * @return Résultat de la procédure
     */
     wfw.Xml.DEFAULT_FILE.prototype.Initialise = function(doc)
     {
@@ -215,13 +222,13 @@ YUI.add('wfw-xml', function (Y) {
     };
 
     /**
-     * @deprecated utiliser getConfigNode
-     * 
-     * @fn XMLElement getModuleConfigNode(id)
+     * @fn XMLElement getModuleConfigNode(string id)
      * @memberof DEFAULT_FILE
+     * @deprecated Utilisez getConfigNode
      * 
      * @brief Obtient un noeud de l'index des modules
-     * @param string id Identifiant du module
+     * 
+     * @param id Identifiant du module
      * @return Noeud correspondant au module
      * @retval Y.Node Noeud de l'élément trouvé
      * @retval null L'Elément est introuvable
@@ -232,12 +239,13 @@ YUI.add('wfw-xml', function (Y) {
     };
 
     /**
-     * @fn XMLElement getConfigNode(type,id)
+     * @fn XMLElement getConfigNode(string type, string id)
      * @memberof DEFAULT_FILE
      * 
      * @brief Obtient un noeud de la configuration
-     * @param string type Nom de balise de l'élément enfant
-     * @param string id Identifiant du module. Si null, retourne le premier noeud est utilisé
+     * 
+     * @param type Nom de balise de l'élément enfant
+     * @param id Identifiant du module. Si null, retourne le premier noeud est utilisé
      * @return Noeud correspondant au module
      * @retval Y.Node Noeud de l'élément trouvé
      * @retval null L'Elément est introuvable
@@ -388,23 +396,30 @@ YUI.add('wfw-xml', function (Y) {
         wfw.puts("wfw.Xml.DEFAULT_FILE: "+title+", "+msg);
     };
 
-    /*
-      @fixme Fonction à implémenté
-      Obtient le type associé à une définition de champs
-      @param string id Identificateur du champs
-      @param string lang Langage utilisé. 'fr' Par défaut
-      @return type trouvé. Si vide ou introuvable 'string' est retourné
+    /**
+     * @fn string getFiledType(string id)
+     * @memberof DEFAULT_FILE
+     * @todo Fonction à implémenté
+     * 
+     * @brief Obtient le type associé à une définition de champs
+     * 
+     * @param id   Identificateur du champs
+     * @return Type trouvé. Si vide ou introuvable 'string' est retourné
      */
     wfw.Xml.DEFAULT_FILE.prototype.getFiledType = function(id)
     {
         return 'string';
     };
     
-    /*
-      Obtient le texte associé à une définition de champs
-      @param string id Identificateur du champs
-      @param string lang Langage utilisé. 'fr' Par défaut
-      @return Texte trouvé. Si vide ou introuvable l'identifiant du champs est retourné
+    /**
+     * @fn string getFiledText(string id,string lang)
+     * @memberof DEFAULT_FILE
+     * 
+     * @brief Obtient le texte associé à une définition de champs
+     * 
+     * @param id Identificateur du champs
+     * @param lang Langage utilisé. 'fr' Par défaut
+     * @return Texte trouvé. Si vide ou introuvable l'identifiant du champs est retourné
      */
     wfw.Xml.DEFAULT_FILE.prototype.getFiledText = function(id, lang)
     {

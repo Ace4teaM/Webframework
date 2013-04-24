@@ -148,7 +148,7 @@ YUI.add('wfw-xarg', function (Y) {
             */
            
            /**
-            * @fixme Rename onCheckRequestResult_XARG by onCheckRequestResult 
+            * @todo Rename onCheckRequestResult_XARG by onCheckRequestResult 
             */
         onCheckRequestResult : function (obj) { return wfw.XArg.onCheckRequestResult_XARG(obj); },
         onCheckRequestResult_XARG : function (obj) {
