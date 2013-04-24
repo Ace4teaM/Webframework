@@ -1,4 +1,6 @@
 
+module( "Inputs" );
+    
 /* cInputInteger */
 test( "cInputBool" , function() {
     equal( cInputBool.isValid("1"), true, "1" );
@@ -145,5 +147,4 @@ test( "cInputURL" , function() {
     equal( cInputURL.isValid("http://www.google.fr?a=b&b=c#titi"), true, "Simple" );
     equal( cInputURL.isValid("http://www.google.fr#titi"), true, "Simple" );
     //equal( cInputURL.isValid("https://www.google.fr/webhp?source=searchapp#hl=fr&gsrn=11&gsri=psy-ab&tok=DJ3PqQ3S3DzU4t0230ADEQ&cp=4&gsid=e&xhr=t&q=actualit%C3%A9&esnrs=true&pf=p&output=search&sclient=psy-ab&oq=actu&gsl=&pbx=1&bav=on.2,or.rcp.rqf.&bvm=bv.45580626,d.d2k&fp=35b5c03ba0c6d3fa&biw=1680&bih=989"), true, "Complex" );
-    
 });
