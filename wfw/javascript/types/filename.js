@@ -20,21 +20,26 @@
 */
 
 
-var cInputIdentifier={
+var cInputUNIXFileName={
     isValid : function(value){
+        //
+        //Valide la part local:
+        //
+        // 1. non vide
         if (empty_string(value))
             return RESULT(cResult.Failed, cInput.EmptyText);
+        // 2. carateres invalides
+        if(value.match(/[\/\\:*?"<>|]/))
+            return RESULT(cResult.Failed,cInput.InvalidChar);
+        // 3. pas de point '.' ni au debut, ni a la fin, ni de double point
+        if((value.substr(0,1)=='.') || (value.substr(-1,1)=='.') || (value.indexOf('..') != -1))
+            return RESULT(cResult.Failed,cInput.InvalidChar);
 
-        //test le format
-        var regex = '^'+this.regExp()+'$';
-        if ( !(new RegExp(regex)).test(value) )
-            return RESULT(cResult.Failed, cInput.InvalidChar);
-        
         return RESULT_OK();
     }
     ,
     regExp : function(){
-        return '[a-zA-Z_]{1}[a-zA-Z0-9_]*';
+        return null;
     }
     ,
     getMaxLength : function(){
@@ -47,7 +52,46 @@ var cInputIdentifier={
 
     ,
     toObject : function(value){
-        return parseFloat(value);
+        return value;
     }
 }
-cInputidentifier = cInputIdentifier; //global insensitive scope
+cInputunixfilename = cInputUNIXFileName; //global insensitive scope
+
+
+
+var cInputWindowsFileName={
+    isValid : function(value){
+        //
+        //Valide la part local:
+        //
+        // 1. non vide
+        if (empty_string(value))
+            return RESULT(cResult.Failed, cInput.EmptyText);
+        // 2. carateres invalides
+        if(value.match(/[\/\\:*?"<>|]/))
+            return RESULT(cResult.Failed,cInput.InvalidChar);
+        // 3. pas de point '.' ni au debut, ni a la fin, ni de double point
+        if((value.substr(0,1)=='.') || (value.substr(-1,1)=='.') || (value.indexOf('..') != -1))
+            return RESULT(cResult.Failed,cInput.InvalidChar);
+
+        return RESULT_OK();
+    }
+    ,
+    regExp : function(){
+        return null;
+    }
+    ,
+    getMaxLength : function(){
+        return 128;
+    }
+    ,
+    getMinLength : function(){
+        return 1;
+    }
+
+    ,
+    toObject : function(value){
+        return value;
+    }
+}
+cInputwindowsfilename = cInputWindowsFileName; //global insensitive scope

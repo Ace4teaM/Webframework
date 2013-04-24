@@ -62,3 +62,20 @@ test( "cInputMail" , function() {
     equal( cInputMail.isValid("@foo"), false, "Not empty name" );
     equal( cInputMail.isValid("bar..foo@foo"), false, "Not double point" );
 });
+
+/* cInputUNIXFileName */
+test( "cInputUNIXFileName" , function() {
+    equal( cInputUNIXFileName.isValid("setup.exe"), true, "Simple" );
+    equal( cInputUNIXFileName.isValid("doxygen-1.8.3.1-setup.exe"), true, "Complex" );
+    equal( cInputUNIXFileName.isValid("../setup.exe"), false, "Not return path" );
+    equal( cInputUNIXFileName.isValid("base/setup.exe"), false, "Not path" );
+});
+
+
+/* cInputWindowsFileName */
+test( "cInputWindowsFileName" , function() {
+    equal( cInputWindowsFileName.isValid("setup.exe"), true, "Simple" );
+    equal( cInputWindowsFileName.isValid("doxygen-1.8.3.1-setup.exe"), true, "Complex" );
+    equal( cInputWindowsFileName.isValid("..\\setup.exe"), false, "Not return path" );
+    equal( cInputWindowsFileName.isValid("base\\setup.exe"), false, "Not path" );
+});
