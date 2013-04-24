@@ -1,5 +1,5 @@
 /*
-    (C)2012 AceTeaM, WebFrameWork(R). All rights reserved.
+    (C)2012,2013 AceTeaM, WebFrameWork(R). All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
     Warning this script is protected by copyright, if you want to use this code you must ask permission:
     Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
@@ -27,21 +27,29 @@ YUI.add('wfw-path', function (Y) {
     wfw.Path = {
 
         /*
-            Retourne le nom de fichier d'un chemin
-            Paramètres:
-                [string] path : Chemin d'accès
+            @brief Retourne un nom de fichier sans l'extension
+            @param string path Chemin d'accès
+            @return string Nom du fichier
+            @retval null Le chemin ne comporte pas de nom de fichier
         */
-        filename : function(path)
+        filename : function(path,opt)
         {
+            opt = object_merge({
+                include_ext:false
+            },opt);
+            
             var name = '[^\\//?*]*';
-            var exp = new RegExp('^([/]?)('+name+'/)*('+name+')$','g');
-            rslt = exp.exec(path);
+            var exp = new RegExp('^(?:[/]?)(?:'+name+'/)*('+name+')$','g');
+            var rslt = exp.exec(path);
             if(rslt != null){
-                //            objAlertMembers(rslt);
-                var point_pos = rslt[3].lastIndexOf('.');
-                if(!point_pos)
-                    return "";
-                return rslt[3].substring(0,point_pos);
+                var filename = rslt[1];
+                //pas d'extension ?
+                if(!opt.include_ext){
+                    var point_pos = filename.lastIndexOf('.');
+                    if(point_pos != -1)
+                        filename=filename.substring(0,point_pos);
+                }
+                return filename;
             }
             return null;
         }
