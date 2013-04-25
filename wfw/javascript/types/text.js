@@ -20,7 +20,7 @@
 */
 
 
-var cInputText={
+var cInputText = {
     isValid : function(value){
         // 1. non vide
         if (empty_string(value))
@@ -40,5 +40,9 @@ var cInputText={
     toObject : function(value){
         return ""+value;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputtext = cInputText; //global insensitive scope

@@ -52,5 +52,9 @@ var cInputIPv4={
     toObject : function(value){
         return value;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputipv4 = cInputIPv4; //global insensitive scope

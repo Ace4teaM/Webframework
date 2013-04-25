@@ -49,5 +49,9 @@ var cInputIdentifier={
     toObject : function(value){
         return parseFloat(value);
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputidentifier = cInputIdentifier; //global insensitive scope

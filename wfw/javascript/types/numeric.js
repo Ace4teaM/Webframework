@@ -51,5 +51,9 @@ var cInputNumeric={
             return cInputFloat.toObject(value);
         return cInputInteger.toObject(value);
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputnumeric = cInputNumeric; //global insensitive scope

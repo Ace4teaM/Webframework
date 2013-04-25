@@ -58,5 +58,9 @@ var cInputDate={
         var date = new Date(value);
         return date;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputdate = cInputDate; //global insensitive scope

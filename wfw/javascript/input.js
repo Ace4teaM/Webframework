@@ -25,5 +25,29 @@ var cInput={
     InvalidRange   : "INVALID_RANGE",
     Oversized      : "OVERSIZED",
     Undersized     : "UNDERSIZED",
-    TooSmallString : "TOO_SMALL_STRING"
+    TooSmallString : "TOO_SMALL_STRING",
+    
+    isValid : function(value){
+        return RESULT_OK();
+    }
+    ,
+    regExp : function(){
+        return '.*';
+    }
+    ,
+    getMaxLength : function(){
+        return -1;
+    }
+    ,
+    toObject : function(value){
+        return value;
+    }
+    ,
+    toString : function(value){
+        return ""+value;
+    }
+    ,
+    toElement : function(name,value){
+        return null;
+    }
 };

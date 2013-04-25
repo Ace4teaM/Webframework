@@ -19,7 +19,6 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-
 var cInputBool={
 
     isValid : function(value){
@@ -70,5 +69,9 @@ var cInputBool={
     toString : function(value){
         return (value ? "true" : "false");
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputbool = cInputBool; //global insensitive scope

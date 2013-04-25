@@ -78,5 +78,9 @@ var cInputInteger={
     toString : function(value){
         return ""+value;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputinteger = cInputInteger; //global insensitive scope

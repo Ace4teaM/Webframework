@@ -49,5 +49,9 @@ var cInputFactor={
     toObject : function(value){
         return parseFloat(value);
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputfactor = cInputFactor; //global insensitive scope

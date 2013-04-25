@@ -49,5 +49,9 @@ var cInputName={
     toObject : function(value){
         return value;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputname = cInputName; //global insensitive scope

@@ -54,7 +54,11 @@ var cInputUNIXFileName={
     toObject : function(value){
         return value;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputunixfilename = cInputUNIXFileName; //global insensitive scope
 
 
@@ -93,5 +97,9 @@ var cInputWindowsFileName={
     toObject : function(value){
         return value;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputwindowsfilename = cInputWindowsFileName; //global insensitive scope

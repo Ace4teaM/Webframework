@@ -64,5 +64,9 @@ var cInputURL={
     toObject : function(value){
         return ""+value;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputurl = cInputURL; //global insensitive scope

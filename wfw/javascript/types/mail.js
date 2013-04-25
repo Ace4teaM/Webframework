@@ -73,10 +73,13 @@ var cInputMail={
     getMinLength : function(){
         return 1;
     }
-
     ,
     toObject : function(value){
         return value;
     }
-}
+    ,
+    toElement : function(name,value){
+        return cInput.toElement(name,value);
+    }
+};
 cInputmail = cInputMail; //global insensitive scope
