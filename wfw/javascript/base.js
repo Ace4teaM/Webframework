@@ -801,9 +801,9 @@ function object_merge(obj1, obj2, bcopy) {
     if (typeof (bcopy) == "undefined")
         bcopy = true;
     //force le type objet sur les membres non -initialisés
-    if (typeof (obj1) != "object")
+    if (typeof (obj1) != "object" || obj1 == null)
         obj1 = {};
-    if (typeof (obj2) != "object")
+    if (typeof (obj2) != "object" || obj2 == null)
         obj2 = {};
     //duplique objet 1 ?
     var new_ar = (bcopy) ? copy(obj1) : obj1;
