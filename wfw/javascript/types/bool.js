@@ -64,7 +64,6 @@ var cInputBool={
         }
         return false;
     }
-
     ,
     toString : function(value){
         return (value ? "true" : "false");
@@ -74,4 +73,4 @@ var cInputBool={
         return cInput.toElement(name,value);
     }
 };
-cInputbool = cInputBool; //global insensitive scope
+var cInputbool = cInputBool; //global insensitive scope

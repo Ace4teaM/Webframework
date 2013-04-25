@@ -20,12 +20,12 @@
 */
 
 /**
- * @brief jQuery Stack Plugin
- * @method stack
+ * @brief jQuery Form Plugin
+ * @method form
  * @memberof JQuery
  * 
  * #Introduction
- * Permet d'empiler des éléments HTML de façon semblable à des briques.
+ * Permet de créer facilement un formulaire générique
  * 
  * @option string mode        Orientation des briques
  * @option mixed  selector    Sélecteurs
@@ -71,71 +71,75 @@
  * });
  * @endcode{.js}
  * **/
+
 (function($)
 {
     //emplie en lignes
-    function rowsStack(parent,p){
+    function makeField(parent,p,field){
         parent = $(parent);
-
-        //supprime les textes enfants
-        //(evite les espacements non gérés)
-        parent.contents().filter(function() {
-          return this.nodeType == 3; //Node.TEXT_NODE
-        }).remove();
-
-        //lignes depuis un string ?
-        var rows = p.selector;
-        if(typeof(rows) == "string"){
-            rows = strexplode(rows,'/',true);
+        var input;
+ 
+       field = $.extend({
+           name    : '',
+           value   : '',
+           type    : 'string'
+       },field);
+       
+       //obtient la classe du type
+        var className = "cInput"+field.type.toLowerCase(); 
+        if (eval("typeof "+className) != 'object'){
+            input = $('<input type="text" />');
+            input.attr("name",field.name);
+            input.attr("value",field.value);
+            return input;
         }
-
-        //hauteurs normalisés
-        var height = $(parent).height() / rows.length;
-
-        //initialise les largeurs
-        for(var row in rows){
-            var list = $(rows[row]);
-            var width  = ($(parent).width() / list.length);
-
-            $.each(list,function(i,node){
-                if(p.wrap){
-                    var tmp = $("<span></span>");
-                    tmp.append(node);
-                    node = tmp;
-                }
-                else
-                    node = $(node);
-                
-                node.css("display","inline-block");
-                node.css("width",width+"px");
-
-                if(p.size instanceof String || typeof(p.size)=="string"){
-                    node.css("height",p.size);
-                }
-                if(p.size instanceof Array){
-                    if(p.size[row])
-                        node.css("height",p.size[row]);
-                }
-                
-                parent.append(node);
-            });
+        var inputClass = eval(className);
+        return $(inputClass.toElement(field.name,field.value,field.label));
+        /*
+        switch(field.type){
+            case 'text':
+                input = $('<textarea col="10" rows="5" name="'+field.name+'"></textarea>');
+                input.text(field.value);
+                break;
+            default:
+                input = $('<input type="text" name="'+field.name+'" />');
+                input.attr("value",field.value);
+                break;
         }
-
+        
+        switch(field.type){
+            case 'date':
+                input.datePicker();
+                break;
+            case 'integer':
+            case 'float':
+            case 'factor':
+                input.spinner();
+                break;
+        }*/
+        
+        //
+        
     };
     
     //constructeur
-    $.fn.stack = function(p){
+    $.fn.form = function(p){
        p = $.extend({
-           mode        : "rows",
-           selector    : null,
-           size        : null,
-           wrap        : true
+           dialog    : true,
+           fields    : null
        },p);
 
        return this.each(function()
        {
-           if(p.mode == "rows")
-             rowsStack(this,p);
+           var parent = $(this);
+           
+           //fabrique les champs
+           for(var i in p.fields){
+               var input = makeField(this,p,p.fields[i]);
+               var label = parent.append(p.fields[i].label);
+               parent.append(input);
+               $([label,input]).wrap('<div></div>')
+           }
        });
     };
     

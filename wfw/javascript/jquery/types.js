@@ -20,123 +20,45 @@
 */
 
 /**
- * @brief jQuery Stack Plugin
- * @method stack
- * @memberof JQuery
- * 
- * #Introduction
- * Permet d'empiler des éléments HTML de façon semblable à des briques.
- * 
- * @option string mode        Orientation des briques
- * @option mixed  selector    Sélecteurs
- * @option string size        Optionel, Hauteur/Largeur des elements
- * @option bool   wrap        Optionel, Entoure les éléments d'une balise SPAN
- * 
- * ##mode
- * @code{.js}
- * { mode : "rows" }
- * @endcode
- * Orientation des briques: "rows" ou "cols"
- * - "rows" Empile en ligne (vertical)
- * - "cols" Non supporté, Empile en colonnes (horizontal)
- * 
- * ##selector
- * @code{.js}
- * { selector : null }
- * @endcode
- * Selecteurs des lignes d'éléments
- * - ["#a", "#b,#c", ...]  Groupes d'éléments
- * - "#a / #b,#c"          Groupes d'éléments sur une ligne
- * 
- * ##size
- * @code{.js}
- * { size : null }
- * @endcode
- * Force la hauteur/largeur des éléments.
- * Si null, la taille n'est pas affectée.
- * 
- * ##wrap
- * @code{.js}
- * { wrap : true }
- * @endcode
- * Les éléments sélectionnés ne seront pas modifiés, un nouvel élément SPAN contiendera les attributs de styles.
- * Utile pour permettre à l'élément source d'utiliser les attributs 'padding' et 'margin' sans affecter la position des éléments.
- * 
- * #Exemple
- * @code{.js}
- * $("#date-layout").stack({
- *     mode:"rows",
- *     selector : [ "#dateLabel", "#beginDate, #endDate" ],
- *     size:[null,"20px"]
- * });
- * @endcode{.js}
+ * @brief Fix les types de bases
+ * Ajoute les controles JQuery-UI aux types de bases
  * **/
+
 (function($)
 {
-    //emplie en lignes
-    function rowsStack(parent,p){
-        parent = $(parent);
+    cInput.toElement = function(name,value){
+        var input = $('<input />');
+        input.attr({
+            type:"text",
+            value:value,
+            name:name
+        });
 
-        //supprime les textes enfants
-        //(evite les espacements non gérés)
-        parent.contents().filter(function() {
-          return this.nodeType == 3; //Node.TEXT_NODE
-        }).remove();
-
-        //lignes depuis un string ?
-        var rows = p.selector;
-        if(typeof(rows) == "string"){
-            rows = strexplode(rows,'/',true);
-        }
-
-        //hauteurs normalisés
-        var height = $(parent).height() / rows.length;
-
-        //initialise les largeurs
-        for(var row in rows){
-            var list = $(rows[row]);
-            var width  = ($(parent).width() / list.length);
-
-            $.each(list,function(i,node){
-                if(p.wrap){
-                    var tmp = $("<span></span>");
-                    tmp.append(node);
-                    node = tmp;
-                }
-                else
-                    node = $(node);
-                
-                node.css("display","inline-block");
-                node.css("width",width+"px");
-
-                if(p.size instanceof String || typeof(p.size)=="string"){
-                    node.css("height",p.size);
-                }
-                if(p.size instanceof Array){
-                    if(p.size[row])
-                        node.css("height",p.size[row]);
-                }
-                
-                parent.append(node);
-            });
-        }
-
+        return input;
     };
-    
-    //constructeur
-    $.fn.stack = function(p){
-       p = $.extend({
-           mode        : "rows",
-           selector    : null,
-           size        : null,
-           wrap        : true
-       },p);
 
-       return this.each(function()
-       {
-           if(p.mode == "rows")
-             rowsStack(this,p);
-       });
+    cInputBool.toElement = function(name,value,label){
+        var input = $('<input type="checkbox" id="'+name+'" />');
+        input.attr({
+            value:value,
+            name:name
+        });
+        var w = $('<span></span>');
+        w.append(input);
+        var l=w.append('<label for="'+name+'">On</label>');
+        /*l.on("change",function(e){
+            var checked = $( this ).is(':checked');
+            if(checked)
+                l.html("On");
+            else
+                l.html("Off");
+        });*/
+        input.button();
+        return w;
     };
-    
+
+    cInputDate.toElement = function(name,value){
+        var input = $(cInput.toElement(name,value));
+        return input.datepicker();
+    };
 })(jQuery);
