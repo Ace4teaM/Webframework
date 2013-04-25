@@ -297,8 +297,8 @@ class XMLDocument extends DOMDocument {
         $cur = ($context === NULL) ? $this->documentElement : $context;
 
         //analyse le selecteur
-        $spaced_att = '(?:\w+\=\w+)';
-        $exacts_att = '(?:\w+\~\=\w+)';
+        $spaced_att = '(?:\w+\=(?:\'?[^\'\n\r\,\]]+\'?))';
+        $exacts_att = '(?:\w+\~\=(?:\'?[^\'\n\r\,\]]+\'?))';
         $exists_att = '(?:\w+)';
         preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[('.$spaced_att.'|'.$exacts_att.'|'.$exists_att.'(?:\,'.$spaced_att.'|'.$exacts_att.'|'.$exists_att.')*)\])?/i', $selector, $matches);
 //        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i', $selector, $matches);
@@ -322,6 +322,7 @@ class XMLDocument extends DOMDocument {
                         //attributs ?
                         if (!empty($matches[3][$key])) {
                             $att_selector = $matches[3][$key];
+                            $att_selector = str_replace("'",'',$att_selector);//remplace des eventuelles quote contenu dans la regex
                             $att_list = strexplode($att_selector, ',', true);
                             foreach ($att_list as $att_pair) {
                                 //E[foo~=warning]
