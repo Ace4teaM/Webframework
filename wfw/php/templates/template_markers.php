@@ -294,7 +294,8 @@ class cTemplateMarkerdefault extends cTemplateMarker {
 
     public static function exp() {
         return array(
-            ('\:' . '(' . cInputName::regExp() . ')') => "check_default_uri",
+            ('\:' . '(' . cInputName::regExp() . ')(?:\?\s*\'([^\'\n\r]+)\')?') => "check_default_uri",
+            ('page\:' . '(' . cInputName::regExp() . ')(?:\?\s*\'([^\'\n\r]+)\')') => "check_default_uri",
             ('(' . cInputName::regExp() . ')' . '\:' . '(' . cInputName::regExp() . ')') => 'check_default_value',
             ('(' . cInputName::regExp() . ')' . '\:' . '(' . cInputName::regExp() . ')' . '\@' . '(' . cInputName::regExp() . ')') => 'check_default_attribute',
         );
@@ -331,13 +332,13 @@ class cTemplateMarkerdefault extends cTemplateMarker {
                 $arg["__base_uri_nop__"] = ($node ? $node->nodeValue : "");
                 //URI complete
                 $node = $this->sitefile->one(">host[id=$hostname]>path");
-                $arg["__uri__"] = "http://" . $arg["__domain__"] . ($node ? $node->nodeValue : "") . "/";
+                $arg["__uri__"] = "http://" . $arg["__domain__"] . "/" . ($node ?  $node->nodeValue : "");
                 //URI racine complete
                 $node = $this->sitefile->one(">host[id=$hostname]>base_path");
-                $arg["__base_uri__"] = "http://" . $arg["__domain__"] . ($node ? $node->nodeValue : "") . "/";
+                $arg["__base_uri__"] = "http://" . $arg["__domain__"] . "/" . ($node ? $node->nodeValue : "");
                 //URI racine complete
                 $node = $this->sitefile->one(">host[id=$hostname]>path_root");
-                $arg["__path__"] = ($node ? $node->nodeValue : "") . "/";
+                $arg["__path__"] = ($node ? $node->nodeValue : "");
             }
             //SiteName
             $node = $this->sitefile->one(">name");
@@ -379,22 +380,41 @@ class cTemplateMarkerdefault extends cTemplateMarker {
         return $pageNode->nodeValue;
     }
 
-    public function check_default_uri($input, $select, $matches, &$arg) {
+    public function check_default_uri($input, $select, $matches, &$arg)
+    {
         if ($this->sitefile == NULL)
             return "";
 
         $pageId = $matches[1];
+        $uriQuery = $matches[2];
 
         $pageNode = $this->getIndexNode("page", $pageId);
         if ($pageNode == NULL)
             return "";
 
-        //protocole  
-        $protocol = $pageNode->getAttribute("protocol");
-        if (empty($protocol))
-            $protocol = "http";
+        //l'URI
+        $uri = "";
+        
+        //chemin absolue
+        if(substr($matches[0],0,7)!="-{{page"){
+            $protocol = $pageNode->getAttribute("protocol");
+            if (empty($protocol))
+                $protocol = "http";
 
-        return $protocol . "://" . $arg["__uri_nop__"] . $pageNode->nodeValue;
+            $uri = $protocol . substr($arg["__uri__"], strpos($arg["__uri__"],':') ) . "/" . $pageNode->nodeValue;
+        }
+        //chemin relatif
+        else
+            $uri = $pageNode->nodeValue;
+        
+        
+        //ajoute le query
+        if(isset($uriQuery)){
+            /** @todo: Utiliser un convertisseur d'URL plutot qu'une simple concatenation */
+            $uri .= (strstr($uri,'?') ? '&' : '?').$uriQuery;
+        }
+        
+        return $uri;
     }
 
     public function check_default_value($input, $select, $matches, &$arg) {
