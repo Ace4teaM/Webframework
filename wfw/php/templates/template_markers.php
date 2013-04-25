@@ -178,6 +178,45 @@ class cTemplateMarker_attribute extends cTemplateMarker {
 }
 
 /*
+  TEST
+  appeler par check_text(), retourne la valeur d'un attribut de la selection
+  Syntaxe:
+  -{identifier?"value":"value"}
+ */
+
+class cTemplateMarker_test extends cTemplateMarker {
+
+    public static function exp() {
+        $value = '(?:\"(' . cInputString::regExp() .')\")';
+        return array(
+            ('(' . cInputName::regExp() . ')\?'.$value.':'.$value) => 'check_text',
+        );
+    }
+
+    public function check_text($input, $select, $matches, &$arg) {
+        $name = $matches[1];
+        $if_value = $matches[2];
+        $else_value = $matches[3];
+
+        //recherche dans la selection
+        if ($select != NULL) {
+            //obtient la selection
+            $node_select = $input->get_xml_selection($select, $arg, $name);
+            if ($node_select != NULL)
+                return $if_value;
+        }
+
+        //recherche dans les globales
+        if (isset($arg[$name]))
+            return $if_value;
+
+        //aucune entree trouve, texte de remplacement?
+        return $else_value;
+    }
+
+}
+
+/*
   check_attribute_parse
   insert le contenu d'un texte sans formatage
   Syntaxe:
