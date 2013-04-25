@@ -37,6 +37,9 @@ class Ctrl extends cApplicationCtrl{
         if(!$out->load("default.xml"))
             return false;
         
+        //
+        // merge les dependances (autres documents 'default.xml')
+        //
         foreach($app->getCfgSection("defaults") as $key=>$filename){
             // Initialise le document de sortie
             $in = new XMLDocument("1.0", "utf-8");
@@ -81,6 +84,47 @@ class Ctrl extends cApplicationCtrl{
                 //fusionne le restant
                 XMLDocument::mergeNodesByTagName($in, $out, $node, $out_node);
             }
+        }
+        
+        //
+        // definit les chemins d'accès
+        //
+        if($app->getHostName($hostname))
+        {
+            //host
+            $hostEl = $out->one(">host[id=$hostname]");
+            if(!$hostEl){
+                $hostEl = $out->createElement("host");
+                $hostEl->setAttribute('id', $hostname);
+                $out->documentElement->appendChild($hostEl);
+            }
+            
+            //domaine
+            $domainEl = $out->one(">domain");
+            if(!$domainEl){
+                $domainEl = $out->createTextElement("domain",$_SERVER["HTTP_HOST"]);
+                $hostEl->appendChild($domainEl);
+            }
+            else
+                $domainEl->nodeValue = $_SERVER["HTTP_HOST"];
+            
+            //base_path
+            $base_path = $out->one(">base_path");
+            if(!$base_path){
+                $base_path = $out->createTextElement("base_path",substr(dirname($_SERVER["REQUEST_URI"]),1));
+                $hostEl->appendChild($base_path);
+            }
+            else
+                $base_path->nodeValue = substr(dirname($_SERVER["REQUEST_URI"]),1);
+            
+            //path
+            $path = $out->one(">path");
+            if(!$path){
+                $path = $out->createTextElement("path", substr(dirname($_SERVER["REQUEST_URI"]),1));
+                $hostEl->appendChild($path);
+            }
+            else
+                $path->nodeValue = substr(dirname($_SERVER["REQUEST_URI"]),1);
         }
 
         //sortie XML
