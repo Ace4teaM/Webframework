@@ -13,6 +13,7 @@ class cInputFields {
      * @param FIELD_NAME Nom du champ manquant
      */
     const MissingArg = "MISSING_FIELD";
+    const InvalidInput = "INVALID_INPUT";
 
     /*
      * @brief Test les formats d'un tableau de champs
@@ -57,7 +58,7 @@ class cInputFields {
                 //existe ?
                 if (isset($fields[$arg_name]) && !empty_string($fields[$arg_name]) && !empty_string($arg_type)) {
                     if (!$arg_type::isValid($fields[$arg_name])){
-                        RESULT_PUSH("message", cInputFields::MsgInvalidInput);
+                        RESULT_PUSH("message", cInputFields::InvalidInput);
                         RESULT_PUSH("field_name", $arg_name);
                         return false; // conserve le resultat de la fonction
                     }

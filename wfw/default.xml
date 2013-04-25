@@ -29,6 +29,7 @@
             <INVALID_CHAR>Champ contenant des caractères interdits</INVALID_CHAR>
             <INVALID_FORMAT>Champ mal formé</INVALID_FORMAT>
             <INVALID_RANGE>Rang de valeur invalide</INVALID_RANGE>
+            <INVALID_INPUT>Champ invalide</INVALID_INPUT>
             <OVERSIZED>Trop de caractères</OVERSIZED>
             <UNDERSIZED>Pas assez de caractères</UNDERSIZED>
             <DB_CONNECTION>Connexion au serveur de base de données a échouée</DB_CONNECTION>
