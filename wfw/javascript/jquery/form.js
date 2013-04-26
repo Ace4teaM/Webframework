@@ -71,14 +71,13 @@
  * });
  * @endcode{.js}
  * **/
-
 (function($)
 {
     //emplie en lignes
     function makeField(parent,p,field){
         parent = $(parent);
         var input;
- 
+
        field = $.extend({
            name    : '',
            value   : '',
@@ -124,23 +123,50 @@
     
     //constructeur
     $.fn.form = function(p){
-       p = $.extend({
-           dialog    : true,
-           fields    : null
-       },p);
-
-       return this.each(function()
+       if(typeof p == "object")
        {
-           var parent = $(this);
-           
-           //fabrique les champs
-           for(var i in p.fields){
-               var input = makeField(this,p,p.fields[i]);
-               var label = parent.append(p.fields[i].label);
-               parent.append(input);
-               $([label,input]).wrap('<div></div>')
-           }
-       });
+            p = $.extend({
+                dialog    : true,
+                fields    : null
+            },p);
+
+            return this.each(function()
+            {
+                var parent = $(this);
+
+                //fabrique les champs
+                for(var i in p.fields){
+                    var input = makeField(this,p,p.fields[i]);
+                    var label = parent.append(p.fields[i].label);
+                    parent.append(input);
+                    $([label,input]).wrap('<div></div>')
+                }
+            });
+       }
+       
+       //@page $form.values values Option
+       //Obtient les valeurs de champs
+       if(p == "values"){
+            var values = {};
+            
+            this.each(function()
+            {
+                var parent = $(this);
+                $("input[name]",parent).each(function(i,node){
+                    node = $(node);
+//                alert(node.attr("name"));
+                    values[node.attr("name")] = node.attr("value");
+                });
+                $("textarea[name]",parent).each(function(i,node){
+                    node = $(node);
+                    values[node.attr("name")] = node.text();
+                });
+            });
+            
+            return values;
+       }
+       
+       return this;
     };
     
 })(jQuery);
