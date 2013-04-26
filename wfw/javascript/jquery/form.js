@@ -27,53 +27,12 @@
  * #Introduction
  * Permet de créer facilement un formulaire générique
  * 
- * @option string mode        Orientation des briques
- * @option mixed  selector    Sélecteurs
- * @option string size        Optionel, Hauteur/Largeur des elements
- * @option bool   wrap        Optionel, Entoure les éléments d'une balise SPAN
+ * @option array fields       Définitions des champs
  * 
- * ##mode
- * @code{.js}
- * { mode : "rows" }
- * @endcode
- * Orientation des briques: "rows" ou "cols"
- * - "rows" Empile en ligne (vertical)
- * - "cols" Non supporté, Empile en colonnes (horizontal)
- * 
- * ##selector
- * @code{.js}
- * { selector : null }
- * @endcode
- * Selecteurs des lignes d'éléments
- * - ["#a", "#b,#c", ...]  Groupes d'éléments
- * - "#a / #b,#c"          Groupes d'éléments sur une ligne
- * 
- * ##size
- * @code{.js}
- * { size : null }
- * @endcode
- * Force la hauteur/largeur des éléments.
- * Si null, la taille n'est pas affectée.
- * 
- * ##wrap
- * @code{.js}
- * { wrap : true }
- * @endcode
- * Les éléments sélectionnés ne seront pas modifiés, un nouvel élément SPAN contiendera les attributs de styles.
- * Utile pour permettre à l'élément source d'utiliser les attributs 'padding' et 'margin' sans affecter la position des éléments.
- * 
- * #Exemple
- * @code{.js}
- * $("#date-layout").stack({
- *     mode:"rows",
- *     selector : [ "#dateLabel", "#beginDate, #endDate" ],
- *     size:[null,"20px"]
- * });
- * @endcode{.js}
  * **/
 (function($)
 {
-    //emplie en lignes
+    // Fabrique un element HTML depuis une definition de champ
     function makeField(parent,p,field){
         parent = $(parent);
         var input;
@@ -89,36 +48,11 @@
         if (eval("typeof "+className) != 'object'){
             input = $('<input type="text" />');
             input.attr("name",field.name);
-            input.attr("value",field.value);
+            input.val(field.value);
             return input;
         }
         var inputClass = eval(className);
         return $(inputClass.toElement(field.name,field.value,field.label));
-        /*
-        switch(field.type){
-            case 'text':
-                input = $('<textarea col="10" rows="5" name="'+field.name+'"></textarea>');
-                input.text(field.value);
-                break;
-            default:
-                input = $('<input type="text" name="'+field.name+'" />');
-                input.attr("value",field.value);
-                break;
-        }
-        
-        switch(field.type){
-            case 'date':
-                input.datePicker();
-                break;
-            case 'integer':
-            case 'float':
-            case 'factor':
-                input.spinner();
-                break;
-        }*/
-        
-        //
-        
     };
     
     //constructeur
@@ -126,7 +60,6 @@
        if(typeof p == "object")
        {
             p = $.extend({
-                dialog    : true,
                 fields    : null
             },p);
 
@@ -152,14 +85,9 @@
             this.each(function()
             {
                 var parent = $(this);
-                $("input[name]",parent).each(function(i,node){
+                $("input[name], textarea[name]",parent).each(function(i,node){
                     node = $(node);
-//                alert(node.attr("name"));
-                    values[node.attr("name")] = node.attr("value");
-                });
-                $("textarea[name]",parent).each(function(i,node){
-                    node = $(node);
-                    values[node.attr("name")] = node.text();
+                    values[node.attr("name")] = node.val();
                 });
             });
             
