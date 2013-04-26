@@ -134,7 +134,8 @@ YUI.add('wfw-datamodel', function (Y) {
          * ## Retour
          * Détail sur le format de l'objet retourné
          * @code{.js}
-         * var obj = {
+         * var obj = wfw.DataModel.getFieldInfos('field_name');
+         * obj == {
          *  id    : string // Identifiant du champ (passé en argument)
          *  label : string // Nom du champ
          *  type  : string // Type du champ (tel que definit dans la configuration [fields_formats])
@@ -151,6 +152,7 @@ YUI.add('wfw-datamodel', function (Y) {
                 return null;
 
             var root = Y.Node(this.datamodel.documentElement);
+            
             var fieldNode = root.one(">"+id);
             if(fieldNode == null){
                 wfw.puts("getFieldInfos: unknown "+id+" filed");
@@ -158,9 +160,56 @@ YUI.add('wfw-datamodel', function (Y) {
             }
             return {
                 id    : id,
+                name  : id,
                 type  : fieldNode.get("text"),
                 label : fieldNode.getAttribute("label")
             };
+        },
+
+        /**
+         ------------------------------------------------------------------------------------------------------------------
+         * @brief Obtient des informations sur plusieurs champs
+         * @param array id Identifiants des champs
+         * @return array Liste des tableaux associatifs contenant les informations sur les champs
+         * 
+         * ## Retour
+         * Détail sur le format de l'objet retourné
+         * @code{.js}
+         * var obj = wfw.DataModel.getFieldInfos('field_name');
+         * obj == [
+         *   {id,label,type},
+         *   {id,label,type},
+         *   {id,label,type},
+         *   ...
+         * ];
+         * @endcode
+         ------------------------------------------------------------------------------------------------------------------
+         **/
+
+        getFieldsInfos : function(ids)
+        {
+            if(this.datamodel==false)
+                this.loadDataModel();
+            if(this.datamodel==null)
+                return null;
+
+            var root = Y.Node(this.datamodel.documentElement);
+            var infos=[];
+            for(var i in ids){
+                var id=ids[i];
+                var fieldNode = root.one(">"+id);
+                if(fieldNode == null){
+                    wfw.puts("getFieldInfos: unknown "+id+" filed");
+                    return false;
+                }
+                infos.push({
+                    id    : id,
+                    name  : id,
+                    type  : fieldNode.get("text"),
+                    label : fieldNode.getAttribute("label")
+                });
+            }
+            return infos;
         },
 
         /*------------------------------------------------------------------------------------------------------------------*/
