@@ -61,4 +61,11 @@
         var input = $(cInput.toElement(name,value));
         return input.datepicker();
     };
+    
+    cInputText.toElement = function(name,value){
+        var input = $('<textarea col="10" rows="5"></textarea>');
+        input.text(value);
+        input.attr("name",name);
+        return input;
+    };
 })(jQuery);
