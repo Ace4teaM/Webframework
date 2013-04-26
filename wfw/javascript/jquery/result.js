@@ -32,8 +32,8 @@
  * **/
 (function($)
 {
-    // Fabrique un élément HTML depuis une definition de champ
-    function makeField(parent,field){
+    // Fabrique un element HTML depuis une definition de champ
+    function makeField(parent,p,field){
         parent = $(parent);
         var input;
 
@@ -55,24 +55,8 @@
         return $(inputClass.toElement(field.name,field.value,field.label));
     };
     
-    // Intialise un élément HTML existant
-    function makeExistingField(parent,node){
-        parent = $(parent);
-        var input;
-
-       var field = {
-           name    : node.attr("name"),
-           value   : node.val(),
-           type    : node.attr("data-type")
-       };
-       
-       return makeField(parent,field);
-    };
-    
     //constructeur
     $.fn.form = function(p){
-       //@page $form Initialisation avec parametres
-       //Obtient les valeurs de champs
        if(typeof p == "object")
        {
             p = $.extend({
@@ -85,27 +69,11 @@
 
                 //fabrique les champs
                 for(var i in p.fields){
-                    var input = makeField(this,p.fields[i]);
+                    var input = makeField(this,p,p.fields[i]);
                     var label = parent.append(p.fields[i].label);
                     parent.append(input);
                     $([label,input]).wrap('<div></div>')
                 }
-            });
-       }
-       
-       //initialisation sans parametres
-       if(typeof p == "undefined")
-       {
-            return this.each(function()
-            {
-                var parent = $(this);
-                
-                //fabrique les champs
-                $("*[name]",parent).each(function(i,node){
-                    node = $(node);
-                    var input = makeExistingField(this,node);
-                    node.replaceWith(input);
-                });
             });
        }
        
