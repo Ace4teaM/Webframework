@@ -19,7 +19,7 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-Ext.define('MyApp.DataModel', {
+Ext.define('Wfw.DataModel', {
     singleton: true
 });
 
@@ -28,10 +28,10 @@ Ext.define('MyApp.DataModel', {
 /*
  *------------------------------------------------------------------------------------------------------------------
  * @brief Construit un formulaire de champs
- * @param array wfw_fields Liste des définitions de champs (voir MyApp.DataModel.makeField)
+ * @param array wfw_fields Liste des définitions de champs (voir Wfw.DataModel.makeField)
  *------------------------------------------------------------------------------------------------------------------
  */
-Ext.define('MyApp.DataModel.FieldsForm', {
+Ext.define('Wfw.DataModel.FieldsForm', {
     extend: 'Ext.form.Panel',
     alias: 'fieldsform',
 
@@ -59,7 +59,7 @@ Ext.define('MyApp.DataModel.FieldsForm', {
         //initalise les items de champs
         var items=[];
         for(var key in this.wfw_fields){
-            items.push(MyApp.DataModel.makeField(this.wfw_fields[key]));
+            items.push(Wfw.DataModel.makeField(this.wfw_fields[key]));
         }
 
         Ext.apply(this, {
@@ -83,11 +83,11 @@ Ext.define('MyApp.DataModel.FieldsForm', {
                                 wfw.XArg.onCheckRequestResult,
                                 {
                                     onsuccess:function(req,args){
-                                        MyApp.showResultToMsg(wfw.Result.fromXArg(args));
+                                        Wfw.showResultToMsg(wfw.Result.fromXArg(args));
                                         //window.location.reload();
                                     },
                                     onfailed:function(req,args){
-                                        MyApp.showResultToMsg(wfw.Result.fromXArg(args));
+                                        Wfw.showResultToMsg(wfw.Result.fromXArg(args));
                                     }
                                 },
                                 false
@@ -113,7 +113,7 @@ Ext.define('MyApp.DataModel.FieldsForm', {
 //                        wfw.puts(args);
                     },
                     onfailed:function(req,args){
-                        MyApp.showResultToMsg(wfw.Result.fromXArg(args));
+                        Wfw.showResultToMsg(wfw.Result.fromXArg(args));
                     },
                     onerror:function(req){
                         wfw.puts("get_url data error");
@@ -135,11 +135,11 @@ Ext.define('MyApp.DataModel.FieldsForm', {
 // Construit un formulaire avec les champs du dictionnaire de données
 //
 /*------------------------------------------------------------------------------------------------------------------*/
-Ext.define('MyApp.DataModel.FieldsDialog', {
+Ext.define('Wfw.DataModel.FieldsDialog', {
     extend: 'Ext.window.Window',
 
     requires: [
-        'MyApp.DataModel.FieldsForm'
+        'Wfw.DataModel.FieldsForm'
     ],
         
     config:{
@@ -168,7 +168,7 @@ Ext.define('MyApp.DataModel.FieldsDialog', {
         });
 
             
-        //this.form = Ext.create('MyApp.FieldsForm',config);
+        //this.form = Ext.create('Wfw.FieldsForm',config);
         this.btnCancel = Ext.create('Ext.Button',{
             text:"Annuler",
             handler: function() {
@@ -213,10 +213,10 @@ Ext.define('MyApp.DataModel.FieldsDialog', {
  **/
 /*------------------------------------------------------------------------------------------------------------------*/
 
-MyApp.DataModel.makeField = function(att)
+Wfw.DataModel.makeField = function(att)
 {
     var wfw = Y.namespace("wfw");
-    var g = MyApp.global.Vars;
+
     var def = {
         id:false,
         type:false,
@@ -295,10 +295,8 @@ MyApp.DataModel.makeField = function(att)
  **/
 /*------------------------------------------------------------------------------------------------------------------*/
 
-MyApp.DataModel.convertFieldType = function(type)
+Wfw.DataModel.convertFieldType = function(type)
 {
-    var wfw = Y.namespace("wfw");
-    
     switch(type){
         case "float":
         case "cInputFloat":
@@ -334,7 +332,7 @@ MyApp.DataModel.convertFieldType = function(type)
  ------------------------------------------------------------------------------------------------------------------
  **/
 
-MyApp.DataModel.createArrayStore = function(cols, data)
+Wfw.DataModel.createArrayStore = function(cols, data)
 {
     var wfw = Y.namespace("wfw");
     var fieldsList = [];
@@ -343,7 +341,7 @@ MyApp.DataModel.createArrayStore = function(cols, data)
         if(att)
             fieldsList.push({
                 name : att.id,
-                type : MyApp.DataModel.convertFieldType(att.type)
+                type : Wfw.DataModel.convertFieldType(att.type)
             });
     }
 //  wfw.puts(fieldsList);
@@ -358,8 +356,9 @@ MyApp.DataModel.createArrayStore = function(cols, data)
  * @return Ext.data.ArrayStore Stockage de données
  ------------------------------------------------------------------------------------------------------------------
  **/
-Ext.define('MyApp.DataModel.Grid', {
+Ext.define('Wfw.DataModel.Grid', {
     extend: 'Ext.grid.Panel',
+    alias: 'widget.wfw_datamodel_grid',
     
     config:{
         stateful: true,
