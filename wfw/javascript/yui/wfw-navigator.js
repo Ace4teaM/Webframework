@@ -26,6 +26,7 @@ YUI.add('wfw-navigator', function (Y) {
     wfw.Navigator = {
         use         : true,
         doc         : null,//instance de wfw.Xml.DEFAULT_FILE
+        basePath    : "",//chemin de base au fichier default. Modifie également les URI du fichier default.xml
         navDoc      : "default.xml",//xml document
         navNode     : "> index", // noeud parent de l'index
         cfgNode     : "> config", // noeud parent de la configuration
@@ -50,19 +51,20 @@ YUI.add('wfw-navigator', function (Y) {
             
             // Initialise le document xml
             this.doc = new wfw.Xml.DEFAULT_FILE();
-            this.doc.Initialise("default.xml");
+            //this.doc.Initialise("default.xml");
 
             //charge le sitemap "default.xml"
             if("string"==typeof(this.navDoc)){
-                wfw.puts("Navigator.init: load navigation doc..."+this.navDoc);
+                var uri = this.basePath+this.navDoc;
+                wfw.puts("Navigator.init: load navigation doc... ["+uri+"]");
                 try{
-                    var doc = wfw.HTTP.get(this.navDoc);
+                    var doc = wfw.HTTP.get(uri);
                     if(!doc){
-                        wfw.puts("Navigator.init: can't load navigation doc: "+this.navDoc+" (HTTP Status: "+wfw.HTTP.getResponseStatus()+")");
+                        wfw.puts("Navigator.init: can't load navigation doc: "+uri+" (HTTP Status: "+wfw.HTTP.getResponseStatus()+")");
                         return false;
                     }
                     if(!(doc = xml_parse(doc))){
-                        wfw.puts("Navigator.init: can't parse xml navigation doc: "+this.navDoc);
+                        wfw.puts("Navigator.init: can't parse xml navigation doc: "+uri);
                         return false;
                     }
                     this.navDoc = doc;
@@ -70,10 +72,10 @@ YUI.add('wfw-navigator', function (Y) {
                 catch(e){
                     switch(e.name){
                         case "NS_ERROR_DOM_BAD_URI":
-                            wfw.puts("Navigator.init: can't load navigation doc: "+this.navDoc+" (NS_ERROR_DOM_BAD_URI)");
+                            wfw.puts("Navigator.init: can't load navigation doc: "+uri+" (NS_ERROR_DOM_BAD_URI)");
                             break;
                         default:
-                            wfw.puts("Navigator.init: can't load navigation doc: "+this.navDoc+" (Unexpected error)");
+                            wfw.puts("Navigator.init: can't load navigation doc: "+uri+" (Unexpected error)");
                             break;
                     }
                 //return wfw.checkError(e);
@@ -82,6 +84,10 @@ YUI.add('wfw-navigator', function (Y) {
         
             if(typeof(this.navDoc)=='object')
             {
+                //applique le chemin de base aux URI
+                if(!empty(this.basePath))
+                    this.applyBasePath(this.basePath);
+                
                 //obtient le noeud module
                 if("string" == typeof(this.modNode))
                     this.modNode = Y.Node(this.navDoc.documentElement).one(this.modNode);
@@ -230,6 +236,7 @@ YUI.add('wfw-navigator', function (Y) {
         * @return URI de la page
         * @retval null La page est introuvable dans l'index
         * @remarks L'Argument 'id' est sensible à la case
+        * @remarks Le membre 'basePath' influe sur le retour de la fonction
         * 
         * ## Exemple d'utilisation du paramètre 'remakeAtt'
         * Les paramétres suivants sont passés à la méthode 'wfw.URI.remakeURI()'.
@@ -246,7 +253,7 @@ YUI.add('wfw-navigator', function (Y) {
             var node;
             if((node = this.getIndex("page",id))==null)
                 return null;
-            var uri = node.get("text");
+            var uri = /*this.basePath+*/node.get("text");
 
             //refabrique l'URI ?
             if(remakeAtt instanceof Object){
@@ -318,6 +325,17 @@ YUI.add('wfw-navigator', function (Y) {
                 doc = doc.documentElement;
 
             return Y.Node(doc).one("> tree "+page_id);
+        },
+    
+        /*
+            Applique un chemin d'accès aux noeuds contenant une URI
+            @param string  basePath  Chemin de base (terminé par un slash)
+            @remarks Les noeuds suivant sont affectés: [ '> index > page' ]
+	*/
+        applyBasePath : function(basePath){
+            return Y.Node(this.navDoc.documentElement).all("> index > page").each(function (node) {
+                node.set("text",basePath+node.get("text"));
+            });
         },
     
         /*
@@ -426,6 +444,7 @@ YUI.add('wfw-navigator', function (Y) {
     /*-----------------------------------------------------------------------------------------------------------------------
      * Initialise
      -----------------------------------------------------------------------------------------------------------------------*/
+    object_merge(wfw.Navigator,Y.config.groups.js.modules['wfw-navigator']['defaults'],false);
     wfw.Navigator.init();
     
 }, '1.0', {

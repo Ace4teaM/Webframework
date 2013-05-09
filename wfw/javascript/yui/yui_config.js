@@ -77,7 +77,11 @@ function wfw_yui_config(base_path){
                     },
                     'wfw-navigator': {
                         path: 'wfw-navigator.js',
-                        requires: [ 'base','wfw','wfw-event','wfw-xml' ]
+                        requires: [ 'base','wfw','wfw-event','wfw-xml' ],
+                        defaults:{
+                            navDoc : "default.xml",
+                            basePath : ""
+                        }
                     },
                     'wfw-path': {
                         path: 'wfw-path.js',
