@@ -719,7 +719,10 @@ class cXMLTemplate
 -            }*/
             $file = new XMLDocument("1.0", "utf-8");
 
-            $content = file_get_contents($filename);
+            if(!($content = @file_get_contents($filename))){
+                RESULT(cResult::Failed,cXMLTemplate::CantLoadInputFile,array("filename"=>$filename));
+                return NULL;
+            }
             //résoud les entités HTML, la methode loadXML() ne le fait pas
             if($this->resolve_html_entites)
             {
