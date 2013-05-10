@@ -20,16 +20,7 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/* Systeme */
-if(PHP_OS == "WINNT"){
-    define('WINDOWS',true);
-    define('SYSTEM','WINDOWS');
-}
-else{
-    define('LINUX',true);
-    define('SYSTEM','LINUX');
-}
-
+require_once("php/systemd.php");
 require_once("php/ini.php");
 require_once("iApplication.php");
 require_once("cApplicationCtrl.php");

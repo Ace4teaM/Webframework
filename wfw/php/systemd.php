@@ -38,16 +38,19 @@ function linux_server()
 
 if(windows_server()){
     define('WINDOWS',true);
+    define('SYSTEM','WINDOWS');
     define('DOS',true);
     define('SYSTEM_FILE_SEPARATOR','\\');
 }
 else if(linux_server()){
     define('LINUX',true);
+    define('SYSTEM','LINUX');
     define('UNIX',true);
     define('SYSTEM_FILE_SEPARATOR','/');
 }
 else{
     define('SYSTEM_UNKNOWN',true);
+    define('SYSTEM','UNKNOWN');
     define('SYSTEM_FILE_SEPARATOR','/');
 }
 
