@@ -1,4 +1,29 @@
 <?php
+/*
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    (C)2013 Thomas AUGUEY <contact@aceteam.org>
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
+
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/**
+ * PHP-Unit test file for Base Library
+ */
+
 class BaseTest extends PHPUnit_Framework_TestCase{
     public function setUp(){
         set_include_path(
@@ -95,12 +120,22 @@ class BaseTest extends PHPUnit_Framework_TestCase{
     
     public function testClass()
     {
+        // include
+        
         include_once('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\testClass.inc');
         $this->assertEquals(array('testClass','testClass2'), get_declared_classes_of('testClassBase'), 'get declared classes of');
+        
+        // cast
+        $obj = new testClass();
+        $obj = cast(new testClass2(),$obj);
+        $this->assertInstanceOf('testClass2', $obj, 'Object type cast');
+        $this->assertEquals('HelloWorld', $obj->getStr(), 'Object type cast (data)');
     }
     
     public function testSizeConversion()
     {
+        // byteToSize
+        
         $fmt = byteToSize(1024);
         $this->assertEquals('1.0 Ko',  $fmt, '1 Ko');
         $fmt = byteToSize(1024*2);
@@ -141,5 +176,46 @@ class BaseTest extends PHPUnit_Framework_TestCase{
         $num = sizeToByte('1.0 Yo');
         $this->assertEquals(pow(1024,7),  $num, '1 Yo');
     }
+    
+    public function testString()
+    {
+        // empty_string
+        
+        $this->assertFalse(empty_string('h'), 'simple empty test');
+        $this->assertFalse(empty_string('hello'), 'simple empty test');
+        $this->assertTrue(empty_string(''), 'simple empty test');
+        $this->assertTrue(empty_string(null), 'simple null test');
+        $this->assertTrue(empty_string('      '), 'only spacing');
+        $this->assertTrue(empty_string("\n"), 'only linefeed');
+        
+        // strexplode
+        
+        $values = strexplode('green;red;blue',';',true);
+        $this->assertEquals(array('green','red','blue'),  $values, 'simple explode');
+        
+        $values = strexplode('green ; red; blue ',';',true);
+        $this->assertEquals(array('green','red','blue'),  $values, 'simple explode with spaces');
+        
+        $values = strexplode('green ; red; 0; blue ',';',true);
+        $this->assertEquals(array('green','red','0','blue'),  $values, 'simple explode ignore empty string');
+        
+        // nvl
+        
+        $values = nvl('0','REPLACE');
+        $this->assertEquals('REPLACE',  $values, 'Zero is null');
+        
+        $values = nvl(NULL,'REPLACE');
+        $this->assertEquals('REPLACE',  $values, 'NULL is null');
+        
+        $values = nvl('','REPLACE');
+        $this->assertEquals('REPLACE',  $values, 'empty string is null');
+        
+        $values = nvl('NULL','REPLACE');
+        $this->assertEquals('NULL',  $values, 'NULL string is not null');
+        
+        $values = nvl('FALSE','REPLACE');
+        $this->assertEquals('FALSE',  $values, 'FALSE string is not null');
+    }
+    
 }
 ?>
