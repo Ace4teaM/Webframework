@@ -20,6 +20,11 @@
   along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
+namespace wfw\datafetch;
+
+use \cApplicationCtrl as cApplicationCtrl;
+use \iApplication     as iApplication;
+use \XMLDocument      as XMLDocument;
 
 /**
  * @page datafetch Extrait des données d'une table
@@ -37,6 +42,8 @@ class Ctrl extends cApplicationCtrl{
     public $fields    = array('table_name');
     public $op_fields = array('cols_names','row_offset','row_count');
 //    public $role      = Role::Administrator;
+
+    protected $doc = null;
 
     function main(iApplication $app, $app_path, $p) {
         $lang = "fr";
@@ -79,11 +86,16 @@ class Ctrl extends cApplicationCtrl{
         }
 
         //sortie XML
-        header("content-type: text/xml");
-        echo '<?xml version="1.0" encoding="UTF-8" ?>' . $doc->saveXML($doc->documentElement);
-
-        //termine ici
-        exit(0);
+        $this->doc = $doc;
+        return RESULT_OK();
+    }
+    
+    function output(iApplication $app, $format, $att, $result) {
+        switch($format){
+            case "text/xml":
+                return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
+        }
+        return parent::output($app, $format, $att, $result);
     }
 }
 

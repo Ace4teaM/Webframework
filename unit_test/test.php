@@ -20,36 +20,13 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-/*
- * Point d'entrée des controleurs
- */
-
 require_once("inc/globals.php");
 global $app;
 
-// Champs requis
-if(!$app->makeFiledList(
-        $fields,
-        array( 'ctrl' ),
-        cXMLDefault::FieldFormatClassName )
-   ) $app->processLastError();
-
-// Champs requis
-if(!$app->makeFiledList(
-        $op_fields,
-        array( 'app' ),
-        cXMLDefault::FieldFormatClassName )
-   ) $app->processLastError();
-
-// vérifie la validitée des champs
-$p = array();
-if(!cInputFields::checkArray($fields,$op_fields,$_REQUEST,$p))
+if(!$app->callCtrl("datamodel","wfw",array(),$ctrl))
     $app->processLastError();
 
+echo $ctrl->getXML()->one("app")->getAttribute("label");
 
-if(!$app->execCtrl($p->ctrl,$p->app,$out))
-    $app->processLastError();
 
-echo $out;
-exit(cResult::getLast()->isOk() ? 0 : 1);
 ?>

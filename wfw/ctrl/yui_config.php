@@ -20,6 +20,10 @@
   along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
+namespace wfw\yui_config;
+
+use \cApplicationCtrl as cApplicationCtrl;
+use \iApplication     as iApplication;
 
 /**
  * @page wfw_data_model Data Model
@@ -38,13 +42,12 @@ class Ctrl extends cApplicationCtrl{
     public $fields    = null;
     public $op_fields = null;
 
-    function main(iApplication $app, $app_path, $p) {
-
-        header("content-type: text/javascript");
-        echo 'var wfw_yui_base_path = "'.$app->getCfgValue('path','wfw').'/javascript/yui/";';
-
-        //termine ici
-        exit(0);
+    function output(iApplication $app, $format, $att, $result) {
+        switch($format){
+            case "text/javascript":
+                return 'var wfw_yui_base_path = "'.$app->getCfgValue('path','wfw').'/javascript/yui/";';
+        }
+        return parent::output($app, $format, $att, $result);
     }
 }
 

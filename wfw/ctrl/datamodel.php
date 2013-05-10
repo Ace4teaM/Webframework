@@ -34,10 +34,22 @@
  * 
  * @param lang Langage pour les textes
  */
+namespace wfw\datamodel;
+
+use \cApplicationCtrl as cApplicationCtrl;
+use \iApplication     as iApplication;
+use \XMLDocument      as XMLDocument;
+
 class Ctrl extends cApplicationCtrl{
     public $fields    = null;
     public $op_fields = null;
+    
+    protected $doc = null;
 
+    function getXML() {
+        return $this->doc;
+    }
+    
     function main(iApplication $app, $app_path, $p) {
         $lang = "fr";
 
@@ -46,6 +58,7 @@ class Ctrl extends cApplicationCtrl{
         $rootEl = $doc->createElement('data');
         $doc->appendChild($rootEl);
 
+        $def=null;
         $app->getDefaultFile($def);
 
         //types et ids
@@ -53,17 +66,22 @@ class Ctrl extends cApplicationCtrl{
             $id = strtolower($id);
             $type = strtolower($type);
             $node = $doc->createTextElement($id, $type);
-            if ($def && $def->getFiledText($id, $text, $lang))
+            if (isset($def) && $def->getFiledText($id, $text, $lang))
                 $node->setAttribute("label", $text);
             $rootEl->appendChild($node);
         }
 
-        //textes
-        header("content-type: text/xml");
-        echo '<?xml version="1.0" encoding="UTF-8" ?>' . $doc->saveXML($doc->documentElement);
-
         //termine ici
-        exit(0);
+        $this->doc = $doc;
+        return RESULT_OK();
+    }
+    
+    function output(iApplication $app, $format, $att, $result) {
+        switch($format){
+            case "text/xml":
+                return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
+        }
+        return parent::output($app, $format, $att, $result);
     }
 }
 

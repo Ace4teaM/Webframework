@@ -3,42 +3,9 @@
     <title>Webframework Exemples</title>
     <name>Webframework</name>
     <base>webframework</base>
-    <description>Webframework Exemples HTML/Javascript</description>
+    <description>Webframework Unit Test</description>
 
     <index>
-        <page id="api" name="API">doxy_index.php</page>
-        <page id="index" name="Accueil">index.php</page>
-        <page id="guide" name="Guide">index.php?page=guide</page>
-        <page id="licence" name="A Propos...">index.php?page=licence</page>
-        <page id="modules" name="Modules">index.php?page=modules</page>
-        <page id="php" name="PHP">php_samples.php</page>
-        <page id="samples" name="Exemples">index.php?page=samples</page>
-        <page id="download" name="Téléchargements">index.php?page=telechargements</page>
-        <page id="resources" name="Ressources">index.php?page=resources</page>
-        <!-- Guide -->
-        <page id="wfw-request" name="Requêtes HTTP (coté client)">guide.php?page=wfw-request</page>
-        <page id="client_dialog" name="Dialogue">guide.php?page=client_dialog</page>
-        <!-- JS/YUI samples -->
-        <page id="js" name="Javascript">js_samples.php</page>
-        <page id="base" name="Fonctions de base">js_samples.php?sample=base</page>
-        <page id="css" name="Styles de bases (CSS)">js_samples.php?sample=css</page>
-        <page id="style" name="Styles (CSS)">js_samples.php?sample=style</page>
-        <page id="dialog" name="Dialogue">js_samples.php?sample=dialog</page>
-        <page id="dialog_messageBox" name="Dialogues (boite de message)">js_samples.php?sample=dialog-messageBox</page>
-        <page id="fieldbar" name="Barre de champs">js_samples.php?sample=fieldbar</page>
-        <page id="form" name="Formulaire">js_samples.php?sample=form.html</page>
-        <page id="layout" name="Positionnement (Layout)">js_samples.php?sample=layout</page>
-        <page id="layout_full" name="Positionnement encré (Layout)">js_samples.php?sample=layout_full</page>
-        <page id="request" name="Requête HTTP">js_samples.php?sample=request</page>
-        <page id="states" name="Données locales">js_samples.php?sample=states</page>
-        <page id="uri" name="Adresse (URI)">js_samples.php?sample=uri</page>
-        <page id="xarg" name="X-Argument (Format d'échange de données)">js_samples.php?sample=xarg</page>
-        <page id="default_file" name="Fichier Défaut">js_samples.php?sample=default_file</page>
-        <page id="xml_template" name="Templates XML/XHTML">js_samples.php?sample=xml_template</page>
-        <!-- liens -->
-        <link id="wfw_projet">http://wfw.aceteam.org</link>
-        <link id="wfw_js_api">http://wfw.aceteam.org/api/js</link>
-        <link id="wfw_php_api">http://wfw.aceteam.org/api/php</link>
         <!--contact-->
         <title id="contact">AceTeaM</title>
         <mail id="contact">dev@aceteam.org</mail>
@@ -53,34 +20,6 @@
     </index>
 
     <tree>
-        <index></index>
-        <guide></guide>
-        <samples>
-            <js> 
-                <base/>
-                <css/>
-                <style/>
-                <dialog/>
-                <dialog_messageBox/>
-                <fieldbar/>
-                <form/>
-                <layout/>
-                <layout_full/>
-                <request/>
-                <states/>
-                <uri/>
-                <xarg/>
-                <default_file/>
-                <xml_template/>
-            </js>
-            <php> 
-            </php>
-        </samples>
-        <api></api>
-        <modules></modules>
-        <download></download>
-        <resources></resources>
-        <licence></licence>
     </tree>
 
 </site>

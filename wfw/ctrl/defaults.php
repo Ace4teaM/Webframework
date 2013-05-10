@@ -20,6 +20,12 @@
   along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
+namespace wfw\defaults;
+
+use \cApplicationCtrl as cApplicationCtrl;
+use \iApplication     as iApplication;
+use \XMLDocument      as XMLDocument;
+
 
 /**
  * @page defaults Fusionne les fichiers defaults de tous les modules puis affiche le contenu
@@ -30,6 +36,9 @@ class Ctrl extends cApplicationCtrl{
     public $op_fields = null;
 //    public $role      = Role::Administrator;
 
+    protected $doc = null;
+
+    // entry point
     function main(iApplication $app, $app_path, $p)
     {
         // Initialise le document de sortie
@@ -38,7 +47,7 @@ class Ctrl extends cApplicationCtrl{
             return false;
         
         //
-        // merge les dependances (autres documents 'default.xml')
+        // fusionne les dependances (autres documents 'default.xml')
         //
         foreach($app->getCfgSection("defaults") as $key=>$filename){
             // Initialise le document de sortie
@@ -126,13 +135,28 @@ class Ctrl extends cApplicationCtrl{
             else
                 $path->nodeValue = substr(dirname($_SERVER["REQUEST_URI"]),1);
         }
-
-        //sortie XML
+        
+        //termine ici, le controleur ne doit pas s'appeler lui meme
         header("content-type: text/xml");
         echo '<?xml version="1.0" encoding="UTF-8" ?>' . $out->saveXML($out->documentElement);
+        exit;
 
-        //termine ici
-        exit(0);
+        //sortie XML
+        $this->doc = $out;
+        return RESULT_OK();
+    }
+    
+    
+    // output
+    function output(iApplication $app, $format, $att, $result) {
+        if(!$result->isOk())
+            return parent::output($app, $format, $att, $result);
+
+        switch($format){
+            case "text/xml":
+                return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
+        }
+        return parent::output($app, $format, $att, $result);
     }
 }
 

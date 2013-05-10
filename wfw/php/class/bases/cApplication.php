@@ -263,7 +263,8 @@ class cApplication implements iApplication{
 
         //charge le fichier
         $this->default = new cXMLDefault();
-        $uri = $this->getBaseURI()."/".$this->makeCtrlURI('wfw','defaults',null);
+
+        $uri = $this->getBaseURI()."/".$this->makeCtrlURI('wfw','defaults',array("output"=>"xml"));
 
         if(!$this->default->Initialise($uri)){
             $this->default = FALSE;
@@ -774,7 +775,65 @@ class cApplication implements iApplication{
         return "ctrl.php?app=$app_name&ctrl=$ctrl" . (is_string($add_params)?"&".$add_params:"");
     }
     
-    public function execCtrl($ctrl,$app=null)
+    public function callCtrl($ctrl,$app,$att,&$class)
+    {
+        //résultat de la requete
+        RESULT_OK();
+        $result = cResult::getLast();
+        
+        if(!isset($app))
+            $app = "application";
+
+        //inclue le controleur
+        $class = NULL;
+        if(!cInputIdentifier::isValid($ctrl))
+            return false;
+
+        $basepath = $this->getCfgValue($app,"path");
+        $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
+        if(!file_exists($path))
+            return RESULT(cResult::Failed,cApplication::CtrlNotFound);
+
+        //execute...
+        $classname = $app.'\\'.$ctrl.'\\Ctrl';
+        if(!class_exists($classname))
+            include($path);
+        $class = new $classname();
+
+        // Résultat de la requete
+        RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
+
+        // Champs requis
+        $fields=NULL;
+        if(is_array($class->fields) && !$this->makeFiledList(
+                $fields,
+                $class->fields,
+                cXMLDefault::FieldFormatClassName )
+           )return false;
+        $class->fields = $fields;
+
+        // Champs optionnels
+        $op_fields=NULL;
+        if(is_array($class->op_fields) && !$this->makeFiledList(
+                $op_fields,
+                $class->op_fields,
+                cXMLDefault::FieldFormatClassName )
+           )return false;
+        $class->op_fields = $op_fields;
+
+        //attributs d'entree
+        $class->att = $att;
+
+        // execute le controleur si les champs sont valides
+        $p = array();
+        if(!cInputFields::checkArray($class->fields,$class->op_fields,$class->att,$p))
+            return false;
+
+        // ok
+        return $class->main($this, $basepath, $p);
+    }
+    
+    public function execCtrl($ctrl,$app,&$out)
     {
         //résultat de la requete
         RESULT_OK();
@@ -794,8 +853,11 @@ class cApplication implements iApplication{
 //                $this->processLastError();
             }
             //execute...
-            include($path);
-            $class = new Ctrl();
+            $classname = $app.'\\'.$ctrl.'\\Ctrl';
+            if(!class_exists($classname))
+                include($path);
+            $class = new $classname();
+            
             // Résultat de la requete
             RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
             $result = cResult::getLast();
@@ -821,7 +883,7 @@ class cApplication implements iApplication{
             //attributs d'entree
             /*if(!isset($class->att))
                 $class->att = $_REQUEST;*/
-            
+   
             // execute le controleur si les champs sont valides
             $p = array();
             if(cInputFields::checkArray($class->fields,$class->op_fields,$class->att,$p))
@@ -829,7 +891,8 @@ class cApplication implements iApplication{
         }
 output:
         //recupére le resultat
-        $result = cResult::getLast(); 
+        $result = cResult::getLast();
+        $att = array();
 
         // Traduit le nom du champ concerné
         if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
@@ -842,24 +905,30 @@ output:
         $att = array_merge($att,$_REQUEST);
 
         /* Génére la sortie */
-        $format = "html";
-        if(cInputFields::checkArray(array("output"=>"cInputIdentifier")))
-            $format = $_REQUEST["output"] ;
+        
+        //obtient le type mime
+        $format = "text/html";
+        if(cInputFields::checkArray(array("output"=>"cInputIdentifier"))){
+            $format = 'text/'.$_REQUEST["output"];
+        }
+        else if(cInputFields::checkArray(array("output"=>"cInputMime"))){
+            $format = $_REQUEST["output"];
+        }
 
         //initialise un controleur générique pour la sortie ?
         if(!$class)
             $class = new cApplicationCtrl();
-        
+
         //génére la sortie
         $content = $class->output($this, $format, $att, $result);
         if($content === false)
             $this->processLastError();
-        
-        header("content-type: text/$format");
-        echo($content);
+
+        header("content-type: ".$format);
+        $out = $content;
         
         // ok
-        exit($result->isOk() ? 0 : 1);
+        return $result->isOk();
     }
     
     public function queryToXML($query,&$doc,$node)
