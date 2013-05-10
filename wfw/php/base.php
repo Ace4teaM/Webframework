@@ -142,7 +142,6 @@ function include_path($dir) {
         }
         closedir($dh);
     }
-    print_r($return);
     return $return;
 }
 
