@@ -1,20 +1,14 @@
 <?php
-function windows_server()
-{
-    return in_array(strtolower(PHP_OS), array("win32", "windows", "winnt"));
+require_once('systemd.php');
+
+if(defined('WINDOWS')){
+    inlude_path("system/windows");
 }
-
-
-function linux_server()
-{
-    return in_array(strtolower(PHP_OS), array("linux"));
+else if(defined('LINUX')){
+    inlude_path("system/linux");
 }
-
-if(windows_server())
-	inlude_path("system/windows");
-else if(linux_server())
-	inlude_path("system/linux");
-else exit(1);
+else
+    exit(1);
 
 //instancie les classes managers
 global $taskMgr;

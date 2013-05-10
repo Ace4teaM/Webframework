@@ -16,6 +16,8 @@
   [21-07-2012] Add, nvl()
  */
 
+require_once('systemd.php');
+
 //fichier log
 define("LOG_FILE", "private/log.txt");
 
@@ -41,12 +43,24 @@ function get_web_root() {//Get Current Script Directory
     return dirname($_SERVER['DOCUMENT_ROOT']);
 }
 
-//obtient l'extension d'un nom de fichier sans le point "."
+/**
+ * @brief Obtient l'extension d'un nom de fichier
+ * @param string $filename Nom de fichier
+ * @return L'extension trouvé (convertie en minuscule)
+ * @remarks Une chaine vide est retourné si aucune extension n'est trouvée
+ * @remarks L'extension nom est retourné sans point "."
+ */
 function file_ext($filename) {
     $infos = pathinfo($filename, PATHINFO_EXTENSION);
     return strtolower($infos);
 }
 
+/**
+ * @brief Définit l'extension d'un nom de fichier
+ * @param string $path Nom de fichier
+ * @param string $ext La nouvelle extension (sans point '.')
+ * @return Le nouveau nom de fichier
+ */
 function set_fileext($path, $ext) {
     $startIndex = strrpos($path, ".");
     if ($startIndex !== false) {
@@ -55,24 +69,80 @@ function set_fileext($path, $ext) {
     return $path . "." . $ext;
 }
 
+/**
+ * @brief Assemble un chemin d'accès
+ * @param string $base Chemin de base
+ * @param string ... Autres fragement de chemin
+ * @return string Chemin complet
+ * @remarks Le premier caractère de séparation est utilisé pour uniformiser la chaine (ex: '/srv/file\path' = '/srv/file/path'). Si aucun séparateur n'est trouvé, la constante 'SYSTEM_FILE_SEPARATOR' est utilisée.
+ * 
+ * @code{.php}
+ * $filename = path('/srv', 'www', 'index.html');
+ * echo( $filename ); // '/srv/www/index.html'
+ * @endcode
+ */
+function path($base)
+{
+    //detecte le separateur de nom de fichier
+    $separator = SYSTEM_FILE_SEPARATOR;
+    if(strstr($base,'/')) $separator='/';
+    else if(strstr($base,'\\')) $separator='\\';
+    
+    //trim
+    $ret = trim($base);
+    
+    //uniformise les slashs
+    $ret = str_replace(array('\\','/'),$separator,$ret);
+    
+    //ajoute les fragments de chemins
+    for($i=1;$i<func_num_args();$i++)
+    {
+        $arg = trim(func_get_arg($i));
+        //uniformise les slashs
+        $arg = str_replace(array('\\','/'),$separator,$arg);
+        //supprime le slash de fin
+        if(substr($ret,-1) == $separator)
+            $ret = substr($ret,0,-1);
+        //supprime le slash de debut
+        if(substr($arg,0,1) == $separator)
+            $arg = substr($arg,1);
+        
+        //colle le chemin
+        $ret .= $separator.$arg;
+    }
+    
+    return $ret;
+}
+
 //envoie une ligne sur la sortie d'erreur standard
 function _stderr($txt) {
     return file_put_contents("php://stderr", $txt . "\n");
 }
 
-//
+/**
+ * @brief Inclue un dossier de fichiers PHP
+ * @param string $dir Chemin d'accès
+ * @return Liste des fichiers trouvés
+ * @retval array Tableau des fichiers inclus (avec le chemin d'accès)
+ * @remarks Inclue les fichiers portant l'extension '.php'
+ */
 function include_path($dir) {
     $return = array();
     // liste les fichiers...
     if ($dh = opendir($dir)) {
         $file;
         while (($file = readdir($dh)) !== false) {
-            if ((is_file($dir . $file)) && ($file != ".") && ($file != "..") && (substr($file, -4) == ".php")) {
-                $return[] = include_once($dir . $file);
+            if(substr($file, 0,1) != '.' && file_ext($file) == 'php'){
+                $path = path($dir,$file);
+                if(is_file($path)){
+                    $return[] = $path;
+                    include_once($path);
+                }
             }
         }
         closedir($dh);
     }
+    print_r($return);
     return $return;
 }
 
@@ -313,6 +383,10 @@ function arrayToObject($d) {
                 // Return object
                 return $d;
         }
+}
+
+function loadIntoNamespace($file, $namespace) {
+    eval('<?php namespace ' . $namespace .'; ?>' . file_get_contents($file));    
 }
 
 ?>
