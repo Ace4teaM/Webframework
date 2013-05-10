@@ -81,7 +81,6 @@ class BaseTest extends PHPUnit_Framework_TestCase{
         
     }
     
-    
     public function testIncludePath()
     {
         //include path
@@ -90,8 +89,57 @@ class BaseTest extends PHPUnit_Framework_TestCase{
             'C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\a.php',
             'C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\b.PHP'
         );
-        $this->assertEquals($expected,$filelist,'include path');
+        $this->assertTrue(constant('TEST_CONST_A'));
+        $this->assertTrue(constant('TEST_CONST_B'));
+    }
+    
+    public function testClass()
+    {
+        include_once('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\testClass.inc');
+        $this->assertEquals(array('testClass','testClass2'), get_declared_classes_of('testClassBase'), 'get declared classes of');
+    }
+    
+    public function testSizeConversion()
+    {
+        $fmt = byteToSize(1024);
+        $this->assertEquals('1.0 Ko',  $fmt, '1 Ko');
+        $fmt = byteToSize(1024*2);
+        $this->assertEquals('2.0 Ko',  $fmt, '2 Ko');
+        $fmt = byteToSize(1024*2.5);
+        $this->assertEquals('2.5 Ko',  $fmt, '2.5 Ko');
+        $fmt = byteToSize(1024*1024);
+        $this->assertEquals('1.0 Mo',  $fmt, '1 Mo');
+        $fmt = byteToSize(pow(1024,3));
+        $this->assertEquals('1.0 Go',  $fmt, '1 Go');
+        $fmt = byteToSize(pow(1024,4));
+        $this->assertEquals('1.0 To',  $fmt, '1 To');
+        $fmt = byteToSize(pow(1024,5));
+        $this->assertEquals('1.0 Po',  $fmt, '1 Po');
+        $fmt = byteToSize(pow(1024,6));
+        $this->assertEquals('1.0 Zo',  $fmt, '1 Zo');
+        $fmt = byteToSize(pow(1024,7));
+        $this->assertEquals('1.0 Yo',  $fmt, '1 Yo');
+
+        // sizeToByte
         
+        $num = sizeToByte('1.0 Ko');
+        $this->assertEquals(1024,  $num, '1 Ko');
+        $num = sizeToByte('2.0 Ko');
+        $this->assertEquals(1024*2,  $num, '2 Ko');
+        $num = sizeToByte('2.5 Ko');
+        $this->assertEquals(1024*2.5,  $num, '2.5 Ko');
+        $num = sizeToByte('1.0 Mo');
+        $this->assertEquals(1024*1024,  $num, '1 Mo');
+        $num = sizeToByte('1.0 Go');
+        $this->assertEquals(pow(1024,3),  $num, '1 Go');
+        $num = sizeToByte('1.0 To');
+        $this->assertEquals(pow(1024,4),  $num, '1 To');
+        $num = sizeToByte('1.0 Po');
+        $this->assertEquals(pow(1024,5),  $num, '1 Po');
+        $num = sizeToByte('1.0 Zo');
+        $this->assertEquals(pow(1024,6),  $num, '1 Zo');
+        $num = sizeToByte('1.0 Yo');
+        $this->assertEquals(pow(1024,7),  $num, '1 Yo');
     }
 }
 ?>
