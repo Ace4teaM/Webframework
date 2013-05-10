@@ -1,0 +1,2 @@
+#required for merged file content
+Redirect /Etape-Regionale/etape_regionale/default.xml /Etape-Regionale/etape_regionale/ctrl.php?app=wfw&ctrl=defaults
