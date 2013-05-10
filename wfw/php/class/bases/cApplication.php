@@ -775,6 +775,14 @@ class cApplication implements iApplication{
         return "ctrl.php?app=$app_name&ctrl=$ctrl" . (is_string($add_params)?"&".$add_params:"");
     }
     
+    /**
+     * @brief Initialise un controleur
+     * @param string $ctrl Nom du controleur
+     * @param string $app Nom de l'application
+     * @param array $att Tableau associatif des paramètres
+     * @param Ctrl $class Pointeur recevant l'instance du controleur
+     * @return boolean Résultat de procédure
+     */
     public function callCtrl($ctrl,$app,$att,&$class)
     {
         //résultat de la requete
@@ -833,6 +841,13 @@ class cApplication implements iApplication{
         return $class->main($this, $basepath, $p);
     }
     
+    /**
+     * @brief Initialise et execute un controleur
+     * @param string $ctrl Nom du controleur
+     * @param string $app Nom de l'application
+     * @param string $out Pointeur recevant la sortie
+     * @return boolean Résultat de procédure
+     */
     public function execCtrl($ctrl,$app,&$out)
     {
         //résultat de la requete
