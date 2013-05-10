@@ -145,31 +145,29 @@ function include_path($dir) {
     return $return;
 }
 
-function require_path($dir, $include_func = "include_once") {
+/**
+ * @brief Inclue un dossier de fichiers PHP
+ * @param string $dir Chemin d'accès
+ * @return Liste des fichiers trouvés
+ * @retval array Tableau des fichiers inclus (avec le chemin d'accès)
+ * @remarks Inclue les fichiers portant l'extension '.php'
+ */
+function require_path($dir) {
     $return = array();
-    
-    //s'assure que les slash sont tous du même sens (possibilité de bug avec is_file())
-    $dir = str_replace( '\\','/', $dir);
-    
-    //s'assure que qu'aucun slash ne termine le nom de dossier
-    if(substr($dir, -1) == "/")
-        $dir = substr($dir, 0, strlen($dir)-1);
-    
-//    echo("require_path: $dir\n");
-    
     // liste les fichiers...
     if ($dh = opendir($dir)) {
         $file;
         while (($file = readdir($dh)) !== false) {
-            $path = $dir ."/". $file;
-            if ((is_file($path)) && (substr($file, -4) == ".php")) {
- //               echo("include: $path\n");
-                $return[] = require_once($path);
+            if(substr($file, 0,1) != '.' && file_ext($file) == 'php'){
+                $path = path($dir,$file);
+                if(is_file($path)){
+                    $return[] = $path;
+                    require_once($path);
+                }
             }
         }
         closedir($dh);
     }
-
     return $return;
 }
 
@@ -192,8 +190,12 @@ function uniq_filename($base_name, $dir) {
     return $filename;
 }
 
-//Enumere les classes d'une base donnee
-//Retourne : Tableau associatif des instances de classes trouvees
+/**
+ * @brief Liste les noms de classes heritées du type donné
+ * @param string $baseName Nom de la classe de base
+ * @return Types de classes trouvées
+ * @retval array Tableau associatif des noms de classes trouvées
+ */
 function get_declared_classes_of($baseName) {
     $class = get_declared_classes();
     $find = array();
@@ -211,18 +213,16 @@ function get_declared_classes_of($baseName) {
     return $find;
 }
 
-/*
-  Transforme un nombre d'octet en taille avec suffix
-  Arguments:
-  [number] bytes_count : Nombre d'octet
-  Retourne:
-  [string] taille lisible
+/**
+ * @brief Transforme un nombre d'octet en une taille avec suffix
+ * @param int $bytes_count Nombre d'octets
+ * @return Taille convertie en chaine
+ * @retval string Taille en nombre suivit du suffix de type (ex: 1.3 Mo)
  */
-
 function byteToSize($bytes_count) {
     $suffix = array("octets", "Ko", "Mo", "Go", "To", "Po", "Zo", "Yo");
     $i = 0;
-    $suffix_length = array_length($suffix);
+    $suffix_length = count($suffix);
     while ($bytes_count >= 1024 && $i < $suffix_length) {
         $bytes_count/=1024;
         $i++;
@@ -232,19 +232,21 @@ function byteToSize($bytes_count) {
     return number_format($bytes_count, 1) . " " . $suffix[$i];
 }
 
-/*
-  Transforme une taille en nombre d'octet
-  Arguments:
-  [string] size : taille
-  Retourne:
-  [number] Nombre d'octet. Si null, 'size' est mal forme
+/**
+ * @brief Transforme une taille avec suffix en nombre d'octet
+ * @param string $size Taille en chaine
+ * @param bool $intVal Force le retour en entier (voir remarques). 'false' par défaut
+ * @return Taille en octets
+ * @retval false La fonction a échouée (voir cResult::getLast pour plus d'informations)
+ * @retval null  La fonction a échouée
+ * @remarks 'sizeToByte' retourne une valeur entière en utilisant la fonction 'intval', le plafond de cette valeur est limitée par l'architecture matériel (32-bits,64-bits,etc..)
  */
-
-function sizeToByte($size) {
+function sizeToByte($size,$intVal=false) {
     $suffix_typesA = array("octets", "ko", "mo", "go", "to", "po", "zo", "yo");
     $suffix_typesB = array("octet", "kio", "mio", "gio", "tio", "pio", "zio", "yio");
     $suffix_typesC = array("o", "k", "m", "g", "t", "p", "z", "y");
-    $suffix_length = array_length($suffix_typesA);
+    $suffix_length = count($suffix_typesA);
+    
     //obtient la valeur et le suffix
     $value = trim($size);
     $suffix = "";
@@ -254,27 +256,32 @@ function sizeToByte($size) {
     }
 
     if (empty($suffix)) { // pas de suffix
-        echo("empty suffix\n");
         return intval($value); //en octets
     }
 
     //parse la valeur
-    if (is_nan($value = floatval($value)))
+    if (is_nan($value = floatval($value))){
+        if(function_exists('RESULT'))
+            return RESULT(cResult::Failed,"INVALID_NUMBER",array("$value"=>$value));
         return NULL;
+    }
 
     //calcule la taille en bytes
     $i = 0;
     $suffix = strtolower($suffix);
+//   echo("$suffix : ");
     while (($suffix != $suffix_typesA[$i]) && ($suffix != $suffix_typesB[$i]) && ($suffix != $suffix_typesC[$i])) {
         if ($i >= $suffix_length) {
-            echo("sizeTobyte: unknown suffix $suffix");
+            if(function_exists('RESULT'))
+                return RESULT(cResult::Failed,"UNKNOWN_SUFFIX",array("suffix"=>$suffix));
             return NULL;
         }
         $value *= 1024;
         $i++;
     }
 
-    return intval($value);
+ //   echo("$value\n");
+    return ($intVal ? intval($value) : $value);
 }
 
 function empty_string($str) {
