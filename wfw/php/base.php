@@ -1,19 +1,28 @@
 <?php
-
 /*
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    (C)2012, 2013 Thomas AUGUEY <contact@aceteam.org>
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-  (C)2012 ID-INFORMATIK - WebFrameWork(R)
-  Fonctions de bases
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-  AUTHOR: Auguey Thomas
-  MAIL  : dev@aceteam.fr
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-  Revisions:
-  [10-06-2011] Add, _stderr() et file_ext()
-  [12-12-2011] Add, sizeToByte() et byteToSize()
-  [06-01-2012] Add, set_fileext() et uniq_filename()
-  [29-02-2012] Add, strexplode()
-  [21-07-2012] Add, nvl()
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/**
+ * @file base.php
+ * Fonctions de bases
  */
 
 require_once('systemd.php');
@@ -316,14 +325,22 @@ function strexplode($str, $sep, $bTrim) {
     return $new_list;
 }
 
-//retourne $replacement si $value est vide ou nulle
+/**
+ * @brief Test si une valeur est vide ou nulle. Dans ce cas, retourne la valeur de remplacement
+ * @param mixed $value Valeur à tester
+ * @return Valeur de remplacement
+ * @remarks La fonction empty() est utilisée pour tester la valeur
+ */
 function nvl($value, $replacement) {
     if (empty($value))
         return $replacement;
     return $value;
 }
 
-//retourne la derniere erreur PHP sous forme de texte
+/**
+ * @brief Retourne la dernière erreur PHP (texte)
+ * @return Texte de l'erreur
+ */
 function error_get_last_str() {
     $str = "";
     $obj = error_get_last();
@@ -332,20 +349,22 @@ function error_get_last_str() {
     return $str;
 }
 
-//callback de comparaison pour la fonction de tri 'uasort'
-//tri les cles d'un tableau du plus petit nom au plus grand
+/**
+ * @brief Callback de comparaison pour la fonction de tri 'uasort'
+ * @remarks Tri du plus petit nom au plus grand nom
+ */
 function cmp_max_strlen($a, $b) {
     if (strlen($a) == strlen($b)) {
         return 0;
     }
     return (strlen($a) < strlen($b)) ? -1 : 1;
 }
+
 /**
- * Class casting
- *
- * @param string|object $destination
- * @param object $sourceObject
- * @return object
+ * @brief Convertie dynamiquement un type d'objet
+ * @param string|object $destination Objet de destination
+ * @param object $sourceObject Objet source
+ * @return object Objet de destination
  */
 function cast($destination, $sourceObject)
 {
