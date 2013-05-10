@@ -284,10 +284,25 @@ function sizeToByte($size,$intVal=false) {
     return ($intVal ? intval($value) : $value);
 }
 
+/**
+ * @brief Test si une chaine est vide
+ * @param string $str Chaine à tester
+ * @return true, si la chaine n'est pas vide
+ * @retval true La chaine contient des caractères autres que des caractères invisibles
+ * @retval false La chaine ne contient pas de caractères visibles
+ */
 function empty_string($str) {
     return (trim($str) == "") ? true : false;
 }
 
+/**
+ * @brief Eclate une chaine en tableau
+ * @param string $str Chaine à éclater
+ * @param string $sep Séparateur
+ * @param bool $bTrim true, si les espaces doivent être Rognés
+ * @return Tableau des éléments trouvés
+ * @remarks Les éléments vides sont ignorés
+ */
 function strexplode($str, $sep, $bTrim) {
     $list = explode($sep, $str);
     //supprime les elements vides
@@ -295,13 +310,13 @@ function strexplode($str, $sep, $bTrim) {
     foreach ($list as &$value) {
         if ($bTrim)
             $value = trim($value);
-        if (!empty($value))
+        if (!empty_string($value))
             array_push($new_list, $value);
     }
     return $new_list;
 }
 
-//retourne $replacement si $value est vide
+//retourne $replacement si $value est vide ou nulle
 function nvl($value, $replacement) {
     if (empty($value))
         return $replacement;
