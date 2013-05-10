@@ -1,29 +1,32 @@
 <?php
-require_once("inc/globals.php");
-global $app;
+/**
+ * Put this file in a web-accessible directory as index.php (or similar)
+ * and point your webbrowser to it.
+ */
 
-//print_r($app);
+// $pear_dir must point to a valid PEAR install (=contains PEAR.php)
+$pear_dir = 'C:\Users\developpement\Documents\GitHub\Webframework\unit_test/PEAR'; // default of install
 
-// page
-if(cInputFields::checkArray(array("page"=>"cInputIdentifier")))
-{
-    //arguments 
-    $param = array();
-    switch($_REQUEST["page"]){
-        case "licence":
-            //mon age depuis ma naissance
-            date_default_timezone_set('Europe/Paris');
-            $begin = mktime(3, 0, 0, 25, 12, 1983);
-            $end = date(DATE_RFC822);
-            $param["age"] = "28";
-            break;
-    }
-    //construit le template
-    $app->showXMLView("view/pages/".$_REQUEST["page"].".html",array());
-    exit;
+// OPTIONAL: If you have a config file at a non-standard location,
+// uncomment and supply it here:
+//$pear_user_config = '';
+
+// OPTIONAL: If you have protected this webfrontend with a password in a
+// custom way, then uncomment to disable the 'not protected' warning:
+//$pear_frontweb_protected = true;
+
+
+/***********************************************************
+ * Following code tests $pear_dir and loads the webfrontend:
+ */
+if (!file_exists($pear_dir.'/PEAR.php')) {
+    trigger_error('No PEAR.php in supplied PEAR directory: '.$pear_dir,
+                    E_USER_ERROR);
 }
+ini_set('include_path', $pear_dir);
+require_once('PEAR.php');
 
-//construit le template d'accueil
-$app->showXMLView("view/pages/index.html",array());
-
+// Include WebInstaller
+putenv('PHP_PEAR_INSTALL_DIR='.$pear_dir); // needed if unexisting config
+require_once('pearfrontendweb.php');
 ?>
