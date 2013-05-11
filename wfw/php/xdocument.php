@@ -260,24 +260,21 @@ class XMLDocument extends DOMDocument {
         $list = array();
 
         $func = function($node) use(&$list) {
-                    //deja en liste ?
-                    if (!in_array($node, $list, true)) {
-                        return $node;
-                    }
-                    return TRUE;
-                };
+            //deja en liste ?
+            if (!in_array($node, $list, true)) {
+                return $node;
+            }
+            return TRUE;
+        };
 
-        //           $i=0;
         //trouve le premier
         do {
             $cur = $this->one($selector, $context, $func);
 
             if ($cur != NULL)
                 array_push($list, $cur);
+        }while ($cur != NULL);
 
-            //               $i++;
-        }while (/* $i<5 && */$cur != NULL);
-//          print_r($list);  
         //retourne la nouvelle selection
         return $list;
     }
@@ -297,60 +294,61 @@ class XMLDocument extends DOMDocument {
         //analyse le selecteur
         $value_att = '(?:\w+[\~]?\=(?:\'?[^\'\n\r\,\]]+\'?))';
         $exists_att = '(?:\w+)';
-        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[('.$value_att.'|'.$exists_att.'(?:\,'.$value_att.'|'.$exists_att.')*)\])?/i', $selector, $matches);
-//        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i', $selector, $matches);
+        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[((?:'.$value_att.'|'.$exists_att.')(?:\,'.$value_att.'|\,'.$exists_att.')*)\])?/i', $selector, $matches);
 
+ //                   print_r($selector."\n");
 //          echo("begin ($selector)\n");
         foreach ($matches[2] as $key => $tag) {
             //               echo("find ($tag)....");
 
-            $cur = $this->enumNodes($cur->firstChild, function($node, &$cond) use ($addCheck, $key, $matches, $tag) {
-
-                        //enfant direct ?
-                        //echo("child $node->tagName\n");
-                        if (trim($matches[1][$key]) == '>')
-                            $cond["ignore_child"] = true;
-                        //element seulement
-                        if ($node->nodeType != XML_ELEMENT_NODE)
-                            return TRUE;
-                        //tagname
-                        if ($tag != '*' && $node->tagName != $tag)
-                            return TRUE;
-                        //attributs ?
-                        if (!empty($matches[3][$key])) {
-                            $att_selector = $matches[3][$key];
-                            $att_selector = str_replace("'",'',$att_selector);//remplace des eventuelles quote contenu dans la regex
-                            $att_list = strexplode($att_selector, ',', true);
-                            foreach ($att_list as $att_pair) {
-                                //E[foo~=warning]
-                                //Matches any E element whose "foo" attribute value is a list of space-separated values, one of which is exactly equal to "warning"
-                                if(strstr($att_pair, '~=')){
-                                    $att = strexplode($att_pair, '~=', true);
-                                    $exp = '/((?:\s'.$att[1].'\s)|(?:^'.$att[1].'\s)|(?:\s'.$att[1].'$)|(?:^'.$att[1].'$))/i';
-                                    if (!preg_match($exp,$node->getAttribute($att[0])))
-                                        return TRUE;
-                                }
-                                //E[foo=warning]
-                                //Matches any E element whose "foo" attribute value is exactly equal to "warning".
-                                else if(strstr($att_pair, '=')){
-                                    $att = strexplode($att_pair, '=', true);
-                                    if ($att[1] != $node->getAttribute($att[0]))
-                                        return TRUE;
-                                }
-                                //E[foo]
-                                //Matches any E element have "foo" attribute
-                                else{
-                                    if (!$node->hasAttribute($att_pair))
-                                        return TRUE;
-                                }
-                            }
+            $cur = $this->enumNodes($cur->firstChild, function($node, &$cond) use ($addCheck, $key, $matches, $tag)
+            {
+                //enfant direct ?
+                //echo("child $node->tagName\n");
+                if (trim($matches[1][$key]) == '>')
+                    $cond["ignore_child"] = true;
+                //élément seulement
+                if ($node->nodeType != XML_ELEMENT_NODE)
+                    return TRUE;
+                //tagname
+                if ($tag != '*' && $node->tagName != $tag)
+                    return TRUE;
+                //attributs ?
+                if (!empty($matches[3][$key])) {
+                    $att_selector = $matches[3][$key];
+                    $att_selector = str_replace("'",'',$att_selector);//remplace des éventuelles quotes contenus dans la regex
+                    $att_list = strexplode($att_selector, ',', true);//éclate les selecteurs
+ //                   print_r($att_list);
+                    foreach ($att_list as $att_pair) {
+                        //E[foo~=warning]
+                        //Matches any E element whose "foo" attribute value is a list of space-separated values, one of which is exactly equal to "warning"
+                        if(strstr($att_pair, '~=')){
+                            $att = strexplode($att_pair, '~=', true);
+                            $exp = '/((?:\s'.$att[1].'\s)|(?:^'.$att[1].'\s)|(?:\s'.$att[1].'$)|(?:^'.$att[1].'$))/i';
+                            if (!preg_match($exp,$node->getAttribute($att[0])))
+                                return TRUE;
                         }
-                        if (is_callable($addCheck)) {
-                            return $addCheck($node);
+                        //E[foo=warning]
+                        //Matches any E element whose "foo" attribute value is exactly equal to "warning".
+                        else if(strstr($att_pair, '=')){
+                            $att = strexplode($att_pair, '=', true);
+                            if ($att[1] != $node->getAttribute($att[0]))
+                                return TRUE;
                         }
-                        //ok
-                        return $node;
-                    }, true);
+                        //E[foo]
+                        //Matches any E element have "foo" attribute
+                        else{
+                            if (!$node->hasAttribute($att_pair))
+                                return TRUE;
+                        }
+                    }
+                }
+                if (is_callable($addCheck)) {
+                    return $addCheck($node);
+                }
+                //ok
+                return $node;
+            }, true);
 
             //slection ok ?
             if ($cur === TRUE) {
