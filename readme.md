@@ -7,7 +7,8 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
  [1.8.1] Quoi de neuf 
 ---------------------------------------------------------------------------------------------------------------------------------------
-- Classes controleurs réutilisable (utilisation des espaces de noms)
+- Utilisation des espaces de noms
+- Classes controleurs réutilisable (définit dans un espace de noms)
 - Réfinit des includes avec un chemin relatif au dossier 'wfw/php/'
 - Résolutions de divers bugs
 
