@@ -21,10 +21,8 @@
   ------------------------------------------------------------------------------
  */
 
-$libdir = realpath(dirname(__FILE__) . "/../..");
-
-require_once("$libdir/php/class/bases/input.php");
-require_once("$libdir/php/base.php");
+require_once("class/bases/input.php");
+require_once("base.php");
 
 /**
  * @brief Entier numérique 32bits signée

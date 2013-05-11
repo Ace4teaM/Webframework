@@ -24,7 +24,7 @@
  * Formatage et verification de champs de données
  */
 
-require_once("php/class/bases/cResult.php");
+require_once("class/bases/cResult.php");
 
 class cInput {
 

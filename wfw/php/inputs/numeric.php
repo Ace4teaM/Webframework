@@ -1,11 +1,8 @@
 <?php
 
-$cwd = realpath(dirname(__FILE__));
-$libdir = realpath("$cwd/../..");
-
-require_once("$libdir/php/class/bases/input.php");
-require_once("$cwd/int.php");
-require_once("$cwd/float.php");
+require_once("class/bases/input.php");
+require_once("inputs/int.php");
+require_once("inputs/float.php");
 
 // numerique 
 // Aucun Standard

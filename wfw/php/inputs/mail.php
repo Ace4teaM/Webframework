@@ -9,10 +9,8 @@
   [23-11-2010], Debug isValid(), accept le caractere '-' dans le format du nom de domaine.
  */
 
-$libdir = realpath(dirname(__FILE__) . "/../..");
-
-require_once("$libdir/php/class/bases/input.php");
-require_once("$libdir/php/string.php");
+require_once("class/bases/input.php");
+require_once("string.php");
 
 // Adresse eMail
 // RFC-2822 ( non-certifié)
