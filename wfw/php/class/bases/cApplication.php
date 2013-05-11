@@ -20,16 +20,16 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-require_once("php/systemd.php");
-require_once("php/ini.php");
-require_once("iApplication.php");
-require_once("cApplicationCtrl.php");
-require_once("php/file.php");
-require_once("php/xarg.php");
-require_once("php/class/bases/cResult.php");
-require_once("php/templates/cHTMLTemplate.php");
-require_once("php/templates/xml_template.php");
-require_once("php/xml_default.php");
+require_once("systemd.php");
+require_once("ini.php");
+require_once("class/bases/iApplication.php");
+require_once("class/bases/cApplicationCtrl.php");
+require_once("file.php");
+require_once("xarg.php");
+require_once("class/bases/cResult.php");
+require_once("templates/cHTMLTemplate.php");
+require_once("templates/xml_template.php");
+require_once("xml_default.php");
 
 
 class FormField
@@ -894,7 +894,6 @@ class cApplication implements iApplication{
                     cXMLDefault::FieldFormatClassName )
                ) goto output; /*$this->processLastError();*/
             $class->op_fields = $op_fields;
-            
             //attributs d'entree
             /*if(!isset($class->att))
                 $class->att = $_REQUEST;*/

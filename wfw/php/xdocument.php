@@ -26,8 +26,8 @@
 
 require_once("base.php");
 require_once("regexp.php");
-//require_path("class/bases/");
-//require_path("inputs/");
+require_path("class/bases/");
+require_path("inputs/");
 
 class XMLDocument extends DOMDocument {
     
@@ -301,6 +301,7 @@ class XMLDocument extends DOMDocument {
         foreach ($matches[2] as $key => $tag) {
             //               echo("find ($tag)....");
 
+            //énumére les noeuds à la recherche 
             $cur = $this->enumNodes($cur->firstChild, function($node, &$cond) use ($addCheck, $key, $matches, $tag)
             {
                 //enfant direct ?

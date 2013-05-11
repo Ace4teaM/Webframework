@@ -69,14 +69,13 @@
   -{__uri__}                       : nom de domaine specifie dans "default.xml", vide si inexistant.
 */
 
-$libdir = realpath(dirname(__FILE__) . "/../..");
 
-require_once("$libdir/php/base.php");
-require_once("$libdir/php/templates/template_markers.php");
-require_once("$libdir/php/xdocument.php");
-require_once("$libdir/php/regexp.php");
-require_path("$libdir/php/class/bases/");
-require_path("$libdir/php/inputs/");
+require_once("base.php");
+require_once("templates/template_markers.php");
+require_once("xdocument.php");
+require_once("regexp.php");
+require_path("class/bases/");
+require_path("inputs/");
 
 class cXMLTemplate
 {
@@ -515,6 +514,8 @@ class cXMLTemplate
                         $class_name = "cXMLTemplateAction_" . $action;
                         if (class_exists($class_name))
                             $next = $class_name::check_node($this, $cur_select, $node, $arg);
+                        else
+                            $this->post('action class not exists',$class_name);
                     }
                     else {
                         $this->check_arguments($cur_select, $node, $arg);
@@ -788,7 +789,7 @@ class cXMLTemplate
      */
 
     public function get_xml_selection($current_select, $arg, $path, $conditions = NULL) {
-        
+
         //
         // charge un nouveau fichier...
         //
@@ -1019,7 +1020,7 @@ class cXMLTemplateAction_all extends cXMLTemplateAction {
         $selector = $node->getAttributeNS($input->wfw_template_uri, "selector");
 
         $all = $input->doc->all($selector,$select);
-//        print_r($all);
+
         //scan le contenu
         foreach($all as $key=>$select) {
             $arg['__array_count__']++;
