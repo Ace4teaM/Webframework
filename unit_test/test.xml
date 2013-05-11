@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+    <title>Webframework Exemples</title>
+    <name>Webframework</name>
+    <base>webframework</base>
+    <description>Webframework Unit Test</description>
+
+    <index>
+        <!--contact-->
+        <title id="contact">AceTeaM</title>
+        <mail id="contact">dev@aceteam.org</mail>
+        <mail id="no-reply">no-reply@aceteam.org</mail>
+        <!--autres-->
+        <image id="logo">bin/pictures/www.jpg</image>
+        <image id="icon">bin/pictures/wfw_icon32.png</image>
+        <icon id="favicon">bin/pictures/favicon.ico</icon>
+        <!-- icones des categories d'exemples -->
+        <image id="js">bin/pictures/JavaScriptLogo.png</image>
+        <image id="php">bin/pictures/php-logo.png</image>
+    </index>
+
+    <tree>
+    </tree>
+
+</site>

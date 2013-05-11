@@ -24,12 +24,10 @@
  * Parser de fichier XML
  */
 
-$libdir = realpath(dirname(__FILE__) . "/..");
-
-require_once("$libdir/php/base.php");
-require_once("$libdir/php/regexp.php");
-require_path("$libdir/php/class/bases/");
-require_path("$libdir/php/inputs/");
+require_once("base.php");
+require_once("regexp.php");
+//require_path("class/bases/");
+//require_path("inputs/");
 
 class XMLDocument extends DOMDocument {
     
@@ -297,10 +295,9 @@ class XMLDocument extends DOMDocument {
         $cur = ($context === NULL) ? $this->documentElement : $context;
 
         //analyse le selecteur
-        $spaced_att = '(?:\w+\=(?:\'?[^\'\n\r\,\]]+\'?))';
-        $exacts_att = '(?:\w+\~\=(?:\'?[^\'\n\r\,\]]+\'?))';
+        $value_att = '(?:\w+[\~]?\=(?:\'?[^\'\n\r\,\]]+\'?))';
         $exists_att = '(?:\w+)';
-        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[('.$spaced_att.'|'.$exacts_att.'|'.$exists_att.'(?:\,'.$spaced_att.'|'.$exacts_att.'|'.$exists_att.')*)\])?/i', $selector, $matches);
+        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[('.$value_att.'|'.$exists_att.'(?:\,'.$value_att.'|'.$exists_att.')*)\])?/i', $selector, $matches);
 //        preg_match_all('/(\>|\/?)\s*(\w+|\*)\s*(?:\[(\w+\=\w+(?:\,\w+\=\w+)*)\])?/i', $selector, $matches);
 
 //          echo("begin ($selector)\n");
