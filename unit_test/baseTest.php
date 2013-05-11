@@ -109,11 +109,8 @@ class BaseTest extends PHPUnit_Framework_TestCase{
     public function testIncludePath()
     {
         //include path
-        $filelist = include_path('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes');
-        $expected = array(
-            'C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\a.php',
-            'C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\b.PHP'
-        );
+        $filelist = include_path('test_includes');
+ //       print_r($filelist);
         $this->assertTrue(constant('TEST_CONST_A'));
         $this->assertTrue(constant('TEST_CONST_B'));
     }

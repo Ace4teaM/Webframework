@@ -21,201 +21,114 @@
 */
 
 /**
- * PHP-Unit test file for Base Library
+ * PHP-Unit test file for XMLDocument
  */
 
-class BaseTest extends PHPUnit_Framework_TestCase{
+class XMLDocumentTest extends PHPUnit_Framework_TestCase{
     public function setUp(){
         set_include_path(
                 get_include_path()
                 . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\wfw\php'
                 . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\unit_test'
         );
-        require_once 'base.php';
+        //require_once 'base.php';
+        require_once 'xdocument.php';
     }
 
-    public function testFileExt()
+    public function testOne()
     {
-        //simple file name
-        $ext = file_ext('hello.world');
-        $this->assertEquals('world',$ext,'simple file name');
+        $doc = new XMLDocument("1.0", "utf-8");
+        $doc->load('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test.xml');
         
-        //character case insensitive
-        $ext = file_ext('hello.WORLD');
-        $this->assertEquals('world',$ext,'character case insensitive');
+        //Child selector
+        $node = $doc->one('>library');
+        $this->assertInstanceOf('DOMElement',$node,'Child selector');
         
-        //with path
-        $ext = file_ext('/srv/var/hello.World');
-        $this->assertEquals('world',$ext,'with file path');
+        //TagName selector
+        $node = $doc->one('book');
+        $this->assertInstanceOf('DOMElement',$node,'TagName selector');
+        $this->assertEquals('Bible du C++',$node->nodeValue,'TagName selector (value)');
         
-        //without file path
-        $ext = file_ext('/srv/var/hello');
-        $this->assertEquals('',$ext,'with file path');
+        //Attribute selector without quote
+        $node = $doc->one('book[id=cpp]');
+        $this->assertInstanceOf('DOMElement',$node,'Attribute selector without quote');
+        $this->assertEquals('Bible du C++',$node->nodeValue,'Attribute selector without quote (value)');
         
-        //without file name
-        $ext = file_ext('.htaccess');
-        $this->assertEquals('htaccess',$ext,'without file name');
+        //Attribute selector with quote
+        $node = $doc->one("book[id='cpp']");
+        $this->assertInstanceOf('DOMElement',$node,'Attribute selector with quote');
+        $this->assertEquals('Bible du C++',$node->nodeValue,'Attribute selector with quote (value)');
         
+        //Multiple attribute selector
+        $node = $doc->one("book[id=cpp,class]");
+        $this->assertInstanceOf('DOMElement',$node,'Multiple attribute selector');
+        $this->assertEquals('Bible du C++',$node->nodeValue,'Multiple attribute selector (value)');
+        
+        //Attribute selector
+        $node = $doc->one("book[class]");
+        $this->assertInstanceOf('DOMElement',$node,'Attribute selector');
+        $this->assertEquals('Bible du C++',$node->nodeValue,'Attribute selector (value)');
+        
+        //Attribute selector (~=)
+        $node = $doc->one("book[class~=blue]");
+        $this->assertInstanceOf('DOMElement',$node,'Attribute selector (~=)');
+        $this->assertEquals('Programmer en ASMx86',$node->nodeValue,'Attribute selector (~=) (value)');
+        
+        //Attribute selector random test 1
+        $node = $doc->one(">long>far>item[id='my']");
+        $this->assertInstanceOf('DOMElement',$node,'Attribute selector random test 1');
+        $this->assertEquals('Hello',$node->nodeValue,'Attribute selector random test 1 (value)');
+        
+        //Attribute selector random test 2
+        $node = $doc->one("two four");
+        $this->assertInstanceOf('DOMElement',$node,'Attribute selector random test 2');
+        $this->assertEquals('4',$node->nodeValue,'Attribute selector random test 2 (value)');
     }
     
-    public function testSetFileExt()
+    public function testAll()
     {
-        //simple add
-        $filename = set_fileext('hello','world');
-        $this->assertEquals('hello.world',$filename,'simple add');
+        $doc = new XMLDocument("1.0", "utf-8");
+        $doc->load('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test.xml');
         
-        //simple replace
-        $filename = set_fileext('hello.test','world');
-        $this->assertEquals('hello.world',$filename,'simple replace');
+        //Name selector
+        $array = $doc->all("book");
+        $this->assertContainsOnlyInstancesOf('DOMElement',$array,'Name selector (types)');
+        $this->assertEquals(3,count($array),'Name selector (count)');
         
-        //with path
-        $filename = set_fileext('/srv/var/hello.test','world');
-        $this->assertEquals('/srv/var/hello.world',$filename,'with file path');
+        //Attribute selector
+        $array = $doc->all("book[class~=programming]");
+        $this->assertContainsOnlyInstancesOf('DOMElement',$array,'Attribute selector (types)');
+        $this->assertEquals(3,count($array),'Attribute selector (count)');
         
-        //without extension
-        $filename = set_fileext('hello.test','');
-        $this->assertEquals('hello.',$filename,'without extension');
-        
-        //without file name
-        $filename = set_fileext('','htaccess');
-        $this->assertEquals('.htaccess',$filename,'without file name');
-        
+        //Multiple selectors
+        /*$array = $doc->all("book[id=cpp],two,four");
+        print_r($array);
+        $this->assertContainsOnlyInstancesOf('DOMElement',$array,'Multiple selectors (types)');
+        $this->assertEquals(3,count($array),'Multiple selectors (count)');*/
     }
     
-    public function testPath()
+    public function testInsertion()
     {
-        //simple
-        $filename = path('/srv');
-        $this->assertEquals('/srv',$filename,'simple');
+        $doc = new XMLDocument("1.0", "utf-8");
+        $doc->load('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test.xml');
         
-        //auto file system separator
-        $filename = path('srv','local_file');
-        $this->assertEquals('srv'.SYSTEM_FILE_SEPARATOR.'local_file',$filename,'auto file system separator');
-        
-        //double slash resolve
-        $filename = path('srv/','/local_file');
-        $this->assertEquals('srv/local_file',$filename,'double slash resolve');
-        
-        //multiple items
-        $filename = path('srv/','/www/','/index.html');
-        $this->assertEquals('srv/www/index.html',$filename,'multiple items');
-        
-        //auto detect separator type
-        $filename = path('/srv','www','index.html');
-        $this->assertEquals('/srv/www/index.html',$filename,'auto detect separator type');
-        
-    }
-    
-    public function testIncludePath()
-    {
-        //include path
-        $filelist = include_path('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes');
-        $expected = array(
-            'C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\a.php',
-            'C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\b.PHP'
+        //Append Associative Array
+        $parent = $doc->createElement("assoc_array");
+        $doc->appendAssocArray(
+                $parent,
+                array("bool"=>"A","int"=>"B","float"=>"C","char"=>"D")
         );
-        $this->assertTrue(constant('TEST_CONST_A'));
-        $this->assertTrue(constant('TEST_CONST_B'));
+        $this->assertEquals("ABCD",$parent->nodeValue,'Append Associative Array');
+        
+        // Merge Arguments
+        $a = $doc->createElement("h1");
+        $b = $doc->createElement("h1");
+        $a->setAttribute("class", "header");
+        $a->setAttribute("color", "red");
+        $b->setAttribute("class", "");
+        $doc->mergeArguments($a, $b, "replace");
+        $this->assertEquals($b->getAttribute("color"),"",'Merge Arguments (not exists)');
+        $this->assertEquals($b->getAttribute("class"),"header",'Merge Arguments (merged)');
     }
-    
-    public function testClass()
-    {
-        // include
-        
-        include_once('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\testClass.inc');
-        $this->assertEquals(array('testClass','testClass2'), get_declared_classes_of('testClassBase'), 'get declared classes of');
-        
-        // cast
-        $obj = new testClass();
-        $obj = cast(new testClass2(),$obj);
-        $this->assertInstanceOf('testClass2', $obj, 'Object type cast');
-        $this->assertEquals('HelloWorld', $obj->getStr(), 'Object type cast (data)');
-    }
-    
-    public function testSizeConversion()
-    {
-        // byteToSize
-        
-        $fmt = byteToSize(1024);
-        $this->assertEquals('1.0 Ko',  $fmt, '1 Ko');
-        $fmt = byteToSize(1024*2);
-        $this->assertEquals('2.0 Ko',  $fmt, '2 Ko');
-        $fmt = byteToSize(1024*2.5);
-        $this->assertEquals('2.5 Ko',  $fmt, '2.5 Ko');
-        $fmt = byteToSize(1024*1024);
-        $this->assertEquals('1.0 Mo',  $fmt, '1 Mo');
-        $fmt = byteToSize(pow(1024,3));
-        $this->assertEquals('1.0 Go',  $fmt, '1 Go');
-        $fmt = byteToSize(pow(1024,4));
-        $this->assertEquals('1.0 To',  $fmt, '1 To');
-        $fmt = byteToSize(pow(1024,5));
-        $this->assertEquals('1.0 Po',  $fmt, '1 Po');
-        $fmt = byteToSize(pow(1024,6));
-        $this->assertEquals('1.0 Zo',  $fmt, '1 Zo');
-        $fmt = byteToSize(pow(1024,7));
-        $this->assertEquals('1.0 Yo',  $fmt, '1 Yo');
-
-        // sizeToByte
-        
-        $num = sizeToByte('1.0 Ko');
-        $this->assertEquals(1024,  $num, '1 Ko');
-        $num = sizeToByte('2.0 Ko');
-        $this->assertEquals(1024*2,  $num, '2 Ko');
-        $num = sizeToByte('2.5 Ko');
-        $this->assertEquals(1024*2.5,  $num, '2.5 Ko');
-        $num = sizeToByte('1.0 Mo');
-        $this->assertEquals(1024*1024,  $num, '1 Mo');
-        $num = sizeToByte('1.0 Go');
-        $this->assertEquals(pow(1024,3),  $num, '1 Go');
-        $num = sizeToByte('1.0 To');
-        $this->assertEquals(pow(1024,4),  $num, '1 To');
-        $num = sizeToByte('1.0 Po');
-        $this->assertEquals(pow(1024,5),  $num, '1 Po');
-        $num = sizeToByte('1.0 Zo');
-        $this->assertEquals(pow(1024,6),  $num, '1 Zo');
-        $num = sizeToByte('1.0 Yo');
-        $this->assertEquals(pow(1024,7),  $num, '1 Yo');
-    }
-    
-    public function testString()
-    {
-        // empty_string
-        
-        $this->assertFalse(empty_string('h'), 'simple empty test');
-        $this->assertFalse(empty_string('hello'), 'simple empty test');
-        $this->assertTrue(empty_string(''), 'simple empty test');
-        $this->assertTrue(empty_string(null), 'simple null test');
-        $this->assertTrue(empty_string('      '), 'only spacing');
-        $this->assertTrue(empty_string("\n"), 'only linefeed');
-        
-        // strexplode
-        
-        $values = strexplode('green;red;blue',';',true);
-        $this->assertEquals(array('green','red','blue'),  $values, 'simple explode');
-        
-        $values = strexplode('green ; red; blue ',';',true);
-        $this->assertEquals(array('green','red','blue'),  $values, 'simple explode with spaces');
-        
-        $values = strexplode('green ; red; 0; blue ',';',true);
-        $this->assertEquals(array('green','red','0','blue'),  $values, 'simple explode ignore empty string');
-        
-        // nvl
-        
-        $values = nvl('0','REPLACE');
-        $this->assertEquals('REPLACE',  $values, 'Zero is null');
-        
-        $values = nvl(NULL,'REPLACE');
-        $this->assertEquals('REPLACE',  $values, 'NULL is null');
-        
-        $values = nvl('','REPLACE');
-        $this->assertEquals('REPLACE',  $values, 'empty string is null');
-        
-        $values = nvl('NULL','REPLACE');
-        $this->assertEquals('NULL',  $values, 'NULL string is not null');
-        
-        $values = nvl('FALSE','REPLACE');
-        $this->assertEquals('FALSE',  $values, 'FALSE string is not null');
-    }
-    
 }
 ?>
