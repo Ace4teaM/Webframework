@@ -47,9 +47,5 @@ if(!cInputFields::checkArray($fields,$op_fields,$_REQUEST,$p))
     $app->processLastError();
 
 
-if(!$app->execCtrl($p->ctrl,$p->app,$out))
-    $app->processLastError();
-
-echo $out;
-exit(cResult::getLast()->isOk() ? 0 : 1);
+$app->execCtrl($p->ctrl,$p->app);
 ?>

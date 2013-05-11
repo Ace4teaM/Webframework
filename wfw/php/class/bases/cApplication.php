@@ -842,13 +842,13 @@ class cApplication implements iApplication{
     }
     
     /**
-     * @brief Initialise et execute un controleur
+     * @brief Initialise et execute un controleur dans la sortie standard
      * @param string $ctrl Nom du controleur
      * @param string $app Nom de l'application
      * @param string $out Pointeur recevant la sortie
      * @return boolean Résultat de procédure
      */
-    public function execCtrl($ctrl,$app,&$out)
+    public function execCtrl($ctrl,$app)
     {
         //résultat de la requete
         RESULT_OK();
@@ -940,10 +940,10 @@ output:
             $this->processLastError();
 
         header("content-type: ".$format);
-        $out = $content;
+        echo $content;
         
         // ok
-        return $result->isOk();
+        exit($result->isOk()?0:1);
     }
     
     public function queryToXML($query,&$doc,$node)
