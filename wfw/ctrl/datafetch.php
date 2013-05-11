@@ -22,9 +22,11 @@
  */
 namespace wfw\datafetch;
 
+use \cApplication     as cApplication;
 use \cApplicationCtrl as cApplicationCtrl;
 use \iApplication     as iApplication;
 use \XMLDocument      as XMLDocument;
+use \cResult          as cResult;
 
 /**
  * @page datafetch Extrait des données d'une table

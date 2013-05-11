@@ -22,9 +22,11 @@
  */
 namespace wfw\defaults;
 
+use \cApplication     as cApplication;
 use \cApplicationCtrl as cApplicationCtrl;
 use \iApplication     as iApplication;
 use \XMLDocument      as XMLDocument;
+use \cResult          as cResult;
 
 
 /**
@@ -148,7 +150,8 @@ class Ctrl extends cApplicationCtrl{
     
     
     // output
-    function output(iApplication $app, $format, $att, $result) {
+    function output(iApplication $app, $format, $att, $result)
+    {
         if(!$result->isOk())
             return parent::output($app, $format, $att, $result);
 

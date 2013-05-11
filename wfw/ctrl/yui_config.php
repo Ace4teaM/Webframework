@@ -22,8 +22,10 @@
  */
 namespace wfw\yui_config;
 
+use \cApplication     as cApplication;
 use \cApplicationCtrl as cApplicationCtrl;
 use \iApplication     as iApplication;
+use \cResult          as cResult;
 
 /**
  * @page wfw_data_model Data Model

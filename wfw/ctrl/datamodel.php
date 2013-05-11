@@ -36,9 +36,11 @@
  */
 namespace wfw\datamodel;
 
+use \cApplication     as cApplication;
 use \cApplicationCtrl as cApplicationCtrl;
 use \iApplication     as iApplication;
 use \XMLDocument      as XMLDocument;
+use \cResult          as cResult;
 
 class Ctrl extends cApplicationCtrl{
     public $fields    = null;
@@ -76,13 +78,18 @@ class Ctrl extends cApplicationCtrl{
         return RESULT_OK();
     }
     
-    function output(iApplication $app, $format, $att, $result) {
+    // output
+    function output(iApplication $app, $format, $att, $result)
+    {
+        if(!$result->isOk())
+            return parent::output($app, $format, $att, $result);
+
         switch($format){
             case "text/xml":
                 return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
         }
         return parent::output($app, $format, $att, $result);
     }
-}
+};
 
 ?>
