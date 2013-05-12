@@ -665,8 +665,11 @@ class cApplication implements iApplication{
             header("content-type: text/plain");
             echo("The application encountered a fatal error.\n");
             echo("L'application à rencontrée une erreur fatale.\n");
+            
+            /** todo: Possible cause de plentage si le controleur 'defaults' retourne une erreur (appel recursif)*/
             $result_infos = $this->translateResult($result);
             print_r($result_infos);
+            
             exit(-1);
         }
     }
