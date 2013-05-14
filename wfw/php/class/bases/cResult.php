@@ -107,7 +107,9 @@ class cResult {
  * @return bool true si $code == cResult::Ok, sinon false
  */
 function RESULT_INST($result){
-    return cResult::last($result->code,$result->info,$result->att);
+    $ret = cResult::last($result->code,$result->info,$result->att);
+    if(defined('DEBUG')) RESULT_PUSH_CALLSTACK();
+    return $ret;
 }
 
 /**
@@ -118,7 +120,21 @@ function RESULT_INST($result){
  * @return bool true si $code == cResult::Ok, sinon false
  */
 function RESULT($code,$info="",$att=array()){
-    return cResult::last($code,$info,$att);
+    $ret = cResult::last($code,$info,$att);
+    if(defined('DEBUG')) RESULT_PUSH_CALLSTACK();
+    return $ret;
+}
+
+/**
+ * @brief Ajoute la pile d'appel au resultat
+ * @return bool true
+ */
+function RESULT_PUSH_CALLSTACK(){
+    $callstack = debug_backtrace();
+    $str="";
+    foreach($callstack as $key=>$caller)
+        $str .= "\n".$key.' >> '.$caller['file'].':'.$caller['line'];
+    RESULT_PUSH('callstack',$str);
 }
 
 /**

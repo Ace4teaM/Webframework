@@ -142,7 +142,7 @@ class cApplication implements iApplication{
         
         //debug ?
         if($this->getCfgValue("application","debug"))
-            define('DEBUG');
+            define('DEBUG',true);
         
         //ajoute les chemins d'accès aux attributs de template
         $path_section = $this->getCfgSection("path");
@@ -813,6 +813,8 @@ class cApplication implements iApplication{
         $classname = $app.'_'.$ctrl.'_ctrl';
         if(!class_exists($classname))
             include($path);
+        if(!class_exists($classname))
+            return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"CTRL_CLASS_NOT_FOUND ($classname)"));
         $class = new $classname();
 
         // Résultat de la requete
@@ -861,7 +863,7 @@ class cApplication implements iApplication{
         $class=null;
 
         //initialise le controleur
-        if(!$this->callCtrl($ctrl,$app,null,$class))
+        if(!$this->callCtrl($ctrl,$app,null,$class) && !isset($class))
             $class = new cApplicationCtrl();
 
         //recupére le resultat

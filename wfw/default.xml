@@ -24,6 +24,7 @@
             <INFORMATION>Information</INFORMATION>
             
             <!-- WFW (ERR_FAILED) -->
+            <TOO_SMALL_STRING>Texte trop petit</TOO_SMALL_STRING>
             <NO_INPUT_FIELD>Aucun champ reçu</NO_INPUT_FIELD>
             <MISSING_FIELD>Champ manquant</MISSING_FIELD>
             <EMPTY_TEXT>Champ vide</EMPTY_TEXT>
