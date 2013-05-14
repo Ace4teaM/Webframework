@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+    <library>
+        <book id="cpp" class="programming red">Bible du C++</book>
+        <book id="x86" class="programming blue">Programmer en ASMx86</book>
+        <book id="csharp" class="programming green">Le C#</book>
+    </library>
+    <long>
+        <far><item id='my'>Hello</item></far>
+    </long>
+    <colors>
+        <red/>
+    </colors>
+    <one>
+        <two>
+            <three>
+                <four>4</four>
+            </three>
+        </two>
+    </one>
+</data>

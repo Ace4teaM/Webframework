@@ -58,19 +58,25 @@ class cApplicationCtrl{
      */
     function output(iApplication $app, $format, $att, $result) {
         switch($format){
-            case "xarg":
+            case "text/xarg":
                 return xarg_encode_array($att);
-            case "xml":
+            case "text/xml":
                 $doc = new XMLDocument();
                 $rootEl = $doc->createElement('data');
                 $doc->appendChild($rootEl);
                 //print_r($att);
                 $doc->appendAssocArray($rootEl,$att);
-                return '<?xml version="1.0" encoding="UTF-8" ?>'.$doc->saveXML( $doc->documentElement );
-            case "html":
+                return '<?xml version="1.0" encoding="UTF-8" ?>'."\n".$doc->saveXML( $doc->documentElement );
+            case "text/html":
+                /*$str = "<!doctype html>\n";
+                $str .= "<html><body>";
+                foreach($att as $k=>$v)
+                    $str .= "$k = $v<br/>";
+                $str .= "</body></html>";
+                return $str;*/
                 return $app->makeFormView($att, $this->fields, $this->op_fields, $this->att);
         }
-        return RESULT(cResult::Failed,Application::UnsuportedFeature);
+        return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"OUTPUT FORMAT $format"));
     }
     
     

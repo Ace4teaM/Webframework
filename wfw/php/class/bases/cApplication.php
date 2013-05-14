@@ -20,16 +20,16 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-require_once("php/systemd.php");
-require_once("php/ini.php");
-require_once("iApplication.php");
-require_once("cApplicationCtrl.php");
-require_once("php/file.php");
-require_once("php/xarg.php");
-require_once("php/class/bases/cResult.php");
-require_once("php/templates/cHTMLTemplate.php");
-require_once("php/templates/xml_template.php");
-require_once("php/xml_default.php");
+require_once("systemd.php");
+require_once("ini.php");
+require_once("class/bases/iApplication.php");
+require_once("class/bases/cApplicationCtrl.php");
+require_once("file.php");
+require_once("xarg.php");
+require_once("class/bases/cResult.php");
+require_once("templates/cHTMLTemplate.php");
+require_once("templates/xml_template.php");
+require_once("xml_default.php");
 
 
 class FormField
@@ -139,6 +139,10 @@ class cApplication implements iApplication{
         //nom d'hôte
         //( la fonction getHostName initialise l'instance si besoin )
         $this->hostname = NULL;
+        
+        //debug ?
+        if($this->getCfgValue("application","debug"))
+            define('DEBUG',true);
         
         //ajoute les chemins d'accès aux attributs de template
         $path_section = $this->getCfgSection("path");
@@ -263,7 +267,8 @@ class cApplication implements iApplication{
 
         //charge le fichier
         $this->default = new cXMLDefault();
-        $uri = $this->getBaseURI()."/".$this->makeCtrlURI('wfw','defaults',null);
+
+        $uri = $this->getBaseURI()."/".$this->makeCtrlURI('wfw','defaults',array("output"=>"xml"));
 
         if(!$this->default->Initialise($uri)){
             $this->default = FALSE;
@@ -664,8 +669,11 @@ class cApplication implements iApplication{
             header("content-type: text/plain");
             echo("The application encountered a fatal error.\n");
             echo("L'application à rencontrée une erreur fatale.\n");
+            
+            /** todo: Possible cause de plentage si le controleur 'defaults' retourne une erreur (appel recursif)*/
             $result_infos = $this->translateResult($result);
             print_r($result_infos);
+            
             exit(-1);
         }
     }
@@ -774,7 +782,15 @@ class cApplication implements iApplication{
         return "ctrl.php?app=$app_name&ctrl=$ctrl" . (is_string($add_params)?"&".$add_params:"");
     }
     
-    public function execCtrl($ctrl,$app=null)
+    /**
+     * @brief Execute un controleur
+     * @param string $ctrl Nom du controleur
+     * @param string $app Nom de l'application
+     * @param array $att Tableau associatif des paramètres
+     * @param Ctrl $class Pointeur recevant l'instance du controleur
+     * @return boolean Résultat de procédure
+     */
+    public function callCtrl($ctrl,$app,$att,&$class)
     {
         //résultat de la requete
         RESULT_OK();
@@ -785,51 +801,73 @@ class cApplication implements iApplication{
 
         //inclue le controleur
         $class = NULL;
-        if(cInputIdentifier::isValid($ctrl)){
-            $basepath = $this->getCfgValue($app,"path");
-            $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
-            if(!file_exists($path)){
-                RESULT(cResult::Failed,cApplication::CtrlNotFound);
-                goto output;
-//                $this->processLastError();
-            }
-            //execute...
-            include($path);
-            $class = new Ctrl();
-            // Résultat de la requete
-            RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
-            $result = cResult::getLast();
-            
-            // Champs requis
-            $fields=NULL;
-            if(is_array($class->fields) && !$this->makeFiledList(
-                    $fields,
-                    $class->fields,
-                    cXMLDefault::FieldFormatClassName )
-               ) goto output; /*$this->processLastError();*/
-            $class->fields = $fields;
+        if(!cInputIdentifier::isValid($ctrl))
+            return false;
 
-            // Champs optionnels
-            $op_fields=NULL;
-            if(is_array($class->op_fields) && !$this->makeFiledList(
-                    $op_fields,
-                    $class->op_fields,
-                    cXMLDefault::FieldFormatClassName )
-               ) goto output; /*$this->processLastError();*/
-            $class->op_fields = $op_fields;
-            
-            //attributs d'entree
-            /*if(!isset($class->att))
-                $class->att = $_REQUEST;*/
-            
-            // execute le controleur si les champs sont valides
-            $p = array();
-            if(cInputFields::checkArray($class->fields,$class->op_fields,$class->att,$p))
-                $class->main($this, $basepath, $p);
-        }
-output:
+        $basepath = $this->getCfgValue($app,"path");
+        $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
+        if(!file_exists($path))
+            return RESULT(cResult::Failed,cApplication::CtrlNotFound);
+
+        //execute...
+        $classname = $app.'_'.$ctrl.'_ctrl';
+        if(!class_exists($classname))
+            include($path);
+        if(!class_exists($classname))
+            return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"CTRL_CLASS_NOT_FOUND ($classname)"));
+        $class = new $classname();
+
+        // Résultat de la requete
+        RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
+
+        // Champs requis
+        $fields=NULL;
+        if(is_array($class->fields) && !$this->makeFiledList(
+                $fields,
+                $class->fields,
+                cXMLDefault::FieldFormatClassName )
+           )return false;
+        $class->fields = $fields;
+
+        // Champs optionnels
+        $op_fields=NULL;
+        if(is_array($class->op_fields) && !$this->makeFiledList(
+                $op_fields,
+                $class->op_fields,
+                cXMLDefault::FieldFormatClassName )
+           )return false;
+        $class->op_fields = $op_fields;
+
+        //attributs d'entree
+        if(is_array($att))
+            $class->att = array_merge($class->att,$att);
+
+        // execute le controleur si les champs sont valides
+        $p = array();
+        if(!cInputFields::checkArray($class->fields,$class->op_fields,$class->att,$p))
+            return false;
+
+        // ok
+        return $class->main($this, $basepath, $p);
+    }
+    
+    /**
+     * @brief Initialise et execute un controleur dans la sortie standard
+     * @param string $ctrl Nom du controleur
+     * @param string $app Nom de l'application
+     * @param string $out Pointeur recevant la sortie
+     * @return boolean Résultat de procédure
+     */
+    public function execCtrl($ctrl,$app)
+    {
+        $class=null;
+
+        //initialise le controleur
+        if(!$this->callCtrl($ctrl,$app,null,$class) && !isset($class))
+            $class = new cApplicationCtrl();
+
         //recupére le resultat
-        $result = cResult::getLast(); 
+        $result = cResult::getLast();
 
         // Traduit le nom du champ concerné
         if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
@@ -842,24 +880,26 @@ output:
         $att = array_merge($att,$_REQUEST);
 
         /* Génére la sortie */
-        $format = "html";
-        if(cInputFields::checkArray(array("output"=>"cInputIdentifier")))
-            $format = $_REQUEST["output"] ;
-
-        //initialise un controleur générique pour la sortie ?
-        if(!$class)
-            $class = new cApplicationCtrl();
         
+        //obtient le type mime
+        $format = "text/html";
+        if(cInputFields::checkArray(array("output"=>"cInputIdentifier"))){
+            $format = 'text/'.$_REQUEST["output"];
+        }
+        else if(cInputFields::checkArray(array("output"=>"cInputMime"))){
+            $format = $_REQUEST["output"];
+        }
+
         //génére la sortie
         $content = $class->output($this, $format, $att, $result);
         if($content === false)
             $this->processLastError();
-        
-        header("content-type: text/$format");
-        echo($content);
+
+        header("content-type: ".$format);
+        echo $content;
         
         // ok
-        exit($result->isOk() ? 0 : 1);
+        exit($result->isOk()?0:1);
     }
     
     public function queryToXML($query,&$doc,$node)

@@ -136,13 +136,37 @@ function _stderr($txt) {
  * @remarks Inclue les fichiers portant l'extension '.php'
  */
 function include_path($dir) {
-    $return = array();
+    //sauvegarde le chemin de base pour le message 'REQUIRED_PATH_NOT_FOUND'
+    $_dir = $dir;
+    
+    // chemins d'inclusions
+    $path = explode(PATH_SEPARATOR, get_include_path());
+    array_unshift($path, '.');//chemin de base
+    
+    //recherche le chemin d'accès
+    $open_dir = null;
+    $i=0;
+    do{
+        $dir = path($path[$i],$_dir);
+        if(is_dir($dir))
+            $open_dir = $dir;
+        $i++;
+    }while(!$open_dir && $i<count($path));
+    
+    //dossier introuvable ?
+    if(!$open_dir){
+        if(function_exists('RESULT'))
+            return RESULT(cResult::Failed,"REQUIRED_PATH_NOT_FOUND",array("PATH"=>$_dir));
+        return NULL;
+    }
+    
     // liste les fichiers...
-    if ($dh = opendir($dir)) {
+    $return = array();
+    if ($dh = opendir($open_dir)) {
         $file;
         while (($file = readdir($dh)) !== false) {
             if(substr($file, 0,1) != '.' && file_ext($file) == 'php'){
-                $path = path($dir,$file);
+                $path = path($open_dir,$file);
                 if(is_file($path)){
                     $return[] = $path;
                     include_once($path);
@@ -151,6 +175,10 @@ function include_path($dir) {
         }
         closedir($dh);
     }
+    
+    //OK
+    if(function_exists('RESULT'))
+        RESULT_OK();
     return $return;
 }
 
@@ -161,14 +189,39 @@ function include_path($dir) {
  * @retval array Tableau des fichiers inclus (avec le chemin d'accès)
  * @remarks Inclue les fichiers portant l'extension '.php'
  */
-function require_path($dir) {
-    $return = array();
+function require_path($dir)
+{
+    //sauvegarde le chemin de base pour le message 'REQUIRED_PATH_NOT_FOUND'
+    $_dir = $dir;
+
+    // chemins d'inclusions
+    $path = explode(PATH_SEPARATOR, get_include_path());
+    array_unshift($path, '.');//chemin de base
+    
+    //recherche le chemin d'accès
+    $open_dir = null;
+    $i=0;
+    do{
+        $dir = path($path[$i],$_dir);
+        if(is_dir($dir))
+            $open_dir = $dir;
+        $i++;
+    }while(!$open_dir && $i<count($path));
+    
+    //dossier introuvable ?
+    if(!$open_dir){
+        if(function_exists('RESULT'))
+            return RESULT(cResult::Failed,"REQUIRED_PATH_NOT_FOUND",array("PATH"=>$_dir));
+        return NULL;
+    }
+    
     // liste les fichiers...
-    if ($dh = opendir($dir)) {
+    $return = array();
+    if ($dh = opendir($open_dir)) {
         $file;
         while (($file = readdir($dh)) !== false) {
             if(substr($file, 0,1) != '.' && file_ext($file) == 'php'){
-                $path = path($dir,$file);
+                $path = path($open_dir,$file);
                 if(is_file($path)){
                     $return[] = $path;
                     require_once($path);
@@ -177,6 +230,10 @@ function require_path($dir) {
         }
         closedir($dh);
     }
+    
+    //OK
+    if(function_exists('RESULT'))
+        RESULT_OK();
     return $return;
 }
 

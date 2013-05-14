@@ -20,32 +20,23 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-/*
- * Point d'entrée des controleurs
+/**
+ * PHP-Unit test file for XMLTemplate
  */
 
-require_once("inc/globals.php");
-global $app;
+class XMLTemplateTest extends PHPUnit_Framework_TestCase{
+    public function setUp(){
+        set_include_path(
+                get_include_path()
+                . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\wfw\php'
+                . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\unit_test'
+        );
+        //require_once 'base.php';
+        require_once 'templates/xml_template.php';
+    }
 
-// Champs requis
-if(!$app->makeFiledList(
-        $fields,
-        array( 'ctrl' ),
-        cXMLDefault::FieldFormatClassName )
-   ) $app->processLastError();
-
-// Champs requis
-if(!$app->makeFiledList(
-        $op_fields,
-        array( 'app' ),
-        cXMLDefault::FieldFormatClassName )
-   ) $app->processLastError();
-
-// vérifie la validitée des champs
-$p = array();
-if(!cInputFields::checkArray($fields,$op_fields,$_REQUEST,$p))
-    $app->processLastError();
-
-
-$app->execCtrl($p->ctrl,$p->app);
+    public function test()
+    {
+    }
+}
 ?>

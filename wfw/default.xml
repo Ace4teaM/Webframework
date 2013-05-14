@@ -6,9 +6,10 @@
     <description>Webframework Library</description>
 
     <index>
-        <page id="yui_config" role="visitor" name="Configuration YUI">ctrl.php?app=wfw&amp;ctrl=yui_config</page>
-        <page id="datamodel" role="visitor" name="Obtient le model de données">ctrl.php?app=wfw&amp;ctrl=datamodel</page>
-        <page id="defaults" role="visitor" name="Obtient les meta données">ctrl.php?app=wfw&amp;ctrl=defaults</page>
+        <page id="yui_config" role="visitor" name="Configuration YUI">ctrl.php?app=wfw&amp;ctrl=yui_config&amp;output=javascript</page>
+        <page id="datamodel" role="visitor" name="Obtient le model de données">ctrl.php?app=wfw&amp;ctrl=datamodel&amp;output=xml</page>
+        <page id="defaults" role="visitor" name="Obtient les meta données">ctrl.php?app=wfw&amp;ctrl=defaults&amp;output=xml</page>
+        <page id="datafetch" role="administrator" name="Obtient des données">ctrl.php?app=wfw&amp;ctrl=datafetch&amp;output=xml</page>
     </index>
 
     <results lang="fr">
@@ -23,6 +24,7 @@
             <INFORMATION>Information</INFORMATION>
             
             <!-- WFW (ERR_FAILED) -->
+            <TOO_SMALL_STRING>Texte trop petit</TOO_SMALL_STRING>
             <NO_INPUT_FIELD>Aucun champ reçu</NO_INPUT_FIELD>
             <MISSING_FIELD>Champ manquant</MISSING_FIELD>
             <EMPTY_TEXT>Champ vide</EMPTY_TEXT>

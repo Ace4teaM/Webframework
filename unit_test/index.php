@@ -1,3 +1,3 @@
 <?php
-header('Location: ctrl.php?app=wfw&ctrl=datamodel');
+header('Location: ctrl.php?app=wfw&ctrl=datamodel&output=xml');
 ?>

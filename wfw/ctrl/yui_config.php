@@ -34,17 +34,16 @@
  * 
  * @param lang Langage pour les textes
  */
-class Ctrl extends cApplicationCtrl{
+class wfw_yui_config_ctrl extends cApplicationCtrl{
     public $fields    = null;
     public $op_fields = null;
 
-    function main(iApplication $app, $app_path, $p) {
-
-        header("content-type: text/javascript");
-        echo 'var wfw_yui_base_path = "'.$app->getCfgValue('path','wfw').'/javascript/yui/";';
-
-        //termine ici
-        exit(0);
+    function output(iApplication $app, $format, $att, $result) {
+        switch($format){
+            case "text/javascript":
+                return 'var wfw_yui_base_path = "'.$app->getCfgValue('path','wfw').'/javascript/yui/";';
+        }
+        return parent::output($app, $format, $att, $result);
     }
 }
 

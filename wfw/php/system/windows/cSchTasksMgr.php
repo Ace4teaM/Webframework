@@ -5,7 +5,7 @@
  * Remarques:
  * Le logiciel SCHTASKS est requis sur le système
  */
-require_once('php/class/bases/iTask.php');
+require_once('class/bases/iTask.php');
 
 // initialise les constantes
 global $app;

@@ -34,40 +34,50 @@
  * 
  * @param lang Langage pour les textes
  */
+namespace application\doxy_function;
 
-class wfw_datamodel_ctrl extends cApplicationCtrl{
-    public $fields    = null;
+use \cApplication     as cApplication;
+use \cApplicationCtrl as cApplicationCtrl;
+use \iApplication     as iApplication;
+use \XMLDocument      as XMLDocument;
+use \cXMLTemplate     as cXMLTemplate;
+use \cResult          as cResult;
+
+class Ctrl extends cApplicationCtrl{
+    public $fields    = array("doxygen_doc","doxygen_ref");
     public $op_fields = null;
     
-    protected $doc = null;
-
-    function getXML() {
-        return $this->doc;
-    }
+    protected $cache_file = null; // fichier template intermediaire
     
     function main(iApplication $app, $app_path, $p) {
-        $lang = "fr";
+        $cache_file   = path( $app->getRootPath(), 'view/tmp', $p->doxygen_ref.'.html' );
+        $doxygen_file = substr($p->doxygen_ref, 0, strrpos($p->doxygen_ref,'_')).'.xml';
+        $doxygen_doc  = path( $app->getRootPath(), $app->getCfgValue('docs',$p->doxygen_doc) );
 
-        // Initialise le document de sortie
-        $doc = new XMLDocument("1.0", "utf-8");
-        $rootEl = $doc->createElement('data');
-        $doc->appendChild($rootEl);
+        //------------------------------------------------------------------
+        //fabrique le template intermediaire
+        //------------------------------------------------------------------
+        $template = new cXMLTemplate();
 
-        $def=null;
-        $app->getDefaultFile($def);
+        //charge le contenu en selection
+        $select = new XMLDocument("1.0", "utf-8");
+        if(!$select->load(path($doxygen_doc,$doxygen_file)))
+            return RESULT(cResult::Failed,cApplication::ResourceNotFound,array("file"=>path($doxygen_doc,$doxygen_file)));
+        $attributes = array("id" => $p->doxygen_ref);
 
-        //types et ids
-        foreach ($app->getCfgSection('fields_formats') as $id => $type) {
-            $id = strtolower($id);
-            $type = strtolower($type);
-            $node = $doc->createTextElement($id, $type);
-            if (isset($def) && $def->getFiledText($id, $text, $lang))
-                $node->setAttribute("label", $text);
-            $rootEl->appendChild($node);
-        }
+        //transforme le fichier
+        if(!$template->Initialise(
+                    path($app->getRootPath(),'/view/doxy_function.html'),
+                    NULL,
+                    $select,
+                    NULL,
+                    $attributes ) )
+            return false;
 
-        //termine ici
-        $this->doc = $doc;
+        file_put_contents($cache_file, $template->Make());
+        
+        $this->cache_file = $cache_file;
+
         return RESULT_OK();
     }
     
@@ -78,8 +88,8 @@ class wfw_datamodel_ctrl extends cApplicationCtrl{
             return parent::output($app, $format, $att, $result);
 
         switch($format){
-            case "text/xml":
-                return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
+            case "text/html":
+                return $app->makeXMLView($this->cache_file,array());
         }
         return parent::output($app, $format, $att, $result);
     }
