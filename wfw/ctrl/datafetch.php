@@ -20,13 +20,6 @@
   along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
-namespace wfw\datafetch;
-
-use \cApplication     as cApplication;
-use \cApplicationCtrl as cApplicationCtrl;
-use \iApplication     as iApplication;
-use \XMLDocument      as XMLDocument;
-use \cResult          as cResult;
 
 /**
  * @page datafetch Extrait des données d'une table
@@ -40,7 +33,7 @@ use \cResult          as cResult;
  * | UC           | datafetch
  * 
  */
-class Ctrl extends cApplicationCtrl{
+class wfw_datafetch_ctrl extends cApplicationCtrl{
     public $fields    = array('table_name');
     public $op_fields = array('cols_names','row_offset','row_count');
 //    public $role      = Role::Administrator;

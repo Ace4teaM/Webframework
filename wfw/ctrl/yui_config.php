@@ -20,12 +20,6 @@
   along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
-namespace wfw\yui_config;
-
-use \cApplication     as cApplication;
-use \cApplicationCtrl as cApplicationCtrl;
-use \iApplication     as iApplication;
-use \cResult          as cResult;
 
 /**
  * @page wfw_data_model Data Model
@@ -40,7 +34,7 @@ use \cResult          as cResult;
  * 
  * @param lang Langage pour les textes
  */
-class Ctrl extends cApplicationCtrl{
+class wfw_yui_config_ctrl extends cApplicationCtrl{
     public $fields    = null;
     public $op_fields = null;
 

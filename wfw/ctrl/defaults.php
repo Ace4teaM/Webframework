@@ -20,20 +20,11 @@
   along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
-namespace wfw\defaults;
-
-use \cApplication     as cApplication;
-use \cApplicationCtrl as cApplicationCtrl;
-use \iApplication     as iApplication;
-use \XMLDocument      as XMLDocument;
-use \cResult          as cResult;
-
-
 /**
  * @page defaults Fusionne les fichiers defaults de tous les modules puis affiche le contenu
  * 
  */
-class Ctrl extends cApplicationCtrl{
+class wfw_defaults_ctrl extends cApplicationCtrl{
     public $fields    = null;
     public $op_fields = null;
 //    public $role      = Role::Administrator;

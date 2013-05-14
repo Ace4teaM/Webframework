@@ -34,15 +34,8 @@
  * 
  * @param lang Langage pour les textes
  */
-namespace wfw\datamodel;
 
-use \cApplication     as cApplication;
-use \cApplicationCtrl as cApplicationCtrl;
-use \iApplication     as iApplication;
-use \XMLDocument      as XMLDocument;
-use \cResult          as cResult;
-
-class Ctrl extends cApplicationCtrl{
+class wfw_datamodel_ctrl extends cApplicationCtrl{
     public $fields    = null;
     public $op_fields = null;
     
