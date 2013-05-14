@@ -140,6 +140,10 @@ class cApplication implements iApplication{
         //( la fonction getHostName initialise l'instance si besoin )
         $this->hostname = NULL;
         
+        //debug ?
+        if($this->getCfgValue("application","debug"))
+            define('DEBUG');
+        
         //ajoute les chemins d'accès aux attributs de template
         $path_section = $this->getCfgSection("path");
         if(isset($path_section)){
