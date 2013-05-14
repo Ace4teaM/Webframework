@@ -779,7 +779,7 @@ class cApplication implements iApplication{
     }
     
     /**
-     * @brief Initialise un controleur
+     * @brief Execute un controleur
      * @param string $ctrl Nom du controleur
      * @param string $app Nom de l'application
      * @param array $att Tableau associatif des paramètres
@@ -806,7 +806,7 @@ class cApplication implements iApplication{
             return RESULT(cResult::Failed,cApplication::CtrlNotFound);
 
         //execute...
-        $classname = $app.'\\'.$ctrl.'\\Ctrl';
+        $classname = $app.'_'.$ctrl.'_ctrl';
         if(!class_exists($classname))
             include($path);
         $class = new $classname();
@@ -833,7 +833,8 @@ class cApplication implements iApplication{
         $class->op_fields = $op_fields;
 
         //attributs d'entree
-        $class->att = $att;
+        if(is_array($att))
+            $class->att = array_merge($class->att,$att);
 
         // execute le controleur si les champs sont valides
         $p = array();
@@ -853,63 +854,14 @@ class cApplication implements iApplication{
      */
     public function execCtrl($ctrl,$app)
     {
-        //résultat de la requete
-        RESULT_OK();
-        $result = cResult::getLast();
-        
-        if(!isset($app))
-            $app = "application";
+        $class=null;
 
-        //inclue le controleur
-        $class = NULL;
-        if(cInputIdentifier::isValid($ctrl)){
-            $basepath = $this->getCfgValue($app,"path");
-            $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
-            if(!file_exists($path)){
-                RESULT(cResult::Failed,cApplication::CtrlNotFound);
-                goto output;
-//                $this->processLastError();
-            }
-            //execute...
-            $classname = $app.'\\'.$ctrl.'\\Ctrl';
-            if(!class_exists($classname))
-                include($path);
-            $class = new $classname();
-            
-            // Résultat de la requete
-            RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
-            $result = cResult::getLast();
-            
-            // Champs requis
-            $fields=NULL;
-            if(is_array($class->fields) && !$this->makeFiledList(
-                    $fields,
-                    $class->fields,
-                    cXMLDefault::FieldFormatClassName )
-               ) goto output; /*$this->processLastError();*/
-            $class->fields = $fields;
+        //initialise le controleur
+        if(!$this->callCtrl($ctrl,$app,null,$class))
+            $class = new cApplicationCtrl();
 
-            // Champs optionnels
-            $op_fields=NULL;
-            if(is_array($class->op_fields) && !$this->makeFiledList(
-                    $op_fields,
-                    $class->op_fields,
-                    cXMLDefault::FieldFormatClassName )
-               ) goto output; /*$this->processLastError();*/
-            $class->op_fields = $op_fields;
-            //attributs d'entree
-            /*if(!isset($class->att))
-                $class->att = $_REQUEST;*/
-   
-            // execute le controleur si les champs sont valides
-            $p = array();
-            if(cInputFields::checkArray($class->fields,$class->op_fields,$class->att,$p))
-                $class->main($this, $basepath, $p);
-        }
-output:
         //recupére le resultat
         $result = cResult::getLast();
-        $att = array();
 
         // Traduit le nom du champ concerné
         if(isset($result->att["field_name"]) && $this->getDefaultFile($default))
@@ -931,10 +883,6 @@ output:
         else if(cInputFields::checkArray(array("output"=>"cInputMime"))){
             $format = $_REQUEST["output"];
         }
-
-        //initialise un controleur générique pour la sortie ?
-        if(!$class)
-            $class = new cApplicationCtrl();
 
         //génére la sortie
         $content = $class->output($this, $format, $att, $result);
