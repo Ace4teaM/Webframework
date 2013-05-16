@@ -29,7 +29,7 @@
  * 
  * @option string mode        Orientation des briques
  * @option mixed  selector    Sélecteurs
- * @option string size        Optionel, Hauteur/Largeur des elements
+ * @option string size        Optionel, Hauteur/Largeur des éléments
  * @option bool   wrap        Optionel, Entoure les éléments d'une balise SPAN
  * 
  * ##mode

@@ -20,7 +20,7 @@
 */
 
 /**
- * @brief Fix les types de bases
+ * @brief Surcharge les types de bases
  * Ajoute les controles JQuery-UI aux types de bases
  * **/
 
