@@ -1411,6 +1411,21 @@ function isEditable(obj) {
     return false;
 }
 
+/**
+    @brief Tronque un nombre dans une plage de valeur
+    @param number v   Valeur à tronquer
+    @param number min Valeur minimum 
+    @param number max Valeur maximum 
+    @return number Valeur tronqué
+*/
+function minmax(v,min,max){
+    if(v < min)
+        v = min;
+    if(v > max)
+        v = max;
+    return v;
+}
+
 /*--------------------------------------------------------------------------------------------------------------------------------------
     Mouse detection
 --------------------------------------------------------------------------------------------------------------------------------------*/
