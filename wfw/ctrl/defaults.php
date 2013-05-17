@@ -37,7 +37,7 @@ class wfw_defaults_ctrl extends cApplicationCtrl{
         // Initialise le document de sortie
         $out = new XMLDocument("1.0", "utf-8");
         if(!$out->load("default.xml"))
-            return false;
+            return $this->erroIssue();//false;
         
         //
         // fusionne les dependances (autres documents 'default.xml')
@@ -46,7 +46,7 @@ class wfw_defaults_ctrl extends cApplicationCtrl{
             // Initialise le document de sortie
             $in = new XMLDocument("1.0", "utf-8");
             if(!$in->load($filename))
-                return false;
+                return $this->erroIssue();//false;
 
             //
             // pages
@@ -137,6 +137,12 @@ class wfw_defaults_ctrl extends cApplicationCtrl{
         //sortie XML
         $this->doc = $out;
         return RESULT_OK();
+    }
+    
+    function erroIssue(){
+        header("content-type: text/xml");
+        echo '<?xml version="1.0" encoding="UTF-8" ?><site/>';
+        exit;
     }
     
     
