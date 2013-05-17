@@ -20,7 +20,7 @@
 */
 
 /**
- * @todo A implmenter
+ * @todo A implémenter
  * 
  * @brief jQuery Result Plugin
  * @method result
@@ -34,11 +34,16 @@
        if(typeof p == "object")
        {
             p = $.extend({
-                fields    : null
+                result    : null,
+                error     : null,
+                args      : null
             },p);
 
             return this.each(function()
             {
+                $(this).children("*[name='error']").text(p.error);
+                if(p.args && typeof(p.args.message)!="undefined")
+                    $(this).children("*[name='message']").text(p.args.message);
             });
        }
        
