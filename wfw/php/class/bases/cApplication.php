@@ -62,6 +62,7 @@ class cApplication implements iApplication{
     const UnknownFormTemplateFile    = "APP_UNKNOWN_FORM_TEMPLATE_FILE";
     const EntityMissingId            = "APP_ENTITY_MISSING_ID";
     const CtrlNotFound               = "APP_CTRL_NOT_FOUND";
+    const UnsuportedRoleByCtrl       = "APP_UNSUPORTED_ROLE_BY_CTRL";
     /**
      * Champ inconnue
      * @param FIELD_NAME Nom du champ
@@ -94,6 +95,13 @@ class cApplication implements iApplication{
     //options
     const FieldFormatClassName = 1;
     const FieldFormatName      = 2;
+    
+    //roles
+    const AnyRole       = 0xffffffff;
+    const AdminRole     = 0x10000000;
+    const PublicRole    = 0x20000000;
+    const UserRole      = 0x40000000;
+    
     //
     protected $template_attributes;
     protected $template_attributes_xml;
@@ -102,6 +110,12 @@ class cApplication implements iApplication{
     protected $default;
     protected $hostname;
     
+    /** 
+     * @brief Rôle(s) actuel(s) de l'utilsateur 
+     * @var role
+     */
+    protected $role;
+
     /** 
      * @brief Pointeur sur la base de données par défaut
      * @var iDataBase
@@ -179,6 +193,22 @@ class cApplication implements iApplication{
         $classname = $this->getCfgValue(constant("SYSTEM"), "taskmgr_class");
         if(!empty($classname))
             require_once($this->getLibPath("wfw_local")."/php/system/".strtolower(constant('SYSTEM'))."/$classname.php");
+    }
+    
+    /**
+     * @brief Définit le(s) rôle(s) en cours
+     * @return int Rôle passé en paramétre
+     */
+    function setRole($role){
+        return $this->role = $role;
+    }
+    
+    /**
+     * @brief Obtient le(s) rôle(s) en cours
+     * @return Masque de bits définissant les rôles
+     */
+    function getRole(){
+        return $this->role;
     }
     
     /**
@@ -786,11 +816,12 @@ class cApplication implements iApplication{
      * @brief Execute un controleur
      * @param string $ctrl Nom du controleur
      * @param string $app Nom de l'application
-     * @param array $att Tableau associatif des paramètres
-     * @param Ctrl $class Pointeur recevant l'instance du controleur
+     * @param array  $att Tableau associatif des paramètres
+     * @param cApplicationCtrl $class Pointeur recevant l'instance du contrôleur
+     * @param int    $role Rôle d'execution. AnyRole par défaut
      * @return boolean Résultat de procédure
      */
-    public function callCtrl($ctrl,$app,$att,&$class)
+    public function callCtrl($ctrl,$app,$att,&$class,$role=cApplication::AnyRole)
     {
         //résultat de la requete
         RESULT_OK();
@@ -798,7 +829,7 @@ class cApplication implements iApplication{
         
         if(!isset($app))
             $app = "application";
-
+        
         //inclue le controleur
         $class = NULL;
         if(!cInputIdentifier::isValid($ctrl))
@@ -816,6 +847,10 @@ class cApplication implements iApplication{
         if(!class_exists($classname))
             return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"CTRL_CLASS_NOT_FOUND ($classname)"));
         $class = new $classname();
+        $class->role = $role;
+        
+        if(!($class->acceptedRole() & $role))
+            return RESULT(cResult::Failed,Application::UnsuportedRoleByCtrl,array("CTRL"=>$ctrl));
 
         // Résultat de la requete
         RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
@@ -857,16 +892,16 @@ class cApplication implements iApplication{
     /**
      * @brief Initialise et execute un controleur dans la sortie standard
      * @param string $ctrl Nom du controleur
-     * @param string $app Nom de l'application
-     * @param string $out Pointeur recevant la sortie
+     * @param string $app  Nom de l'application
+     * @param int    $role Rôle d'execution. AnyRole par défaut
      * @return boolean Résultat de procédure
      */
-    public function execCtrl($ctrl,$app)
+    public function execCtrl($ctrl,$app,$role=cApplication::AnyRole)
     {
         $class=null;
 
         //initialise le controleur
-        if(!$this->callCtrl($ctrl,$app,null,$class) && !isset($class))
+        if(!$this->callCtrl($ctrl,$app,null,$class,$role) && !isset($class))
             $class = new cApplicationCtrl();
 
         //recupére le resultat
@@ -877,6 +912,7 @@ class cApplication implements iApplication{
             $result->att["txt_field_name"] = $default->getResultText("fields",$result->att["field_name"]);
 
         // Traduit le résultat
+        /** todo: Uniquement si le controleur n'est pas 'defaults' (appel recursif) */
         $att = $this->translateResult($result);
 
         // Ajoute les arguments reçues en entrée au template

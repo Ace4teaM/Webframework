@@ -9,8 +9,9 @@
 ---------------------------------------------------------------------------------------------------------------------------------------
 - Utilisation des espaces de noms
 - Classes controleurs réutilisable (définit dans un espace de noms)
-- Réfinit des includes avec un chemin relatif au dossier 'wfw/php/'
+- Redéfinit des includes avec un chemin relatif au dossier 'wfw/php/'
 - Résolutions de divers bugs
+- Implémentation des rôles dans le model d'application
 
 ---------------------------------------------------------------------------------------------------------------------------------------
  [1.8] Quoi de neuf 

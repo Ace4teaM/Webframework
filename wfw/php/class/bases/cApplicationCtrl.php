@@ -24,10 +24,30 @@ class cApplicationCtrl{
     public $fields    = null; /**< Identifiants des champs requis */
     public $op_fields = null; /**< Identifiants des champs optionnels */
     public $att       = null; /**< Source des champs en entrée, si NULL $_REQUEST est utilisé */
-//  public $role      = Role::Visitor | Role::User;
+    public $role      = null; /**< Role utilisé pour executer le controleur */
     
     /**
-     * Point d'entree du controleur
+     * Retourne les rôles acceptés par le contrôleur
+     * @return int Masque de bits des rôles possibles
+     * @remarks Les rôles prédéfinits sont définit dans la classe \c cApplication
+     * @remarks Si le contrôleur est exécuté avec un rôle different de celui retourné, la procédure échoue.
+     */
+    function acceptedRole() {
+        return cApplication::AnyRole;
+    }
+    
+    /**
+     * Retourne le type de rôle assigné pour l'execution
+     * @return int Masque de bits des rôles possibles
+     * @remarks Les rôles prédéfinits sont définit dans la classe \c cApplication
+     * @remarks Cette propriété est initialisée par la méthode \c cApplication::callCtrl
+     */
+    function hasRole() {
+        return $this->role;
+    }
+    
+    /**
+     * Point d(entree du controleur
      * @param iApplication $app       Instance de l'application
      * @param string       $app_path  Chemin d'accés à l'application qui à définit le controleur
      * @param StdClass     $p         Paramétres d'entrée
