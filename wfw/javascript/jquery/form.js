@@ -83,12 +83,14 @@
             {
                 var parent = $(this);
 
+                parent.empty();
+                
                 //fabrique les champs
                 for(var i in p.fields){
                     var input = makeField(this,p.fields[i]);
-                    var label = parent.append(p.fields[i].label);
+                    var label = parent.append("<div>"+p.fields[i].label+"</div>");
+                   // parent.append(label);
                     parent.append(input);
-                    $([label,input]).wrap('<div></div>')
                 }
             });
        }
