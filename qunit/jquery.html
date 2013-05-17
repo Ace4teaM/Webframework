@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Webframework.JQuery.Library - Unit Test</title>
+        <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css">
+        <!-- WFW base -->
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/base.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/result.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/input.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/bool.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/int.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/date.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/float.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/factor.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/identifier.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/mail.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/filename.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/ip.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/name.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/numeric.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/password.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/string.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/text.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/types/url.js"></script>
+        <!-- JQUERY -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/jquery/form.js"></script>
+    </head>
+    <body>
+        <!-- TEST CONTENT -->
+        <form id="form" style="display:none;">
+            <input type="text" id="fooInput" name="foo" value="bar" />
+            <input type="text" id="barInput" name="bar" value="foo" />
+            <div name="unstd">hello</div>
+        </form>
+        <!-- QUNIT -->
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+        <script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+        <script src="jquery.js"></script>
+    </body>
+</html>
