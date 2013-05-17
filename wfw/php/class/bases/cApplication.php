@@ -842,13 +842,16 @@ class cApplication implements iApplication{
         if(is_array($att))
             $class->att = array_merge($class->att,$att);
 
-        // execute le controleur si les champs sont valides
+        // test les champs
         $p = array();
         if(!cInputFields::checkArray($class->fields,$class->op_fields,$class->att,$p))
             return false;
 
+        // execute le controleur
+        $ok = $class->main($this, $basepath, $p);
+        
         // ok
-        return $class->main($this, $basepath, $p);
+        return $ok;
     }
     
     /**
