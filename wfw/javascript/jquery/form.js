@@ -85,7 +85,15 @@
                     {
                         var parent = $(this);
                         for(var key in values)
-                            $("input[name="+key+"]",parent).val(values[key]);
+                        {
+                            // éléments à valeur
+                            var find = $("input[name="+key+"]",parent);
+                            if(find.length)
+                                find.val(values[key]);
+                            // éléments à textes
+                            else
+                                $("*[name="+key+"]",parent).text(values[key]);
+                        }
                     });
 
                     return this;
