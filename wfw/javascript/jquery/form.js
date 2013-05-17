@@ -71,63 +71,89 @@
     
     //constructeur
     $.fn.form = function(p){
-       //@page $form Initialisation avec parametres
-       //Obtient les valeurs de champs
-       if(typeof p == "object")
-       {
-            p = $.extend({
-                fields    : null
-            },p);
+        var me = $(this);
+        var args = arguments;
 
-            return this.each(function()
-            {
-                var parent = $(this);
+        //setter
+        if(typeof(p) == "string" && args.length > 1){
+            switch(p){
+                //Définit les valeurs de champs
+                case "values":
+                    var values = args[1];
 
-                parent.empty();
-                
-                //fabrique les champs
-                for(var i in p.fields){
-                    var input = makeField(this,p.fields[i]);
-                    var label = parent.append("<div>"+p.fields[i].label+"</div>");
-                   // parent.append(label);
-                    parent.append(input);
-                }
-            });
-       }
-       
-       //initialisation sans parametres
-       if(typeof p == "undefined")
-       {
-            return this.each(function()
+                    me.each(function()
+                    {
+                        var parent = $(this);
+                        for(var key in values)
+                            $("input[name="+key+"]",parent).val(values[key]);
+                    });
+
+                    return this;
+            }
+        }
+        //getter
+        else if(typeof(p) == "string"){
+            switch(p){
+                //Obtient les valeurs de champs
+                case "values":
+                    var values = {};
+
+                    this.each(function()
+                    {
+                        var parent = $(this);
+                        $("input[name], textarea[name]",parent).each(function(i,node){
+                            node = $(node);
+                            values[node.attr("name")] = node.val();
+                        });
+                    });
+
+                    return values;
+            }
+
+        }
+        // initialise l'élément
+        else{
+            //@page $form Initialisation avec parametres
+            //Obtient les valeurs de champs
+            if(typeof p == "object")
             {
-                var parent = $(this);
-                
-                //fabrique les champs
-                $("*[name]",parent).each(function(i,node){
-                    node = $(node);
-                    var input = makeExistingField(this,node);
-                    node.replaceWith(input);
-                });
-            });
-       }
-       
-       //@page $form.values values Option
-       //Obtient les valeurs de champs
-       if(p == "values"){
-            var values = {};
-            
-            this.each(function()
+                 p = $.extend({
+                     fields    : null
+                 },p);
+
+                 return this.each(function()
+                 {
+                     var parent = $(this);
+
+                     parent.empty();
+
+                     //fabrique les champs
+                     for(var i in p.fields){
+                         var input = makeField(this,p.fields[i]);
+                         var label = parent.append("<div>"+p.fields[i].label+"</div>");
+                        // parent.append(label);
+                         parent.append(input);
+                     }
+                 });
+            }
+
+            //initialisation sans parametres
+            if(typeof p == "undefined")
             {
-                var parent = $(this);
-                $("input[name], textarea[name]",parent).each(function(i,node){
-                    node = $(node);
-                    values[node.attr("name")] = node.val();
-                });
-            });
+                 return this.each(function()
+                 {
+                     var parent = $(this);
+
+                     //fabrique les champs
+                     $("*[name]",parent).each(function(i,node){
+                         node = $(node);
+                         var input = makeExistingField(this,node);
+                         node.replaceWith(input);
+                     });
+                 });
+            }
+        }
             
-            return values;
-       }
-       
        return this;
     };
     
