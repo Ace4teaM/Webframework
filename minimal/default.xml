@@ -1,42 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-    <title>Webframework Minimal Web Site</title>
-    <name>Webframework</name>
-    <base>webframework</base>
-    <description>Exemple Web Site</description>
+    <title>My Application Title</title>
+    <name>application</name>
+    <base>webframework 1.8.1</base>
+    <description>My Application Description</description>
     
-    <host id="localhost">
-        <domain>localhost</domain>
-        <path></path>
-        <base_path></base_path>
-        <path_root></path_root>
-    </host>
-
     <index>
-        <page id="contact" name="Accueil">contact.php</page>
-        <image id="logo">bin/pictures/www.jpg</image>
-        <image id="icon">bin/pictures/logo.ico</image>
+        <!-- put your named URL here -->
         <page id="index" name="Accueil">index.php</page>
+        <!-- put anothers informations here -->
     </index>
 
-    <contact>
-        <title id="contact">AceTeaM</title>
-        <mail>
-            <primary>dev@aceteam.org</primary>
-            <no_reply>no-reply@aceteam.org</no_reply>
-        </mail>
-        <postal>
-            <name>Mr AUGUEY Thomas</name>
-            <address>133 bis, rue Jean Moulin</address>
-            <zipcode>50110</zipcode>
-            <city>TOURLAVILLE</city>
-            <country>FRANCE</country>
-        </postal>
-        <phone>02.33.20.06.48</phone>
-    </contact>
-
     <tree>
+        <!-- put your page tree's here -->
         <index/>
-        <contact/>
     </tree>
+    
+    <!-- French result texts -->
+    <results lang="fr">
+        <codes>
+            <!-- put your results contexts here -->
+        </codes>
+
+        <errors>
+            <!-- put your results codes here -->
+        </errors>
+
+        <messages>
+            <!-- put your results messages here -->
+        </messages>
+        
+        <fields>
+            <!-- put your fields texts here -->
+        </fields>
+    </results>
 </site>

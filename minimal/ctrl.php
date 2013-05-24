@@ -22,32 +22,35 @@
 
 /*
  * Point d'entree des controleurs principaux
- * Rôle : Visiteur
- * UC   : user_activate_account
  */
 
+// include bootstrap
 require_once("inc/globals.php");
+
+// use initialised application
 global $app;
 
-// Champs requis
+// make required fields list
 if(!$app->makeFiledList(
         $fields,
         array( 'ctrl' ),
         cXMLDefault::FieldFormatClassName )
    ) $app->processLastError();
 
-// Champs requis
+// make optionals fields list
 if(!$app->makeFiledList(
         $op_fields,
         array( 'app' ),
         cXMLDefault::FieldFormatClassName )
    ) $app->processLastError();
 
-// vérifie la validitée des champs
+// check fields
 $p = array();
 if(!cInputFields::checkArray($fields,$op_fields,$_REQUEST,$p))
     $app->processLastError();
 
-$app->execCtrl($p->ctrl,$p->app);
+// execute controller
+$app->execCtrl($p->ctrl,$p->app,$app->getRole());
+
 
 ?>

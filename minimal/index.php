@@ -1,9 +1,36 @@
 <?php
-require_once("inc/globals.php");
-global $app;
+/*
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    (C)2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-//print_r($app);
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-$app->showXMLView("view/pages/index.html",NULL,array());
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/**
+ * Default Entry point
+*/
+if(empty($_REQUEST))
+{
+    $_REQUEST = array(
+        "ctrl"=>"home",
+        "app"=>"application",
+        "output"=>"text/html"
+    );
+}
+
+include("ctrl.php");
 ?>
