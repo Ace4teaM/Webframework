@@ -128,7 +128,7 @@ class cApplication implements iApplication{
         global $app;
         $app = $this;
         
-        //initialise les memebres
+        //initialise les membres
         $this->root_path = $root_path;
         $this->config = $config;
         
@@ -184,6 +184,7 @@ class cApplication implements iApplication{
                 }
             }
         }
+        
         //charge la classe de la base de données
         $db_classname = $this->getCfgValue("database", "class");
         if(!empty($db_classname))
@@ -193,6 +194,18 @@ class cApplication implements iApplication{
         $classname = $this->getCfgValue(constant("SYSTEM"), "taskmgr_class");
         if(!empty($classname))
             require_once($this->getLibPath("wfw_local")."/php/system/".strtolower(constant('SYSTEM'))."/$classname.php");
+        
+        // Détermine le rôle de l'utilisateur en cours
+        $this->determinateRoles();
+    }
+    
+    /**
+     * @brief Détermine le rôle de l'utilisateur en cours
+     */
+    function determinateRoles()
+    {
+        //assigne les nouveaux droits
+        $this->setRole(cApplication::AnyRole);
     }
     
     /**
@@ -719,20 +732,24 @@ class cApplication implements iApplication{
         $att = $result->toArray();
         $default;
         
-        if($this->getDefaultFile($default)){
-
+        if($this->getDefaultFile($default))
+        {
             $att["txt_result"]  = $default->getResultText("codes",$result->code);
             $att["txt_error"]   = $default->getResultText("errors",$result->info);
-            if(isset($att["message"])){
-                //charge le message correspondant à l'erreur
-                if($att["message"] === true)
-                    $att["txt_message"] = $default->getResultText("messages",$result->info);
-                //charge un message specifique
-                else
-                    $att["txt_message"] = $default->getResultText("messages",$att["message"]);
-                //transforme le template
-                $att["txt_message"] = cHTMLTemplate::transform($att["txt_message"], $att);
+            
+            //charge un message specifique
+            if(isset($att["message"]) && is_string($att["txt_message"]))
+                $att["txt_message"] = $default->getResultText("messages",$att["message"]);
+            else{
+                //tente de charger automatiquement le message correspondant
+                $msg = $default->getResultText("messages",$result->info);
+                if(!empty($msg))
+                    $att["txt_message"] = $msg;
             }
+            
+            //transforme le template du message
+            if(isset($att["txt_message"]))
+                $att["txt_message"] = cHTMLTemplate::transform($att["txt_message"], $att);
         }
         
         return $att;
@@ -848,11 +865,10 @@ class cApplication implements iApplication{
             return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"CTRL_CLASS_NOT_FOUND ($classname)"));
         $class = new $classname();
         $class->role = $role;
-        
         if(!($class->acceptedRole() & $role))
-            return RESULT(cResult::Failed,Application::UnsuportedRoleByCtrl,array("CTRL"=>$ctrl));
+            return RESULT(cResult::Failed,Application::UnsuportedRoleByCtrl,array("CTRL"=>$ctrl,"ROLE"=>("0x".dechex($role))));
 
-        // Résultat de la requete
+        // Résultat de la requete par defaut
         RESULT(cResult::Ok,cApplication::Information,array("message"=>"WFW_MSG_POPULATE_FORM"));
 
         // Champs requis
@@ -1011,6 +1027,47 @@ class cApplication implements iApplication{
         //return $result;
         return RESULT($row["err_code"], $row["err_str"], stra_to_array($row["ext_fields"]));
     }
+    
+    
+    /*
+     * @brief fabrique un fragment de template
+     */
+    function makeBundle($path,$att,$data,&$doc)
+    {
+        $filename = basename($path);
+        $dirname  = dirname($path);
+        
+        //charge le contenu en selection
+        $doc = new XMLDocument("1.0", "utf-8");
+        $content = file_get_contents($path);
+        if(!$content){
+            RESULT(cResult::Failed, cApplication::ResourceNotFound, array("message"=>true,"file"=>$path) );
+            $this->processLastError();
+        }
+        $content = str_replace('images/', $dirname.'/images/', $content);//fix images path
+        $doc->loadHTML($content);
+
+        //initialise le template 
+        $template = new cXMLTemplate();
+        
+        if($this->getDefaultFile($default))
+            $template->push_xml_file('default.xml',$default->doc);
+        
+        //initialise le template 
+        if(is_array($att))
+            $att = array_merge($att, $this->getAttributes());
+        else
+            $att = $this->getAttributes();
+        
+        if (!$template->Initialise( $doc, NULL, $data, NULL, $att ))
+            return false;
+
+        //sortie
+        $template->Make();
+
+        return RESULT_OK();
+    }
+    
 }
 
 ?>
