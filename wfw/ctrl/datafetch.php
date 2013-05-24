@@ -36,9 +36,12 @@
 class wfw_datafetch_ctrl extends cApplicationCtrl{
     public $fields    = array('table_name');
     public $op_fields = array('cols_names','row_offset','row_count');
-//    public $role      = Role::Administrator;
 
     protected $doc = null;
+
+    function acceptedRole(){
+        return cApplication::AdminRole;
+    }
 
     function main(iApplication $app, $app_path, $p) {
         $lang = "fr";
@@ -86,9 +89,12 @@ class wfw_datafetch_ctrl extends cApplicationCtrl{
     }
     
     function output(iApplication $app, $format, $att, $result) {
-        switch($format){
-            case "text/xml":
-                return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
+        if($result->isOk())
+        {
+            switch($format){
+                case "text/xml":
+                    return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
+            }
         }
         return parent::output($app, $format, $att, $result);
     }
