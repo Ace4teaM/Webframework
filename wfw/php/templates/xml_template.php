@@ -1003,8 +1003,20 @@ class cXMLTemplateAction_array extends cXMLTemplateAction {
 
 }
 
-/**
- * @brief Test la sélection, pour chaque élément trouvé, duplique puis applique transforme le noeud en cours
+/*
+ * Déplace le curseur de sélection sur un ou plusieurs éléments
+ * Transformation:
+ *    Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
+ *    Sinon l'élément est transformé autant de fois qu'il y a d'éléments trouvés (méthode cXMLTemplate::check_node)
+ * Attributs:
+ *    action   = "all"
+ *    selector = Sélecteur CSS vers les éléments cibles
+ * Arguments générés:
+ *    __array_count__ = Index de l'élément en cours (débute à 1)
+ *    __inner_text__  = Valeur de l'élément sélectionné (texte)
+ *    __tag_name__    = Nom de la balise sélectionnée
+ * Exemples:
+ *    <li template:action="all" template:selector="books > *"> Book #-{__array_count__} is -{__inner_text__}</li>
  */
 class cXMLTemplateAction_all extends cXMLTemplateAction {
 
@@ -1052,8 +1064,20 @@ class cXMLTemplateAction_all extends cXMLTemplateAction {
 
 }
 
-/**
- * @brief Test la sélection et transforme le premier élément trouvé
+
+/*
+ * Déplace le curseur de sélection sur un élément
+ * Transformation:
+ *    Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
+ *    Sinon l'élément est transformé (méthode cXMLTemplate::check_node)
+ * Attributs:
+ *    action   = "one"
+ *    selector = Sélecteur CSS vers l'élément cible
+ * Arguments générés:
+ *    __inner_text__  = Valeur de l'élément sélectionné (texte)
+ *    __tag_name__    = Nom de la balise séléctionnée
+ * Exemples:
+ *    <li template:action="one" template:selector="books > *">First Book is -{__inner_text__}</li>
  */
 class cXMLTemplateAction_one extends cXMLTemplateAction {
 
@@ -1206,12 +1230,18 @@ class cXMLTemplateAction_eval extends cXMLTemplateAction {
 }
 
 /*
-  Selectionne un noeud et scan le contenu, si la selection echoue le noeud et ses enfants est supprime
-  Attributs:
-  action = "select"
-  path   = chemin d'acces a l'element cible.
+ * Déplace le curseur de sélection sur l'élément choisi
+ * Transformation:
+ *    Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
+ *    Sinon l'élément est transformé (méthode cXMLTemplate::check_node)
+ * Attributs:
+ *    action = "select"
+ *    path   = Chemin d'accès à l'élément cible
+ * Arguments générés:
+ *    __inner_text__ = Valeur de l'élément sélectionné (texte)
+ * Exemples:
+ *    <div template:action="select" template:path="/root/element"> Si l'élément 'book' est sélectionné</div>
  */
-
 class cXMLTemplateAction_select extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1228,7 +1258,7 @@ class cXMLTemplateAction_select extends cXMLTemplateAction {
         if ($select != NULL) {
             $arg['__inner_text__'] = $select->nodeValue;
 
-            $input->post("cXMLTemplateAction_select", "selection ok, ajoute et scan le contenu.");
+            $input->post("cXMLTemplateAction_select", "sélection ok, ajoute et scan le contenu.");
 
             //scan le contenu avec la nouvelle selection   
             if ($node->firstChild != NULL)
@@ -1236,7 +1266,7 @@ class cXMLTemplateAction_select extends cXMLTemplateAction {
         }
         //sinon, supprime ce noeud
         else {
-            $input->post("cXMLTemplateAction_select", "selection introuvable, supprime le noeud de reference.");
+            $input->post("cXMLTemplateAction_select", "sélection introuvable, supprime le noeud de référence.");
             if ($node->parentNode)
                 $node->parentNode->removeChild($node);
         }
@@ -1247,12 +1277,17 @@ class cXMLTemplateAction_select extends cXMLTemplateAction {
 }
 
 /*
-  Test si un attribut existe, si la selection echoue le noeud et ses enfants est supprime
-  Attributs:
-    action = "exists"
-    name  = nom de l'attribut
+ * Test l’existence d'un argument
+ * Transformation:
+ *    Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
+ *    Sinon l'élément est transformé (méthode cXMLTemplate::check_node)
+ * Attributs:
+ *    action = "exists"
+ *    name   = Nom de l'argument
+ * Exemples:
+ *    <div template:action="exists" template:name="my_arg"> Si 'my_arg' existe</div>
+ *    <div template:action="exists" template:name="!my_arg"> Si 'my_arg' n'existe pas</div>
  */
-
 class cXMLTemplateAction_exists extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1261,7 +1296,7 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
 
         $name = $node->getAttributeNS($input->wfw_template_uri, "name");
         
-        // si le nom est précédé de '!', l'action réussie si l'item n'existe pas
+        // si le nom est précédé de '!', test un argument qui n'existe pas
         $not_exist = false;
         if($name[0]=='!'){//negtive
             $name = substr($name,1);
