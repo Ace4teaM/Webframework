@@ -1,0 +1,8 @@
+<html xmlns:template="http://www.webframework.fr/last/xmlns/template">
+    <body>
+        <div>Livres</div>
+        <ul>
+            <li template:action="all" template:selector="books > *"> Book #-{__array_count__} is -{__inner_text__}</li>
+        </ul>
+    </body>
+</html>

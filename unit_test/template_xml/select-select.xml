@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <name>Contes et divertissements</name>
+    <bd>
+        <item>Sillage</item>
+        <item>Le grand jeu</item>
+    </bd>
+    <policier>
+        <item>sherlock holmes</item>
+    </policier>
+    <classic>
+        <item>shakespeare</item>
+    </classic>
+</library>
