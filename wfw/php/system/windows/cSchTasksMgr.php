@@ -93,25 +93,34 @@ class cSchTasksMgr implements iSysTaskMgr {
     public static function create($name, DateTime $date, $cmd) {
         //initalise la commande
         $cmd = addcslashes($cmd, '"');
-        $cmd = 'schtasks /create /f /tn "' . $name . '" /tr "' . $cmd . '" /sc once /st ' . $date->format("H:i:s");
+        $cmd = 'schtasks /create /f /tn "' . $name . '" /tr "' . $cmd . '" /sc once /sd '.$date->format("d/m/Y").' /st ' . $date->format("H:i:s");
 
         // ajoute le mot-de-passe et le nom d'utilisateur
         if (defined("SCHTASKS_USER"))
             $cmd .= ' /ru "' . SCHTASKS_USER . '"';
         if (defined("SCHTASKS_PWD"))
             $cmd .= ' /rp "' . SCHTASKS_PWD . '"';
-
+/*
+        print_r($cmd);
+        print_r($date);
+        exit;
+ */
         //execute la commande
         exec($cmd, $output, $return_var);
 
 //            if(defined("SCHTASKS_USER")) print_r(SCHTASKS_USER);
 //            if(defined("SCHTASKS_PWD")) print_r(SCHTASKS_PWD);
-//            print_r($output);
-//            print_r($cmd."\n[0x".hexdec(intval($return_var))."]\n");
+ //           print_r($output);
+ //           print_r($cmd."\n[0x".hexdec(intval($return_var))."]\n");
         //ok?
         if (intval($return_var) != 0)
             return RESULT(cResult::System, "SYS_TASK_CREATE", array("type" => "schtasks", "rval" => "0x" . hexdec(intval($return_var)), "cmd" => $cmd, "output" => print_r($output, true)));
 
+        if(defined("DEBUG")){
+            RESULT_OK();
+            RESULT_PUSH("cmd",$cmd);
+            return true;
+        }
         return RESULT_OK();
     }
 
