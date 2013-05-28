@@ -528,7 +528,7 @@ class cApplication implements iApplication{
         $template->push_xml_file('template.xml',$this->template_attributes_xml);
         
         $this->onMakeXMLTemplate($template,$select,$attributes);
-        
+
         //initialise la classe template 
         if(!$template->Initialise(
                     $template_file,
@@ -738,10 +738,10 @@ class cApplication implements iApplication{
             $att["txt_error"]   = $default->getResultText("errors",$result->info);
             
             //charge un message specifique
-            if(isset($att["message"]) && is_string($att["txt_message"]))
+            if(isset($att["message"]) && is_string($att["message"]))
                 $att["txt_message"] = $default->getResultText("messages",$att["message"]);
             else{
-                //tente de charger automatiquement le message correspondant
+                //tente de charger le message correspondant au code d'erreur
                 $msg = $default->getResultText("messages",$result->info);
                 if(!empty($msg))
                     $att["txt_message"] = $msg;
