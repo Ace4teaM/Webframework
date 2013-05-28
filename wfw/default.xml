@@ -10,6 +10,7 @@
         <page id="datamodel" role="visitor" name="Obtient le model de données">ctrl.php?app=wfw&amp;ctrl=datamodel&amp;output=xml</page>
         <page id="defaults" role="visitor" name="Obtient les meta données">ctrl.php?app=wfw&amp;ctrl=defaults&amp;output=xml</page>
         <page id="datafetch" role="administrator" name="Obtient des données">ctrl.php?app=wfw&amp;ctrl=datafetch&amp;output=xml</page>
+        <page id="maketask" role="administrator" name="Initialise une tâche système">ctrl.php?app=wfw&amp;ctrl=maketask&amp;output=xml</page>
     </index>
 
     <results lang="fr">
@@ -60,6 +61,7 @@
             <WFW_MSG_POPULATE_FORM>
                 Merci de compléter le formulaire
             </WFW_MSG_POPULATE_FORM>
+            <DB_SQL_QUERY>$QUERY</DB_SQL_QUERY>
             <APP_UNKNOWN_FIELD>L'Application doit définir le champs '$FIELD_NAME'</APP_UNKNOWN_FIELD>
             <APP_UNKNOWN_FIELD_FORMAT>L'Application doit définir le format du champs '$FIELD_NAME'. Ajoutez ce format à la configuration (section [fields_formats]).</APP_UNKNOWN_FIELD_FORMAT>
             <APP_UNKNOWN_FIELD_CLASS>L'Application doit définir la classe du champs '$CLASS_NAME'.</APP_UNKNOWN_FIELD_CLASS>
@@ -85,6 +87,11 @@
             <row_offset>Numéro de ligne</row_offset>
             <row_count>Nombre de lignes</row_count>
             <cols_names>Nom des colonnes</cols_names>
+            
+            <!-- task manager -->
+            <task_name>Nom de la tâche</task_name>
+            <task_date>Date d'exécution</task_date>
+            <task_cmd>Commande à exécuter</task_cmd>
         </fields>
     </results>
 </site>

@@ -22,57 +22,35 @@
  */
 
 /**
- * @page wfw_data_model Data Model
+ * @page wfw_maketask_ctrl Initialise une tâche système
  * 
- * # Retourne le modèle de données (dictionnaire)
  * 
  * | Informations |                          |
  * |--------------|--------------------------|
  * | PageId       | -
- * | Rôle         | Visiteur
- * | UC           | wfw_datamodel
+ * | Rôle         | Administrateur
+ * | UC           | maketask
  * 
  * @param lang Langage pour les textes
  */
 
-class wfw_datamodel_ctrl extends cApplicationCtrl{
-    public $fields    = null;
+class wfw_maketask_ctrl extends cApplicationCtrl{
+    public $fields    = array("task_name","task_date","task_cmd");
     public $op_fields = null;
     
-    protected $doc = null;
-
-    function getXML() {
-        return $this->doc;
+    function acceptedRole(){
+        return cApplication::AdminRole;
     }
-    
+
     function main(iApplication $app, $app_path, $p) {
-        $lang = "fr";
-
-        // Initialise le document de sortie
-        $doc = new XMLDocument("1.0", "utf-8");
-        $rootEl = $doc->createElement('data');
-        $doc->appendChild($rootEl);
-
-        $def=null;
-        $app->getDefaultFile($def);
-
-        //types et ids
-        foreach ($app->getCfgSection('fields_formats') as $id => $type) {
-            $id = strtolower($id);
-            $type = strtolower($type);
-            $node = $doc->createTextElement($id, $type);
-            if (isset($def) && $def->getFiledText($id, $text, $lang))
-                $node->setAttribute("label", $text);
-            $rootEl->appendChild($node);
-        }
-
-        //termine ici
-        $this->doc = $doc;
-        return RESULT_OK();
+        if(!$app->getTaskMgr($taskMgr))
+            return false;
+        
+        return $taskMgr->create($p->task_name,$p->task_date,$p->task_cmd);
     }
     
     // output
-    function output(iApplication $app, $format, $att, $result)
+    /*function output(iApplication $app, $format, $att, $result)
     {
         if(!$result->isOk())
             return parent::output($app, $format, $att, $result);
@@ -82,7 +60,7 @@ class wfw_datamodel_ctrl extends cApplicationCtrl{
                 return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
         }
         return parent::output($app, $format, $att, $result);
-    }
+    }*/
 };
 
 ?>
