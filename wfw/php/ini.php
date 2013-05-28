@@ -9,6 +9,7 @@ ini_set('display_errors', '1');
 ini_set('date.timezone', 'Europe/Paris');
 //ini_set('include_path',ini_get('include_path').':'+pwd()+':');
 
+header("Cache-Control: max-age=1"); // don't cache ourself
 
 /** hostname */
 $_hostname_ = "";
