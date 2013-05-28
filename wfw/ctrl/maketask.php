@@ -31,7 +31,9 @@
  * | Rôle         | Administrateur
  * | UC           | maketask
  * 
- * @param lang Langage pour les textes
+ * @param task_name  Nom de la tâche
+ * @param task_date  Date d'exécution
+ * @param task_cmd   Commande système
  */
 
 class wfw_maketask_ctrl extends cApplicationCtrl{
@@ -48,19 +50,6 @@ class wfw_maketask_ctrl extends cApplicationCtrl{
         
         return $taskMgr->create($p->task_name,$p->task_date,$p->task_cmd);
     }
-    
-    // output
-    /*function output(iApplication $app, $format, $att, $result)
-    {
-        if(!$result->isOk())
-            return parent::output($app, $format, $att, $result);
-
-        switch($format){
-            case "text/xml":
-                return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
-        }
-        return parent::output($app, $format, $att, $result);
-    }*/
 };
 
 ?>
