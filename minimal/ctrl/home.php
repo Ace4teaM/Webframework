@@ -63,6 +63,7 @@ class application_home_ctrl extends cApplicationCtrl
             // HTML output
             case "text/html":
                 // make from main template
+                $att["system"] = ucwords(strtolower(constant("SYSTEM")));
                 $template = $app->createXMLView("view/pages/index.html",$att);
                 if(!$template)
                     return false;
