@@ -48,33 +48,48 @@ class cSchTasksMgr implements iSysTaskMgr {
      * Obtient une tâche par son identificateur (AT spécifique)
      */
     public static function getById(int $id) {
-        return new cSysTask($name, "at $id" . $task->getId());
+        return RESULT(cResult::Failed,'UNSUPORTED_FEATURE',array('FEATURE'=>'cSchTasksMgr::getById'));
     }
 
     /**
      * Obtient une tâche par son nom (iSysTaskMgr implémentation)
      */
     public static function get($name) {
-        return new cSysTask($name, "at $id" . $task->getId());
+        return RESULT(cResult::Failed,'UNSUPORTED_FEATURE',array('FEATURE'=>'cSchTasksMgr::get'));
     }
 
     /**
      * Actualise une tâche existante (iSysTaskMgr implémentation)
      */
     public static function set(cSysTask $task) {
-        system($task->getCmdLine(), $return_var);
-        return $return_var;
+        return RESULT(cResult::Failed,'UNSUPORTED_FEATURE',array('FEATURE'=>'cSchTasksMgr::set'));
     }
 
     /**
      * Supprime une tâche existante (iSysTaskMgr implémentation)
      */
     public static function delete(cSysTask $task) {
-        system("schtasks /delete /u www /tn \"" . $task->getName() . "\"", $return_var);
-        //if($return_var!=0)
-        //	return procResult(ERR_FAILED,"SYSTEM_ERROR");
-        //return procResult(ERR_OK,"DELETE_TASK");
-        return $return_var;
+        return RESULT(cResult::Failed,'UNSUPORTED_FEATURE',array('FEATURE'=>'cSchTasksMgr::delete'));
+        
+        //initalise la commande
+        /*$cmd = 'schtasks /delete /tn '.$task->name;
+        
+        if (defined("SCHTASKS_USER"))
+            $cmd .= ' /u "' . SCHTASKS_USER . '"';
+
+        //execute la commande
+        exec($cmd, $output, $return_var);
+
+        //ok?
+        if (intval($return_var) != 0)
+            return RESULT(cResult::System, "SYS_TASK_DELETE", array("type" => "schtasks", "rval" => "0x" . hexdec(intval($return_var)), "cmd" => $cmd, "output" => print_r($output, true)));
+
+        if(defined("DEBUG")){
+            RESULT_OK();
+            RESULT_PUSH("cmd",$cmd);
+            return true;
+        }
+        return RESULT_OK();*/
     }
 
     /**
@@ -125,7 +140,7 @@ class cSchTasksMgr implements iSysTaskMgr {
     }
 
     /**
-     * Crée une tâche appelant une requête PHP (iSysTaskMgr impl�mentation)
+     * Crée une tâche appelant une requête PHP (iSysTaskMgr implementation)
      */
     public static function createPHPRequest($name, DateTime $date, $reqName, $reqName) {
         return create($name, $date, "php $reqName ...");
