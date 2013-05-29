@@ -50,6 +50,21 @@ class IniParseTest extends PHPUnit_Framework_TestCase{
         );
         $this->assertEquals($expected,$cfg,'force upper case');
         
+        // values types
+        $cfg = parse_ini_file_ex('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_ini\values.ini');
+        $expected = array(
+            'VALUE'=>array(
+                'TRUE'=>true,
+                'FALSE'=>false,
+                'NULL'=>null,
+                'INT'=>465,
+                'FLOAT'=>45.12,
+                'DATE'=>(new DateTime("25-12-1983")),
+                'DATETIME'=>(new DateTime("25-12-1983 03:12:00"))
+            )
+        );
+        $this->assertEquals($expected,$cfg,'comments');
+        
         // comment
         $cfg = parse_ini_file_ex('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_ini\comments.ini');
         $expected = array(
