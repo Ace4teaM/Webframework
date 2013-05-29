@@ -1,5 +1,6 @@
 <?php
 
+require_once("base.php");
 require_once("inputs/int.php");
 require_once("inputs/float.php");
 require_once("inputs/date.php");
@@ -28,17 +29,23 @@ require_once("inputs/date.php");
  * @include "config/other.ini"
  */
 
-function parse_ini_file_ex($filename){
+function parse_ini_file_ex($filename,$att=INI_PARSE_UPPERCASE){
     
     // obtient le contenu du fichier
     $content = file_get_contents($filename);
     if($content === FALSE)
         return FALSE;
     
-    return parse_ini_string_ex($content);
+    return parse_ini_string_ex($content,dirname($filename),$att);
 }
 
-function parse_ini_string_ex($content){
+/**
+ * Charge la configuration d'un fichier INI dans un tableau
+ * @param type $content Contenu texte du fichier INI
+ * @return array Tableau associatif des sections du fichier INI
+ */
+define("INI_PARSE_UPPERCASE",0x1);
+function parse_ini_string_ex($content,$dir=".",$att=INI_PARSE_UPPERCASE){
     
     //
     // parse les actions
@@ -48,7 +55,7 @@ function parse_ini_string_ex($content){
         $continue=0;
         
         // constantes...
-        if(preg_match_all('/(?:^|[\n\r\s]+)@const\s+(\w+)\s*=\s*\"([^\"]*)\"/', $content, $const_matches))
+        if(preg_match_all('/(?:^|[\n\r]+)\s*@const\s+(\w+)\s*=\s*\"([^\"]*)\"/', $content, $const_matches))
         {
             foreach($const_matches[1] as $key=>&$value)
                 $const['${'.$value.'}']=$const_matches[2][$key];
@@ -60,8 +67,9 @@ function parse_ini_string_ex($content){
         $content = str_replace(array_keys($const), array_values($const), $content);
 
         //includes...
-        $content = preg_replace_callback('/(?:^|[\n\r\s]+)@include\s*\"([^\"]*)\"/', function($matches) use(&$continue){
-            if($content = @file_get_contents(/*ROOT_PATH."/".*/$matches[1])){
+        $content = preg_replace_callback('/(?:^|[\n\r]+)\s*@include\s*\"([^\"]*)\"/', function($matches) use(&$continue,$dir){
+            $path = path($dir,$matches[1]);
+            if($content = @file_get_contents($path)){
                 $continue=1;//scan a nouveau le contenu inclue
                 return "\n".$content."\n";
             }
@@ -87,7 +95,7 @@ function parse_ini_string_ex($content){
             continue;
         //section ?
         if(preg_match('/\[(\w+)\]/', $text, $matches)){
-            $name = strtoupper($matches[1]);
+            $name = ($att & INI_PARSE_UPPERCASE) ? strtoupper($matches[1]) : $matches[1];
             //print_r($matches);
             if(!isset($sections[$name]))
                 $sections[$name]=array();
@@ -96,7 +104,8 @@ function parse_ini_string_ex($content){
         }
         //item string ?
         if(preg_match('/\s*(\w+)\s*\=\s*\"([^\"]*)/', $text, $matches)){
-            $cur_sections[strtoupper($matches[1])]=$matches[2];
+            $name = ($att & INI_PARSE_UPPERCASE) ? strtoupper($matches[1]) : $matches[1];
+            $cur_sections[$name]=$matches[2];
             continue;
         }
         //item typé ?
@@ -123,7 +132,8 @@ function parse_ini_string_ex($content){
                         $value = cInputDate::toObject($value);
                     break;
             }
-            $cur_sections[strtoupper($matches[1])] = $value;
+            $name = ($att & INI_PARSE_UPPERCASE) ? strtoupper($matches[1]) : $matches[1];
+            $cur_sections[$name] = $value;
             continue;
         }
     }
