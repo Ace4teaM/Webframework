@@ -8,8 +8,8 @@ require_once("inputs/datetime.php");
 
 /**
  * @brief Parser avancée de fichier INI
- 
  * @param string $filename Le nom du fichier de configuration à analyser
+ * @param type $content Combinaison des masques suivants: INI_PARSE_UPPERCASE
  * @return array La configuration est retournée sous la forme d'un tableau associatif
  * @retval FALSE Une erreur est survenue
  * 
@@ -43,7 +43,9 @@ function parse_ini_file_ex($filename,$att=INI_PARSE_UPPERCASE){
 /**
  * Charge la configuration d'un fichier INI dans un tableau
  * @param type $content Contenu texte du fichier INI
- * @return array Tableau associatif des sections du fichier INI
+ * @param type $dir     Dossier d'include de base
+ * @param type $content Combinaison des masques suivants: INI_PARSE_UPPERCASE
+ * @return array Tableau associatif des sections de valeurs
  */
 define("INI_PARSE_UPPERCASE",0x1);
 function parse_ini_string_ex($content,$dir=".",$att=INI_PARSE_UPPERCASE){
