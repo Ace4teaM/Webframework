@@ -43,9 +43,11 @@ function parse_ini_file_ex($filename,$att=INI_PARSE_UPPERCASE){
 /**
  * Charge la configuration d'un fichier INI dans un tableau
  * @param type $content Contenu texte du fichier INI
- * @param type $dir     Dossier d'include de base
+ * @param type $dir     Dossier d'inclusion
  * @param type $content Combinaison des masques suivants: INI_PARSE_UPPERCASE
  * @return array Tableau associatif des sections de valeurs
+ * 
+ * @remarks Lors d'une inclusion (@include), parse_ini_string_ex va rechercher le fichier par rapport au dossier relatif du script. Si celui-ci reste introuvable, $dir est utilisé comme chemin de réference.
  */
 define("INI_PARSE_UPPERCASE",0x1);
 function parse_ini_string_ex($content,$dir=".",$att=INI_PARSE_UPPERCASE){
@@ -71,11 +73,20 @@ function parse_ini_string_ex($content,$dir=".",$att=INI_PARSE_UPPERCASE){
 
         //includes...
         $content = preg_replace_callback('/(?:^|[\n\r]+)\s*@include\s*\"([^\"]*)\"/', function($matches) use(&$continue,$dir){
-            $path = path($dir,$matches[1]);
-            if($content = @file_get_contents($path)){
-                $continue=1;//scan a nouveau le contenu inclue
+            //recherche le fichier tel que définit, sinon recherche avec le chemin en cours
+            $path = $matches[1];
+            if(!file_exists($path)){
+                $path = path($dir,$matches[1]);
+            }
+            if(!file_exists($path)){
+                return "\n; Included file not exists: ".$matches[1]."\n";
+            }
+            //ok, charge le fichier
+            if($content = file_get_contents($path)){
+                $continue=1;//scan a nouveau avec le contenu inclus
                 return "\n".$content."\n";
             }
+            // impossible de lire le fichier
             return "\n; Can't include file ".$matches[1]."\n";
         }, $content);
 
