@@ -68,8 +68,15 @@ class application_home_ctrl extends cApplicationCtrl
                 if(!$template)
                     return false;
                 
-                // add your own data
-                // $template->push_xml_file('my_resource.xml', $this->my_resource_xml);
+                // ajoute les données de la configuration
+                $doc = new XMLDocument();
+                $doc->appendChild($doc->createElement("data"));
+                foreach($app->getCfg() as $key=>$section){
+                    $sectionNode = $doc->createElement($key);
+                    $doc->documentElement->appendChild($sectionNode);
+                    $doc->appendAssocArray($sectionNode,$section);
+                }
+                $template->push_xml_file('config.xml', $doc);
 
                 //sortie
                 return $template->Make();

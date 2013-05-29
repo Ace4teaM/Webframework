@@ -35,7 +35,7 @@
                 margin-left:100px;
                 margin-right:100px;
                 margin-top:40px;
-                padding-bottom:50px;
+                padding-bottom:70px;
                 min-height:350px;
                 display: block;
             }
@@ -73,7 +73,7 @@
                         <p>Et si on commençait les choses sérieuses ?<br/>Avant toutes choses, si vous accédez à ce site depuis le répertoire de Webframework, copiez-le ! (Il est préférable de garder une copie originale pour d'autres sites)</p>
                         <p><a href="#configuration" class="btn btn-primary btn-large">Continuer &raquo;</a></p>
                     </div>
-                    
+
                     <!-- Configuration -->
                     <div id="configuration" class="hero-unit">
                         <h1>Configuration</h1>
@@ -86,8 +86,11 @@
                                 <li data-target="#myCarousel" data-slide-to="1"></li>
                                 <li data-target="#myCarousel" data-slide-to="2"></li>
                             </ol>
+                            
                             <!-- Carousel items -->
                             <div class="carousel-inner">
+                                
+                                <!-- Defaults options -->
                                 <div class="active item">
                                     <div class="carousel-content">
                                         <form>
@@ -112,6 +115,8 @@
                                         <p>Identifiez votre site</p>
                                     </div>
                                 </div>
+                                
+                                <!-- Modules -->
                                 <div class="item">
                                     <div class="carousel-content">
                                         <form>
@@ -138,7 +143,30 @@
                                         <p>Activez les modules qui vous intéressent</p>
                                     </div>
                                 </div>
+                                
+                                <!-- Config options -->
+                                <div class="item" template:action="select" template:path=":config.xml:">
+                                    <div class="carousel-content">
+                                        <ul class="nav nav-tabs" id="myTab">
+                                            <li template:action="all" template:selector=">*"><a href="#-{__tag_name__}">-{__tag_name__}</a></li>
+                                        </ul>
+
+                                        <div class="tab-content">
+                                            <div template:action="all" template:selector=">*" class="tab-pane" id="-{__tag_name__}">
+                                                <div template:action="all" template:selector=">*">  
+                                                    <div class="span4">-{__tag_name__}</div>
+                                                    <div class="span8">-{__inner_text__}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="carousel-caption">
+                                        <h4>Configuration</h4>
+                                        <p>Affiche l'état de la configuration actuelle</p>
+                                    </div>
+                                </div>
                             </div>
+                            
                             <!-- Carousel nav -->
                             <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
                             <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
@@ -151,6 +179,11 @@
         <script type="text/javascript">
             $(function (){
                 $("*[rel=popover]").popover({trigger:"hover",placement:"right"});
+                $('#myTab a:last').tab('show');
+                $('#myTab a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
             });
         </script>
     </body>
