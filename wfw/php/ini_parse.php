@@ -4,6 +4,7 @@ require_once("base.php");
 require_once("inputs/int.php");
 require_once("inputs/float.php");
 require_once("inputs/date.php");
+require_once("inputs/datetime.php");
 
 /**
  * @brief Parser avancée de fichier INI
@@ -130,6 +131,8 @@ function parse_ini_string_ex($content,$dir=".",$att=INI_PARSE_UPPERCASE){
                         $value = cInputFloat::toObject($value);
                     else if(cInputDate::isValid($value))
                         $value = cInputDate::toObject($value);
+                    else if(cInputDateTime::isValid($value))
+                        $value = cInputDateTime::toObject($value);
                     break;
             }
             $name = ($att & INI_PARSE_UPPERCASE) ? strtoupper($matches[1]) : $matches[1];
