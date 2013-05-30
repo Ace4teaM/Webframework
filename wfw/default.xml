@@ -11,8 +11,8 @@
         <page id="datamodel" role="visitor" name="Obtient le model de données">ctrl.php?app=wfw&amp;ctrl=datamodel&amp;output=xml</page>
         <page id="defaults" role="visitor" name="Obtient les meta données">ctrl.php?app=wfw&amp;ctrl=defaults&amp;output=xml</page>
         <page id="datafetch" role="administrator" name="Obtient des données">ctrl.php?app=wfw&amp;ctrl=datafetch&amp;output=xml</page>
-        <page id="maketask" role="administrator" name="Initialise une tâche système">ctrl.php?app=wfw&amp;ctrl=maketask&amp;output=xml</page>
-        <page id="maketaskrecursive" role="administrator" name="Initialise une tâche système (recursive)">ctrl.php?app=wfw&amp;ctrl=maketaskrecursive&amp;output=xml</page>
+        <page id="maketask" role="administrator" name="Initialise une tâche système">ctrl.php?app=wfw&amp;ctrl=maketask&amp;output=html</page>
+        <page id="maketaskrecursive" role="administrator" name="Initialise une tâche système (recursive)">ctrl.php?app=wfw&amp;ctrl=maketaskrecursive&amp;output=html</page>
     </index>
 
     <results lang="fr">
