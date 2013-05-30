@@ -6,6 +6,7 @@
     <description>Webframework Library</description>
 
     <index>
+        <page id="explorer" role="administrator" name="Explorateur de fichiers">ctrl.php?app=wfw&amp;ctrl=explorer&amp;output=html</page>
         <page id="yui_config" role="visitor" name="Configuration YUI">ctrl.php?app=wfw&amp;ctrl=yui_config&amp;output=javascript</page>
         <page id="datamodel" role="visitor" name="Obtient le model de données">ctrl.php?app=wfw&amp;ctrl=datamodel&amp;output=xml</page>
         <page id="defaults" role="visitor" name="Obtient les meta données">ctrl.php?app=wfw&amp;ctrl=defaults&amp;output=xml</page>
