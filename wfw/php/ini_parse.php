@@ -41,6 +41,45 @@ function parse_ini_file_ex($filename,$att=INI_PARSE_UPPERCASE){
 }
 
 /**
+ * Resoud les inclusions et constantes dans un fichier INI
+ * @param type $content Contenu texte du fichier INI
+ * @param type $dir     Dossier de base pour les inclusions
+ * @param type $const   Tableau associatif des constantes existantes
+ * @return string Contenu texte du fichier INI transformé
+ */
+function resolve_ini_string_ex($content,$dir=".",$const=array()){
+    //
+    // constantes...
+    //
+    if(preg_match_all('/(?:^|[\n\r]+)\s*@const\s+(\w+)\s*=\s*\"([^\"]*)\"/', $content, $const_matches))
+    {
+        foreach($const_matches[1] as $key=>&$value)
+            $const['${'.$value.'}']=$const_matches[2][$key];
+//            print_r($const);
+        //supprime les lignes trouvées
+        $content = str_replace($const_matches[0], "", $content);
+    }
+    //remplace les constantes
+    $content = str_replace(array_keys($const), array_values($const), $content);
+
+    //
+    // includes...
+    //
+    $content = preg_replace_callback('/(?:^|[\n\r]+)\s*@include\s*\"([^\"]*)\"/', function($matches) use(&$continue,$dir,$const){
+        // chemin d'acces au fichier
+        $path = path($dir,$matches[1]);
+        // charge le fichier
+        if($content = file_get_contents($path)){
+            //scan a nouveau avec le contenu inclus
+            return "\n".resolve_ini_string_ex($content,dirname($path),$const)."\n";
+        }
+        // impossible de lire le fichier
+        return "\n; Can't include file ".$matches[1]."\n";
+    }, $content);
+    
+    return $content;
+}
+/**
  * Charge la configuration d'un fichier INI dans un tableau
  * @param type $content Contenu texte du fichier INI
  * @param type $dir     Dossier d'inclusion
@@ -52,50 +91,9 @@ function parse_ini_file_ex($filename,$att=INI_PARSE_UPPERCASE){
 define("INI_PARSE_UPPERCASE",0x1);
 function parse_ini_string_ex($content,$dir=".",$att=INI_PARSE_UPPERCASE){
     
-    //
-    // parse les actions
-    //
-    $const=array();
-    do{
-        $continue=0;
-        
-        // constantes...
-        if(preg_match_all('/(?:^|[\n\r]+)\s*@const\s+(\w+)\s*=\s*\"([^\"]*)\"/', $content, $const_matches))
-        {
-            foreach($const_matches[1] as $key=>&$value)
-                $const['${'.$value.'}']=$const_matches[2][$key];
-//            print_r($const);
-            //supprime les lignes trouvées
-            $content = str_replace($const_matches[0], "", $content);
-        }
-        //remplace les constantes
-        $content = str_replace(array_keys($const), array_values($const), $content);
+    //resoud les inclusions
+    $content = resolve_ini_string_ex($content,$dir);
 
-        //includes...
-        $content = preg_replace_callback('/(?:^|[\n\r]+)\s*@include\s*\"([^\"]*)\"/', function($matches) use(&$continue,$dir){
-            //recherche le fichier tel que définit, sinon recherche avec le chemin en cours
-            $path = $matches[1];
-            if(!file_exists($path)){
-                $path = path($dir,$matches[1]);
-            }
-            if(!file_exists($path)){
-                return "\n; Included file not exists: ".$matches[1]."\n";
-            }
-            //ok, charge le fichier
-            if($content = file_get_contents($path)){
-                $continue=1;//scan a nouveau avec le contenu inclus
-                return "\n".$content."\n";
-            }
-            // impossible de lire le fichier
-            return "\n; Can't include file ".$matches[1]."\n";
-        }, $content);
-
-    }while($continue);
-    
-/*    header("content-type: text/plain");
-    echo($content);
-    exit;*/
-    
     //
     // parse les sections
     //
