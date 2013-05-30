@@ -578,7 +578,7 @@ class XMLDocument extends DOMDocument {
     }
 
     /**
-     * @brief Ajoute un ensemble d'élément depuis un tableau associatif
+     * @brief Ajoute un ensemble d'éléments depuis un tableau associatif
      * @param type $parentNode Elément recevant les éléements créés
      * @param type $assocArray Tableau associatif conenant les valeurs à ajouter
      * @return DOMElement L'Element parent
