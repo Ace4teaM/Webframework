@@ -63,6 +63,7 @@ class cApplication implements iApplication{
     const EntityMissingId            = "APP_ENTITY_MISSING_ID";
     const CtrlNotFound               = "APP_CTRL_NOT_FOUND";
     const UnsuportedRoleByCtrl       = "APP_UNSUPORTED_ROLE_BY_CTRL";
+    const CantLoadDefaultFile        = "APP_CANT_LOAD_DEFAULT_FILE";
     /**
      * Champ inconnue
      * @param FIELD_NAME Nom du champ
@@ -311,7 +312,8 @@ class cApplication implements iApplication{
         //charge le fichier
         $this->default = new cXMLDefault();
 
-        $uri = $this->getBaseURI()."/".$this->makeCtrlURI('wfw','defaults',array("output"=>"xml"));
+        //$uri = $this->getBaseURI()."/".$this->makeCtrlURI('wfw','defaults',array("output"=>"xml"));
+        $uri = $this->getBaseURI()."/default.xml";
 
         if(!$this->default->Initialise($uri)){
             $this->default = FALSE;
@@ -443,6 +445,15 @@ class cApplication implements iApplication{
         $item_name = strtoupper($item_name);
         $section = $this->getCfgSection($section_name);
         return ($section!==null && isset($section[$item_name]) ? $section[$item_name] : null);
+    }
+    
+    /**
+     * @brief Obtient les paramètres de configuration
+     * @return Paramètres de configuration
+     * @retval array Liste des paramètres
+     */
+    function getCfg(){
+        return $this->config;
     }
     
     /**
