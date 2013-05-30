@@ -40,6 +40,10 @@
             <DB_CONNECTION>Connexion au serveur de base de données a échouée</DB_CONNECTION>
             <DB_SQL_QUERY>Requête SQL mal formée</DB_SQL_QUERY>
             <SOCK_OPEN_URL>La connexion au serveur a échouée</SOCK_OPEN_URL>
+            <UNSUPORTED_FEATURE>Fonctionnalité non supportée</UNSUPORTED_FEATURE>
+            <UNIMPLEMENTED_FEATURE>Fonctionnalité non implémentée</UNIMPLEMENTED_FEATURE>
+            
+            <!-- WFW:APPLICATION (ERR_FAILED) -->
             <APP_UNKNOWN_HOSTNAME>Nom de l'hôte inconnu</APP_UNKNOWN_HOSTNAME>
             <APP_NO_DATABASE_CONFIGURED>Aucune base de donées n'est présente dans la configuration</APP_NO_DATABASE_CONFIGURED>
             <APP_UNKNOWN_FORM_TEMPLATE_FILE>Le template de formulaire est indéfinit</APP_UNKNOWN_FORM_TEMPLATE_FILE>
@@ -54,6 +58,7 @@
         </errors>
 
         <messages>
+            <!-- WFW (ERR_FAILED) -->
             <MISSING_FIELD>
                 Merci de renseigner le champ: $TXT_FIELD_NAME ($FIELD_NAME).
             </MISSING_FIELD>
@@ -64,6 +69,9 @@
                 Merci de compléter le formulaire
             </WFW_MSG_POPULATE_FORM>
             <DB_SQL_QUERY>$QUERY</DB_SQL_QUERY>
+            <UNSUPORTED_FEATURE>$FEATURE</UNSUPORTED_FEATURE>
+            
+            <!-- WFW:APPLICATION (ERR_FAILED) -->
             <APP_UNKNOWN_FIELD>L'Application doit définir le champs '$FIELD_NAME'</APP_UNKNOWN_FIELD>
             <APP_UNKNOWN_FIELD_FORMAT>L'Application doit définir le format du champs '$FIELD_NAME'. Ajoutez ce format à la configuration (section [fields_formats]).</APP_UNKNOWN_FIELD_FORMAT>
             <APP_UNKNOWN_FIELD_CLASS>L'Application doit définir la classe du champs '$CLASS_NAME'.</APP_UNKNOWN_FIELD_CLASS>

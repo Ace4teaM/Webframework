@@ -3,10 +3,13 @@
  * @brief Résultat de procédure (Webframework)
  */
 class cResult {
-    //std error code
+    //contexts
     const Ok     = "ERR_OK";
     const Failed = "ERR_FAILED";
     const System = "ERR_SYSTEM";
+    
+    //codes
+    const UnsuportedFeature = "UNSUPORTED_FEATURE";
     
     //
     public static $last_code,$last_info,$last_att;
