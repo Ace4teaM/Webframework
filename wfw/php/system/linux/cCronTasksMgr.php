@@ -37,28 +37,28 @@ class cCronTasksMgr implements iSysTaskMgr {
      * Obtient une tâche par son identificateur (AT spécifique)
      */
     public static function getById(int $id) {
-        return RESULT(cResult::Failed,'UNSUPORTED_FEATURE',array('FEATURE'=>'cSchTasksMgr::getById'));
+        return RESULT(cResult::Failed,cResult::UnsuportedFeature,array('FEATURE'=>'cSchTasksMgr::getById'));
     }
 
     /**
      * Obtient une tâche par son nom (iSysTaskMgr implémentation)
      */
     public static function get($name) {
-        return RESULT(cResult::Failed,'UNSUPORTED_FEATURE',array('FEATURE'=>'cSchTasksMgr::get'));
+        return RESULT(cResult::Failed,cResult::UnsuportedFeature,array('FEATURE'=>'cSchTasksMgr::get'));
     }
 
     /**
      * Actualise une tâche existante (iSysTaskMgr implémentation)
      */
     public static function set(cSysTask $task) {
-        return RESULT(cResult::Failed,'UNSUPORTED_FEATURE',array('FEATURE'=>'cSchTasksMgr::set'));
+        return RESULT(cResult::Failed,cResult::UnsuportedFeature,array('FEATURE'=>'cSchTasksMgr::set'));
     }
 
     /**
      * Supprime une tâche existante (iSysTaskMgr implémentation)
      */
     public static function delete(cSysTask $task) {
-        return RESULT(cResult::Failed,'UNSUPORTED_FEATURE',array('FEATURE'=>'cSchTasksMgr::delete'));
+        return RESULT(cResult::Failed,cResult::UnsuportedFeature,array('FEATURE'=>'cSchTasksMgr::delete'));
     }
 
     /**
@@ -126,7 +126,7 @@ class cCronTasksMgr implements iSysTaskMgr {
      */
     public static function createRecursive($name, $min, $cmd)
     {
-        return RESULT_FAILED(cResult::Failed,"UNSUPORTED_FEATURE",array("FEATURE"=>"cCronTasksMgr::createRecursive"));
+        return RESULT(cResult::Failed,cResult::UnsuportedFeature,array("FEATURE"=>"cCronTasksMgr::createRecursive"));
     }
 
     /**
