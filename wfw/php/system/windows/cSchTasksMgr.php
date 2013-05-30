@@ -140,6 +140,23 @@ class cSchTasksMgr implements iSysTaskMgr {
     }
 
     /**
+     * Crée une tâche système recursive
+     * 
+     * @param $name  Nom de la tâche. Si la tâche existe, elle sera remplaée
+     * @param $min   Délais de rappel en minutes
+     * @param $cmd   Ligne de commande à exécuter (spécifique au système)
+     * 
+     * @return Succès de la procédure
+     * @retval false La procédure à échouée (voir cResult::getlast)
+     * @retval true  La procédure à réussit
+     * 
+     */
+    public static function createRecursive($name, $min, $cmd)
+    {
+        return RESULT_FAILED(cResult::Failed,"UNSUPORTED_FEATURE",array("FEATURE"=>"cCronTasksMgr::createRecursive"));
+    }
+
+    /**
      * Crée une tâche appelant une requête PHP (iSysTaskMgr implementation)
      */
     public static function createPHPRequest($name, DateTime $date, $reqName, $reqName) {
