@@ -1,21 +1,22 @@
 #!/bin/sh
-echo "[(C)2011-ID-Informatik] Add CRON task..."
+echo "[(C)2011,2013 Thomas AUGUEY]"
+echo "Add CRON task..."
 #
-# Ajoute une tache � l'utilitaire cron
+# Ajoute une tache a l'utilitaire cron
 usage="Usage: ./add_cron_task.sh [web_site_name] [task_name] [cron_time] [cron_command]"
-# 	web_site_name : nom de reference pour identifier le propri�taire (nom du site)
+# 	web_site_name : nom de reference pour identifier le proprietaire (nom du site)
 # 	task_name     : nom de reference pour identifier la tache
 # 	cron_command  : commande CRON a inserer (voir documentation)
 #
 # Remarques:
-#   Chaque commande enregistr�e dans cron tab est identifi�e par un commentaire sous la forme "#wfw#[web_site_name]#[task_name]"
-#   Lorsqu'une commande est ajout�, l'ancienne (si existante) est remplac�
+#   Chaque commande enregistree dans cron tab est identifi�e par un commentaire sous la forme "#wfw#[web_site_name]#[task_name]"
+#   Lorsqu'une commande est ajoute, l'ancienne (si existante) est remplace
 #
 # Revisions:
 #	[23-11-2011] Implentation
 
 #
-# Configure les taches planifi�es dans Cron
+# Configure les taches planifiees dans Cron
 #
 
 #

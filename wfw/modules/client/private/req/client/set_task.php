@@ -7,11 +7,11 @@
   Arguments:
 		[Name]       wfw_id     : Identificateur du dossier <request>
 		[]           cron_time  : Temps cron
-		[Name]       task_name  : Nom de la tâche
+		[Name]       task_name  : Nom de la tache
     
   Retourne:         
-		result     : Résultat de la requête
-		info       : Détails sur l'erreur en cas d'echec
+		result     : Rï¿½sultat de la requete
+		info       : Details sur l'erreur en cas d'echec
 	
   Revisions:
 	[13-12-2011] Update, ROOT_PATH
