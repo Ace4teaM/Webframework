@@ -64,7 +64,7 @@ class cAnacronTasksMgr implements iSysTaskMgr {
     /**
      * Crée une tâche système
      * 
-     * @param $name Nom de la tâche. Si la tâche existe, elle sera remplaée
+     * @param $name Nom de la tâche. Si la tâche existe, elle sera remplacée
      * @param $date Date d'execution (temps système)
      * @param $cmd Ligne de commande à exécuter (spécifique au système)
      * 
@@ -76,40 +76,7 @@ class cAnacronTasksMgr implements iSysTaskMgr {
      */
     public static function create($name, DateTime $date, $cmd)
     {
-        $this_path = realpath(dirname(__FILE__));
-        
-        //initialise le nom de l'application
-        global $app;
-        $web_name=null;
-        if(isset($app)){
-            $web_name = $app->getCfgValue("application","name");
-        }
-        if(empty($web_name))
-            $web_name = "application";
-        
-        //initialise la date (Cron format)
-        $day_of_month  = $date->format("j"); // Day of the Month  (range: 1-31)
-        $month_of_year = $date->format("n"); // Month of the Year (range: 1-12)
-        $day_of_week   = $date->format("w"); // Day of the Week   (range: 1-7, 1 standing for Monday)
-        $year          = $date->format("Y");           // Year (range: 1900-3000)
-        $h             = $date->format("G");           // Hour (range: 0-23)
-        $m             = intval($date->format("i"));   // Minute (range: 0-59)
-        $cron_time = "$m $h $day_of_month $month_of_year $day_of_week $year";
-        
-        // execute le script d'initialisation de la tache
-        $out = array(); 
-        $cmd = addcslashes($cmd, '"');
-        $cmd = $this_path."/add_cron_task.sh '$web_name' '$name' '$cron_time' '$cmd'";
-        /*
-        print_r($cmd);
-        exit;
-*/
-        exec($cmd,$out,$retval); 
-
-        if (intval($retval) != 0)
-            return RESULT(cResult::System, "SYS_TASK_CREATE", array("type" => "schtasks", "rval" => "0x" . hexdec(intval($retval)) ."(".$retval.")", "cmd" => $cmd, "cmd_out" => print_r($out, true)));
-
-        return RESULT_OK();
+        return RESULT_FAILED(cResult::Failed,"UNSUPORTED_FEATURE",array("FEATURE"=>"cAnacronTasksMgr::create"));
     }
 
     /**
@@ -138,19 +105,28 @@ class cAnacronTasksMgr implements iSysTaskMgr {
         }
         $line_head   = "#$web_name-$name";
 
-        //initialise la date (Cron format)
+        //initialise la date (Anacron format)
+        
         $hour  = intval($min / 60);
         $day   = intval($min / (60*24));
-        $delay = $min - ($hour*60);
-        if(defined("USE_GANDI_SIMPLE_HOST_EXTENSION")){
-            $ancron_cmd = "$day $delay ".addcslashes($name."($web_name)",'"')." $cmd";
-        }
-        else{
-            $ancron_cmd = "$day $delay ".addcslashes($name."($web_name)",'"')." $cmd";
-        }
+        $week  = intval($min / (60*24*7));
+        $month = intval($min / (60*24*30));
+        $year  = intval($min / (60*24*365));
+        $delay = $min - ($hour*(60));
+
+        //intialise la commande
+        $time = "0";
+        if($year)      $time  = $year."@yearly";
+        else if($month)$time  = $month."@monthly";
+        else if($week) $time  = $week."@weekly";
+        else if($day)  $time  = $day."@daily";
+        else if($hour) $time  = $hour."@hourly";
+        $ancron_cmd = "$time $delay \"".addcslashes($name." ($web_name)",'"')."\" $cmd";
+
+ //       print_r($ancron_cmd);exit;
         
         // modifie le fichier en cours
-        $lines = file($ancron_file,FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+        $lines = @file($ancron_file,FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
         if($lines === false)
             return RESULT(cResult::System, "APP_RESOURCE_NOT_FOUND", array("FILE" => $ancron_file));
 
@@ -174,7 +150,7 @@ class cAnacronTasksMgr implements iSysTaskMgr {
             array_push($lines, $ancron_cmd);
         }
         
-        print_r($lines); exit;
+        //print_r($lines); exit;
 
         // enregistre les modifications
         if(FALSE == file_put_contents($ancron_file,implode("\n",$lines)))

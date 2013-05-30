@@ -21,9 +21,13 @@ interface iSysTaskMgr{
 	 */
 	public static function delete(cSysTask $task);
 	/**
-	 * Crée une tâche appelant une commande système 
+	 * Crée une tâche système 
 	 */
 	public static function create( $name,DateTime $date, $cmd);
+	/**
+	 * Crée une tâche système (recursif)
+	 */
+        public static function createRecursive($name, $min, $cmd);
 	/**
 	 * Crée une tâche appelant une requête PHP 
 	 */
