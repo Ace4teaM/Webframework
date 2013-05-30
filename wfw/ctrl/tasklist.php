@@ -22,7 +22,7 @@
  */
 
 /**
- * @page wfw_maketask_ctrl Initialise une tâche système
+ * @page wfw_tasklist_ctrl Liste les tâches système
  * 
  * 
  * | Informations |                          |
@@ -34,8 +34,8 @@
  * @param lang Langage pour les textes
  */
 
-class wfw_maketask_ctrl extends cApplicationCtrl{
-    public $fields    = array("task_name","task_date","task_cmd");
+class wfw_tasklist_ctrl extends cApplicationCtrl{
+    public $fields    = null;
     public $op_fields = null;
     
     function acceptedRole(){
@@ -48,19 +48,6 @@ class wfw_maketask_ctrl extends cApplicationCtrl{
         
         return $taskMgr->create($p->task_name,$p->task_date,$p->task_cmd);
     }
-    
-    // output
-    /*function output(iApplication $app, $format, $att, $result)
-    {
-        if(!$result->isOk())
-            return parent::output($app, $format, $att, $result);
-
-        switch($format){
-            case "text/xml":
-                return '<?xml version="1.0" encoding="UTF-8" ?>' . $this->doc->saveXML($this->doc->documentElement);
-        }
-        return parent::output($app, $format, $att, $result);
-    }*/
 };
 
 ?>
