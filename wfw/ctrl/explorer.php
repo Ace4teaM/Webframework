@@ -1,5 +1,4 @@
 <?php
-
 /*
   ---------------------------------------------------------------------------------------------------------------------------------------
   (C)2012-2013 Thomas AUGUEY <contact@aceteam.org>
@@ -22,17 +21,17 @@
  */
 
 /**
- * @page wfw_data_model Data Model
+ * @page wfw_explorer_ctrl File explorer
  * 
- * # Retourne le modèle de données (dictionnaire)
+ * # Explore le disque de données
  * 
  * | Informations |                          |
  * |--------------|--------------------------|
  * | PageId       | -
- * | Rôle         | Visiteur
- * | UC           | wfw_datamodel
+ * | Rôle         | Administrateur
+ * | UC           | explorer
  * 
- * @param lang Langage pour les textes
+ * @param path Chemin d'accès à explorer
  */
 class wfw_explorer_ctrl extends cApplicationCtrl {
     
@@ -94,6 +93,9 @@ class wfw_explorer_ctrl extends cApplicationCtrl {
     }
 
     function output(iApplication $app, $format, $att, $result) {
+        if(!$result->isOk())
+            return parent::output($app, $format, $att, $result);
+
         switch ($format) {
             case "text/html":
                 return $this->showHTML($this->dirArray);
