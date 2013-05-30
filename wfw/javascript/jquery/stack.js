@@ -82,7 +82,39 @@
         parent.contents().filter(function() {
           return this.nodeType == 3; //Node.TEXT_NODE
         }).remove();
+        
+        //
+        var list = $(p.selector);
+        if(!list.length){
+            console.log("Stack: No selection");
+            return;
+        }
 
+        var width  = ($(parent).width() / list.length);
+        $.each(list,function(i,node){
+            if(p.wrap){
+                var tmp = $("<span></span>");
+                tmp.append(node);
+                node = tmp;
+            }
+            else
+                node = $(node);
+
+            node.css("display","inline-block");
+            node.css("width",width+"px");
+
+            if(p.size instanceof String || typeof(p.size)=="string"){
+                node.css("height",p.size);
+            }
+            if(p.size instanceof Array){
+                if(p.size[row])
+                    node.css("height",p.size[row]);
+            }
+
+            parent.append(node);
+        });
+        return;
+        
         //lignes depuis un string ?
         var rows = p.selector;
         if(typeof(rows) == "string"){
@@ -106,9 +138,11 @@
                 else
                     node = $(node);
                 
+                //redefinit la largeur et affiche en ligne
                 node.css("display","inline-block");
                 node.css("width",width+"px");
 
+                //hauteur fixe ?
                 if(p.size instanceof String || typeof(p.size)=="string"){
                     node.css("height",p.size);
                 }
@@ -117,7 +151,9 @@
                         node.css("height",p.size[row]);
                 }
                 
-                parent.append(node);
+                //insert
+                if(p.wrap)
+                    parent.append(node);
             });
         }
 
