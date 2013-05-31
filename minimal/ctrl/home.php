@@ -37,7 +37,7 @@ class application_home_ctrl extends cApplicationCtrl
     // others data
     // [put your data here]
     
-    function Ctrl()
+    function __construct()
     {
         // super call
         parent::__construct();
