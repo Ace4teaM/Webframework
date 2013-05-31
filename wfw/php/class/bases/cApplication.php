@@ -763,7 +763,7 @@ class cApplication implements iApplication{
             else{
                 //tente de charger le message correspondant au code d'erreur
                 $msg = $default->getResultText("messages",$result->info);
-                if(!empty($msg))
+                if($msg!=$result->info)
                     $att["txt_message"] = $msg;
             }
             
