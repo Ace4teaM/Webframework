@@ -284,6 +284,8 @@ class cTemplateMarker_parse extends cTemplateMarker {
   Retourne la valeur d'un element du fichier defaut.xml
   check_default_uri
   Syntaxe: -{:page_identifier}
+  Syntaxe: -{page:page_identifier}
+  Syntaxe: -{page:page_identifier?'add_query=value&...'}
   Retourne l'uri complete d'une page
 
  */
@@ -410,7 +412,7 @@ class cTemplateMarkerdefault extends cTemplateMarker {
         
         //ajoute le query
         if(isset($uriQuery)){
-            /** @todo: Utiliser un convertisseur d'URL plutot qu'une simple concatenation */
+            /** @todo: Utiliser un parser d'URL plutôt qu'une simple concaténation */
             $uri .= (strstr($uri,'?') ? '&' : '?').$uriQuery;
         }
         
