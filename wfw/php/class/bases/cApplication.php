@@ -61,9 +61,18 @@ class cApplication implements iApplication{
     const NoDatabaseConfigured       = "APP_NO_DATABASE_CONFIGURED";
     const UnknownFormTemplateFile    = "APP_UNKNOWN_FORM_TEMPLATE_FILE";
     const EntityMissingId            = "APP_ENTITY_MISSING_ID";
-    const CtrlNotFound               = "APP_CTRL_NOT_FOUND";
     const UnsuportedRoleByCtrl       = "APP_UNSUPORTED_ROLE_BY_CTRL";
     const CantLoadDefaultFile        = "APP_CANT_LOAD_DEFAULT_FILE";
+    /**
+     * Controleur introuvable
+     * @param CTRL Nom du controleur
+     */
+    const CtrlNotFound               = "APP_CTRL_NOT_FOUND";
+    /**
+     * Classe du controleur introuvable
+     * @param CLASS_NAME Nom de la classe
+     */
+    const CtrlClassNotFound          = "APP_CTRL_CLASS_NOT_FOUND";
     /**
      * Champ inconnue
      * @param FIELD_NAME Nom du champ
@@ -866,14 +875,14 @@ class cApplication implements iApplication{
         $basepath = $this->getCfgValue($app,"path");
         $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
         if(!file_exists($path))
-            return RESULT(cResult::Failed,cApplication::CtrlNotFound);
+            return RESULT(cResult::Failed,cApplication::CtrlNotFound,array("CTRL"=>$ctrl));
 
         //execute...
         $classname = $app.'_'.$ctrl.'_ctrl';
         if(!class_exists($classname))
             include($path);
         if(!class_exists($classname))
-            return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"CTRL_CLASS_NOT_FOUND ($classname)"));
+            return RESULT(cResult::Failed,Application::CtrlClassNotFound,array("CLASS_NAME"=>$classname));
         $class = new $classname();
         $class->role = $role;
         if(!($class->acceptedRole() & $role))
