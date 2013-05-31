@@ -25,6 +25,7 @@
         <errors>
             <!-- WFW (ERR_OK) -->
             <INFORMATION>Information</INFORMATION>
+            <SUCCESS>Succès</SUCCESS>
             
             <!-- WFW (ERR_FAILED) -->
             <TOO_SMALL_STRING>Texte trop petit</TOO_SMALL_STRING>
