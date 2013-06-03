@@ -27,7 +27,17 @@
  * #Introduction
  * Crée un formulaire basé sur le model de données
  * 
- * @option array  fields  Liste des noms de champs
+ * ## Définit les valeurs de champs
+ * form( 'values', values[] )
+ * 
+ * ## Obtient les valeurs de champs
+ * values[] form( 'values' )
+ * 
+ * ## Initialise des champs existants
+ * form( )
+ * 
+ * ## Initialise avec des champs définits
+ * form( fields:[ {name,value,type}, ... ] )
  * 
  * **/
 (function($)
@@ -111,7 +121,7 @@
                     this.each(function()
                     {
                         var parent = $(this);
-                        $("input[name], textarea[name]",parent).each(function(i,node){
+                        $("input[name], select[name], textarea[name]",parent).each(function(i,node){
                             node = $(node);
                             values[node.attr("name")] = node.val();
                         });
