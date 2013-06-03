@@ -25,9 +25,9 @@
  * @memberof JQuery
  * 
  * #Introduction
- * Permet de créer facilement un formulaire générique
+ * Crée un formulaire basé sur le model de données
  * 
- * @option array fields       Définitions des champs
+ * @option array  fields  Liste des noms de champs
  * 
  * **/
 (function($)
@@ -46,11 +46,13 @@
        //obtient la classe du type
         var className = "cInput"+field.type.toLowerCase(); 
         if (eval("typeof "+className) != 'object'){
+//           console.log(className+" type not specified");
             input = $('<input type="text" />');
             input.attr("name",field.name);
             input.val(field.value);
             return input;
         }
+//        console.log("make from "+className+" type");
         var inputClass = eval(className);
         return $(inputClass.toElement(field.name,field.value,field.label));
     };

@@ -275,19 +275,23 @@ class cTemplateMarker_parse extends cTemplateMarker {
 
 }
 
-/*
-  check_default_attribute
-  Syntaxe: -{index_identifier:identifier@attribute_identifier }
-  Retourne la valeur d'un attribut dans la selection par defaut
-  check_default_value
-  Syntaxe: -{index_identifier:identifier}
-  Retourne la valeur d'un element du fichier defaut.xml
-  check_default_uri
-  Syntaxe: -{:page_identifier}
-  Syntaxe: -{page:page_identifier}
-  Syntaxe: -{page:page_identifier?'add_query=value&...'}
-  Retourne l'uri complete d'une page
-
+/**
+ * Marqueurs relatif au fichier de méta-données (default.xml)
+ * 
+ *  check_default_attribute
+ *    Retourne la valeur d'un attribut de l'index
+ *    Syntaxe: -{index_identifier:identifier@attribute_identifier }
+ *
+ *  check_default_value
+ *    Retourne la valeur d'un élément de l'index
+ *    Syntaxe: -{index_identifier:identifier}
+ *
+ *  check_default_uri
+ *    Retourne l'URL d'une page
+ *    Syntaxe: -{:page_identifier}
+ *    Syntaxe: -{page:page_identifier}
+ *    Syntaxe: -{page:page_identifier?'add_query=value&...'}
+ *
  */
 
 class cTemplateMarkerdefault extends cTemplateMarker {
