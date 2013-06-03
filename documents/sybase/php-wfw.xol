@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1366043364" Name="PHP (WFW)" Objects="59" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PHP (WFW)" Family="PHP" ID="{C37F67C8-679C-48FB-8CA4-2E98B9D416F7}" LastModificationDate="1370267722" Name="PHP (WFW)" Objects="65" SubFamily="PHP5" Symbols="0" Type="{1811206C-1A4B-11D1-83D9-444553540000}" signature="XOL_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DVTL xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -308,8 +308,8 @@ ANY
 <a:Name>Profile</a:Name>
 <a:CreationDate>0</a:CreationDate>
 <a:Creator/>
-<a:ModificationDate>0</a:ModificationDate>
-<a:Modifier/>
+<a:ModificationDate>1370250202</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
 <c:Categories>
 <o:TargetCategory Id="o20">
 <a:ObjectID>2D05533C-17D8-4B79-A10B-CD113687A5C1</a:ObjectID>
@@ -885,10 +885,11 @@ _id  from $objectTableName where &quot;.$objectTableName.&quot;_id=&quot;.$obj-&
 ?&gt;</a:TemplateTargetItem.Value>
 <a:CreationDate>0</a:CreationDate>
 <a:Creator/>
-<a:ModificationDate>0</a:ModificationDate>
-<a:Modifier/>
+<a:ModificationDate>1370250385</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
 <a:TargetCategory.Type>1</a:TargetCategory.Type>
 <a:Filename>%Code%.php</a:Filename>
+<a:Encoding>UTF8</a:Encoding>
 </o:GeneratedFileTargetItem>
 </c:Categories>
 </o:TypedCategoryTargetItem>
@@ -1141,6 +1142,16 @@ array(%DefaultValue%)
 </c:Categories>
 </o:TypedCategoryTargetItem>
 </c:Categories>
+</o:MetaClassTargetItem>
+<o:MetaClassTargetItem Id="o60">
+<a:ObjectID>97C3DE5D-8233-4C0C-8BA5-676A78D0CCDE</a:ObjectID>
+<a:Name>Domain</a:Name>
+<a:CreationDate>1370250066</a:CreationDate>
+<a:Creator>developpement</a:Creator>
+<a:ModificationDate>1370267722</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
+<a:TargetCategory.Type>1</a:TargetCategory.Type>
+<a:EnableSelectionGeneration>1</a:EnableSelectionGeneration>
 </o:MetaClassTargetItem>
 </c:Categories>
 </o:ProfileTargetItem>
