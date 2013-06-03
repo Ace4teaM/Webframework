@@ -66,7 +66,7 @@
         var input = $('<textarea col="10" rows="5"></textarea>');
         input.text(value);
         input.attr("name",name);
-        input.css("width","100%");
+        //input.css("width","100%");
         return input;
     };
 })(jQuery);
