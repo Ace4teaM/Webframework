@@ -1379,11 +1379,14 @@ class cXMLTemplateAction_merge extends cXMLTemplateAction {
 
 }
 
-/*
-  Inclue du contenu XML dans la destination
-  Attributs:
-  action = "include"
-  path   = chemin d'acces a l'element cible.
+/**
+ * Inclue du contenu XML dans la destination
+ * Attributs:
+ * action = "include"
+ * path   = Chemin d'accès à l'élément cible.
+ * option = Une combinaision des valeurs suivantes:
+ *          - "include_att"  = Inclue les attributs
+ *          - "content_only" = Inclue uniquement le contenu du noeud
  */
 
 class cXMLTemplateAction_include extends cXMLTemplateAction {
@@ -1399,9 +1402,7 @@ class cXMLTemplateAction_include extends cXMLTemplateAction {
         else
             $opt = null; //tout
 
-
-            
-//traite les arguments pour ce noeud
+        //traite les arguments pour ce noeud
         $input->check_arguments($select, $node, $arg);
 
         //clean
