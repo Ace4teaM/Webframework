@@ -1384,7 +1384,7 @@ class cXMLTemplateAction_merge extends cXMLTemplateAction {
  * Attributs:
  * action = "include"
  * path   = Chemin d'accès à l'élément cible.
- * option = Une combinaision des valeurs suivantes:
+ * option = Une combinaison des valeurs suivantes:
  *          - "include_att"  = Inclue les attributs
  *          - "content_only" = Inclue uniquement le contenu du noeud
  */
