@@ -1342,12 +1342,11 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
 }
 
 /*
-  Fond les attributs et le contenu texte de la source dans la destination.
+  Fusionne le contenu XML de la sélection dans le nœud en cours
   Attributs:
   action = "merge"
   path   = Chemin d'accès à l'élément cible
  */
-
 class cXMLTemplateAction_merge extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1376,11 +1375,10 @@ class cXMLTemplateAction_merge extends cXMLTemplateAction {
 
         return $next;
     }
-
 }
 
 /**
- * Inclue du contenu XML dans la destination
+ * Inclue contenu XML de la sélection dans le nœud en cours.
  * Attributs:
  * action = "include"
  * path   = Chemin d'accès à l'élément cible.
@@ -1388,7 +1386,6 @@ class cXMLTemplateAction_merge extends cXMLTemplateAction {
  *          - "include_att"  = Inclue les attributs
  *          - "content_only" = Inclue uniquement le contenu du noeud
  */
-
 class cXMLTemplateAction_include extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
