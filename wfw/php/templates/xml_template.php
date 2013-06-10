@@ -1298,7 +1298,7 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
         
         // si le nom est précédé de '!', test un argument qui n'existe pas
         $not_exist = false;
-        if($name[0]=='!'){//negtive
+        if(!empty_string($name) && $name[0]=='!'){//negtive
             $name = substr($name,1);
             $not_exist = true;
         }
@@ -1310,7 +1310,7 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
         $next = $node->nextSibling;
 
         //ok? scan le contenu
-        if (!empty($name) && $not_exist && !isset($arg[$name])) {
+        if (!empty_string($name) && $not_exist && !isset($arg[$name])) {
             $arg['__inner_text__'] = "";
 
             $input->post("cXMLTemplateAction_select", "attribut ok, ajoute et scan le contenu.");
@@ -1320,7 +1320,7 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
                 $input->check_node($select, $node->firstChild, $arg);
         }
         //ok? scan le contenu
-        else if (!empty($name) && !$not_exist && isset($arg[$name])) {
+        else if (!empty_string($name) && !$not_exist && isset($arg[$name])) {
             $arg['__inner_text__'] = $arg[$name];
 
             $input->post("cXMLTemplateAction_select", "attribut ok, ajoute et scan le contenu.");
