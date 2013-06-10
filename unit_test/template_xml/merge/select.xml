@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<library>
+    <books style="border:1px solid black;" dummy="this item is not merged">
+        <li>Tintin</li>
+        <li>Sillage</li>
+    </books>
+</library>
