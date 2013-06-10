@@ -39,12 +39,12 @@ class XMLTemplateTest extends PHPUnit_Framework_TestCase{
     {
         // charge la selection
         $selDoc = new XMLDocument("1.0", "utf-8");
-        $selDoc->load(dirname(__FILE__).'/template_xml/select-select.xml');
+        $selDoc->load(dirname(__FILE__).'/template_xml/select/select.xml');
         
         //transforme
         $tempDoc = new cXMLTemplate();
         $tempDoc->Initialise(
-                dirname(__FILE__).'/template_xml/select-template.html',
+                dirname(__FILE__).'/template_xml/select/template.html',
                 NULL,
                 $selDoc,
                 NULL,
@@ -52,7 +52,7 @@ class XMLTemplateTest extends PHPUnit_Framework_TestCase{
         );
         
         //assert
-        $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/select-expected.html'), $tempDoc->Make() );
+        $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/select/expected.html'), $tempDoc->Make() );
     }
     
     public function testActionExists()
@@ -60,7 +60,7 @@ class XMLTemplateTest extends PHPUnit_Framework_TestCase{
         //transforme
         $tempDoc = new cXMLTemplate();
         $tempDoc->Initialise(
-                dirname(__FILE__).'/template_xml/exists-template.html',
+                dirname(__FILE__).'/template_xml/exists/template.html',
                 NULL,
                 NULL,
                 NULL,
@@ -68,19 +68,19 @@ class XMLTemplateTest extends PHPUnit_Framework_TestCase{
         );
         
         //assert
-        $this->assertXmlStringEqualsXmlString(file_get_contents(dirname(__FILE__).'/template_xml/exists-expected.html'), $tempDoc->Make() );
+        $this->assertXmlStringEqualsXmlString(file_get_contents(dirname(__FILE__).'/template_xml/exists/expected.html'), $tempDoc->Make() );
     }
     
     public function testActionAll()
     {
         // charge la selection
         $selDoc = new XMLDocument("1.0", "utf-8");
-        $selDoc->load(dirname(__FILE__).'/template_xml/all-select.xml');
+        $selDoc->load(dirname(__FILE__).'/template_xml/all/select.xml');
         
         //transforme
         $tempDoc = new cXMLTemplate();
         $tempDoc->Initialise(
-                dirname(__FILE__).'/template_xml/all-template.html',
+                dirname(__FILE__).'/template_xml/all/template.html',
                 NULL,
                 $selDoc,
                 NULL,
@@ -88,19 +88,19 @@ class XMLTemplateTest extends PHPUnit_Framework_TestCase{
         );
         
         //assert
-        $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/all-expected.html'), $tempDoc->Make() );
+        $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/all/expected.html'), $tempDoc->Make() );
     }
     
     public function testActionOne()
     {
         // charge la selection
         $selDoc = new XMLDocument("1.0", "utf-8");
-        $selDoc->load(dirname(__FILE__).'/template_xml/one-select.xml');
+        $selDoc->load(dirname(__FILE__).'/template_xml/one/select.xml');
         
         //transforme
         $tempDoc = new cXMLTemplate();
         $tempDoc->Initialise(
-                dirname(__FILE__).'/template_xml/one-template.html',
+                dirname(__FILE__).'/template_xml/one/template.html',
                 NULL,
                 $selDoc,
                 NULL,
@@ -108,7 +108,9 @@ class XMLTemplateTest extends PHPUnit_Framework_TestCase{
         );
         
         //assert
-        $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/one-expected.html'), $tempDoc->Make() );
+        $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/one/expected.html'), $tempDoc->Make() );
     }
+    
+    
 }
 ?>
