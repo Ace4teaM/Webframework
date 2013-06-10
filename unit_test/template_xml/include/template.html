@@ -1,0 +1,8 @@
+<html xmlns:template="http://www.webframework.fr/last/xmlns/template">
+    <body>
+        <div>Livres</div>
+        <div template:action="include" template:path="ul"></div>
+        <ul template:action="include" template:path="ul" template:option="content_only"></ul>
+        <ul template:action="include" template:path="ul" template:option="content_only include_att"></ul>
+    </body>
+</html>

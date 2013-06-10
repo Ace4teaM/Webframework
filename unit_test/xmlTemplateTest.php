@@ -131,6 +131,26 @@ class XMLTemplateTest extends PHPUnit_Framework_TestCase{
         $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/merge/expected.html'), $tempDoc->Make() );
     }
     
+    public function testActionInclude()
+    {
+        // charge la selection
+        $selDoc = new XMLDocument("1.0", "utf-8");
+        $selDoc->load(dirname(__FILE__).'/template_xml/include/select.xml');
+        
+        //transforme
+        $tempDoc = new cXMLTemplate();
+        $tempDoc->Initialise(
+                dirname(__FILE__).'/template_xml/include/template.html',
+                NULL,
+                $selDoc,
+                NULL,
+                array()
+        );
+        
+        //assert
+        $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/include/expected.html'), $tempDoc->Make() );
+    }
+    
     
 }
 ?>
