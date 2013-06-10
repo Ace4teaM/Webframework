@@ -1345,7 +1345,7 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
   Fond les attributs et le contenu texte de la source dans la destination.
   Attributs:
   action = "merge"
-  path   = chemin d'acces a l'element cible.
+  path   = Chemin d'accès à l'élément cible
  */
 
 class cXMLTemplateAction_merge extends cXMLTemplateAction {
