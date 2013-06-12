@@ -9,6 +9,7 @@ class cResult {
     const System = "ERR_SYSTEM";
     
     //codes
+    const Success = "SUCCESS";
     const UnsuportedFeature = "UNSUPORTED_FEATURE";
     
     //
