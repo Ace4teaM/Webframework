@@ -750,7 +750,7 @@ class cApplication implements iApplication{
     public function translateResult($result)
     {
         $att = $result->toArray();
-        $default;
+        $default = null;
         
         if($this->getDefaultFile($default))
         {
@@ -759,8 +759,11 @@ class cApplication implements iApplication{
             
             //charge un message specifique
             if(isset($att["message"]) && is_string($att["message"]))
+            {
                 $att["txt_message"] = $default->getResultText("messages",$att["message"]);
-            else{
+            }
+            else
+            {
                 //tente de charger le message correspondant au code d'erreur
                 $msg = $default->getResultText("messages",$result->info);
                 if($msg!=$result->info)
