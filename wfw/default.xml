@@ -82,7 +82,7 @@
             <APP_RESOURCE_NOT_FOUND>Le fichier suivant est introuvable: $FILE</APP_RESOURCE_NOT_FOUND>
             <APP_UNSUPORTED_ROLE_BY_CTRL>Vous n'ête pas autorisé à executer cette action (ctrl:$CTRL, role:$ROLE)</APP_UNSUPORTED_ROLE_BY_CTRL>
             <APP_CTRL_NOT_FOUND>Le fichier de contrôleur "$CTRL" est introuvable</APP_CTRL_NOT_FOUND>
-            <APP_CTRL_CLASS_NOT_FOUND>Merci de vérifier le nom de votre classe. Celle-ci doit se nommée: $CLASS_NAME</APP_CTRL_CLASS_NOT_FOUND>
+            <APP_CTRL_CLASS_NOT_FOUND>Merci de vérifier le nom de classe. Celle-ci doit se nommée: $CLASS_NAME</APP_CTRL_CLASS_NOT_FOUND>
         </messages>
         
         <fields>
