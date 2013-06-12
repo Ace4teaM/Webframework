@@ -21,10 +21,41 @@
  */
 
 class cApplicationCtrl{
-    public $fields    = null; /**< Identifiants des champs requis */
-    public $op_fields = null; /**< Identifiants des champs optionnels */
-    public $att       = null; /**< Source des champs en entrée, si NULL $_REQUEST est utilisé */
-    public $role      = null; /**< Role utilisé pour executer le controleur */
+    public $fields     = null; /**< Identifiants des champs requis */
+    public $op_fields  = null; /**< Identifiants des champs optionnels */
+    public $out_fields = null; /**< Identifiants des champs retournés */
+    public $att        = null; /**< Source des champs en entrée, si NULL $_REQUEST est utilisé */
+    public $role       = null; /**< Role utilisé pour executer le controleur */
+    
+    /**
+     * Champs requis
+     * @return Champs requis pour l'execution du contrôleur
+     * @retval array Liste des champs (tableau associatif)
+     * @retval null Aucun champs
+     */
+    function getRequiredField() {
+        return $this->fields;
+    }
+    
+    /**
+     * Champs optionnels
+     * @return Champs optionnels à l'execution du contrôleur
+     * @retval array Liste des champs (tableau associatif)
+     * @retval null Aucun champs
+     */
+    function getOptionalField() {
+        return $this->op_fields;
+    }
+    
+    /**
+     * Champs retournés
+     * @return Champs retournés à l'execution du contrôleur
+     * @retval array Liste des champs (tableau associatif)
+     * @retval null Aucun champs
+     */
+    function getReturnedField() {
+        return $this->out_fields;
+    }
     
     /**
      * Retourne les rôles acceptés par le contrôleur
