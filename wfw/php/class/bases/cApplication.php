@@ -924,6 +924,17 @@ class cApplication implements iApplication{
         // execute le controleur
         $ok = $class->main($this, $basepath, $p);
         
+        // DEBUG: LOG des résultats
+        if(defined("DEBUG")){
+            $log_file = path($this->getRootPath(),$this->getCfgValue("application","debug_log_ctrl_path"));
+            if(!empty($log_file)){
+                //   print_r("log file=".path($this->getRootPath(),$log_file));exit;
+                file_put_contents($log_file,"-----$app>>$ctrl-----\n\r",FILE_APPEND);
+                file_put_contents($log_file,print_r(cResult::getLast(),true)."\n\r",FILE_APPEND);
+                file_put_contents($log_file,"------------------------------\n\r",FILE_APPEND);
+            }
+        }
+        
         // ok
         return $ok;
     }
