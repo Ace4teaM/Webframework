@@ -57,7 +57,7 @@ class cCronTasksMgr implements iSysTaskMgr {
     /**
      * Supprime une tâche existante (iSysTaskMgr implémentation)
      */
-    public static function delete(cSysTask $task) {
+    public static function delete($name) {
         return RESULT(cResult::Failed,cResult::UnsuportedFeature,array('FEATURE'=>'cSchTasksMgr::delete'));
     }
 

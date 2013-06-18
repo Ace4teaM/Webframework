@@ -68,14 +68,18 @@ class cSchTasksMgr implements iSysTaskMgr {
     /**
      * Supprime une tâche existante (iSysTaskMgr implémentation)
      */
-    public static function delete(cSysTask $task) {
+    public static function delete($name) {
         return RESULT(cResult::Failed,cResult::UnsuportedFeature,array('FEATURE'=>'cSchTasksMgr::delete'));
         
-        //initalise la commande
-        /*$cmd = 'schtasks /delete /tn '.$task->name;
+        //supprime la commande
+        $cmd = 'schtasks /delete /f /tn '.$task->name;
         
+        /* 
+         // uniquement avec l'option /s
         if (defined("SCHTASKS_USER"))
             $cmd .= ' /u "' . SCHTASKS_USER . '"';
+        if (defined("SCHTASKS_PWD"))
+            $cmd .= ' /p "' . SCHTASKS_PWD . '"';*/
 
         //execute la commande
         exec($cmd, $output, $return_var);
@@ -89,7 +93,7 @@ class cSchTasksMgr implements iSysTaskMgr {
             RESULT_PUSH("cmd",$cmd);
             return true;
         }
-        return RESULT_OK();*/
+        return RESULT_OK();
     }
 
     /**

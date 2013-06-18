@@ -19,7 +19,7 @@ interface iSysTaskMgr{
 	/**
 	 * Supprime une tâche existante
 	 */
-	public static function delete(cSysTask $task);
+	public static function delete($name);
 	/**
 	 * Crée une tâche système 
 	 */
