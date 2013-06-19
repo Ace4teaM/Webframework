@@ -40,6 +40,7 @@
             <UNDERSIZED>Pas assez de caractères</UNDERSIZED>
             <DB_CONNECTION>Connexion au serveur de base de données a échouée</DB_CONNECTION>
             <DB_SQL_QUERY>Requête SQL mal formée</DB_SQL_QUERY>
+            <DB_QUERY_NO_RESULT>Requête SQL sans résultat</DB_QUERY_NO_RESULT>
             <SOCK_OPEN_URL>La connexion au serveur a échouée</SOCK_OPEN_URL>
             <UNSUPORTED_FEATURE>Fonctionnalité non supportée</UNSUPORTED_FEATURE>
             <UNIMPLEMENTED_FEATURE>Fonctionnalité non implémentée</UNIMPLEMENTED_FEATURE>
