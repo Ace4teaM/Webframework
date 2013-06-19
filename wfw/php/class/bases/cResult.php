@@ -149,7 +149,8 @@ function RESULT_INST($result){
  */
 function RESULT($code,$info="",$att=array()){
     $ret = cResult::last($code,$info,$att);
-    if(defined('DEBUG')) RESULT_PUSH_CALLSTACK();
+
+    if(defined('DEBUG_OUTPUT_CALLSTACK')) RESULT_PUSH_CALLSTACK();
     return $ret;
 }
 
@@ -158,6 +159,7 @@ function RESULT($code,$info="",$att=array()){
  * @return bool true
  */
 function RESULT_PUSH_CALLSTACK(){
+
     $callstack = debug_backtrace();
     $str="";
     foreach($callstack as $key=>$caller)

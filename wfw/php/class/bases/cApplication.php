@@ -165,9 +165,13 @@ class cApplication implements iApplication{
         $this->hostname = NULL;
         
         //debug ?
-        if($this->getCfgValue("application","debug"))
+        if($this->getCfgValue("application","debug")===true){
             define('DEBUG',true);
-        
+            //stack trace to result ?
+            if($this->getCfgValue("application","debug_output_callstack")===true)
+                define('DEBUG_OUTPUT_CALLSTACK',true);
+        }
+
         //ajoute les chemins d'accès aux attributs de template
         $path_section = $this->getCfgSection("path");
         if(isset($path_section)){
