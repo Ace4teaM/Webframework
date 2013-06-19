@@ -69,10 +69,8 @@ class cSchTasksMgr implements iSysTaskMgr {
      * Supprime une tâche existante (iSysTaskMgr implémentation)
      */
     public static function delete($name) {
-        return RESULT(cResult::Failed,cResult::UnsuportedFeature,array('FEATURE'=>'cSchTasksMgr::delete'));
-        
         //supprime la commande
-        $cmd = 'schtasks /delete /f /tn '.$task->name;
+        $cmd = 'schtasks /delete /f /tn '.$name;
         
         /* 
          // uniquement avec l'option /s
