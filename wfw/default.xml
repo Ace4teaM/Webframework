@@ -58,6 +58,7 @@
             
             <!-- WFW (ERR_SYSTEM) -->
             <SYS_TASK_CREATE>La tâche ne peut pas être créée</SYS_TASK_CREATE>
+            <SYS_TASK_DELETE>La tâche ne peut pas être supprimée</SYS_TASK_DELETE>
             <SYS_TASK_UPDATE>La tâche ne peut pas être mise à jour</SYS_TASK_UPDATE>
         </errors>
 
@@ -74,6 +75,14 @@
             </WFW_MSG_POPULATE_FORM>
             <DB_SQL_QUERY>$QUERY</DB_SQL_QUERY>
             <UNSUPORTED_FEATURE>$FEATURE</UNSUPORTED_FEATURE>
+            
+            
+            <!-- WFW (ERR_SYSTEM) -->
+            <SYS_TASK_DELETE>
+                Code de retour: $RVAL
+                Commande      : $CMD
+                Sortie        : $OUTPUT
+            </SYS_TASK_DELETE>
             
             <!-- WFW:APPLICATION (ERR_FAILED) -->
             <APP_UNKNOWN_FIELD>L'Application doit définir le champs '$FIELD_NAME'</APP_UNKNOWN_FIELD>
