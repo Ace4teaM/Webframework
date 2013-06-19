@@ -928,10 +928,20 @@ class cApplication implements iApplication{
         if(defined("DEBUG")){
             $log_file = path($this->getRootPath(),$this->getCfgValue("application","debug_log_ctrl_path"));
             if(!empty($log_file)){
+                $result = cResult::getLast();
                 //   print_r("log file=".path($this->getRootPath(),$log_file));exit;
-                file_put_contents($log_file,"-----$app>>$ctrl-----\n\r",FILE_APPEND);
-                file_put_contents($log_file,print_r(cResult::getLast(),true)."\n\r",FILE_APPEND);
-                file_put_contents($log_file,"------------------------------\n\r",FILE_APPEND);
+                $str = str_pad("----- $app::$ctrl ",40)
+                        . " "
+                        .date("d/m/Y")
+                        ."\r\n"
+                        . str_pad($result->getErrorContext(),7)
+                        . " > "
+                        . str_pad($result->getErrorCode(),30)
+                        . " "
+                        . str_replace("\n"," ",print_r($result->getAttList(),true))
+                        . "\r\n"
+                ;
+                file_put_contents($log_file,$str,FILE_APPEND);
             }
         }
         
