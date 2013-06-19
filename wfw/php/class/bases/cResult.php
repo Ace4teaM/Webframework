@@ -16,8 +16,8 @@ class cResult {
     public static $last_code,$last_info,$last_att;
     
     /**
-     * @brief Identifiant numérique
-     * @var int
+     * @brief Identifiant précisiant le contexte de l'erreur
+     * @var string
      */
     public $code;
     
@@ -92,6 +92,30 @@ class cResult {
     public function getAtt($name){
         $name = strtolower($name);
         return isset($this->att[$name]) ? $this->att[$name] : NULL;
+    }
+
+    /**
+     * @brief Obtient la liste des attributs
+     * @return Tableau des attributs
+     */
+    public function getAttList(){
+        return $this->att;
+    }
+
+    /**
+     * @brief Obtient le contexte de l'erreur (ERR_OK,ERR_FAILED,...)
+     * @return Identifiant du contexte
+     */
+    public function getErrorContext(){
+        return $this->code;
+    }
+
+    /**
+     * @brief Obtient le code de l'erreur
+     * @return Identifiant du code
+     */
+    public function getErrorCode(){
+        return $this->info;
     }
 
     /**
