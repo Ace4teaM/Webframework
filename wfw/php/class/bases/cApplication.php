@@ -934,18 +934,18 @@ class cApplication implements iApplication{
             if(!empty($log_file)){
                 $result = cResult::getLast();
                 //   print_r("log file=".path($this->getRootPath(),$log_file));exit;
-                $str = str_pad("----- $app::$ctrl ",40)
-                        . " "
-                        .date("d/m/Y")
-                        ."\r\n"
-                        . str_pad($result->getErrorContext(),7)
-                        . " > "
-                        . str_pad($result->getErrorCode(),30)
-                        . " "
-                        . str_replace("\n"," ",print_r($result->getAttList(),true))
-                        . "\r\n"
+                $str =
+                    date("d/m/Y, H:i:s")
+                    ." | "
+                    . str_pad($result->getErrorContext(),7). " > ". str_pad($result->getErrorCode(),30)
+                    ." | "
+                    .str_pad("$app::$ctrl",40)
+                    . " "
+                    . str_replace("\n"," ",print_r($result->getAttList(),true))
+                    . "\r\n"
                 ;
-                file_put_contents($log_file,$str,FILE_APPEND);
+                if(FALSE === @file_put_contents($log_file,$str,FILE_APPEND))
+                   return RESULT(cResult::Failed,cApplication::CantCreateResource,array("FILE"=>$log_file));
             }
         }
         
