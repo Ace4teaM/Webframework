@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Webframework.YUI.Library - Unit Test</title>
-        <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css">
+        <link rel="stylesheet" href="http://code.jquery.com/qunit/qunit-1.11.0.css" />
         <!-- WFW base -->
         <script type="text/javascript" language="javascript" src="../wfw/javascript/base.js"></script>
         <script type="text/javascript" language="javascript" src="../wfw/javascript/result.js"></script>
@@ -34,10 +34,18 @@
             <input type="text" id="barInput" name="bar" value="foo" />
             <div name="unstd">hello</div>
         </form>
+        <!-- TEST CONTENT -->
+        <div id="template" style="display:none;">
+            <div name="simple">-{string}</div>
+        </div>
         <!-- QUNIT -->
         <div id="qunit"></div>
         <div id="qunit-fixture"></div>
         <script src="http://code.jquery.com/qunit/qunit-1.11.0.js"></script>
+        <!-- QUnit extension for HTML comparaison -->
+	<script type="text/javascript" src="../../qunit-assert-html-master/src/qunit-assert-html.js"></script>
+        <script type="text/javascript" src="../../qunit-assert-html-master/dist/qunit-assert-html.min.js"></script>
+        <!-- local tests -->
         <script src="yui.js"></script>
     </body>
 </html>

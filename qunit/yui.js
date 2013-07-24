@@ -1,5 +1,5 @@
 
-YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path', 'wfw-uri',function(Y){
+YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path', 'wfw-uri', 'wfw-xml-template',function(Y){
     var wfw = Y.namespace("wfw");
 
     /* wfw */
@@ -101,4 +101,33 @@ YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path',
         equal( wfw.URI.remakeURI('http://www.aceteam.org?foo=bar',null,wfw.URI.ReplaceQuery,'test'), "http://www.aceteam.org#test", "Remake URI (anchor)");
 
     });
+    
+    
+    /* wfw.URI */
+    module( "wfw.Template" );
+    test( "XML Template" , function(assert) {
+        var tempDoc = '../unit_test/template_xml/select/template.html';
+        var selDoc = 'select.xml'; // relative to template file
+        
+        assert.htmlEqual('<B TITLE=test>test</B>', '<b title="test">test</b>', 'template-ActionSelect');
+        console.log(wfw.Template);
+        var file_content = wfw.Template.makeSrc(tempDoc,null,selDoc,null,{});
+        console.log(file_content);
+        
+        /*
+        var xmlTemplate = new wfw.Template.cXMLTemplate();
+        if(xmlTemplate.Initialise(tempDoc,null,selDoc,null,{})){
+            var file_content = xmlTemplate.Make();
+            console.log(file_content);
+        }*/
+        
+        // charge la selection
+        /*var selDoc = '/template_xml/select/select.xml';
+        var tempDoc = '/template_xml/select/template.html';
+        wfw.Template.make(tempDoc,null,selDoc,null,{});*/
+        
+        //assert
+ //       $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/select/expected.html'), $tempDoc->Make() );
+    });
+    
 });

@@ -21,7 +21,7 @@
 -----------------------------------------------------------------------------------------------
 */
 wfw.ext.navigator = {
-	defaultFile : null,  // [cXMLDefault] instance du document
+    defaultFile : null,  // [cXMLDefault] instance du document
     ready       : false, // [bool]        si true le document est initialise
     pageId      : null,  // [string]      identificateur du document en cours
     pageNode    : null,  // [XMLElement]  noeud d'index de la page qui a charger le document
@@ -30,7 +30,7 @@ wfw.ext.navigator = {
     /*
         Initialise le composant [ appelé automatiquement wfw.ext.initAll() ]
     */
-	init : function()
+    init : function()
     {
         //charge le document
         this.defaultFile = new cXMLDefault();
@@ -250,8 +250,7 @@ wfw.ext.navigator = {
     },
 
     // events...
-
-	onLoad : function(e){
+    onLoad : function(e){
         // recupere l'id de la page actuel
         var meta_tag = docGetElements(document,"meta");
         if(meta_tag==null)
