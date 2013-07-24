@@ -99,6 +99,40 @@ YUI.add('wfw-xml-template', function (Y) {
         },
 
         /*
+        Transforme l'élément donné
+        [DOMDocument] doc            : Le document source
+        [HTMLElement] element        : L'Elément model au sein du document source
+        [DOMDocument] selectDoc      : Le document de la séléction, null si aucun
+        [HTMLElement] selectElement  : Noeud de séléction en entrée, doit être enfant du document 'selectDoc'. Si null, l'élément racine du document est séléctionné
+        [object]      args           : Tableau associatif des arguments
+        Retourne:
+        [HTMLElement] L'Elément transformé
+        */
+        makeSrc: function (doc, element, selectDoc, selectElement, args) {
+            //arguments de type string uniquement
+            var str_args = {};
+            if (args != null) {
+                var x;
+                for (x in args) {
+                    str_args[x] = "" + args[x];
+                }
+            }
+
+            var template = new cXMLTemplate();
+
+            //initialise la classe
+            if (!template.Initialise(doc, element, selectDoc, selectElement, str_args))
+                return null;
+
+            //transforme l'élément
+            var src = template.Make();
+
+            delete template;
+
+            return src;
+        },
+
+        /*
         Transforme un document
         [DOMDocument] doc            : Le document
         [HTMLElement] element        : L'Elément model au sein du document source
@@ -300,7 +334,7 @@ YUI.add('wfw-xml-template', function (Y) {
                 Retourne:
                     rien.
                 Remarques:
-                    le format est identique au templates PHP, voir la documentation.
+                    le format est identique aux templates PHP, voir la documentation.
             */
             cXMLTemplate.prototype.Make = function () {
                 
@@ -341,7 +375,7 @@ YUI.add('wfw-xml-template', function (Y) {
 
                 if((wfw.HTTP.httpRequest.readyState == wfw.Request.READYSTATE_DONE) && (wfw.HTTP.httpRequest.status == 200))
                 {
-                    this.input = xml_parse(wfw.HTTP.getResponse());
+                    this.input = Y.Node(xml_parse(wfw.HTTP.getResponse()));
                     return true;
                 }
 
@@ -366,7 +400,7 @@ YUI.add('wfw-xml-template', function (Y) {
                         return false;
                     }
                     this.post("load_xml_file",this.var_path+name+" loaded");
-                    this.xml_files[name] = xml_parse(content);
+                    this.xml_files[name] = Y.Node(xml_parse(content));
                 }
                 return this.xml_files[name];
             };
