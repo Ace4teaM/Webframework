@@ -1157,7 +1157,8 @@ YUI.add('wfw-xml-template', function (Y) {
             }
             else{
                 this.sitefile = new wfw.Xml.DEFAULT_FILE();
-                this.sitefile.Initialise("default.xml");
+                if(!this.sitefile.Initialise("default.xml"))
+                    this.sitefile = null;
             }
             
             //initialise les parametres globaux

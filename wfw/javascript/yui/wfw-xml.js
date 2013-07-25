@@ -206,7 +206,7 @@ YUI.add('wfw-xml', function (Y) {
             if((wfw.HTTP.httpRequest.readyState == wfw.Request.READYSTATE_DONE) && (wfw.HTTP.httpRequest.status == 200))
                 this.doc = xml_parse(wfw.HTTP.getResponse());
             else
-                this.post("Initialise","can't load file "+doc+" : state="+wfw.HTTP.httpRequest.readyState+"/"+wfw.HTTP.httpRequest.status);
+                this.post("Initialise","can't load file "+doc+" : state="+wfw.HTTP.httpRequest.readyState+" / status="+wfw.HTTP.httpRequest.status);
         }
         else
             this.doc = doc;
