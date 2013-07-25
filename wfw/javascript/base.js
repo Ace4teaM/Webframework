@@ -1284,6 +1284,25 @@ var ERR_REQ_MISSING_ARG     = ERR_REQ+2;
 var ERR_REQ_INVALID_ARG     = ERR_REQ+3;
 
 /*--------------------------------------------------------------------------------------------------------------------------------------
+    HTML-Document Specific
+--------------------------------------------------------------------------------------------------------------------------------------*/
+
+function html_parse(text) {
+    var doc=null;
+    var parser = null;
+    if(typeof(text)!='string'){
+        wfw.puts('html_parse not a string');
+        return null;
+    }
+    if(document.implementation && document.implementation.createDocument) {
+        doc = document.implementation.createDocument('http://www.w3.org/1999/xhtml', 'html',  null);
+        doc.documentElement.innerHTML = text;
+        return doc;
+    }
+    return xmlDoc;
+}
+
+/*--------------------------------------------------------------------------------------------------------------------------------------
     XML-Document Specific
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -1298,13 +1317,14 @@ var ERR_REQ_INVALID_ARG     = ERR_REQ+3;
 */
 function xml_parse(text) {
     var xmlDoc=null;
+    var parser = null;
     if(typeof(text)!='string'){
         wfw.puts('xml_parse not a string');
         return null;
     }
     if(window.DOMParser)
     {
-        parser=new DOMParser();
+        var parser=new DOMParser();
         xmlDoc=parser.parseFromString(text,"text/xml");
     }
     else // Internet Explorer
