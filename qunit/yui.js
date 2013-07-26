@@ -106,13 +106,35 @@ YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path',
     /* wfw.URI */
     module( "wfw.Template" );
     test( "XML Template" , function(assert) {
+        var expectedDoc = '../unit_test/template_xml/select/expected.html';
         var tempDoc = '../unit_test/template_xml/select/template.html';
-        var selDoc = 'select.xml'; // relative to template file
-        
+        var selDoc = 'select.xml'; // relative to tempDoc
+        var template = new wfw.Template.cXMLTemplate();
+
+        //initialise la classe
+        if (template.Initialise(tempDoc,null,selDoc,null,{}))
+        {
+            var expected = wfw.HTTP.get(expectedDoc);
+            
+            //transforme l'élément
+            var output = template.Make();
+            
+            console.log(expected);
+            console.log("output");
+            console.log(output);
+            
+            //assert.htmlEqual('<B TITLE=test>te2st</B>', '<b title="test">test</b>', 'template-ActionSelect');
+            assert.htmlEqual(expected, output, 'template-ActionSelect');
+            
+        }
+/*
         assert.htmlEqual('<B TITLE=test>test</B>', '<b title="test">test</b>', 'template-ActionSelect');
+        console.log("wfw.Template");
         console.log(wfw.Template);
         var file_content = wfw.Template.makeSrc(tempDoc,null,selDoc,null,{});
-        console.log(file_content);
+        console.log("file_content");
+        console.log(file_content);*/
+
         
         /*
         var xmlTemplate = new wfw.Template.cXMLTemplate();
