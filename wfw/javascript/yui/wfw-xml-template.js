@@ -851,7 +851,7 @@ YUI.add('wfw-xml-template', function (Y) {
             conditions    : conditions de la selection (voir en-tete).
             */
             cXMLTemplate.prototype.get_xml_selection = function (current_select, arg, path, conditions) {
-                //	    wfw.puts("get_xml_selection "+path);
+                this.post("get_xml_selection",path);
                 //
                 // charge un nouveau fichier...
                 //
@@ -861,14 +861,14 @@ YUI.add('wfw-xml-template', function (Y) {
                     matches = exp.exec(path);
 
                     if (matches != null) {
-                        wfw.puts("get_xml_selection: " + matches[1] + " . " + matches[2]);
+                        this.post("get_xml_selection", matches[1] + " . " + matches[2]);
                         var varfile;
                         if (varfile = this.load_xml_file(matches[1]))
                             return this.get_xml_selection(varfile.get("documentElement"), arg, matches[2], conditions); //ok, re-selectionne avec le chemin seulement 
                         return null;
                     }
                     else {
-                        wfw.puts("get_xml_selection: (" + path + ") path invalid format!");
+                        this.post("get_xml_selection", "(" + path + ") path invalid format!");
                         return null;
                     }
                 }
@@ -877,7 +877,7 @@ YUI.add('wfw-xml-template', function (Y) {
                 // charge dans le fichier en cours...
                 //
                 if (current_select == null) {
-                    wfw.puts("get_xml_selection: no input file!");
+                    this.post("get_xml_selection", "no input file!");
                     return null;
                 }
 
@@ -885,9 +885,14 @@ YUI.add('wfw-xml-template', function (Y) {
                 var varfile = current_select.get("ownerDocument");
 
                 //TODO: check for using path
+                //racine
+                if (path == '/'){
+                    current_select = varfile.get("documentElement");
+                }
                 //absolue
-                if (path.substr(0, 1) == '/')
+                else if (path.substr(0, 1) == '/'){
                     current_select = varfile.one(path.replace('/','>'));
+                }
                 //relatif
                 else
                     current_select = current_select.one(path.replace('/','>'));
