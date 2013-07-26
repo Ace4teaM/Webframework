@@ -137,7 +137,7 @@ YUI.add('wfw-xml-template', function (Y) {
         [DOMDocument] doc            : Le document
         [HTMLElement] element        : L'Elément model au sein du document source
         [DOMDocument] selectDoc      : Le document de la séléction, null si aucun
-        [HTMLElement] selectElement  : Noeud de séléction en entrée, doit être enfant du document 'selectDoc'. Si null, l'élément racine du document est séléctionné
+        [HTMLElement] selectElement  : Noeud de sélection en entrée, doit être enfant du document 'selectDoc'. Si null, l'élément racine du document est séléctionné
         [object]      args           : Tableau associatif des arguments
         Retourne:
         [DOMDocument] Le document
@@ -339,19 +339,30 @@ YUI.add('wfw-xml-template', function (Y) {
             cXMLTemplate.prototype.Make = function () {
                 
                 //transforme les noeuds
+                this.post("Make","transforme les noeuds...");
                 var first_node = wfw.Utils.getChildNode(this.input_element);
                 if (first_node != null) {
                     this.check_node(this.select, first_node, this.arg);
                     this.clean_node(first_node);
                 }
-
-                //recupere le contenu HTML
-                var file_content = this.input_element.getHTML();
-
+                
+                //recupere le contenu Texte
+                /** TODO: Ne fonctionne pas si le document est un XML ) 
+                var file_content = this.input_element.getContent();*/
+                
+                //recupere le contenu Texte
+                this.post("Make","recupere le contenu Texte...");
+                var oSerializer = new XMLSerializer();
+                var file_content = oSerializer.serializeToString(this.input._node);
+                //console.log(file_content);
+                
                 //finalise le contenu
-                for (var i = 0; i < this.check_text_class.length; i++) {
-                    var class_inst = this.check_text_class[i];
-                    file_content = class_inst.finalize(file_content);
+                this.post("Make","finalise le contenu...");
+                if(file_content){
+                    for (var i = 0; i < this.check_text_class.length; i++) {
+                        var class_inst = this.check_text_class[i];
+                        file_content = class_inst.finalize(file_content);
+                    }
                 }
                 
                 //reconstruit le doc type
@@ -360,6 +371,7 @@ YUI.add('wfw-xml-template', function (Y) {
                 var doctype='<!DOCTYPE '+this.input.doctype.name+' PUBLIC "'+this.input.doctype.publicId+'" "'+this.input.doctype.systemId+'">\n\n';
                 file_content = doctype+file_content;
                 }*/
+
                 return file_content;
             };
 
@@ -375,7 +387,9 @@ YUI.add('wfw-xml-template', function (Y) {
 
                 if((wfw.HTTP.httpRequest.readyState == wfw.Request.READYSTATE_DONE) && (wfw.HTTP.httpRequest.status == 200))
                 {
-                    this.input = Y.Node(xml_parse(wfw.HTTP.getResponse()));
+                    var text=wfw.HTTP.getResponse();
+                    /** TODO: Force en HTML pour utiliser Node.getHTML() */
+                    this.input = Y.Node(xml_parse(text));
                     return true;
                 }
 
@@ -400,6 +414,7 @@ YUI.add('wfw-xml-template', function (Y) {
                         return false;
                     }
                     this.post("load_xml_file",this.var_path+name+" loaded");
+                    //this.xml_files[name] = xml_parse(content);
                     this.xml_files[name] = Y.Node(xml_parse(content));
                 }
                 return this.xml_files[name];
@@ -635,6 +650,7 @@ YUI.add('wfw-xml-template', function (Y) {
                     switch(node.get("nodeType"))
                     {
                         case XML_ELEMENT_NODE:
+                            
                             var cur_select = select;
                             var cur_node = node;
 
@@ -644,7 +660,7 @@ YUI.add('wfw-xml-template', function (Y) {
                                 node.removeAttribute("template:action");
 
                             if((typeof(action)=='string') && !empty(action))  
-                            {
+                            {                            
                                 //procede a la selection
                                 var target_path      = node.getAttribute("template:path");
                                 var target_condition = node.getAttribute("template:condition");
@@ -655,9 +671,14 @@ YUI.add('wfw-xml-template', function (Y) {
                                 }
 
                                 //execute l'action
-                                var class_name = "cXMLTemplateAction_"+action;
+                                var class_name = "cXMLTemplateAction_"+action;                      
+                                var class_ref = eval(class_name);
+                                //console.log(node);
+                                //console.log(class_ref);
                                 if(method_exists(class_name,"check_node"))//classe static
                                     next = eval(class_name+".check_node(this,cur_select,node,arg);");
+                                else
+                                    console.log("wfw.Template.cXMLTemplate.check_node",class_name+" reference not found");
                             }
                             else
                             {
@@ -890,7 +911,7 @@ YUI.add('wfw-xml-template', function (Y) {
             */
             this.post = function(title,msg)
             {
-                wfw.puts("cXMLTemplate: "+title+", "+msg);
+                console.log("cXMLTemplate: "+title+", "+msg);
             };
         }
     };  
@@ -1299,7 +1320,7 @@ YUI.add('wfw-xml-template', function (Y) {
         "__inner_text__"     : contenu texte de la selection
         "__selection_name__" : nom de la selection (tagName)
     */
-    var cXMLTemplateAction_each =
+    window.cXMLTemplateAction_each =
     {
         check_node: function (input, select, node, arg) {
             arg['__count__'] = 0;
@@ -1349,7 +1370,7 @@ YUI.add('wfw-xml-template', function (Y) {
     /*
             test une expression reguliere sur la selection
     */
-    var cXMLTemplateAction_exp =
+    window.cXMLTemplateAction_exp =
     {
         check_node: function (input, select, node, arg) {
             //check les arguments
@@ -1413,7 +1434,7 @@ YUI.add('wfw-xml-template', function (Y) {
     /*
             evalue une expression du langage
     */
-    var cXMLTemplateAction_eval =
+    window.cXMLTemplateAction_eval =
     {
         check_node: function (input, select, node, arg) {
             //check les arguments
@@ -1454,7 +1475,7 @@ YUI.add('wfw-xml-template', function (Y) {
             action = "select"
             path   = chemin d'acces a l'element cible.
     */  
-    var cXMLTemplateAction_select =
+    window.cXMLTemplateAction_select =
     {
         check_node : function(input,select,node,arg)
         {
@@ -1495,7 +1516,7 @@ YUI.add('wfw-xml-template', function (Y) {
             action = "merge"
             path   = chemin d'acces a l'element cible.
     */  
-    var cXMLTemplateAction_merge =
+    window.cXMLTemplateAction_merge =
     {
         check_node : function(input,select,node,arg)
         {
@@ -1534,7 +1555,7 @@ YUI.add('wfw-xml-template', function (Y) {
             action = "include"
             path   = chemin d'acces a l'element cible.
     */
-    var cXMLTemplateAction_include =
+    window.cXMLTemplateAction_include =
     {
         check_node: function (input, select, node, arg) {
             //obtient les options
@@ -1590,7 +1611,7 @@ YUI.add('wfw-xml-template', function (Y) {
     Attributs:
             action = "ignore"
     */  
-    var cXMLTemplateAction_ignore =
+    window.cXMLTemplateAction_ignore =
     {
         check_node : function(input,select,node,arg)
         {
@@ -1612,7 +1633,7 @@ YUI.add('wfw-xml-template', function (Y) {
             "script" = Codes et textes exactes
             "text"   = Textes et articles
     */
-    var cXMLTemplateAction_format =
+    window.cXMLTemplateAction_format =
     {
         check_node: function (input, select, node, arg) {
             //obtient les options de formatage
@@ -1750,6 +1771,9 @@ YUI.add('wfw-xml-template', function (Y) {
         }
     };
 
+    // prototypage des classes
+    wfw.Template.cXMLTemplate = cXMLTemplate;
+   
 }, '1.0', {
     requires:['base','wfw','wfw-http','wfw-request', 'wfw-style', 'wfw-xml', 'wfw-utils']
 });
