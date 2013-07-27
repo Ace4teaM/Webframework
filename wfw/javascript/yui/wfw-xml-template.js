@@ -782,24 +782,30 @@ YUI.add('wfw-xml-template', function (Y) {
             //nettoie les attributs
             cXMLTemplate.prototype.clean_attributes = function(node)
             {
-                if(node!=null){
-                    if(node.get('namespaceURI') == this.wfw_template_uri){
-                        //rpost("clean_node","remove element: ".$node.tagName);
-                        //$next = $node.firstChild;
-                    }
-                    else{
-                        switch(node.nodeType)
-                        {
-                            case XML_ELEMENT_NODE:
-                                node.get("attributes").each(function(attr){
-                                    if(attr.get("name").indexOf(this.wfw_template_uri) != -1){                    
-                                        this.post("clean_node","remove attributes: ".attr.get("name"));
-                                        node.removeAttribute(attr.get("name")); 
-                                    }
-                                });
-                                break;
-                        }
-                    }
+                var me = this;
+                
+                if(node==null)
+                    return;
+                
+                //supprime le noeud si il appartient au NS du Template
+                this.post('namespaceURI',node.get('namespaceURI'));
+                if(node.get('namespaceURI') == this.wfw_template_uri){
+                    //rpost("clean_node","remove element: ".$node.tagName);
+                    //$next = $node.firstChild;
+                    return;
+                }
+                
+                //supprime les attributs qui appartiennent au NS du Template
+                switch(node.get("nodeType"))
+                {
+                    case XML_ELEMENT_NODE:
+                        node.get("attributes").each(function(attr){
+                            if(attr.get('namespaceURI') == me.wfw_template_uri){  
+                                me.post("clean_node","remove attributes: "+attr.get("name"));
+                                node.removeAttribute(attr.get("name")); 
+                            }
+                        });
+                        break;
                 }
             };
 
