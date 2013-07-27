@@ -312,11 +312,16 @@ YUI.add('wfw-xml-template', function (Y) {
                 }
 
                 //cree les instances de classes Marker
+                this.post("cXMLTemplate",''+this.marker_class_names.length+' marker class names');
                 for (var i = 0; i < this.marker_class_names.length; i++) {
                     var class_name = this.marker_class_names[i];
                     var class_inst = eval("new " + class_name + "(this,this.arg)");
-                    if (class_inst)
+                    if (class_inst){
+                        this.post("cXMLTemplate",'"'+class_name+'" loaded');
                         this.check_text_class.push(class_inst);
+                    }
+                    else
+                        this.post("cXMLTemplate",'cant load "'+class_name+'"');
                 }
 
                 //		    this.post("var_path",'"'+this.var_path+'"');
@@ -441,7 +446,7 @@ YUI.add('wfw-xml-template', function (Y) {
                     delimiter_r_char='}';
 
                 //                       
-                var identifier = cInputName.regExp;
+                var identifier = cInputName.regExp();
                 var string = "[^\']*";
                 var delimiter_l = "";
                 var delimiter_r = ""; 
@@ -458,23 +463,25 @@ YUI.add('wfw-xml-template', function (Y) {
 
                     // pour chaque format                                     
                     for(var i in this.check_text_class)
-                    {         
+                    {
                         var class_inst = this.check_text_class[i];
                         var exp_list = class_inst.exp();
                         var this_ = this;
-                        // recherche pour chaque format d'expression                                  
-                        for(exp in exp_list)
-                        {       
+
+                        // recherche pour chaque format d'expression
+                        for(var exp in exp_list)
+                        {
+
                             var func = exp_list[exp];
                             text = text.replace(
                                 new RegExp( '\-'+delimiter_l+exp+delimiter_r, "g" ),
                                 function() {
                                     var matches=arguments;
-                                    //appel la fonction qui va traiter la chene
+                                    //appel la fonction qui va traiter la chaine
                                     var value = eval("class_inst."+func+"(this_,select,matches,arg);");
                                     return value;
                                 }
-                                );
+                            );
                         }
                     }
                 }while(old_text != text);//si aucune modification du text, ne cherche pas de niveau superieur
@@ -579,7 +586,7 @@ YUI.add('wfw-xml-template', function (Y) {
                 if (select == null)
                     return null;
 
-                var f_identifier = cInputName.regExp;
+                var f_identifier = cInputName.regExp();
                 var f_string = '[^\']*';
 
                 var conditions_list = strexplode(conditions, ";", true);
@@ -979,9 +986,9 @@ YUI.add('wfw-xml-template', function (Y) {
 
         this.exp        = function (){
             var ar = {};
-            ar['('+cInputName.regExp+')']                             = 'check_text';
-            ar['(' + cInputName.regExp + ')' + '\\\|' + '\\\'([^\\\']*)\\\''] = 'check_text';
-            ar['ip@(' + cInputIPv4.regExp + ')'] = 'check_ip';
+            ar['('+cInputName.regExp()+')']                             = 'check_text';
+            ar['(' + cInputName.regExp() + ')' + '\\\|' + '\\\'([^\\\']*)\\\''] = 'check_text';
+            ar['ip@(' + cInputIPv4.regExp() + ')'] = 'check_ip';
             return ar;
         };
     }
@@ -1031,8 +1038,8 @@ YUI.add('wfw-xml-template', function (Y) {
 
         this.exp = function () {
             var ar = {};
-            ar['(' + cInputName.regExp + ')#(' + cInputName.regExp + ')'] = 'check_text';
-            ar['(' + cInputName.regExp + ')#(' + cInputName.regExp + '):(' + cInputString.regExp + ')'] = 'check_text';
+            ar['(' + cInputName.regExp() + ')#(' + cInputName.regExp() + ')'] = 'check_text';
+            ar['(' + cInputName.regExp() + ')#(' + cInputName.regExp() + '):(' + cInputString.regExp() + ')'] = 'check_text';
             return ar;
         };
     }
@@ -1068,8 +1075,8 @@ YUI.add('wfw-xml-template', function (Y) {
 
         this.exp        = function (){
             var ar = {};
-            ar['@('+cInputName.regExp+')']                             = 'check_text';
-            ar['@('+cInputName.regExp+')'+'\\\|'+'\\\'([^\\\']*)\\\''] = 'check_text';
+            ar['@('+cInputName.regExp()+')']                             = 'check_text';
+            ar['@('+cInputName.regExp()+')'+'\\\|'+'\\\'([^\\\']*)\\\''] = 'check_text';
             return ar;
         };
     }
@@ -1134,7 +1141,7 @@ YUI.add('wfw-xml-template', function (Y) {
 
         this.exp = function (){
             var ar = {};
-            ar['!('+cInputName.regExp+')']                             = 'check_text';
+            ar['!('+cInputName.regExp()+')']                             = 'check_text';
             return ar;
         };
 
@@ -1165,9 +1172,9 @@ YUI.add('wfw-xml-template', function (Y) {
         this.exp = function()
         {
             var ar = {};
-            ar['\\:'+'('+cInputName.regExp+')'] = 'check_default_uri';
-            ar['('+cInputName.regExp+')'+'\\:'+'('+cInputName.regExp+')'] = 'check_default_value';
-            ar['('+cInputName.regExp+')'+'\\:'+'('+cInputName.regExp+')'+'\\@'+'('+cInputName.regExp+')'] = 'check_default_attribute';
+            ar['\\:'+'('+cInputName.regExp()+')'] = 'check_default_uri';
+            ar['('+cInputName.regExp()+')'+'\\:'+'('+cInputName.regExp()+')'] = 'check_default_value';
+            ar['('+cInputName.regExp()+')'+'\\:'+'('+cInputName.regExp()+')'+'\\@'+'('+cInputName.regExp()+')'] = 'check_default_attribute';
 
             return ar;
         }

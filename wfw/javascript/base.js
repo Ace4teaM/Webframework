@@ -1317,24 +1317,25 @@ function html_parse(text) {
 */
 function xml_parse(text) {
     var xmlDoc=null;
-    var parser = null;
     if(typeof(text)!='string'){
-        wfw.puts('xml_parse not a string');
+        console.log('xml_parse not a string');
         return null;
     }
     if(window.DOMParser)
     {
+        console.log("xml_parse: use DOMParser");
         var parser=new DOMParser();
         xmlDoc=parser.parseFromString(text,"text/xml");
     }
     else // Internet Explorer
     {
+        console.log("xml_parse: use ActiveXObject");
         xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
         xmlDoc.async="false";
         xmlDoc.loadXML(text); 
         if(xmlDoc.parseError.errorCode != 0 && typeof(wfw)=="object") {
            var myErr = xmlDoc.parseError;
-           wfw.puts("xml_parse: error " + myErr.reason);
+           console.log("xml_parse: error " + myErr.reason);
            return null;
         }
     } 
@@ -1500,203 +1501,3 @@ function isPtrOver(element){
 	}
 	return false;
 }
-
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    Input types
---------------------------------------------------------------------------------------------------------------------------------------*/
-
-/**
-    Vérifie le format d'un identificateur
-    Base-Object:
-        cInput
-*/
-var cInputIdentifier = {
-    regExp: '[A-Za-z]{1}[A-Za-z0-9_]*',
-    isValid: function (value) {
-        if (empty(value))
-            return ERR_TEXT_EMPTY;
-        var exp = new RegExp('^[A-Za-z]{1}[A-Za-z0-9_]*$', 'g');
-        if (exp.test(value)==true)
-            return ERR_OK;
-        return ERR_TEXT_INVALIDCHAR;
-    }
-};
-
-function cInputIdentifier_isValid(value) {
-    if (empty(value))
-        return ERR_TEXT_EMPTY;
-    var exp = new RegExp('^[A-Za-z]{1}[A-Za-z0-9_]*$', 'g');
-    if (exp.test(value) == true)
-        return ERR_OK;
-    return ERR_TEXT_INVALIDCHAR;
-}
-
-/**
-    Vérifie le format d'un nom
-    Base-Object:
-        cInput
-*/
-var cInputName = {
-    regExp : '[a-zA-Z_]{1}[a-zA-Z0-9_\\-\\.]*',
-    isValid : function(value){
-		if( empty(value) )
-			return ERR_TEXT_EMPTY;
-
-        var exp = new RegExp('^'+this.regExp+'$','g');
-        if(exp.test(value))
-            return ERR_OK;
-
-        return ERR_TEXT_INVALIDCHAR;
-    }
-};
-
-/**
-    Vérifie le format d'un texte contenu entre guillemets
-    Base-Object:
-        cInput
-*/
-var cInputString = {
-    regExp: '[^"\n\r]*',
-    isValid: function (value) {
-        if (empty(value))
-            return ERR_TEXT_EMPTY;
-
-        var exp = new RegExp('^' + this.regExp + '$', 'g');
-        if (exp.test(value))
-            return ERR_OK;
-
-        return ERR_TEXT_INVALIDCHAR;
-    }
-};
-
-/**
-    Vérifie le format d'un entier numérique
-    Base-Object:
-        cInput
-*/
-var cInputInteger = {
-    regExp: '[0-9]+',
-    isValid: function (value) {
-        if (empty(value))
-            return ERR_TEXT_EMPTY;
-
-        var exp = new RegExp('^' + this.regExp + '$', 'g');
-        if (exp.test(value))
-            return ERR_OK;
-
-        return ERR_TEXT_INVALIDCHAR;
-    }
-};
-
-/**
-    Vérifie le format d'une adresse email
-    Base-Object:
-        cInput
-*/
-var cInputMail = {
-    regExp : '',
-    isValid: function (value) { return ERR_OK; }
-};
-
-/**
-    Vérifie le format d'un nom de fichier UNIX (les chemins d'accès ne sont pas autorisés)
-    Base-Object:
-        cInput
-    Remarques:
-        Les chemins d'accès ne sont pas autorisés
-*/
-var cInputUNIXFileName = {
-    regExp : '',
-    isValid: function (value) { return ERR_OK; }
-};
-
-/**
-    Vérifie le format d'un mot-de-passe
-    Base-Object:
-        cInput
-*/
-var cInputPassword = {
-    regExp: '[a-zA-Z0-9_\\-\\@\\#\\&\\+\\~]+',
-    isValid: function (value) {
-        if (empty(value))
-            return ERR_TEXT_EMPTY;
-
-        var exp = new RegExp('^' + this.regExp + '$', 'g');
-        if (exp.test(value))
-            return ERR_OK;
-
-        return ERR_TEXT_INVALIDCHAR;
-    }
-};
-
-
-/**
-Vérifie le format d'une adresse IP version 4
-*/
-var cInputIPv4 = {
-    regExp: '[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}',
-    isValid: function (value) {
-        if (empty(value))
-            return ERR_TEXT_EMPTY;
-
-        var exp = new RegExp('^' + cInputIPv4.regExp + '$', 'g');
-        if (exp.test(value))
-            return ERR_OK;
-
-        return ERR_TEXT_INVALIDCHAR;
-    }
-};
-
-
-
-/**
-Vérifie le format d'une adresse IP version 4
-*/
-var cInputEvalString = {
-    regExp: '[^\(\)\=]+',//pas de caracteres succeptible de modifier des variables ou appeler des fonctions
-    isValid: function (value) {
-        if (empty(value))
-            return ERR_TEXT_EMPTY;
-
-        var exp = new RegExp('^' + cInputEvalString.regExp + '$', 'g');
-        if (exp.test(value))
-            return ERR_OK;
-
-        return ERR_TEXT_INVALIDCHAR;
-    }
-};
-
-
-var cInputBool = {
-	regExp: 'on|off|0|1|yes|no|true|false',
-	isValid: function (value){
-        if (empty(value))
-            return ERR_TEXT_EMPTY;
-		
-		// carateres valides
-		switch((""+value).toLowerCase()){
-			case "0":
-			case "1":
-			case "yes":
-			case "no":
-			case "on":
-			case "off":
-			case "true":
-			case "false":
-				return ERR_OK;
-		}
-
-		return ERR_TEXT_INVALIDCHAR;
-	},
-	//extra
-	toBool : function (value){
-	    switch (("" + value).toLowerCase()) {
-			case "1":
-			case "yes":
-			case "on":
-			case "true":
-				return true;
-		}
-		return false;
-	}
-};

@@ -102,10 +102,10 @@ wfw.text_format = {
     //cree un element html a partir de sa syntaxe texte
     //si l'element est compose d'une balise ouvrante et fermante le contenu est insert comme du texte 
     to_element : function(doc,syntax){
-        var arg_exp = new RegExp( '('+cInputIdentifier.regExp+')="('+cInputString.regExp+')"','g' );
-       // var inline_exp = new RegExp( "^<("+cInputIdentifier.regExp+")[\s]*("+arg_exp.toString()+")*/>$" );
-        var inline_exp = new RegExp( "^<("+cInputIdentifier.regExp+")[\\s]*(.*)/>$" );
-        var container_exp = new RegExp( "^<("+cInputIdentifier.regExp+")[\\s]*([^>]*)>(.*)</("+cInputIdentifier.regExp+")>$" );//DEBUG, si le caractere '>' est rencontre dans la zone d'arguments l'expression echoue. cause: ([^>]*)
+        var arg_exp = new RegExp( '('+cInputIdentifier.regExp()+')="('+cInputString.regExp()+')"','g' );
+       // var inline_exp = new RegExp( "^<("+cInputIdentifier.regExp()+")[\s]*("+arg_exp.toString()+")*/>$" );
+        var inline_exp = new RegExp( "^<("+cInputIdentifier.regExp()+")[\\s]*(.*)/>$" );
+        var container_exp = new RegExp( "^<("+cInputIdentifier.regExp()+")[\\s]*([^>]*)>(.*)</("+cInputIdentifier.regExp()+")>$" );//DEBUG, si le caractere '>' est rencontre dans la zone d'arguments l'expression echoue. cause: ([^>]*)
 
         syntax = trim(syntax);
        // objAlertMembers(arg_exp.exec('test="test de string"'));
