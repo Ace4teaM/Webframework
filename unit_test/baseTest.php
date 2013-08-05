@@ -26,10 +26,12 @@
 
 class BaseTest extends PHPUnit_Framework_TestCase{
     public function setUp(){
+        $root = __DIR__;
+
         set_include_path(
                 get_include_path()
-                . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\wfw\php'
-                . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\unit_test'
+                . PATH_SEPARATOR . $root.'/../wfw/php'
+                . PATH_SEPARATOR . $root
         );
         require_once 'base.php';
     }
@@ -119,7 +121,7 @@ class BaseTest extends PHPUnit_Framework_TestCase{
     {
         // include
         
-        include_once('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_includes\testClass.inc');
+        include_once(__DIR__.'/test_includes/testClass.inc');
         $this->assertEquals(array('testClass','testClass2'), get_declared_classes_of('testClassBase'), 'get declared classes of');
         
         // cast

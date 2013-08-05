@@ -28,8 +28,8 @@ class XMLDocumentTest extends PHPUnit_Framework_TestCase{
     public function setUp(){
         set_include_path(
                 get_include_path()
-                . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\wfw\php'
-                . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\unit_test'
+                . PATH_SEPARATOR . __DIR__ . '/../wfw/php'
+                . PATH_SEPARATOR . __DIR__
         );
         //require_once 'base.php';
         require_once 'xdocument.php';
@@ -38,7 +38,7 @@ class XMLDocumentTest extends PHPUnit_Framework_TestCase{
     public function testOne()
     {
         $doc = new XMLDocument("1.0", "utf-8");
-        $doc->load('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test.xml');
+        $doc->load(__DIR__ . '/test/test.xml');
         
         //Child selector
         $node = $doc->one('>library');
@@ -88,7 +88,7 @@ class XMLDocumentTest extends PHPUnit_Framework_TestCase{
     public function testAll()
     {
         $doc = new XMLDocument("1.0", "utf-8");
-        $doc->load('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test.xml');
+        $doc->load(__DIR__ . '/test/test.xml');
         
         //Name selector
         $array = $doc->all("book");
@@ -110,7 +110,7 @@ class XMLDocumentTest extends PHPUnit_Framework_TestCase{
     public function testInsertion()
     {
         $doc = new XMLDocument("1.0", "utf-8");
-        $doc->load('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test.xml');
+        $doc->load(__DIR__ . '/test/test.xml');
         
         //Append Associative Array
         $parent = $doc->createElement("assoc_array");

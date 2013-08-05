@@ -28,8 +28,8 @@ class IniParseTest extends PHPUnit_Framework_TestCase{
     public function setUp(){
         set_include_path(
                 get_include_path()
-                . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\wfw\php'
-                . PATH_SEPARATOR . 'C:\Users\developpement\Documents\GitHub\Webframework\unit_test'
+                . PATH_SEPARATOR . __DIR__ . '/../wfw/php'
+                . PATH_SEPARATOR . __DIR__
         );
         require_once 'ini_parse.php';
     }
@@ -37,21 +37,21 @@ class IniParseTest extends PHPUnit_Framework_TestCase{
     public function testFileInclude()
     {
         // default case
-        $cfg = parse_ini_file_ex('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_ini\sectionA.ini',0);
+        $cfg = parse_ini_file_ex(__DIR__ . '/test_ini/sectionA.ini',0);
         $expected = array(
             'sectionA'=>array('title'=>'Hello World')
         );
         $this->assertEquals($expected,$cfg,'default case');
         
         // force upper case
-        $cfg = parse_ini_file_ex('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_ini\sectionA.ini',INI_PARSE_UPPERCASE);
+        $cfg = parse_ini_file_ex(__DIR__ . '/test_ini/sectionA.ini',INI_PARSE_UPPERCASE);
         $expected = array(
             'SECTIONA'=>array('TITLE'=>'Hello World')
         );
         $this->assertEquals($expected,$cfg,'force upper case');
         
         // values types
-        $cfg = parse_ini_file_ex('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_ini\values.ini');
+        $cfg = parse_ini_file_ex(__DIR__ . '/test_ini/values.ini');
         $expected = array(
             'VALUE'=>array(
                 'TRUE'=>true,
@@ -66,14 +66,14 @@ class IniParseTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals($expected,$cfg,'comments');
         
         // comment
-        $cfg = parse_ini_file_ex('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_ini\comments.ini');
+        $cfg = parse_ini_file_ex(__DIR__ . '/test_ini/comments.ini');
         $expected = array(
             'COMMENT'=>array('COLOR'=>'blue')
         );
         $this->assertEquals($expected,$cfg,'comments');
         
         // includes
-        $cfg = parse_ini_file_ex('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_ini\includes.ini');
+        $cfg = parse_ini_file_ex(__DIR__ . '/test_ini/includes.ini');
         $expected = array(
             'SECTIONA'=>array('TITLE'=>'Hello World'),
             'SECTIONB'=>array('TITLE'=>'Hello Guy'),
@@ -82,7 +82,7 @@ class IniParseTest extends PHPUnit_Framework_TestCase{
         $this->assertEquals($expected,$cfg,'includes');
         
         // constantes
-        $cfg = parse_ini_file_ex('C:\Users\developpement\Documents\GitHub\Webframework\unit_test\test_ini\constantes.ini');
+        $cfg = parse_ini_file_ex(__DIR__ . '/test_ini/constantes.ini');
         $expected = array(
             'CONSTANTE'=>array('FOO'=>'bar', 'FOO_WITH_ACCOLADE'=>'this is the foo value: bar')
         );

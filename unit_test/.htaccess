@@ -1,2 +1,0 @@
-#required for merge default.xml files
-Redirect /Webframework/unit_test/default.xml /Webframework/unit_test/ctrl.php?app=wfw&ctrl=defaults&output=xml
