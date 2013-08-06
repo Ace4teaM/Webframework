@@ -45,40 +45,46 @@
     // Fabrique un élément HTML depuis une definition de champ
     function makeField(parent,field){
         parent = $(parent);
-        var input;
 
-       field = $.extend({
+        field = $.extend({
            name    : '',
            value   : '',
            type    : 'string'
-       },field);
-       
-       //obtient la classe du type
-        var className = "cInput"+field.type.toLowerCase(); 
+        },field);
+
+        //pas de classe ?
+        //if(empty(field.type)) return;
+        
+        //obtient la classe du type
+        var className = "cInput"+field.type.toLowerCase();
+        
+        //Si la classe n'existe pas, crée un élément basique
         if (eval("typeof "+className) != 'object'){
-//           console.log(className+" type not specified");
-            input = $('<input type="text" />');
+        //           console.log(className+" type not specified");
+            var input = $('<input type="text" />');
             input.attr("name",field.name);
             input.val(field.value);
             return input;
         }
-//        console.log("make from "+className+" type");
+        
+        //Crée l'élément
         var inputClass = eval(className);
+
+        //        console.log("make from "+className+" type");
         return $(inputClass.toElement(field.name,field.value,field.label));
     };
     
     // Intialise un élément HTML existant
     function makeExistingField(parent,node){
         parent = $(parent);
-        var input;
 
-       var field = {
-           name    : node.attr("name"),
-           value   : node.val(),
-           type    : node.attr("data-type")
-       };
-       
-       return makeField(parent,field);
+        var field = {
+            name    : node.attr("name"),
+            value   : node.val(),
+            type    : node.attr("data-type")
+        };
+        
+        return makeField(parent,field);
     };
     
     //constructeur
@@ -164,8 +170,8 @@
                  {
                      var parent = $(this);
 
-                     //fabrique les champs
-                     $("*[name]",parent).each(function(i,node){
+                     //fabrique les champs (ignore les champs cachés)
+                     $("*[name][type!='hidden']",parent).each(function(i,node){
                          node = $(node);
                          var input = makeExistingField(this,node);
                          node.replaceWith(input);
