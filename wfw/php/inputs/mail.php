@@ -17,7 +17,7 @@ require_once("string.php");
 class cInputMail extends cInput {
 
     public static function isValid($value) {
-        if (empty($value))
+        if( empty_string($value) )
             return RESULT(cResult::Failed, cInput::EmptyText);
 
         $name = strtok($value, "@");
@@ -29,7 +29,7 @@ class cInputMail extends cInput {
         //
                 //
 		// 1. non vide
-        if (empty($name))
+        if (empty_string($name))
             return RESULT(cResult::Failed, cInput::InvalidChar);
         // 2. carateres valides
         if (!is_strof($name, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._!#$%*/?|^{}`~&'+-="))
@@ -43,7 +43,7 @@ class cInputMail extends cInput {
         //
                 //
 		// 1. non vide
-        if (empty($domain))
+        if (empty_string($domain))
             return RESULT(cResult::Failed, cInput::InvalidChar);
         // 2. carateres valides
         if (!is_strof($domain, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-"))

@@ -1,7 +1,7 @@
 <?php
 
 require_once("base.php");
-require_once("inputs/int.php");
+require_once("inputs/integer.php");
 require_once("inputs/float.php");
 require_once("inputs/date.php");
 require_once("inputs/datetime.php");

@@ -9,7 +9,7 @@ require_once("class/bases/input.php");
 class cInputUrl extends cInput {
 
     public static function isValid($value) {
-        if (empty($value))
+        if (empty_string($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
 
         return RESULT_OK();

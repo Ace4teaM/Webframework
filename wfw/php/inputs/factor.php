@@ -8,7 +8,7 @@ class cInputFactor extends cInput
 {
 	public static function isValid($value){
             // chaine valide ?
-            if(preg_match("/^".cInputFloat::regExp()."$/",$value)==0)
+            if(preg_match("/^".cInputFactor::regExp()."$/",$value)==0)
                     return RESULT(cResult::Failed,cInput::InvalidChar);
 
             return RESULT_OK();

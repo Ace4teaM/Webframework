@@ -6,7 +6,7 @@ require_once("class/bases/input.php");
 class cInputMime extends cInput {
 
     public static function isValid($value) {
-        if (empty($value))
+        if (empty_string($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
 
         if (!preg_match("/^" . cInputIdentifier::regExp() . "$/", $value))

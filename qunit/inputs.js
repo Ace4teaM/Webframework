@@ -48,6 +48,14 @@ test( "cInputDate" , function() {
     equal( cInputDate.isValid("12-12-2029"), true, "Format DD-MM-YYYY" );
 });
 
+/* cInputDateTime */
+test( "cInputDateTime" , function() {
+    equal( cInputDateTime.isValid("2013-01-05 14:40:20"), true, "Format YYYY-MM-DD HH:MM:SS" );
+    equal( cInputDateTime.isValid("12-12-2029 14:40:20"), true, "Format DD-MM-YYYY HH:MM:SS" );
+    equal( cInputDateTime.isValid("12 12 2029 14 40 20"), true, "With spaces" );
+    equal( cInputDateTime.isValid("identifier"), false, "Invalid format" );
+});
+
 /* cInputIdentifier */
 test( "cInputIdentifier" , function() {
     equal( cInputIdentifier.isValid("stack"), true, "Simple" );

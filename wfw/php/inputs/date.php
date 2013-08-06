@@ -4,37 +4,32 @@ require_once("class/bases/input.php");
 
 /**
  * @brief Test une date
- * @todo Classe non implémentée
  */
 class cInputDate extends cInput {
 
     public static function isValid($value/*,&$output*/) {
-        if (empty($value))
+        if ( empty_string($value) )
             return RESULT(cResult::Failed, cInput::EmptyText);
 
-        $fmt = cInputDate::regExp();
-        foreach($fmt as $fmt=>$regex){
-            if (preg_match($regex, $value, $matches)){
-                /*$output = new DateTime($value);*/
-                return RESULT_OK();
-            }
-        }
+        // chaine valide ?
+        if(!preg_match("/^".cInputDate::regExp()."$/",$value))
+            return RESULT(cResult::Failed,cInput::InvalidChar);
 
-        return RESULT(cResult::Failed, cInput::InvalidFormat);
+        return RESULT_OK();
     }
 
     public static function toObject($string) {
-        $date = new DateTime ($string);
+        $date = new DateTime($string);
         return $date;
     }
     
     public static function regExp() {
         $sep = '[\-\/\\\s]';
-        
-        return array(
-            "DMY"=>"/^([0-9]{1,2})$sep([0-9]{1,2})$sep([0-9]+)$/",
-            "YMD"=>"/^([0-9]+)$sep([0-9]{1,2})$sep([0-9]{1,2})$/"
-        );
+
+        return "(?:([0-9]{1,2})".$sep."([0-9]{1,2})".$sep."([0-9]+))" // DMY
+                ."|"
+                ."(?:([0-9]+)".$sep."([0-9]{1,2})".$sep."([0-9]{1,2}))" // YMD
+        ;
     }
 
     public static function getMaxLength() {

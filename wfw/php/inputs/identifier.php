@@ -8,7 +8,7 @@ require_once("string.php");
 class cInputIdentifier extends cInput {
 
     public static function isValid($value) {
-        if (empty($value))
+        if ( empty_string($value) )
             return RESULT(cResult::Failed, cInput::EmptyText);
 
         // carateres valides

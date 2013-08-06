@@ -11,7 +11,7 @@ class cInputPassword extends cInput
 
     public static function isValid($value)
     {
-        if (empty($value))
+        if (empty_string($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
 
         if(strlen($value) < cInputPassword::MIN_CHAR_COUNT)

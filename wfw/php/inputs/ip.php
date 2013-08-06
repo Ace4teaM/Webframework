@@ -7,7 +7,7 @@ require_once("class/bases/input.php");
 class cInputIPv4 extends cInput
 {
 	public static function isValid($value){
-		if( empty($value) )
+		if( empty_string($value) )
 			return RESULT(cResult::Failed, cInput::EmptyText);
 		
 		// chaine valide ?

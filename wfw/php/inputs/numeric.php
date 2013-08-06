@@ -1,7 +1,7 @@
 <?php
 
 require_once("class/bases/input.php");
-require_once("inputs/int.php");
+require_once("inputs/integer.php");
 require_once("inputs/float.php");
 
 // numerique 
@@ -9,7 +9,7 @@ require_once("inputs/float.php");
 class cInputNumeric extends cInput {
 
     public static function isValid($value) {
-        if (empty($value))
+        if (empty_string($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
 
         // chaine valide ?

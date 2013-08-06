@@ -20,18 +20,10 @@
 */
 
 
-var cInputDate={
+var cInputDateTime={
     isValid : function(value){
         if (empty_string(value))
             return RESULT(cResult.Failed, cInput.EmptyText);
-
-        /*test les differents formats
-        var fmt = this.regExp();
-        for(var i in  fmt){
-            var regex = fmt[i];
-            if ( (new RegExp(regex)).test(value) )
-                return RESULT_OK();
-        }*/
 
         //test le format
         var fmt = this.regExp();
@@ -42,18 +34,13 @@ var cInputDate={
     }
     ,
     regExp : function(){
-        var sep = '[\\-\\/\\\\\\s]';
-        
-        /*return {
-            "DMY":"^([0-9]{1,2})"+sep+"([0-9]{1,2})"+sep+"([0-9]+)$",
-            "YMD":"^([0-9]+)"+sep+"([0-9]{1,2})"+sep+"([0-9]{1,2})$"
-        };*/
-        
+        var tsep = '[\\:\\s]';//time separator
+        var dsep = '[\\-\\/\\\\\\s]';//date separator
         return "^"
-                +"(?:([0-9]{1,2})"+sep+"([0-9]{1,2})"+sep+"([0-9]+))" // DMY
+                +"(?:([0-9]{1,2})"+dsep+"([0-9]{1,2})"+dsep+"([0-9]+)\\s*([0-2]{1}[0-9]{1})"+tsep+"([0-6]{1}[0-9]{1})"+tsep+"([0-6]{1}[0-9]{1}))" //DMY-HMS
                 +"|"
-                +"(?:([0-9]+)"+sep+"([0-9]{1,2})"+sep+"([0-9]{1,2}))" // YMD
-                +"$"
+                +"(?:([0-9]+)"+dsep+"([0-9]{1,2})"+dsep+"([0-9]{1,2})\\s*([0-6]{1}[0-9]{1})"+tsep+"([0-6]{1}[0-9]{1})"+tsep+"([0-2]{1}[0-9]{1}))"//YMD-SMH
+        +"$";
     }
     ,
     getMaxLength : function(){
@@ -74,4 +61,4 @@ var cInputDate={
         return cInput.toElement(name,value);
     }
 };
-cInputdate = cInputDate; //global insensitive scope
+cInputdatetime = cInputDateTime; //global insensitive scope
