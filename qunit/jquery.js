@@ -24,4 +24,14 @@ $(function() {
         var elements = wfw.Form.get_elements('form',{selectByAtt:'id', forceAttLowerCase:true});
         ok( elements.fooinput, "Get Elements By Id (lower case)" );*/
     });
+    
+    
+    /* navigator plugin */
+    module( "navigator" );
+    test( "Navigator" , function() {
+        //obtient les valeurs
+        $(window).navigator();
+        equal( $(window).navigator("loaded"), true, "Is loaded" );
+        console.log($(window).navigator("index","page","explorer").length);
+    });
 });

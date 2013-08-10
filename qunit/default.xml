@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+    <title>Webframework</title>
+    <name>Webframework</name>
+    <base>webframework</base>
+    <description>Webframework Library</description>
+
+    <index>
+        <page id="explorer" role="administrator" name="Explorateur de fichiers">ctrl.php?app=wfw&amp;ctrl=explorer&amp;output=html</page>
+        <page id="yui_config" role="visitor" name="Configuration YUI">ctrl.php?app=wfw&amp;ctrl=yui_config&amp;output=javascript</page>
+        <page id="datamodel" role="visitor" name="Obtient le model de données">ctrl.php?app=wfw&amp;ctrl=datamodel&amp;output=xml</page>
+        <page id="defaults" role="visitor" name="Obtient les meta données">ctrl.php?app=wfw&amp;ctrl=defaults&amp;output=xml</page>
+        <page id="datafetch" role="administrator" name="Obtient des données">ctrl.php?app=wfw&amp;ctrl=datafetch&amp;output=xml</page>
+        <page id="maketask" role="administrator" name="Initialise une tâche système">ctrl.php?app=wfw&amp;ctrl=maketask&amp;output=html</page>
+        <page id="maketaskrecursive" role="administrator" name="Initialise une tâche système (recursive)">ctrl.php?app=wfw&amp;ctrl=maketaskrecursive&amp;output=html</page>
+    </index>
+
+    <results lang="fr">
+        <codes>
+            <ERR_OK>Succès</ERR_OK>
+            <ERR_FAILED>Echec</ERR_FAILED>
+            <ERR_SYSTEM>Erreur système</ERR_SYSTEM>
+        </codes>
+
+        <errors>
+            <!-- WFW (ERR_OK) -->
+            <INFORMATION>Information</INFORMATION>
+            <SUCCESS>Succès</SUCCESS>
+            
+            <!-- WFW (ERR_FAILED) -->
+            <TOO_SMALL_STRING>Texte trop petit</TOO_SMALL_STRING>
+            <NO_INPUT_FIELD>Aucun champ reçu</NO_INPUT_FIELD>
+            <MISSING_FIELD>Champ manquant</MISSING_FIELD>
+            <EMPTY_TEXT>Champ vide</EMPTY_TEXT>
+            <INVALID_CHAR>Champ contenant des caractères interdits</INVALID_CHAR>
+            <INVALID_FORMAT>Champ mal formé</INVALID_FORMAT>
+            <INVALID_RANGE>Rang de valeur invalide</INVALID_RANGE>
+            <INVALID_INPUT>Champ invalide</INVALID_INPUT>
+            <OVERSIZED>Trop de caractères</OVERSIZED>
+            <UNDERSIZED>Pas assez de caractères</UNDERSIZED>
+            <DB_CONNECTION>Connexion au serveur de base de données a échouée</DB_CONNECTION>
+            <DB_SQL_QUERY>Requête SQL mal formée</DB_SQL_QUERY>
+            <DB_QUERY_NO_RESULT>Requête SQL sans résultat</DB_QUERY_NO_RESULT>
+            <SOCK_OPEN_URL>La connexion au serveur a échouée</SOCK_OPEN_URL>
+            <UNSUPORTED_FEATURE>Fonctionnalité non supportée</UNSUPORTED_FEATURE>
+            <UNIMPLEMENTED_FEATURE>Fonctionnalité non implémentée</UNIMPLEMENTED_FEATURE>
+            
+            <!-- WFW:APPLICATION (ERR_FAILED) -->
+            <APP_UNKNOWN_HOSTNAME>Nom de l'hôte inconnu</APP_UNKNOWN_HOSTNAME>
+            <APP_NO_DATABASE_CONFIGURED>Aucune base de donées n'est présente dans la configuration</APP_NO_DATABASE_CONFIGURED>
+            <APP_UNKNOWN_FORM_TEMPLATE_FILE>Le template de formulaire est indéfinit</APP_UNKNOWN_FORM_TEMPLATE_FILE>
+            <APP_UNKNOWN_FIELD>Paramètre d'entrée inconnu</APP_UNKNOWN_FIELD>
+            <APP_UNKNOWN_FIELD_FORMAT>Format de paramètre d'entrée inconnu</APP_UNKNOWN_FIELD_FORMAT>
+            <APP_RESOURCE_NOT_FOUND>Une ressource est introuvable</APP_RESOURCE_NOT_FOUND>
+            <APP_CANT_CREATE_RESOURCE>L'Application ne parvient pas a créer une ressource</APP_CANT_CREATE_RESOURCE>
+            <APP_UNSUPORTED_ROLE_BY_CTRL>Le contrôleur n'autorise pas l'utilisation de ce rôle</APP_UNSUPORTED_ROLE_BY_CTRL>
+            <APP_UNSUPORTED_FEATURE>Fonctionalité non supportée</APP_UNSUPORTED_FEATURE>
+            <APP_CTRL_NOT_FOUND>Contrôleur introuvable</APP_CTRL_NOT_FOUND>
+            <APP_CTRL_CLASS_NOT_FOUND>Classe contrôleur introuvable</APP_CTRL_CLASS_NOT_FOUND>
+            
+            <!-- WFW (ERR_SYSTEM) -->
+            <SYS_TASK_CREATE>La tâche ne peut pas être créée</SYS_TASK_CREATE>
+            <SYS_TASK_DELETE>La tâche ne peut pas être supprimée</SYS_TASK_DELETE>
+            <SYS_TASK_UPDATE>La tâche ne peut pas être mise à jour</SYS_TASK_UPDATE>
+        </errors>
+
+        <messages>
+            <!-- WFW (ERR_FAILED) -->
+            <MISSING_FIELD>
+                Merci de renseigner le champ: $TXT_FIELD_NAME ($FIELD_NAME).
+            </MISSING_FIELD>
+            <SOCK_SERVER_CONNECTION>
+                Cause retourné par le socket #$ERRNO : $ERRSTR
+            </SOCK_SERVER_CONNECTION>
+            <WFW_MSG_POPULATE_FORM>
+                Merci de compléter le formulaire
+            </WFW_MSG_POPULATE_FORM>
+            <DB_SQL_QUERY>$QUERY</DB_SQL_QUERY>
+            <UNSUPORTED_FEATURE>$FEATURE</UNSUPORTED_FEATURE>
+            
+            
+            <!-- WFW (ERR_SYSTEM) -->
+            <SYS_TASK_DELETE>
+                Code de retour: $RVAL
+                Commande      : $CMD
+                Sortie        : $OUTPUT
+            </SYS_TASK_DELETE>
+            
+            <!-- WFW:APPLICATION (ERR_FAILED) -->
+            <APP_UNKNOWN_FIELD>L'Application doit définir le champs '$FIELD_NAME'</APP_UNKNOWN_FIELD>
+            <APP_UNKNOWN_FIELD_FORMAT>L'Application doit définir le format du champs '$FIELD_NAME'. Ajoutez ce format à la configuration (section [fields_formats]).</APP_UNKNOWN_FIELD_FORMAT>
+            <APP_UNKNOWN_FIELD_CLASS>L'Application doit définir la classe du champs '$CLASS_NAME'.</APP_UNKNOWN_FIELD_CLASS>
+            <APP_RESOURCE_NOT_FOUND>Le fichier suivant est introuvable: $FILE</APP_RESOURCE_NOT_FOUND>
+            <APP_CANT_CREATE_RESOURCE>Le fichier suivant ne peut pas être créé: $FILE</APP_CANT_CREATE_RESOURCE>
+            <APP_UNSUPORTED_ROLE_BY_CTRL>Vous n'ête pas autorisé à executer cette action (ctrl:$CTRL, role:$ROLE)</APP_UNSUPORTED_ROLE_BY_CTRL>
+            <APP_CTRL_NOT_FOUND>Le fichier de contrôleur "$CTRL" est introuvable</APP_CTRL_NOT_FOUND>
+            <APP_CTRL_CLASS_NOT_FOUND>Merci de vérifier le nom de classe. Celle-ci doit se nommée: $CLASS_NAME</APP_CTRL_CLASS_NOT_FOUND>
+        </messages>
+        
+        <fields>
+            <!-- CONTROLER -->
+            <app>Nom de l'application</app>
+            <ctrl>Nom de contrôleur</ctrl>
+            
+            <!-- RESULT -->
+            <result>Contexte de résultat</result>
+            <error>Code de l'erreur</error>
+            <message>Message de l'erreur</message>
+            <txt_result>Texte du contexte de résultat</txt_result>
+            <txt_error>Texte de l'erreur</txt_error>
+            <txt_message>Texte du message de l'erreur</txt_message>
+
+            <!-- DATABASE -->
+            <table_name>Nom de table SQL</table_name>
+            <row_offset>Numéro de ligne</row_offset>
+            <row_count>Nombre de lignes</row_count>
+            <cols_names>Nom des colonnes</cols_names>
+            
+            <!-- task manager -->
+            <task_name>Nom de la tâche</task_name>
+            <task_date>Date d'exécution</task_date>
+            <task_cmd>Commande à exécuter</task_cmd>
+            <task_delay>Délais d'exécution</task_delay>
+        </fields>
+    </results>
+</site>
