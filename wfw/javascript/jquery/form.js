@@ -33,12 +33,15 @@
  * ## Obtient les valeurs de champs
  * values[] form( 'values' )
  * 
- * ## Initialise des champs existants
+ * ## Initialise le formulaire
  * form( )
  * 
- * ## Initialise avec des champs définits
+ * ## Initialise le formulaire avec des champs définits
  * form( fields:[ {name,value,type}, ... ] )
  * 
+ * ## Transmet le formulaire 
+ * form( fields:[ {name,value,type}, ... ] )
+
  * **/
 (function($)
 {

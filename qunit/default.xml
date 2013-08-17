@@ -1,19 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
     <title>Webframework</title>
+    <id>wfw</id>
     <name>Webframework</name>
     <base>webframework</base>
     <description>Webframework Library</description>
 
     <index>
-        <page id="explorer" role="administrator" name="Explorateur de fichiers">ctrl.php?app=wfw&amp;ctrl=explorer&amp;output=html</page>
-        <page id="yui_config" role="visitor" name="Configuration YUI">ctrl.php?app=wfw&amp;ctrl=yui_config&amp;output=javascript</page>
-        <page id="datamodel" role="visitor" name="Obtient le model de données">ctrl.php?app=wfw&amp;ctrl=datamodel&amp;output=xml</page>
-        <page id="defaults" role="visitor" name="Obtient les meta données">ctrl.php?app=wfw&amp;ctrl=defaults&amp;output=xml</page>
-        <page id="datafetch" role="administrator" name="Obtient des données">ctrl.php?app=wfw&amp;ctrl=datafetch&amp;output=xml</page>
-        <page id="maketask" role="administrator" name="Initialise une tâche système">ctrl.php?app=wfw&amp;ctrl=maketask&amp;output=html</page>
-        <page id="maketaskrecursive" role="administrator" name="Initialise une tâche système (recursive)">ctrl.php?app=wfw&amp;ctrl=maketaskrecursive&amp;output=html</page>
+        <page id="jquery_tests" name="Test unitaires JQuery">jquery.html</page>
+        <page id="parent" name="parent">parent.html</page>
+        <page id="next" name="next">next.html</page>
+        <page id="child" name="child">child.html</page>
+        <page id="previous" name="previous">previous.html</page>
+        <page id="google" name="google">https://www.google.fr/webhp?source=search%20app&amp;fp=a0bff63b71134d01</page>
     </index>
+    
+    <tree>
+        <parent>
+            <previous/>
+            <jquery_tests>
+                <child />
+            </jquery_tests>
+            <next/>
+        </parent>
+    </tree>
 
     <results lang="fr">
         <codes>

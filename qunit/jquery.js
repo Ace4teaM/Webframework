@@ -25,13 +25,63 @@ $(function() {
         ok( elements.fooinput, "Get Elements By Id (lower case)" );*/
     });
     
-    
-    /* navigator plugin */
-    module( "navigator" );
-    test( "Navigator" , function() {
-        //obtient les valeurs
-        $(window).navigator();
-        equal( $(window).navigator("loaded"), true, "Is loaded" );
-        console.log($(window).navigator("index","page","explorer").length);
-    });
+    test( "Navigator", function() {
+	var expected,value;
+
+	//init
+	$(window).navigator();
+
+	//ok ?
+	expected = true;
+	value    = $(window).navigator("loaded");
+	equal( value , expected, "init Passed!" );
+        if(!value)
+            return;
+        
+	//obtient une uri
+	expected = "jquery.html";
+	value    = $(window).navigator("url","jquery_tests");
+	equal( value , expected, "url" );
+
+	//obtient une uri avec paramètres
+	expected = "jquery.html?user_account_id=toto";
+	value    = $(window).navigator("url","jquery_tests",{user_account_id:"toto"});
+	equal( value , expected, "url with params" );
+
+	//obtient une uri avec paramètres
+	expected = "https://www.google.fr/webhp?source=search%20app&fp=a0bff63b71134d01&q=helloworld";
+	value    = $(window).navigator("url","google",{q:"helloworld"});
+	equal( value , expected, "url with existing params" );
+
+	//obtient l'uri de la page précédente
+	expected = "next.html";
+	value    = $(window).navigator("url","#next");
+	equal( value , expected, "url next");
+
+	//obtient l'uri de la page précédente
+	expected = "previous.html";
+	value    = $(window).navigator("url","#previous");
+	equal( value , expected, "url previous" );
+
+	//obtient l'uri de la page parent
+	expected = "parent.html";
+	value    = $(window).navigator("url","#parent");
+	equal( value , expected, "url parent" );
+
+	//obtient l'uri de la page child
+	expected = "child.html";
+	value    = $(window).navigator("url","#child");
+	equal( value , expected, "url child" );
+
+	//app id
+	expected = "wfw";
+	value    = $(window).navigator("id");
+	equal( value , expected, "id" );
+
+	//app name
+	expected = "Webframework";
+	value    = $(window).navigator("name");
+	equal( value , expected, "name" );
+    }); 
+
 });
