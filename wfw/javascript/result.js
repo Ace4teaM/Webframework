@@ -18,18 +18,42 @@
     along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
+
+/**
+ * @brief Object result
+ */
+var cResult={
+    Ok     : "ERR_OK"
+    ,Failed : "ERR_FAILED"
+    ,System : "ERR_SYSTEM"
+    // last current states
+    ,last : {
+        context:null,
+        code:null,
+        att:null
+    }
+    // return the last result object
+    ,getLast : function(){ return this.last; }
+};
+
+/**
+ * @brief Définit le dernier resultat
+ */
 function RESULT(context,code,att){
-    if(context=="ERR_OK")
+    cResult.last.context = context;
+    cResult.last.code    = code;
+    cResult.last.att     = att;
+    if(context==cResult.Ok)
         return true;
     return false;
 }
 
+/**
+ * @brief Définit le dernier resultat comme succès
+ */
 function RESULT_OK(){
+    cResult.last.context = cResult.Ok;
+    cResult.last.code    = "SUCCESS";
+    cResult.last.att     = null;
     return true;
 }
-
-var cResult={
-    Ok     : "ERR_OK",
-    Failed : "ERR_FAILED",
-    System : "ERR_SYSTEM"
-};

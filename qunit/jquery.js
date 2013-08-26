@@ -84,4 +84,39 @@ $(function() {
 	equal( value , expected, "name" );
     }); 
 
+    test( "xarg test", function() {
+        var expected,value;
+
+        //encode simple argument
+        expected = "hello"+XARG_START_OF_TEXT_CHAR+"world"+XARG_END_OF_TEXT_CHAR;
+        value    = xarg_to_string({hello:"world"});
+        equal( value , expected, "encode simple argument" );
+
+        //decode multiples arguments
+        expected = "hello"+XARG_START_OF_TEXT_CHAR+"world"+XARG_END_OF_TEXT_CHAR+"foo"+XARG_START_OF_TEXT_CHAR+"bar"+XARG_END_OF_TEXT_CHAR;
+        value    = xarg_to_string({hello:"world",foo:"bar"});
+        equal( value , expected, "encode multiples arguments" );
+
+        //decode simple argument
+        expected = {hello:"world"};
+        value    = xarg_to_object("hello"+XARG_START_OF_TEXT_CHAR+"world"+XARG_END_OF_TEXT_CHAR);
+        deepEqual( value , expected, "decode simple argument" );
+
+        //decode multiples arguments
+        expected = {hello:"world",foo:"bar"};
+        value    = xarg_to_object("hello"+XARG_START_OF_TEXT_CHAR+"world"+XARG_END_OF_TEXT_CHAR+"foo"+XARG_START_OF_TEXT_CHAR+"bar"+XARG_END_OF_TEXT_CHAR);
+        deepEqual( value , expected, "decode multiples arguments" );
+
+        //invalid arguments
+        expected = false;
+        value    = xarg_to_string("hello");
+        equal( value , expected, "invalid argument" );
+        value    = xarg_to_string(null);
+        equal( value , expected, "invalid argument" );
+        value    = xarg_to_string();
+        equal( value , expected, "invalid argument" );
+        value    = xarg_to_string({});
+        equal( value , expected, "invalid argument" );
+    }); 
+
 });

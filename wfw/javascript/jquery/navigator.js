@@ -63,29 +63,25 @@
         function getURL(id,att){
             //obtient l'URI depuis le fichier default
             var node = getIndex("page",id);
-
+console.log("---------------------\n",id,att);
 //                    console.log(node);
             if(node==null){
-                //$.result(...);
+                //if(typeof RESULT == "function") return RESULT(cResult.Failed,"DEFAULT_CANT_FOUND_PAGE_NODE");
                 return false;
             }
             var uri = node.text();
-//                   console.log(uri);
+                   console.log(uri);
 
             if( att ){
                 //décompose l'uri
                 var obj = uri_cut(uri);
-    //                    console.log(obj.query);
+                        console.log(obj);
+                        console.log("query="+obj.query);
 
                 //merge les attributs
-                if(typeof obj.query == "string" && !empty_string(obj.query))
-                {
-                    var query_obj = uri_query_to_object(obj.query,null);
-                    object_merge(query_obj,att,false);
-                    obj.query = uri_object_to_query(query_obj,null);
-                }
-                else
-                    obj.query = uri_object_to_query(att,null);
+                var query_obj = uri_query_to_object(obj.query,null);
+                object_merge(query_obj,att,false);
+                obj.query = uri_object_to_query(query_obj,null);
 
                 //recompose l'uri
                 uri = uri_paste(obj);
@@ -138,7 +134,7 @@
                     var id   = args[1];
                     var att  = args[2];
                     //next?
-                    if(loaded && pageTreeNode)
+                    if(loaded)
                     {
                         switch(id.toLowerCase()){
                             case "#previous":
@@ -213,7 +209,7 @@
                 // recupere l'id de la page actuelle
                 pageId = $("html > head > meta[http-equiv='wfw.page-id']").attr("content");
                 console.log("pageId="+pageId);
-                if(pageId && !empty_string(pageId))
+                if(!empty_string(pageId))
                 {
                     // recupère l'url de la page actuelle
                     pageURI = $("site > index > page[id='"+pageId+"']",defaultDoc).text();

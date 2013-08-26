@@ -156,3 +156,48 @@ test( "cInputURL" , function() {
     equal( cInputURL.isValid("http://www.google.fr#titi"), true, "Simple" );
     //equal( cInputURL.isValid("https://www.google.fr/webhp?source=searchapp#hl=fr&gsrn=11&gsri=psy-ab&tok=DJ3PqQ3S3DzU4t0230ADEQ&cp=4&gsid=e&xhr=t&q=actualit%C3%A9&esnrs=true&pf=p&output=search&sclient=psy-ab&oq=actu&gsl=&pbx=1&bav=on.2,or.rcp.rqf.&bvm=bv.45580626,d.d2k&fp=35b5c03ba0c6d3fa&biw=1680&bih=989"), true, "Complex" );
 });
+
+
+module( "URI" );
+    
+/* Convertions */
+test( "URI" , function() {
+    var uri;
+    
+    uri = "test.html";
+    deepEqual( uri_cut(uri), {
+        addr: uri, 
+        scheme: "", 
+        authority: "test.html", 
+        path: "", 
+        query: "", 
+        fragment: ""}, "uri_cut" );
+    
+    uri = "test.html?param=hello";
+    deepEqual( uri_cut(uri), {
+        addr: uri, 
+        scheme: "", 
+        authority: "test.html", 
+        path: "", 
+        query: "param=hello", 
+        fragment: ""}, "uri_cut" );
+    
+    uri = "test.html?param=hello#test";
+    deepEqual( uri_cut(uri), {
+        addr: uri, 
+        scheme: "", 
+        authority: "test.html", 
+        path: "", 
+        query: "param=hello", 
+        fragment: "test"}, "uri_cut" );
+    
+    uri = "http://localhost/hello/world/test.html?param=hello#test";
+    deepEqual( uri_cut(uri), {
+        addr: uri, 
+        scheme: "http", 
+        authority: "localhost", 
+        path: "hello/world/test.html", 
+        query: "param=hello", 
+        fragment: "test"}, "uri_cut" );
+    
+});

@@ -95,10 +95,13 @@
         var me = $(this);
         var args = arguments;
 
-        //setter
+        // SETTER
         if(typeof(p) == "string" && args.length > 1){
             switch(p){
-                //Définit les valeurs de champs
+                //
+                // SETTER
+                // Définit les valeurs de champs
+                //
                 case "values":
                     var values = args[1];
 
@@ -120,10 +123,13 @@
                     return this;
             }
         }
-        //getter
+        // GETTER
         else if(typeof(p) == "string"){
             switch(p){
-                //Obtient les valeurs de champs
+                //
+                // GETTER
+                // Obtient les valeurs de champs
+                //
                 case "values":
                     var values = {};
 
@@ -140,10 +146,9 @@
             }
 
         }
-        // initialise l'élément
+        // Initialise l'élément
         else{
-            //@page $form Initialisation avec parametres
-            //Obtient les valeurs de champs
+            //Initialisation avec parametres...
             if(typeof p == "object")
             {
                  p = $.extend({
@@ -166,7 +171,7 @@
                  });
             }
 
-            //initialisation sans parametres
+            //Initialisation sans parametres...
             if(typeof p == "undefined")
             {
                  return this.each(function()
