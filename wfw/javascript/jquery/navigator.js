@@ -63,20 +63,16 @@
         function getURL(id,att){
             //obtient l'URI depuis le fichier default
             var node = getIndex("page",id);
-console.log("---------------------\n",id,att);
 //                    console.log(node);
             if(node==null){
                 //if(typeof RESULT == "function") return RESULT(cResult.Failed,"DEFAULT_CANT_FOUND_PAGE_NODE");
                 return false;
             }
             var uri = node.text();
-                   console.log(uri);
 
-            if( att ){
+            if( typeof att == "object"){
                 //décompose l'uri
                 var obj = uri_cut(uri);
-                        console.log(obj);
-                        console.log("query="+obj.query);
 
                 //merge les attributs
                 var query_obj = uri_query_to_object(obj.query,null);
@@ -85,7 +81,6 @@ console.log("---------------------\n",id,att);
 
                 //recompose l'uri
                 uri = uri_paste(obj);
-    //                   console.log(uri);
             }
             //
             return uri;

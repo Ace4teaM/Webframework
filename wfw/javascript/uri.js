@@ -163,6 +163,8 @@ function uri_query_to_object(querystr, decode_func) {
         return null;
 
     for (var i = 0; i < query.length; i++) {
+        if( empty(query[i]) )//querystr.split peut retourner un element vide
+            continue;
         var tmp = query[i].split("=");
         if (typeof decode_func == "function")
             queryend[tmp[0]] = decode_func(tmp[1]);
