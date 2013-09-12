@@ -167,6 +167,7 @@ class cApplication implements iApplication{
         //debug ?
         if($this->getCfgValue("application","debug")===true){
             define('DEBUG',true);
+            header("Cache-Control: max-age=1");
             //stack trace to result ?
             if($this->getCfgValue("application","debug_output_callstack")===true)
                 define('DEBUG_OUTPUT_CALLSTACK',true);
