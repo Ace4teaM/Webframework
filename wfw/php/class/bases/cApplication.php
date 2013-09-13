@@ -200,6 +200,44 @@ class cApplication implements iApplication{
             }
         }
         
+        //scripts additionnels
+        $scripts = $this->getCfgSection("scripts");
+        if($scripts){
+            $scriptsEl = $this->template_attributes_xml->documentElement->appendChild($this->template_attributes_xml->createElement('scripts'));
+            $stylesheetEl = $this->template_attributes_xml->documentElement->appendChild($this->template_attributes_xml->createElement('stylesheet'));
+            /*$this->template_attributes_xml->appendAssocArray($scriptsEl, $scripts);
+            print_r($this->template_attributes_xml->saveXML());*/
+            
+            foreach($scripts as $key=>$path){
+                $dir = resolve_path($path);
+                if($dir){
+                    if($dh = opendir($dir)){
+                        while (($file = readdir($dh)) !== false) {
+                            switch(file_ext($file)){
+                                case "js":
+                                    $scriptsEl->appendChild($this->template_attributes_xml->createTextElement($key,path($dir,$file)));
+                                    break;
+                                case "css":
+                                    $stylesheetEl->appendChild($this->template_attributes_xml->createTextElement($key,path($dir,$file)));
+                                    break;
+                            }
+                        }
+                        closedir($dh);
+                    }
+                }
+                else{
+                    switch(file_ext($path)){
+                        case "js":
+                            $scriptsEl->appendChild($this->template_attributes_xml->createTextElement($key,$path));
+                            break;
+                        case "css":
+                            $stylesheetEl->appendChild($this->template_attributes_xml->createTextElement($key,$path));
+                            break;
+                    }
+                }
+            }
+        }
+        
         //charge la classe de la base de données
         $db_classname = $this->getCfgValue("database", "class");
         if(!empty($db_classname))
