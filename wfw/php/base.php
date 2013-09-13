@@ -129,27 +129,29 @@ function _stderr($txt) {
 }
 
 /**
- * @brief Inclue un dossier de fichiers PHP
- * @param string $dir Chemin d'accès
- * @return Liste des fichiers trouvés
- * @retval array Tableau des fichiers inclus (avec le chemin d'accès)
- * @remarks Inclue les fichiers portant l'extension '.php'
+ * @brief Resoud un chemin d'accès
+ * @param string $dir Chemin d'accès relatif
+ * @return Chemin d'accès trouvé
+ * @retval null Chemin introuvable
+ * @retval false Chemin introuvable (avec resultat)
+ * @remarks Recherche le chemin d'accès dans les includes path
  */
-function include_path($dir) {
+function resolve_path($dir) {
     //sauvegarde le chemin de base pour le message 'REQUIRED_PATH_NOT_FOUND'
     $_dir = $dir;
     
     // chemins d'inclusions
     $path = explode(PATH_SEPARATOR, get_include_path());
-    array_unshift($path, '.');//chemin de base
+    array_unshift($path, '.');//ajoute le chemin chemin de base
     
     //recherche le chemin d'accès
     $open_dir = null;
     $i=0;
     do{
         $dir = path($path[$i],$_dir);
-        if(is_dir($dir))
+        if(is_dir($dir)){
             $open_dir = $dir;
+        }
         $i++;
     }while(!$open_dir && $i<count($path));
     
@@ -159,6 +161,25 @@ function include_path($dir) {
             return RESULT(cResult::Failed,"REQUIRED_PATH_NOT_FOUND",array("PATH"=>$_dir));
         return NULL;
     }
+    
+    //OK
+    if(function_exists('RESULT'))
+        RESULT_OK();
+    return $open_dir;
+}
+
+/**
+ * @brief Inclue un dossier de fichiers PHP
+ * @param string $dir Chemin d'accès
+ * @return Liste des fichiers trouvés
+ * @retval array Tableau des fichiers inclus (avec le chemin d'accès)
+ * @remarks Inclue les fichiers portant l'extension '.php'
+ */
+function include_path($dir) {
+    //resoud le chemin d'accès
+    $open_dir = resolve_path($dir);
+    if(!$open_dir)
+        return $open_dir;
     
     // liste les fichiers...
     $return = array();
@@ -191,29 +212,10 @@ function include_path($dir) {
  */
 function require_path($dir)
 {
-    //sauvegarde le chemin de base pour le message 'REQUIRED_PATH_NOT_FOUND'
-    $_dir = $dir;
-
-    // chemins d'inclusions
-    $path = explode(PATH_SEPARATOR, get_include_path());
-    array_unshift($path, '.');//chemin de base
-    
-    //recherche le chemin d'accès
-    $open_dir = null;
-    $i=0;
-    do{
-        $dir = path($path[$i],$_dir);
-        if(is_dir($dir))
-            $open_dir = $dir;
-        $i++;
-    }while(!$open_dir && $i<count($path));
-    
-    //dossier introuvable ?
-    if(!$open_dir){
-        if(function_exists('RESULT'))
-            return RESULT(cResult::Failed,"REQUIRED_PATH_NOT_FOUND",array("PATH"=>$_dir));
-        return NULL;
-    }
+    //resoud le chemin d'accès
+    $open_dir = resolve_path($dir);
+    if(!$open_dir)
+        return $open_dir;
     
     // liste les fichiers...
     $return = array();
