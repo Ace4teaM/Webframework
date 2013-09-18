@@ -63,16 +63,19 @@
         function getURL(id,att){
             //obtient l'URI depuis le fichier default
             var node = getIndex("page",id);
+
 //                    console.log(node);
             if(node==null){
                 //if(typeof RESULT == "function") return RESULT(cResult.Failed,"DEFAULT_CANT_FOUND_PAGE_NODE");
                 return false;
             }
             var uri = node.text();
+//                   console.log(uri);
 
             if( typeof att == "object"){
                 //décompose l'uri
                 var obj = uri_cut(uri);
+    //                    console.log(obj.query);
 
                 //merge les attributs
                 var query_obj = uri_query_to_object(obj.query,null);
@@ -81,6 +84,7 @@
 
                 //recompose l'uri
                 uri = uri_paste(obj);
+    //                   console.log(uri);
             }
             //
             return uri;
@@ -118,9 +122,37 @@
             return $("site > name",$(defaultDoc.documentElement)).text();
         }
     
-        //setter
-        if(typeof(p) == "string" && args.length > 1){
+        //getter/setter
+        if(typeof(p) == "string"){
             switch(p.toLowerCase()){
+                //
+                // Charge ?
+                //
+                case "loaded":
+                    return loaded;
+                //
+                // Obtient l'identifiant de l'application
+                //
+                case "id":
+                    return getAppId();
+                //
+                // Obtient le nom de l'application
+                //
+                case "name":
+                    return getAppName();
+                //
+                // Obtient un noeud de l'index
+                //
+                case "index":
+                    var type = args[1];
+                    var id   = args[2];
+                    return getIndex(type,id);
+                //
+                // Obtient l'uri d'une page
+                //
+                case "page":
+                    var id = args[1];
+                    return getIndex("page",id).text();
                 //
                 // Obtient une URL
                 //
@@ -147,33 +179,6 @@
                         }
                     }
                     return getURL(id,att);
-            }
-        }
-        //getter
-        else if(typeof(p) == "string"){
-            switch(p.toLowerCase()){
-                //
-                // Charge ?
-                //
-                case "loaded":
-                    return loaded;
-                //
-                // Obtient l'identifiant de l'application
-                //
-                case "id":
-                    return getAppId();
-                //
-                // Obtient le nom de l'application
-                //
-                case "name":
-                    return getAppName();
-                //
-                // Obtient un noeud de l'index
-                //
-                case "index":
-                    var type = args[1];
-                    var id   = args[2];
-                    return getIndex(type,id);
             }
         }
         // initialise l'élément
