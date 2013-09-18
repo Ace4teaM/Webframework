@@ -202,9 +202,9 @@
             if(loaded)
             {
                 // recupere l'id de la page actuelle
-                var pageId = $("html > head > meta[http-equiv='wfw.page-id']").attr("content");
+                pageId = $("html > head > meta[http-equiv='wfw.page-id']").attr("content");
                 console.log("pageId="+pageId);
-                if(pageId && !empty_string(pageId))
+                if(!empty_string(pageId))
                 {
                     // recupère l'url de la page actuelle
                     pageURI = $("site > index > page[id='"+pageId+"']",defaultDoc).text();
