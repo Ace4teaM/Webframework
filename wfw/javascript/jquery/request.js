@@ -78,9 +78,6 @@
  **/
 (function($)
 {
-    //s'assure que le plugin navigator est initialisé
-    $(window).navigator();
-
     /*
     * Ajoute une requête HTTP
     * @param args Objet de requete
@@ -89,7 +86,7 @@
         var req_obj = object_merge({
             name              : null,   // Nom symbolique de la requête
             url               : "",     // URL de destination d ela requête
-            args              : null,   // Arguments passés en paramétre de la fonction
+            args              : null,   // Arguments passés en paramètre de la fonction
             response_header   : null,   // En-têtes de la réponse
             response          : null,   // Corps de la reponse texte
             response_obj      : null,   // Objet natif de la requete (XHR)
@@ -103,10 +100,25 @@
         // genere le nom ?
         if ((typeof (req_obj.name) != 'string') || empty(req_obj.name))
             req_obj.name = uniqid();
+        
         //transforme les arguments
         if(typeof (req_obj.args) == "string")
             req_obj.args = uri_query_to_object(req_obj.args);
+        
+        //FIX: $.ajax ne supporte pas les parametres dans l'URL pour une request POST
+        //convertie les arguments de l'url dans l'objet req_obj.args
+        if(req_obj.url.indexOf('?'))
+        {
+            var uriObj = uri_cut(req_obj.url);
+            //convertie les arguments en objet
+            if(uriObj.query)
+                req_obj.args = object_merge(req_obj.args,uri_query_to_object(uriObj.query));
+            //reforme l'url sans arguments
+            uriObj.query="";
+            req_obj.url = uri_paste(uriObj);
+        }
 
+        //Execute la requete
         $.ajax({
             type:"POST",
             url: req_obj.url,
@@ -140,6 +152,10 @@
         var me = $(this);
         var args = arguments;
 
+        //s'assure que le plugin navigator est initialisé
+        if(!$(window).navigator("loaded"))
+            $(window).navigator();
+
         // SETTER
         if(typeof(p) == "string"){
             switch(p){
@@ -150,10 +166,13 @@
                     var req_page      = args[1];
                     var req_args      = args[2];
                     var req_params    = args[3]; // si null sync
+                    if(typeof req_params == "function")
+                        req_params = {onsuccess:req_params};
+                    var req_url       = $(window).navigator("page",req_page);
 
                     var req_obj = {
-                        url: $(window).navigator("page",req_page),
-                        args: req_args,
+                        url: req_url,
+                        args: object_merge(req_args,{output:"xarg"}),
                         async:false,
                         type:"text/plain",
                         user: ((typeof req_params == "function") ? { onsuccess : req_params } : req_params),
@@ -215,10 +234,13 @@
                     var req_page      = args[1];
                     var req_args      = args[2];
                     var req_params    = args[3];
+                    if(typeof req_params == "function")
+                        req_params = {onsuccess:req_params};
+                    var req_url       = $(window).navigator("page",req_page);
 
                     var req_obj = {
-                        url: $(window).navigator("page",req_page),
-                        args: req_args,
+                        url: req_url,
+                        args: object_merge(req_args,{output:"xml"}),
                         async:false,
                         user:req_params,
                         callback: function(obj){
@@ -235,12 +257,15 @@
                                        wfw_form_name : "formName"        // Optionnel, nom associé à l'élément FORM recevant les données de retours
                                     },obj.user);
                                     
-                                    //resultat ?
-                                    var xml_doc = xml_parse(obj.response);
-                                    if (xml_doc == null) {
-                                        console.log("Document XML mal formé", obj.response);
-                                        param.onerror(obj);
-                                        break;
+                                    //parse le document
+                                    var xml_doc = obj.response;
+                                    if (typeof xml_doc == "string"){
+                                        xml_doc = xml_parse(xml_doc);
+                                        if (xml_doc == null) {
+                                            console.log("Document XML mal formé", obj.response);
+                                            param.onerror(obj);
+                                            break;
+                                        }
                                     }
                                     var xml_root = $(xml_doc.documentElement);
 
@@ -252,6 +277,7 @@
                                             if (result.text() != "ERR_OK") {
                                                 // failed callback
                                                 param.onfailed(obj, xml_doc, xml_root);
+                                                console.log("Failed", result.text());
                                                 break;
                                             }
                                         }
