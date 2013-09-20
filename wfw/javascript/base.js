@@ -631,6 +631,54 @@ function tostr(obj, depth) {
     return text;
 }
 
+/**
+*    @brief Convertie un objet natif Javascript en chaine HTML
+*    @param obj   Objet à convertir en texte
+*    @param depth Si true, scan les objets recursivement
+*    @return Texte de l'objet
+*/
+function tohtml(obj, depth) {
+    if (typeof (depth) == "undefined")
+        depth = true;
+    var text = "";
+    text += "<ul>";
+    //convertie en texte
+    try{
+        switch (typeof (obj)) {
+            case 'string':
+                text = "<li>"+obj+"</li>";
+                break;
+            case 'number':
+                text = "<li>"+obj.toString()+"</li>"; //convert to string
+                break;
+            case 'function':
+                text = "<li>"+obj+"</li>";
+                break;
+            case 'object':
+                text += "<ul>";
+                for (var obj_member in obj)
+                    text += '<li><label style="min-width:80px;">' + obj_member + '</label>' + (!depth ? "" + obj[obj_member] : tostr(obj[obj_member])) + "</li>";
+                text += "</ul>";
+                break;
+            case 'array':
+                text += "<ul>";
+                if (!depth)
+                    text += "" + obj;
+                else
+                    for (var i = 0; i < obj.length; i++)
+                        text += '<li><label style="min-width:80px;">' + i + '</label>' + (!depth ? "" + obj[i] : tostr(obj[i])) + "</li>";
+                text += "</ul>";
+                break;
+        }
+    }
+    catch(e){
+        text = "<li>unredable object "+e+"</li>";
+    }
+    text += "</ul>";
+    
+    return text;
+}
+
 //transforme une chaine de caractere au format "name1:value1;name2:value2;..." en tableau associatif
 function parseHTTPHeader(text){
     var rslt = new Array()
