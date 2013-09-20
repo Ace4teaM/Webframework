@@ -118,5 +118,73 @@ $(function() {
         value    = xarg_to_string({});
         equal( value , expected, "invalid argument" );
     }); 
+    
+    test( "request test", function() {
+        var expected,value;
+
+        //sync request
+        $(window).request("add",{
+            url: "data/response.txt",
+            async: false,
+            callback: function(reqObj){
+                if(reqObj.status == "success"){
+                    expected = "...";
+                    value = reqObj.response;
+                    equal( value , expected, "sync request" );
+                }
+                if(reqObj.status == "error"){
+                    expected = "...";
+                    value = reqObj.response;
+                    equal( value , expected, "sync request" );
+                }
+            }
+        });
+
+        // test request XARG (SUCESS)
+        $(window).request("xarg","data/xarg_test",null,
+            {
+                onsuccess: function(obj, xarg){
+                    expected = "ERR_OK";
+                    value = xarg.result;
+                    equal( value , expected, "xarg request" );
+                }
+            }
+            );
+
+        // test request XARG (FAILED)
+        $(window).request("xarg","data/xarg_test_failed",null,
+            {
+                onfailed: function(obj, xarg){
+                    //failed...
+                    expected = "ERR_FAILED";
+                    value = xarg.result;
+                    equal( value , expected, "xarg request failed" );
+                }
+            }
+            );
+
+        // test request XML (SUCESS)
+        $(window).request("xml","data/xml_test",null,
+            {
+                onsuccess: function(obj, xml_doc, xml_root){
+                    expected = "ERR_OK";
+                    value = $("result",xml_root).text();
+                    equal( value , expected, "xml request" );
+                }
+            }
+            );
+
+        // test request XML (FAILED)
+        $(window).request("xml","data/xml_test_failed",null,
+            {
+                onfailed: function(obj, xml_doc, xml_root){
+                    expected = "ERR_FAILED";
+                    value = $("result",xml_root).text();
+                    equal( value , expected, "xml request failed" );
+                }
+            }
+            );
+
+    }); 
 
 });
