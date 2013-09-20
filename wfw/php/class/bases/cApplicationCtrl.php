@@ -119,12 +119,17 @@ class cApplicationCtrl{
                 $doc->appendAssocArray($rootEl,$att);
                 return '<?xml version="1.0" encoding="UTF-8" ?>'."\n".$doc->saveXML( $doc->documentElement );
             case "text/html":
-                /*$str = "<!doctype html>\n";
-                $str .= "<html><body>";
-                foreach($att as $k=>$v)
-                    $str .= "$k = $v<br/>";
-                $str .= "</body></html>";
-                return $str;*/
+                //initialise la vue depuis un template ?
+                $template_name = $att["app"]."_".$att["ctrl"];
+                $template_path = $app->getCfgValue("templates", $template_name);
+                if($template_path){
+                    // initialise à partir du template principale
+                    $template = $app->createXMLView($template_path,$att);
+                    if(!$template)
+                        return false;
+                    return $template->Make();
+                }
+                //initialise un formulaire générique
                 return $app->makeFormView($att, $this->fields, $this->op_fields, $this->att);
         }
         return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"OUTPUT FORMAT $format"));
