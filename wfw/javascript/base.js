@@ -588,6 +588,49 @@ function strimplode(array,separator,bTrim)
     return list;
 }
 
+/**
+*    @brief Convertie un objet natif Javascript en chaine de caractéres
+*    @param obj   Objet à convertir en texte
+*    @param depth Si true, scan les objets recursivement
+*    @return Texte de l'objet
+*/
+function tostr(obj, depth) {
+    if (typeof (depth) == "undefined")
+        depth = true;
+    var text = "";
+    //convertie en texte
+    try{
+        switch (typeof (obj)) {
+            case 'string':
+                text = obj;
+                break;
+            case 'number':
+                text = obj.toString(); //convert to string
+                break;
+            case 'function':
+                text = ">"+obj;
+                break;
+            case 'object':
+                for (var obj_member in obj)
+                    text += 'object {' + obj_member + ':' + (!depth ? "" + obj[obj_member] : tostr(obj[obj_member])) + "},\n";
+                text += "\n";
+                break;
+            case 'array':
+                if (!depth)
+                    text += "" + obj;
+                else
+                    for (var i = 0; i < obj.length; i++)
+                        text += '{' + i + ':' + (!depth ? "" + obj[i] : tostr(obj[i])) + "},\n";
+                text += "\n";
+                break;
+        }
+    }
+    catch(e){
+        text = "<unredable object> "+e;
+    }
+    return text;
+}
+
 //transforme une chaine de caractere au format "name1:value1;name2:value2;..." en tableau associatif
 function parseHTTPHeader(text){
     var rslt = new Array()
