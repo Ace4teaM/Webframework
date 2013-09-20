@@ -33,18 +33,20 @@
     $.fn.result = function(p){
        if(typeof p == "object")
        {
+           var parameters = tohtml(p,false);
             p = $.extend({
                 result    : null,
                 error     : null,
-                args      : null
+                args      : null,
+                message   : null
             },p);
 
             return this.each(function()
             {
-                $(this).children("*[name='error']").text(p.error);
-                if(p.args && typeof(p.args.message)!="undefined")
-                    $(this).children("*[name='message']").text(p.args.message);
+                $(this).form("values",p);
+                $("*[name=parameters]",this).html(parameters);
             });
+            
        }
        
        return this;
