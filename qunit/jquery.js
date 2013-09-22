@@ -141,7 +141,7 @@ $(function() {
         });
 
         // test request XARG (SUCESS)
-        $(window).request("xarg","data/xarg_test",null,
+        $(window).request("xarg","xarg_test",null,
             {
                 onsuccess: function(obj, xarg){
                     expected = "ERR_OK";
@@ -152,7 +152,7 @@ $(function() {
             );
 
         // test request XARG (FAILED)
-        $(window).request("xarg","data/xarg_test_failed",null,
+        $(window).request("xarg","xarg_test_failed",null,
             {
                 onfailed: function(obj, xarg){
                     //failed...
@@ -164,7 +164,7 @@ $(function() {
             );
 
         // test request XML (SUCESS)
-        $(window).request("xml","data/xml_test",null,
+        $(window).request("xml","xml_test",null,
             {
                 onsuccess: function(obj, xml_doc, xml_root){
                     expected = "ERR_OK";
@@ -175,7 +175,7 @@ $(function() {
             );
 
         // test request XML (FAILED)
-        $(window).request("xml","data/xml_test_failed",null,
+        $(window).request("xml","xml_test_failed",null,
             {
                 onfailed: function(obj, xml_doc, xml_root){
                     expected = "ERR_FAILED";

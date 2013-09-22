@@ -107,11 +107,11 @@
         
         //FIX: $.ajax ne supporte pas les parametres dans l'URL pour une request POST
         //convertie les arguments de l'url dans l'objet req_obj.args
-        if(req_obj.url.indexOf('?'))
+        if(req_obj.url.indexOf('?') != -1)
         {
             var uriObj = uri_cut(req_obj.url);
             //convertie les arguments en objet
-            if(uriObj.query)
+            if(empty(uriObj.query))
                 req_obj.args = object_merge(req_obj.args,uri_query_to_object(uriObj.query));
             //reforme l'url sans arguments
             uriObj.query="";
@@ -168,8 +168,13 @@
                     var req_params    = args[3]; // si null sync
                     if(typeof req_params == "function")
                         req_params = {onsuccess:req_params};
+                    //obtient l'URL de la page
                     var req_url       = $(window).navigator("page",req_page);
-
+                    if( empty(req_url) ){
+                        console.log("request: '"+req_page+"' page not found");
+                        return false;
+                    }
+                    //initialise l'objet de la requete
                     var req_obj = {
                         url: req_url,
                         args: object_merge(req_args,{output:"xarg"}),
@@ -236,8 +241,13 @@
                     var req_params    = args[3];
                     if(typeof req_params == "function")
                         req_params = {onsuccess:req_params};
+                    //obtient l'URL de la page
                     var req_url       = $(window).navigator("page",req_page);
-
+                    if( empty(req_url) ){
+                        console.log("request: '"+req_page+"' page not found");
+                        return false;
+                    }
+                    //initialise l'objet de la requete
                     var req_obj = {
                         url: req_url,
                         args: object_merge(req_args,{output:"xml"}),
