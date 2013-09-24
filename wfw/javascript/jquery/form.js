@@ -63,7 +63,7 @@
         
         //Si la classe n'existe pas, crée un élément basique
         if (eval("typeof "+className) != 'object'){
-        //           console.log(className+" type not specified");
+//            console.log(className+" type not specified");
             var input = $('<input type="text" />');
             input.attr("name",field.name);
             input.val(field.value);
@@ -79,8 +79,6 @@
     
     // Intialise un élément HTML existant
     function makeExistingField(parent,node){
-        parent = $(parent);
-
         var field = {
             name    : node.attr("name"),
             value   : node.val(),
@@ -121,6 +119,7 @@
                     });
 
                     return this;
+                    
             }
         }
         // GETTER
@@ -133,7 +132,7 @@
                 case "values":
                     var values = {};
 
-                    this.each(function()
+                    me.each(function()
                     {
                         var parent = $(this);
                         $("input[name], select[name], textarea[name]",parent).each(function(i,node){
@@ -143,6 +142,20 @@
                     });
 
                     return values;
+                    
+                //
+                // SETTER
+                // Définit les valeurs de champs
+                //
+                case "field":
+                    me.each(function()
+                    {
+                        var parent = $(this);
+                        var input = makeExistingField(parent,$(this));
+                        parent.replaceWith(input);
+                    });
+
+                    return this;
             }
 
         }
@@ -179,7 +192,7 @@
                      var parent = $(this);
 
                      //fabrique les champs (ignore les champs cachés)
-                     $("*[name][type!='hidden']",parent).each(function(i,node){
+                     $("*[name][data-type][type!='hidden']",parent).each(function(i,node){
                          node = $(node);
                          var input = makeExistingField(this,node);
                          node.replaceWith(input);
