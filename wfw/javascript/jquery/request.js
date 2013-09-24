@@ -104,14 +104,14 @@
         //transforme les arguments
         if(typeof (req_obj.args) == "string")
             req_obj.args = uri_query_to_object(req_obj.args);
-        
+
         //FIX: $.ajax ne supporte pas les parametres dans l'URL pour une request POST
         //convertie les arguments de l'url dans l'objet req_obj.args
         if(req_obj.url.indexOf('?') != -1)
         {
             var uriObj = uri_cut(req_obj.url);
             //convertie les arguments en objet
-            if(empty(uriObj.query))
+            if(!empty(uriObj.query))
                 req_obj.args = object_merge(req_obj.args,uri_query_to_object(uriObj.query));
             //reforme l'url sans arguments
             uriObj.query="";
@@ -243,6 +243,7 @@
                         req_params = {onsuccess:req_params};
                     //obtient l'URL de la page
                     var req_url       = $(window).navigator("page",req_page);
+                    
                     if( empty(req_url) ){
                         console.log("request: '"+req_page+"' page not found");
                         return false;
