@@ -1044,6 +1044,14 @@ class cApplication implements iApplication{
         exit($result->isOk()?0:1);
     }
     
+    /**
+     * @brief Execute une requête SQL et converti le rsultat en éléments XML
+     * @param string $query Corps de la requête
+     * @param string $doc   Document XML recevant les éléments
+     * @param int    $node  Noeud parent recevant les éléments
+     * @return boolean Résultat de procédure
+     * @retval false Une erreur est survenue
+     */
     public function queryToXML($query,&$doc,$node)
     {
         // Crée le document XML (template)
