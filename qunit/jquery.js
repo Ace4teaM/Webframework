@@ -1,31 +1,17 @@
 $(function() {
     /* form plugin */
-    module( "form" );
-    test( "Form" , function() {
+    module( "Form" );
+    test( "form" , function() {
         //obtient les valeurs
         deepEqual( $('#form').form("values"), {foo:'bar', bar:'foo'}, "Get Values" );
         
         //définit les valeurs
         $('#form').form("values",{foo:'foo',bar:'bar'});
         deepEqual( $('#form').form("values"), {foo:'foo', bar:'bar'}, "Set Values" );
-/*
-        //obtient les elements
-        var elements = wfw.Form.get_elements('form');
-        ok( elements.bar, "Get Elements" );
-        equal( elements.foo.get("value"), "foo", "Access Element" );
-
-        //obtient les elements statiques
-        var elements = wfw.Form.get_elements('form',{getStaticNode:true});
-        ok( elements.unstd, "Get Statics Elements" );
-
-        //obtient les elements par nom de balise
-        var elements = wfw.Form.get_elements('form',{selectByAtt:'id'});
-        ok( elements.fooInput, "Get Elements By Id (real case)" );
-        var elements = wfw.Form.get_elements('form',{selectByAtt:'id', forceAttLowerCase:true});
-        ok( elements.fooinput, "Get Elements By Id (lower case)" );*/
     });
     
-    test( "Navigator", function() {
+    module( "Navigator" );
+    test( "navigator", function() {
 	var expected,value;
 
 	//init
@@ -84,6 +70,7 @@ $(function() {
 	equal( value , expected, "name" );
     }); 
 
+    module( "Request" );
     test( "xarg test", function() {
         var expected,value;
 
@@ -119,7 +106,7 @@ $(function() {
         equal( value , expected, "invalid argument" );
     }); 
     
-    test( "request test", function() {
+    test( "request", function() {
         var expected,value;
 
         //sync request
@@ -185,6 +172,70 @@ $(function() {
             }
             );
 
-    }); 
+    });
+    
+    module( "Utils" );
+    /*test( "base64", function() {
+        var expected,value;
+
+        //encode simple argument
+        expected = "hello world";
+        value    = xarg_to_string({hello:"world"});
+        equal( value , expected, "encode simple argument" );
+
+        //decode multiples arguments
+        expected = "hello"+XARG_START_OF_TEXT_CHAR+"world"+XARG_END_OF_TEXT_CHAR+"foo"+XARG_START_OF_TEXT_CHAR+"bar"+XARG_END_OF_TEXT_CHAR;
+        value    = xarg_to_string({hello:"world",foo:"bar"});
+        equal( value , expected, "encode multiples arguments" );
+
+        //decode simple argument
+        expected = {hello:"world"};
+        value    = xarg_to_object("hello"+XARG_START_OF_TEXT_CHAR+"world"+XARG_END_OF_TEXT_CHAR);
+        deepEqual( value , expected, "decode simple argument" );
+
+        //decode multiples arguments
+        expected = {hello:"world",foo:"bar"};
+        value    = xarg_to_object("hello"+XARG_START_OF_TEXT_CHAR+"world"+XARG_END_OF_TEXT_CHAR+"foo"+XARG_START_OF_TEXT_CHAR+"bar"+XARG_END_OF_TEXT_CHAR);
+        deepEqual( value , expected, "decode multiples arguments" );
+
+        //invalid arguments
+        expected = false;
+        value    = xarg_to_string("hello");
+        equal( value , expected, "invalid argument" );
+        value    = xarg_to_string(null);
+        equal( value , expected, "invalid argument" );
+        value    = xarg_to_string();
+        equal( value , expected, "invalid argument" );
+        value    = xarg_to_string({});
+        equal( value , expected, "invalid argument" );
+    });
+    */
+    asyncTest( "file_reader", 6, function() {
+      var file = $( "#file" )[0];
+      var fileread = $( "#fileread" );
+      
+      fileread.on( "click", function() {
+        // 
+        ok( readFileOffset_base64(file.files[0],0,3,function(start, size, data, param){
+            var expected = "123";
+            var value = window.atob(data);
+            equal( value , expected, "readFileOffset_base64, check content (zero offset)" );
+        },null), "readFileOffset_base64, success" );
+        // 
+        ok( readFileOffset_base64(file.files[0],2,4,function(start, size, data, param){
+            var expected = "3456";
+            var value = window.atob(data);
+            equal( value , expected, "readFileOffset_base64, check content (with offset)" );
+        },null), "readFileOffset_base64, success" );
+        // 
+        ok( readFile_base64(file.files[0],function(data, param){
+            var expected = "123456";
+            var value = window.atob(data);
+            equal( value , expected, "readFile_base64, check content" );
+        },null), "readFile_base64, success" );
+        start();
+      });
+      //fileread.click();
+    });
 
 });

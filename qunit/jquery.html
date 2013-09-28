@@ -11,6 +11,7 @@
         <script type="text/javascript" language="javascript" src="../wfw/javascript/result.js"></script>
         <script type="text/javascript" language="javascript" src="../wfw/javascript/xarg.js"></script>
         <script type="text/javascript" language="javascript" src="../wfw/javascript/input.js"></script>
+        <script type="text/javascript" language="javascript" src="../wfw/javascript/file_reader.js"></script>
         <script type="text/javascript" language="javascript" src="../wfw/javascript/types/bool.js"></script>
         <script type="text/javascript" language="javascript" src="../wfw/javascript/types/int.js"></script>
         <script type="text/javascript" language="javascript" src="../wfw/javascript/types/date.js"></script>
@@ -39,6 +40,12 @@
             <input type="text" id="barInput" name="bar" value="foo" />
             <div name="unstd">hello</div>
         </form>
+        <fieldset>
+            <legend>File tester</legend>
+            <p>Load <strong>"test.txt"</strong> file and click to <strong>"Test!"</strong> button</p>
+            <input type="file" id="file" name="file" />
+            <button id="fileread">Test!</button>
+        </fieldset>
         <!-- QUNIT -->
         <div id="qunit"></div>
         <div id="qunit-fixture"></div>
