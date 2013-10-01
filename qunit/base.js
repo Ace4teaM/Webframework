@@ -284,7 +284,7 @@ asyncTest( "async" , 1, function() {
 /* async */
 asyncTest( "async" , 1, function() {
     // requete POST MULTIPART
-    value = http_post_multipart_async("data/response.php",
+    http_post_multipart_async("data/response.php",
         [
             {
                 headers:[
