@@ -104,6 +104,22 @@ function http_response(http) {
     }
 }
 
+/**
+ * Retourne une simple chaine en élément de requête
+ * @param name  [string] Nom de l'élément
+ * @param value [string] Valeur de l'élément
+ * @remarks utilisable avec les fonctions 'http_post_multipart_async' et 'http_post_multipart'
+ * @return Objet de part
+ */
+function http_text_part(name,value){
+    return {
+        headers: [
+            'Content-Disposition: form-data; name="' + name + '"',
+            'Content-Type: text/plain'
+        ],
+        data: value
+    };
+}
 
 /*
     @brief Envoie une requête HTTP avec méthode GET (bloquante)
