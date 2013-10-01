@@ -28,7 +28,8 @@
  * Simplifie la gestion des requêtes HTTP dans une application Webframework
  * 
  * ## Execute une requête XARG
- * request( 'xarg', 'my_page_id', { request params... }, function(obj,args){ 
+ * request( 'xarg', 'my_page_id', { args... }, function(obj,args){ 
+ *      //success callback
  *      obj;   // request object
  *      args;  // the native javascript object of response parameters
  * } )
