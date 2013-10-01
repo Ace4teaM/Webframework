@@ -201,3 +201,109 @@ test( "URI" , function() {
         fragment: "test"}, "uri_cut" );
     
 });
+
+module( "Math" );
+    
+/* Convertions */
+test( "Convertions" , function() {
+    equal( math_hex_char_to_int("F"), 15, "math_hex_char_to_int" );
+    equal( math_hex2_to_int("FF"), 255, "math_hex2_to_int" );
+    equal( math_hex3_to_int("FFF"), 4095, "math_hex3_to_int" );
+    equal( math_hex4_to_int("FFFF"), 65535, "math_hex4_to_int" );
+    equal( math_hex_to_int("145DEF"), 1334767, "math_hex_to_int" );
+    equal( math_int_to_hex_char(15), "F", "math_int_to_hex_char" );
+    equal( math_int32_to_hex(15), "000F", "math_int32_to_hex" );
+    equal( math_char_to_hex(15), "0F", "math_char_to_hex" );
+});
+
+module( "HTTP" );
+    
+/* sync */
+test( "sync" , function() {
+    var expected,value;
+    
+    // crée l'objet Request
+    var http = http_create();
+    ok( http != false, "http_create" );
+    
+    // requete GET
+    expected = "...";
+    value = http_get(http,"data/response.txt");
+    equal( value, expected, "http_get" );
+    
+    // requete POST
+    expected = "Array ( [foo] => bar )";
+    value = http_post(http,"data/response.php",{foo:"bar"});
+    equal( value.replace(/[\n\r\s\t]/g,""), expected.replace(/[\n\r\s\t]/g,""), "http_post" );
+    
+    // requete POST MULTIPART
+    expected = "Array ( [foo] => bar )";
+    value = http_post_multipart(http,"data/response.php",[
+        {
+            headers:[
+                'Content-Disposition: form-data; name="foo"',
+                'Content-Type: application/octet-stream',
+                'Content-Length: 3'
+            ],
+            data:"bar"
+        }
+    ],
+    "form-data"
+    );
+    equal( value.replace(/[\n\r\s\t]/g,""), expected.replace(/[\n\r\s\t]/g,""), "http_post_multipart" );
+});
+
+/* async */
+asyncTest( "async" , 1, function() {
+    // requete GET
+    http_get_async("data/response.txt",function(e,context){
+        if(this.readyState == 4)//DONE
+        {
+            var expected = "...";
+            var value = http_response(this);
+            equal( value, expected, "http_get_async" );
+            start();
+        }
+    });
+});
+
+/* async */
+asyncTest( "async" , 1, function() {
+    // requete GET
+    http_post_async("data/response.php",{foo:"bar"},function(e,context){
+        if(this.readyState == 4)//DONE
+        {
+            var expected = "Array ( [foo] => bar )";
+            var value = http_response(this);
+            equal( value.replace(/[\n\r\s\t]/g,""), expected.replace(/[\n\r\s\t]/g,""), "http_post_async" );
+            start();
+        }
+    });
+});
+
+/* async */
+asyncTest( "async" , 1, function() {
+    // requete POST MULTIPART
+    value = http_post_multipart_async("data/response.php",
+        [
+            {
+                headers:[
+                    'Content-Disposition: form-data; name="foo"',
+                    'Content-Type: application/octet-stream',
+                    'Content-Length: 3'
+                ],
+                data:"bar"
+            }
+        ],
+        "form-data",
+        function(e,context){
+            if(this.readyState == 4)//DONE
+            {
+                var expected = "Array ( [foo] => bar )";
+                var value = http_response(this);
+                equal( value.replace(/[\n\r\s\t]/g,""), expected.replace(/[\n\r\s\t]/g,""), "http_post_multipart_async" );
+                start();
+            }
+        }
+    );
+});
