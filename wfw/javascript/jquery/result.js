@@ -43,6 +43,16 @@
 
             return this.each(function()
             {
+                //supprime les textes en cours
+                $(this).form("values",{
+                    result    : "",
+                    error     : "",
+                    args      : "",
+                    message   : "",
+                    txt_message   : "",
+                    txt_result   : "",
+                    txt_error   : ""});
+                //
                 $(this).form("values",p);
                 $("*[name=parameters]",this).html(parameters);
             });
