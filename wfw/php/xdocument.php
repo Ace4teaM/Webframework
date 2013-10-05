@@ -573,10 +573,27 @@ class XMLDocument extends DOMDocument {
      */
     function createTextElement($tagName,$value) {
         $node = $this->createElement( $tagName );
-        $node->appendChild( $this->createTextNode($value) );
+        $node->appendChild( $this->createTextNode( self::parseValue($value) ) );
         return $node;
     }
 
+    /**
+     * @brief Convertie un objet PHP en type TEXT/XML
+     * @param  mixed  $value Objet à convertir
+     * @return string Valeur texte
+     */
+    public static function parseValue($value){
+        if(is_object($value))
+            $value = serialize($value);
+       /* try{
+            $value = @(string)$value;
+        }
+        catch (Exception $e){
+            $value = serialize($value);
+        }*/
+        return $value;
+    }
+    
     /**
      * @brief Ajoute un ensemble d'éléments depuis un tableau associatif
      * @param type $parentNode Elément recevant les éléements créés
