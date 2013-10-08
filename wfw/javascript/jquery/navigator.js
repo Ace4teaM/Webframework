@@ -43,6 +43,7 @@
     //globals variables
     var defaultDoc   = null; // pointeur sur l'objet DOMDocument (fichier default.xml)
     var loaded       = false; // true si le document default.xml est chargé
+    var pageId       = null; // ID de la page en cours
     var pageURI      = null; // URL de la page en cours
     var pageTreeNode = null; // Noeud de la page en cours dans l'arborescence
 
@@ -61,6 +62,9 @@
         * @retval null la page est introuvable ou le plugin non initialisé
         */
         function getURL(id,att){
+            if(id == null)
+                id = pageId;
+            
             //obtient l'URI depuis le fichier default
             var node = getIndex("page",id);
 
@@ -161,7 +165,7 @@
                     var id   = args[1];
                     var att  = args[2];
                     //next?
-                    if(loaded)
+                    if(loaded && !empty(id))
                     {
                         switch(id.toLowerCase()){
                             case "#previous":
@@ -207,7 +211,7 @@
             if(loaded)
             {
                 // recupere l'id de la page actuelle
-                var pageId = $("html > head > meta[http-equiv='wfw.page-id']").attr("content");
+                pageId = $("html > head > meta[http-equiv='wfw.page-id']").attr("content");
                 console.log("pageId="+pageId);
                 if(pageId && !empty_string(pageId))
                 {
