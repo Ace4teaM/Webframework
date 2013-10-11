@@ -596,7 +596,7 @@ class XMLDocument extends DOMDocument {
     
     /**
      * @brief Ajoute un ensemble d'éléments depuis un tableau associatif
-     * @param type $parentNode Elément recevant les éléements créés
+     * @param type $parentNode Elément recevant les éléments créés
      * @param type $assocArray Tableau associatif conenant les valeurs à ajouter
      * @return DOMElement L'Element parent
      */
@@ -609,7 +609,7 @@ class XMLDocument extends DOMDocument {
     /**
      * @brief Ajoute un ensemble d'élément depuis un tableau associatif
      * @param type $parentNode Elément recevant les éléements créés
-     * @param type $assocArray Tableau associatif conenant les valeurs à ajouter
+     * @param type $assocArray Tableau associatif contenant les valeurs à ajouter
      * @return DOMElement L'Element parent
      */
     function out() {
@@ -617,6 +617,22 @@ class XMLDocument extends DOMDocument {
         echo($this->saveXML());
     }
 
+    /**
+     * @brief Converti les éléments du document en tableau associatif (non-recursif)
+     * @return array Tableau associatif des éléments
+     */
+    function toArray() {
+        $xml = $this->documentElement;
+        $node =  $this->documentElement->firstChild;
+        $array = array();
+        while($node){
+            if($node->nodeType == XML_ELEMENT_NODE){
+                $array[$node->tagName] = $node->nodeValue;
+            }
+            $node = $node->nextSibling;
+        }
+        return $array;
+    }
 }
 
 ?>
