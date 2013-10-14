@@ -282,6 +282,7 @@ class XMLDocument extends DOMDocument {
     /*
      * @brief Obtient un élément du document
      * @param selector Sélecteur, de style CSS (voir Remarques)
+     * @param context  Noeud de base, si NULL l'élément racine du document est choisit
      * @param addCheck Fonction de verification additionnel
      * @return Retourne le noeud trouvé (DOMNode), NULL si introuvable
      * 
