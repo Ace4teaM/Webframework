@@ -52,25 +52,33 @@ function rrmdir($dir)
 }*/
 //le dossier "$dir" et son contenu est supprimé
 //rrmdir ne suit pas les liens symboliques
-function rrmdir($dir,$bBaseDirRemove=true) { 
-	if (is_dir($dir)) { 
-		$objects = scandir($dir); 
-		foreach ($objects as $object) { 
-			if ($object != "." && $object != "..") { 
-				if (filetype($dir."/".$object) == "dir")
-					rrmdir($dir."/".$object);
-				else
-					unlink($dir."/".$object); 
-			} 
-		} 
-		reset($objects); 
-		if($bBaseDirRemove)
-			rmdir($dir); 
-		return TRUE;
-	} 
-	return FALSE;
-} 
-   /*
+function rrmdir($dir, $bBaseDirRemove = true) {
+    if (!is_dir($dir))
+        return RESULT_OK();
+    
+    $objects = scandir($dir);
+    foreach ($objects as $object) {
+        if ($object != "." && $object != "..") {
+            if (filetype($dir . "/" . $object) == "dir"){
+                if(!rrmdir($dir . "/" . $object))
+                    return false;
+            }
+            else{
+                if(!@unlink($dir . "/" . $object))
+                    return RESULT(cResult::System,cApplication::CantRemoveResource,error_get_last());
+            }
+        }
+    }
+    
+    reset($objects);
+    
+    if ($bBaseDirRemove && !@rmdir($dir))
+        return RESULT(cResult::System,cApplication::CantRemoveResource,error_get_last());
+    
+    return RESULT_OK();
+}
+
+/*
 function tempnam_s($path, $suffix) 
    { 
       do 
