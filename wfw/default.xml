@@ -58,6 +58,7 @@
             <APP_UNSUPORTED_FEATURE>Fonctionalité non supportée</APP_UNSUPORTED_FEATURE>
             <APP_CTRL_NOT_FOUND>Contrôleur introuvable</APP_CTRL_NOT_FOUND>
             <APP_CTRL_CLASS_NOT_FOUND>Classe contrôleur introuvable</APP_CTRL_CLASS_NOT_FOUND>
+            <APP_CANT_REMOVE_RESOURCE>Impossible de supprimer la ressource</APP_CANT_REMOVE_RESOURCE>
             
             <!-- WFW (ERR_SYSTEM) -->
             <SYS_TASK_CREATE>La tâche ne peut pas être créée</SYS_TASK_CREATE>
@@ -96,6 +97,7 @@
             <APP_UNSUPORTED_ROLE_BY_CTRL>Vous n'ête pas autorisé à executer cette action (ctrl:$CTRL, role:$ROLE)</APP_UNSUPORTED_ROLE_BY_CTRL>
             <APP_CTRL_NOT_FOUND>Le fichier de contrôleur "$CTRL" est introuvable</APP_CTRL_NOT_FOUND>
             <APP_CTRL_CLASS_NOT_FOUND>Merci de vérifier le nom de classe. Celle-ci doit se nommée: $CLASS_NAME</APP_CTRL_CLASS_NOT_FOUND>
+            <APP_CANT_REMOVE_RESOURCE>Le fichier suivant ne peut pas être supprimé: $FILE</APP_CANT_REMOVE_RESOURCE>
         </messages>
         
         <fields>

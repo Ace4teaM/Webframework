@@ -102,6 +102,12 @@ class cApplication implements iApplication{
      */
     const CantCreateResource           = "APP_CANT_CREATE_RESOURCE";
     
+    /** 
+     * Résultat: Impossible de supprimer une ressource
+     * @param FILE Nom du fichier/ressource concernée
+     */
+    const CantRemoveResource           = "APP_CANT_REMOVE_RESOURCE";
+    
     //options
     const FieldFormatClassName = 1;
     const FieldFormatName      = 2;
