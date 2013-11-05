@@ -178,7 +178,7 @@ class cTemplateMarker_attribute extends cTemplateMarker {
 }
 
 /*
-  TEST
+  Test l'existence d'une sélection et retourne un texte en conséquence
   appeler par check_text(), retourne la valeur d'un attribut de la selection
   Syntaxe:
   -{identifier?"value":"value"}
@@ -276,7 +276,7 @@ class cTemplateMarker_parse extends cTemplateMarker {
 }
 
 /**
- * Marqueurs relatif au fichier de méta-données (default.xml)
+ * Insert du texte provenant du fichier de méta-données (défault)
  * 
  *  check_default_attribute
  *    Retourne la valeur d'un attribut de l'index
