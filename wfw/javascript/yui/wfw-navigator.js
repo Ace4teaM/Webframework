@@ -43,8 +43,10 @@ YUI.add('wfw-navigator', function (Y) {
         Remarque:
             Cette fonction est appelée par wfw.ext.initAll()
         */
-        init : function()
+        init : function(config)
         {
+            object_merge(this,config,false);
+            
             if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test( navigator.userAgent)) {
                 this.probablyMobileNavigator = true;
             }
@@ -438,14 +440,37 @@ YUI.add('wfw-navigator', function (Y) {
         
             wfw.puts('Navigator.onLoad: navigation tree OK');
             wfw.Navigator.bOk = true;
-        }
-    };
+        },
 
+        /**
+         *   @brief Vérifie et maintient l'état de la connexion
+        */
+        ctrl: function(page,args,user) {
+            var url = this.getURI(page);
+            
+            object_merge(args,{output:"xarg"},false);//make sure XARG return
+            
+            if(typeof user == "function")
+                user = {onsuccess : user};
+            
+            var req = new wfw.Request.REQUEST(
+                {
+                    url: url,
+                    args: args,
+                    callback : wfw.XArg.onCheckRequestResult_XARG,
+                    user : user,
+                    async:false
+                }
+            );
+
+            return wfw.Request.Insert(req);
+        }
+
+    };
     /*-----------------------------------------------------------------------------------------------------------------------
      * Initialise
      -----------------------------------------------------------------------------------------------------------------------*/
-    object_merge(wfw.Navigator,Y.config.groups.js.modules['wfw-navigator']['defaults'],false);
-    wfw.Navigator.init();
+    //wfw.Navigator.init(Y.config.groups.js.modules['wfw-navigator']['defaults']);
     
 }, '1.0', {
     requires:['base','wfw','wfw-event','wfw-xml']
