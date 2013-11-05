@@ -151,6 +151,29 @@ class XMLTemplateTest extends PHPUnit_Framework_TestCase{
         $this->assertXmlStringEqualsXmlString(file_get_contents(__DIR__.'/template_xml/include/expected.html'), $tempDoc->Make() );
     }
     
+    public function testMarkers()
+    {
+        // charge la selection
+        $selDoc = new XMLDocument("1.0", "utf-8");
+        $selDoc->load(__DIR__.'/template_xml/markers/select.xml');
+        
+        //transforme
+        $tempDoc = new cXMLTemplate();
+        $tempDoc->Initialise(
+                __DIR__.'/template_xml/markers/template.html',
+                NULL,
+                $selDoc,
+                NULL,
+                array(
+                    "HelloWorld" => "Hello-World (case sensitive)",
+                    "helloworld" => "Hello-World"
+                )
+        );
+        
+        //assert
+        $this->assertXmlStringEqualsXmlString(file_get_contents(__DIR__.'/template_xml/markers/expected.html'), $tempDoc->Make() );
+    }
+    
     
 }
 ?>
