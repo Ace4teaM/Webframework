@@ -20,6 +20,8 @@
  * <!-- £:NAME --> ... <!-- £:NAME -->
  * @endcode
  */
+require("base.php");
+
 class cHTMLTemplate{ 
 
     /**
