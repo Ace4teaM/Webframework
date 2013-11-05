@@ -39,7 +39,7 @@ Ext.define('Wfw.DataModel.FieldsForm', {
         bodyStyle:'padding:5px 5px 0',
         fieldDefaults: {
             msgTarget: 'side',
-            labelWidth: 220
+            labelWidth: 150
         },
         defaultType: 'textfield',
         defaults: {
@@ -144,7 +144,7 @@ Ext.define('Wfw.DataModel.FieldsDialog', {
         
     config:{
         closable: true,
-        width: 600,
+        width: 400,
         layout:'fit',
         bodyStyle: 'padding: 5px;',
         modal:true,
