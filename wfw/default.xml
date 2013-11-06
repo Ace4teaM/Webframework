@@ -61,6 +61,7 @@
             <APP_CANT_REMOVE_RESOURCE>Impossible de supprimer la ressource</APP_CANT_REMOVE_RESOURCE>
             
             <!-- WFW (ERR_SYSTEM) -->
+            <NOT_SPECIFIED>Erreur non spécifié</NOT_SPECIFIED>
             <SYS_TASK_CREATE>La tâche ne peut pas être créée</SYS_TASK_CREATE>
             <SYS_TASK_DELETE>La tâche ne peut pas être supprimée</SYS_TASK_DELETE>
             <SYS_TASK_UPDATE>La tâche ne peut pas être mise à jour</SYS_TASK_UPDATE>
