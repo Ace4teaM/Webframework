@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" Code="PGSQL80" Family="ANSI" ID="{8AF15AEA-CCBC-4EDC-B468-7DB8DB5300B2}" LastModificationDate="1363763316" Name="PostgreSQL 8 (WFW)" Objects="307" Symbols="0" Type="{4BA9F647-DAB1-11D1-9944-006097355D9B}" signature="XDB_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" Code="PGSQL80" Family="ANSI" ID="{8AF15AEA-CCBC-4EDC-B468-7DB8DB5300B2}" LastModificationDate="1383898318" Name="PostgreSQL 8 (WFW)" Objects="307" Symbols="0" Type="{4BA9F647-DAB1-11D1-9944-006097355D9B}" signature="XDB_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <DBMS xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -1085,11 +1085,11 @@ where %s</a:TextTargetItem.Value>
 <o:TextTargetItem Id="o75">
 <a:ObjectID>13B9320A-67AA-4635-9EB7-7B3164488303</a:ObjectID>
 <a:Name>Drop</a:Name>
-<a:TextTargetItem.Value>drop index %INDEX%</a:TextTargetItem.Value>
+<a:TextTargetItem.Value>drop index  if exists %INDEX%</a:TextTargetItem.Value>
 <a:CreationDate>0</a:CreationDate>
 <a:Creator/>
-<a:ModificationDate>0</a:ModificationDate>
-<a:Modifier/>
+<a:ModificationDate>1383898318</a:ModificationDate>
+<a:Modifier>developpement</a:Modifier>
 <a:Comment>Commande de suppression d&#39;un index. Exemple : drop index %INDEX%</a:Comment>
 </o:TextTargetItem>
 <o:TextTargetItem Id="o76">
