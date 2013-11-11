@@ -221,7 +221,8 @@ Wfw.DataModel.makeField = function(att)
         id:false,
         type:false,
         label:false,
-        optional:false
+        optional:false,
+        name:false//optionel, en remplacement de l'id
     };
     
     if(att.id)
@@ -230,7 +231,7 @@ Wfw.DataModel.makeField = function(att)
     att = object_merge(def,att,false);
 
     var item = {
-        name:att.id,
+        name:(def.name?def.name:att.id),
         fieldLabel: att.label
     };
     
