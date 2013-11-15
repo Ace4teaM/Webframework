@@ -76,29 +76,27 @@ function uri_cut(uri) {
     if (rslt[2] != undefined) {
         obj.scheme = rslt[2];
         uri = rslt[3]; //restant de l'uri
-    }
 
-    //obtient le domaine (*/) (authority) [obligatoire]
-    var port = '[0-9]+';
-    var domain = '[A-Za-z]{1}[A-Za-z0-9_\\.:\\-]*'; //Registry-based
-    //var server   = '';//Server-based <userinfo>@<host>:<port>
-    exp = new RegExp('^(' + domain + ')?(.*)', 'g');
-    rslt = exp.exec(uri);
-    if (rslt[1] == undefined) // domaine obligatoire dans l'URI
-    {
-//        wfw.puts("wfw.uri.cut: Invalid URI, domain not found in: " + uri);
-        return null;
+        //obtient le domaine (*/) (authority) [obligatoire]
+        var port = '[0-9]+';
+        var domain = '[A-Za-z]{1}[A-Za-z0-9_\\.:\\-]*'; //Registry-based
+        //var server   = '';//Server-based <userinfo>@<host>:<port>
+        exp = new RegExp('^(' + domain + ')?(.*)', 'g');
+        rslt = exp.exec(uri);
+        if (rslt[1] == undefined) // domaine obligatoire dans l'URI
+        {
+          return null;
+        }
+        obj.authority = rslt[1];
+        uri = rslt[2]; //restant de l'uris("wfw.uri.cut: Invalid URI, domain not found in: " + uri);
     }
-    obj.authority = rslt[1];
-    uri = rslt[2]; //restant de l'uri
-
     //obtient le path (*), query (?*) [optionnel] et fragment (#*) [optionnel]
     var path = '[A-Za-z0-9_\\.+%\\-]*';
     var query = '[A-Za-z0-9_\\.&=+;%\\-\\(\\)\\:\\/]*';
     var fragment = '[A-Za-z0-9_+%\\-]*';
     exp = new RegExp('^([/' + path + ']*)([?' + query + ']?)([#' + fragment + ']?)', 'g');
     rslt = exp.exec(uri);
-    obj.path = ((rslt[1] != undefined) ? rslt[1].substr(1, rslt[1].length - 1) : ""); // sans '/'
+    obj.path = ((rslt[1] != undefined) ? (rslt[1][0] == "/" ? rslt[1].substr(1, rslt[1].length - 1) : rslt[1]) : ""); // sans '/'
     obj.query = ((rslt[2] != undefined) ? rslt[2].substr(1, rslt[2].length - 1) : ""); // sans '?'
     obj.fragment = ((rslt[3] != undefined) ? rslt[3].substr(1, rslt[3].length - 1) : ""); // sans '#'
 
