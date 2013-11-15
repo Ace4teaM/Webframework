@@ -307,6 +307,59 @@ function fileext(path){
 }
 
 /**
+ * @brief Assemble un chemin d'accès
+ * @param base Chemin de base
+ * @param ... Autres fragments de chemins
+ * @return string Chemin complet
+ * @remarks Le premier caractère de séparation est utilisé pour uniformiser la chaine (ex: '/srv/file\path' = '/srv/file/path'). Si aucun séparateur n'est trouvé, la constante 'SYSTEM_FILE_SEPARATOR' est utilisée.
+ * 
+ * @par Exemple
+ * Dans cet exemple, la fonction path contruit un chemin à partir des éléments "/srv", "www" et "index.html".
+   @code{.php}
+  var filename = path('/srv', 'www', 'index.html');
+  // return '/srv/www/index.html'
+  @endcode
+ */
+function path(base)
+{
+    //detecte le separateur de nom de fichier
+    var separator = base.substr(0,1);
+    switch(separator){
+        case '/':
+        case '\\':
+            break;
+        default:
+            separator='/';
+            break;
+    }
+    
+    //trim
+    var ret = trim(base);
+    
+    //uniformise les slashs
+    ret = ret.replace(/\\\//g,separator);
+    
+    //ajoute les fragments de chemins
+    for(var i=1;i<arguments.length;i++)
+    {
+        var arg = trim(arguments[i]);
+        //uniformise les slashs
+        arg = arg.replace(/\\\//g,separator);
+        //supprime le slash de fin
+        if(ret.substr(ret.length-1,1) == separator)
+            ret = ret.substr(0,ret.length-1);
+        //supprime le slash de debut
+        if(arg.substr(0,1) == separator)
+            arg = arg.substr(1);
+        
+        //colle le chemin
+        ret += separator+arg;
+    }
+    
+    return ret;
+}
+
+/**
 Change l'extension d'un fichier
     Arguments:
         [string] path : Chemin d'accès ou nom de fichier
