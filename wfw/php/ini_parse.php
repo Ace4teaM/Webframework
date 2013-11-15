@@ -1,4 +1,36 @@
 <?php
+/*
+  ---------------------------------------------------------------------------------------------------------------------------------------
+  (C)2013 Thomas AUGUEY <contact@aceteam.org>
+  ---------------------------------------------------------------------------------------------------------------------------------------
+  This file is part of WebFrameWork.
+
+  WebFrameWork is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  WebFrameWork is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+  ---------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+/**
+ * @file ini_parse.php
+ *
+ * @defgroup Configuration
+ * @brief Fichier de configuration
+ * @par Fonctionalités
+ * - Transtypage des données
+ * - Importation de fichiers (commande "@include file_name")
+ * - Définit de constantes (commande "@const name")
+ * @{
+ */
 
 require_once("base.php");
 require_once("inputs/integer.php");
@@ -15,21 +47,22 @@ require_once("inputs/datetime.php");
  * 
  * @remarks La constante ROOT_PATH doit être définit
  * 
- * @code{.ini}
- * ;; Exemple de fichier ini étendu ;;
- * 
- * ; définition d'une constante réutilisable
- * @const path = "./my_app/www"
- * 
- * ; utilisation de la constante 'path'
- * [my_section]
- * images_path    = "${path}/gfx"   ; = "./my_app/www/gfx"
- * documents_path = "${path}/doc"   ; = "./my_app/www/doc"
- * 
- * ; inclusion d'un autre fichier ini
- * @include "config/other.ini"
+ * @par Exemple
+  @code{.ini}
+  ;; Exemple de fichier ini étendu ;;
+  
+  ; définition d'une constante réutilisable
+  @const path = "./my_app/www"
+  
+  ; utilisation de la constante 'path'
+  [my_section]
+  images_path    = "${path}/gfx"   ; == "./my_app/www/gfx"
+  documents_path = "${path}/doc"   ; == "./my_app/www/doc"
+  
+  ; inclusion d'un autre fichier ini
+  @include "config/other.ini"
+  @endcode
  */
-
 function parse_ini_file_ex($filename,$att=INI_PARSE_UPPERCASE){
     
     // obtient le contenu du fichier
@@ -41,7 +74,7 @@ function parse_ini_file_ex($filename,$att=INI_PARSE_UPPERCASE){
 }
 
 /**
- * Resoud les inclusions et constantes dans un fichier INI
+ * @brief Resoud les inclusions et constantes dans un fichier INI
  * @param type $content Contenu texte du fichier INI
  * @param type $dir     Dossier de base pour les inclusions
  * @param type $const   Tableau associatif des constantes existantes
@@ -79,8 +112,14 @@ function resolve_ini_string_ex($content,$dir=".",$const=array()){
     
     return $content;
 }
+
 /**
- * Charge la configuration d'un fichier INI dans un tableau
+ * @brief Convertie les noms de champs en majuscule 
+ */
+define("INI_PARSE_UPPERCASE",0x1);
+
+/**
+ * @brief Charge la configuration d'un fichier INI
  * @param type $content Contenu texte du fichier INI
  * @param type $dir     Dossier d'inclusion
  * @param type $content Combinaison des masques suivants: INI_PARSE_UPPERCASE
@@ -88,7 +127,6 @@ function resolve_ini_string_ex($content,$dir=".",$const=array()){
  * 
  * @remarks Lors d'une inclusion (@include), parse_ini_string_ex va rechercher le fichier par rapport au dossier relatif du script. Si celui-ci reste introuvable, $dir est utilisé comme chemin de réference.
  */
-define("INI_PARSE_UPPERCASE",0x1);
 function parse_ini_string_ex($content,$dir=".",$att=INI_PARSE_UPPERCASE){
     
     //resoud les inclusions
@@ -157,4 +195,5 @@ function parse_ini_string_ex($content,$dir=".",$att=INI_PARSE_UPPERCASE){
     return $sections;
 }
 
+/** @} */
 ?>

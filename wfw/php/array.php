@@ -21,6 +21,18 @@
  */
 
 /**
+ * @file array.php
+ *
+ * @defgroup Tableaux
+ * @brief Fonctions de bases
+ *
+ * ## Usage
+ * Fonction diverses et globales.
+ * Aucunes de ses fonctions ne dépendent de l'implémentation MVC, elle peuvent être utilisées n'importout dans le code sans risque de dépendances.
+ * @{
+ */
+
+/**
  * @brief       Convertie un tableau simple en tableau d'arborescence
  * @param       [in] array $simple_array Tableau à convertir 
  * 
@@ -31,30 +43,32 @@
  * 
  * @par         Exemple
  *              Utilisation de la fonction array_to_tree()
- * @code{.php}
- *              $ar = array(
- *                 "ceci.est.un_chemin"=>"ceci est la valeur 1",
- *                 "ceci.est.un_autre_chemin"=>"ceci est la valeur 2"
- *              );
- * 
- *              print_r( array_to_tree($ar) );
- * @endcode
+ *
+ *              Code:
+  @code{.php}
+	$ar = array(
+	  "ceci.est.un_chemin"       => "ceci est la valeur 1",
+	  "ceci.est.un_autre_chemin" => "ceci est la valeur 2"
+	);
+
+	print_r( array_to_tree($ar) );
+  @endcode
  *              Sortie:
- * @code
- * Array
- * (
- *     [ceci] => Array
- *         (
- *             [est] => Array
- *                 (
- *                     [un_chemin] => ceci est la valeur 1
- *                     [un_autre_chemin] => ceci est la valeur 2
- *                 )
- * 
- *         )
- * 
- * )
- * @endcode
+  @code
+	Array
+	(
+	  [ceci] => Array
+	      (
+	          [est] => Array
+	              (
+	                  [un_chemin] => ceci est la valeur 1
+	                  [un_autre_chemin] => ceci est la valeur 2
+	             )
+
+	      )
+
+	)
+  @endcode
 */
 function array_to_tree($simple_array)
 {
@@ -151,4 +165,5 @@ function array_find($ar1,$ar2)
 	return false;
 }
 
+/** @} */ // end of group
 ?>

@@ -22,33 +22,58 @@
 
 /**
  * @file base.php
- * Fonctions de bases
+ *
+ * @defgroup Basique
+ * @brief Fonctions de bases
+ *
+ * ## Usage
+ * Fonction diverses et globales.
+ * Aucunes de ses fonctions ne dépendent de l'implémentation MVC, elle peuvent être utilisées n'importout dans le code sans risque de dépendances.
+ * @{
  */
 
 require_once('systemd.php');
 
-//fichier log
+/*
+ * @brief Emplacement du fichier log
+*/
 define("LOG_FILE", "private/log.txt");
 
-//passe les arguments de la ligne de commande dans la variable $_REQUEST
+/**
+ * @cond DUMMY
+ * Passe les arguments de la ligne de commande (CGI) dans la variable $_REQUEST
+*/
 if (isset($argc) && ($argc > 1)) {
     for ($i = 1; $i < $argc; $i++) {
         parse_str($argv[$i], $tmp);
         $_REQUEST = array_merge($_REQUEST, $tmp);
     }
 }
+/** @endcond */
 
 include_once('ini.php');
 
-function get_cur_script_dir() {//Get Current Script Directory
+/**
+ * @brief Retourne le chemin d'accès relatif au script actuel
+ * @return Chemin d'accès
+ */
+function get_cur_script_dir() {
     return dirname($_SERVER['PHP_SELF']);
 }
 
-function get_abs_script_dir() {//Get Current Script Directory
+/**
+ * @brief Retourne le chemin d'accès absolu au script actuel
+ * @return Chemin d'accès
+ */
+function get_abs_script_dir() {
     return dirname($_SERVER['SCRIPT_FILENAME']);
 }
 
-function get_web_root() {//Get Current Script Directory
+/**
+ * @brief Retourne le chemin d'accès absolu au dossier web
+ * @return Chemin d'accès
+ */
+function get_web_root() {
     return dirname($_SERVER['DOCUMENT_ROOT']);
 }
 
@@ -81,14 +106,16 @@ function set_fileext($path, $ext) {
 /**
  * @brief Assemble un chemin d'accès
  * @param string $base Chemin de base
- * @param string ... Autres fragement de chemin
+ * @param string ... Autres fragments de chemins
  * @return string Chemin complet
  * @remarks Le premier caractère de séparation est utilisé pour uniformiser la chaine (ex: '/srv/file\path' = '/srv/file/path'). Si aucun séparateur n'est trouvé, la constante 'SYSTEM_FILE_SEPARATOR' est utilisée.
  * 
- * @code{.php}
- * $filename = path('/srv', 'www', 'index.html');
- * echo( $filename ); // '/srv/www/index.html'
- * @endcode
+ * @par Exemple
+ * Dans cet exemple, la fonction path contruit un chemin à partir des éléments "/srv", "www" et "index.html".
+   @code{.php}
+  $filename = path('/srv', 'www', 'index.html');
+  echo( $filename );    // return '/srv/www/index.html'
+  @endcode
  */
 function path($base)
 {
@@ -123,7 +150,10 @@ function path($base)
     return $ret;
 }
 
-//envoie une ligne sur la sortie d'erreur standard
+/*
+ * @brief Envoie du texte sur la sortie d'erreur standard
+ * @return voir file_put_contents
+ */
 function _stderr($txt) {
     return file_put_contents("php://stderr", $txt . "\n");
 }
@@ -131,10 +161,10 @@ function _stderr($txt) {
 /**
  * @brief Resoud un chemin d'accès
  * @param string $dir Chemin d'accès relatif
- * @return Chemin d'accès trouvé
+ * @return Chemin d'accès absolu
  * @retval null Chemin introuvable
  * @retval false Chemin introuvable (avec resultat)
- * @remarks Recherche le chemin d'accès dans les includes path
+ * @remarks resolve_path recherche le fichier/dossier dans les chemins d'accès définit par PHP (voir get_include_path())
  */
 function resolve_path($dir) {
     //sauvegarde le chemin de base pour le message 'REQUIRED_PATH_NOT_FOUND'
@@ -488,4 +518,6 @@ function loadIntoNamespace($file, $namespace) {
     eval('<?php namespace ' . $namespace .'; ?>' . file_get_contents($file));    
 }
 
+
+/** @} */ // end of group
 ?>
