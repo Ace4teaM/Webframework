@@ -21,6 +21,15 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
+/**
+ * @file iDatabase.php
+ *
+ * @defgroup DataBase
+ * @brief Interface avec la base de données
+ * 
+ * @{
+ */
+
 require_once("cResult.php");
 
 /**
@@ -76,13 +85,14 @@ interface iDatabase {
     /**
      * @brief Execute une requete SQL
      * 
-     * @param  string  $query    Corps de la requête
+     * @param  string          $query    Corps de la requête
+     * @param  iDatabaseQuery  $result   [out] Pointeur sur l'instance du résultat
      * 
      * @return bool Résultat de la requête
      * @retval true  La requête à réussie
      * @retval false La requête ne peut être executée, voir getResult() pour obtenir plus de détails
      * 
-     * @remarks Pour extraire le résultat retourné par une fonction utilisez les methodes fetchValue ou fetchRow
+     * @remarks Pour extraire le résultat retourné par une fonction utilisez les methodes iDatabaseQuery::fetchValue ou iDatabaseQuery::fetchRow
      */
     public function execute($query,&$result);
     
@@ -94,43 +104,62 @@ interface iDatabase {
      * @return string Valeur comptatible avec le type SQL correspondant
      */
     public static function parseValue($value);
-    
+}
+
+/**
+ * @brief Interface de requête SQL
+ */
+interface iDatabaseQuery {
+    /**
+     * Results
+     * @{
+     */
+    const OutOfRangeResult = "DB_QUERY_OUT_OF_RANGE_RESULT"; //!< @brief Résultat: Déplacement hors rang
+    const EmptyResult      = "DB_QUERY_NO_RESULT"; //!< @brief Résultat: Pas de résultat
+    /** @} */
+
+    /**
+     * Seeking
+     * @{
+     */
+    const Origin  = 1; //!< @brief Déplace le curseur depuis la position d'origine 
+    const Current = 2; //!< @brief Déplace le curseur depuis la position en cours 
+    const End     = 3; //!< @brief Déplace le curseur depuis la position de fin 
+    /** @} */
+
     /**
      * @brief Extrait une valeur du résultat en cours
-     * 
-     * @param  string  $result        Objet de résultat. Si NULL, le dernier résultat en cours est utilisé
      * @param  mixed   $column_name   Nom de la colonne à extraire
-     * 
      * @return mixed Valeur de la colonne
      */
- //   public function fetchValue($column_name);
-    
+    public function fetchValue($column_name);
+
     /**
      * @brief Extrait la prochaine ligne du résultat en cours
      * @return array Tableau associatif des champs
      * @remarks Le curseur de résultat est incrémenté
      */
- //   public function fetchRow();
-    
- //   public function rowCount();
- //   public function getResult();
-//    public function setResult($res);
-}
-
-interface iDatabaseQuery {
-    //error
-    const OutOfRangeResult = "DB_QUERY_OUT_OF_RANGE_RESULT";
-    const EmptyResult      = "DB_QUERY_NO_RESULT";
-    //seeking
-    const Origin = 1;
-    const Current = 2;
-    const End = 3;
-    //
-    public function fetchValue($column_name);
     public function fetchRow();
+
+    /**
+     * @brief Obtient le nombre de ligne présente
+     * @return int Nombre de lignes
+     */
     public function rowCount();
+
+    /**
+     * @brief Obtient la requête SQL
+     * @return string Texte de la requête
+     */
     public function getQueryStr();
+
+    /**
+     * @brief Déplace le curseur de sélection
+     * @param $pos Index de la position. L'index débute à 0 jusqu'à rowCount()-1
+     * @return string Texte de la requête
+     */
     public function seek($pos,$origin=iDatabaseQuery::Origin);
 }
 
+/** @} */ // end of group
 ?>

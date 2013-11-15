@@ -20,6 +20,14 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
+/**
+ * @file cApplicationCtrl.php
+ *
+ * @defgroup Application
+ * @brief Classe de base d'un controleur
+ * @{
+ */
+
 class cApplicationCtrl{
     public $fields     = null; /**< Identifiants des champs requis */
     public $op_fields  = null; /**< Identifiants des champs optionnels */
@@ -138,4 +146,5 @@ class cApplicationCtrl{
     
 };
 
+/** @} */
 ?>

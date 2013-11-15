@@ -21,8 +21,16 @@
 */
 
 /**
+ * @file cApplicationCtrl.php
+ *
+ * @defgroup Application
+ * @brief Interface de l'application
+ * @{
+ */
+
+/**
  * Interface de l'application
- * @remark doit être implémenté par l'application pour utiliser les modules Webframework
+ * @remark Doit être implémenté par l'application pour utiliser les modules Webframework
  * @author Thomas AUGUEY
  */
 interface iApplication {
@@ -43,4 +51,5 @@ interface iApplication {
     function translateResult($result);
 }
 
+/** @} */
 ?>

@@ -20,6 +20,14 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
+/**
+ * @file cApplication.php
+ *
+ * @defgroup Application
+ * @brief Classe de base d'une application
+ * @{
+ */
+
 require_once("systemd.php");
 require_once("ini.php");
 require_once("class/bases/iApplication.php");
@@ -1171,4 +1179,5 @@ class cApplication implements iApplication{
     
 }
 
+/** @} */
 ?>
