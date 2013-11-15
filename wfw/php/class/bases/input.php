@@ -20,12 +20,15 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-/**
- * Formatage et verification de champs de données
- */
-
 require_once("class/bases/cResult.php");
 
+/**
+ * @file input.php
+ *
+ * @defgroup Application
+ * @brief Définition de champ
+ * @{
+ */
 class cInput {
 
     const EmptyText      = "EMPTY_TEXT";
@@ -74,4 +77,5 @@ class cInput {
     }
 }
 
+/** @} */ // end of group
 ?>
