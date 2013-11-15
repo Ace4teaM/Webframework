@@ -164,12 +164,15 @@ module( "URI" );
 test( "URI" , function() {
     var uri;
     
+    equal(path('/srv', 'www', 'index.html'),"/srv/www/index.html","path");
+    equal(path('/srv', '/www', '/index.html'),"/srv/www/index.html","path");
+    
     uri = "test.html";
     deepEqual( uri_cut(uri), {
         addr: uri, 
         scheme: "", 
-        authority: "test.html", 
-        path: "", 
+        authority: "", 
+        path: "test.html", 
         query: "", 
         fragment: ""}, "uri_cut" );
     
@@ -177,8 +180,8 @@ test( "URI" , function() {
     deepEqual( uri_cut(uri), {
         addr: uri, 
         scheme: "", 
-        authority: "test.html", 
-        path: "", 
+        authority: "", 
+        path: "test.html", 
         query: "param=hello", 
         fragment: ""}, "uri_cut" );
     
@@ -186,8 +189,8 @@ test( "URI" , function() {
     deepEqual( uri_cut(uri), {
         addr: uri, 
         scheme: "", 
-        authority: "test.html", 
-        path: "", 
+        authority: "", 
+        path: "test.html", 
         query: "param=hello", 
         fragment: "test"}, "uri_cut" );
     
@@ -197,6 +200,24 @@ test( "URI" , function() {
         scheme: "http", 
         authority: "localhost", 
         path: "hello/world/test.html", 
+        query: "param=hello", 
+        fragment: "test"}, "uri_cut" );
+    
+    uri = "hello/world/test.html";
+    deepEqual( uri_cut(uri), {
+        addr: uri, 
+        scheme: "", 
+        authority: "", 
+        path: "hello/world/test.html", 
+        query: "", 
+        fragment: ""}, "uri_cut" );
+    
+    uri = "../hello/world/test.html?param=hello#test";
+    deepEqual( uri_cut(uri), {
+        addr: uri, 
+        scheme: "", 
+        authority: "", 
+        path: "../hello/world/test.html", 
         query: "param=hello", 
         fragment: "test"}, "uri_cut" );
     

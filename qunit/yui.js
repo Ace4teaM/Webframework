@@ -1,5 +1,5 @@
 
-YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path', 'wfw-uri', 'wfw-xml-template',function(Y){
+YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-navigator', 'wfw-form', 'wfw-path', 'wfw-uri', 'wfw-xml-template',function(Y){
     var wfw = Y.namespace("wfw");
 
     /* wfw */
@@ -103,8 +103,22 @@ YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path',
     });
     
     
-    /* wfw.URI */
-    module( "wfw.Template" );
+    
+    /* wfw.Navigator */
+    module( "wfw.Navigator" );
+    test( "Navigator" , function() {
+        //module navigateur
+        wfw.Navigator.init({
+            basePath : "../qunit/data/"
+        });
+        //nom de fichier
+        equal( wfw.Navigator.getURI('index'), '../qunit/data/index.html', "Get index" );
+        equal( wfw.Navigator.getURI('index', {add_fields : {foo : "bar"}}), '../qunit/data/index.html?foo=bar', "Get index" );
+    });
+    
+    
+    /* wfw.Template */
+  /*  module( "wfw.Template" );
     test( "XML Template" , function(assert) {
         var expectedDoc = '../unit_test/template_xml/select/expected.html';
         var tempDoc = '../unit_test/template_xml/select/template.html';
@@ -124,32 +138,17 @@ YUI(wfw_yui_config('../wfw/javascript/yui/')).use('wfw', 'wfw-form', 'wfw-path',
             console.log(output);
             
             //assert.htmlEqual('<B TITLE=test>te2st</B>', '<b title="test">test</b>', 'template-ActionSelect');
-            assert.htmlEqual(expected, output, 'template-ActionSelect');
+            assert.equal(expected, output, 'template-ActionSelect');
             
         }
-/*
+
         assert.htmlEqual('<B TITLE=test>test</B>', '<b title="test">test</b>', 'template-ActionSelect');
         console.log("wfw.Template");
         console.log(wfw.Template);
         var file_content = wfw.Template.makeSrc(tempDoc,null,selDoc,null,{});
         console.log("file_content");
-        console.log(file_content);*/
+        console.log(file_content);
 
-        
-        /*
-        var xmlTemplate = new wfw.Template.cXMLTemplate();
-        if(xmlTemplate.Initialise(tempDoc,null,selDoc,null,{})){
-            var file_content = xmlTemplate.Make();
-            console.log(file_content);
-        }*/
-        
-        // charge la selection
-        /*var selDoc = '/template_xml/select/select.xml';
-        var tempDoc = '/template_xml/select/template.html';
-        wfw.Template.make(tempDoc,null,selDoc,null,{});*/
-        
-        //assert
- //       $this->assertXmlStringEqualsXmlString (file_get_contents(dirname(__FILE__).'/template_xml/select/expected.html'), $tempDoc->Make() );
-    });
+    });*/
     
 });
