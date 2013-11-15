@@ -343,6 +343,7 @@ function path(base)
     for(var i=1;i<arguments.length;i++)
     {
         var arg = trim(arguments[i]);
+
         //uniformise les slashs
         arg = arg.replace(/\\\//g,separator);
         //supprime le slash de fin

@@ -429,7 +429,7 @@ YUI.add('wfw-uri', function (Y) {
         addr += this.authority;
         //chemin
         if (!empty(this.path))
-            addr += '/' + this.path;
+            addr = empty(addr) ? this.path : path(addr,this.path);
         //parametres
         if (this.query)
             addr += '?' + wfw.URI.objectToQuery(this.query, true);
