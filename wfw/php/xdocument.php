@@ -33,6 +33,7 @@ class XMLDocument extends DOMDocument {
     
     const loadFile = "CANT_LOAD_HTML_FILE";
     const loadHTML = "CANT_LOAD_HTML_CONTENT";
+    const loadXML  = "CANT_LOAD_XML_CONTENT";
     
     //attribute
     const Replace = "replace";
