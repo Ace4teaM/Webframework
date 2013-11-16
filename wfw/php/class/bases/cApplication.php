@@ -574,7 +574,7 @@ class cApplication implements iApplication{
     
     /**
      * @brief Fabrique un template de vue XML/XHTML
-     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
+     * @param $filename Chemin d'accès au fichier template ou instance d'une classe XMLDocument (relatif à la racine du site)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
     * @return string Contenu du template transformé
