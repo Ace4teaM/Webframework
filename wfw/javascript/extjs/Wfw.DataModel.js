@@ -83,11 +83,11 @@ Ext.define('Wfw.DataModel.FieldsForm', {
                                 wfw.XArg.onCheckRequestResult,
                                 {
                                     onsuccess:function(req,args){
-                                        Wfw.showResultToMsg(wfw.Result.fromXArg(args));
+                                        showResultToMsg(wfw.Result.fromXArg(args));
                                         //window.location.reload();
                                     },
                                     onfailed:function(req,args){
-                                        Wfw.showResultToMsg(wfw.Result.fromXArg(args));
+                                        showResultToMsg(wfw.Result.fromXArg(args));
                                     }
                                 },
                                 false
@@ -113,7 +113,7 @@ Ext.define('Wfw.DataModel.FieldsForm', {
 //                        wfw.puts(args);
                     },
                     onfailed:function(req,args){
-                        Wfw.showResultToMsg(wfw.Result.fromXArg(args));
+                        showResultToMsg(wfw.Result.fromXArg(args));
                     },
                     onerror:function(req){
                         wfw.puts("get_url data error");
