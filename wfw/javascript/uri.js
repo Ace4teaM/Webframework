@@ -124,7 +124,7 @@ function uri_paste(uri)
     
     //chemin
     if (!empty(uri.path))
-        addr += '/' + uri.path;
+        addr = empty(addr) ? uri.path : path(addr,uri.path);
     
     //parametres
     if (!empty(uri.query))
