@@ -1,46 +1,59 @@
 /*
-    (C)2008-2012 ID-Informatik. All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
-    Warning this script is protected by copyright, if you want to use this code you must ask permission:
-    Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        ID-Informatik
-        MR AUGUEY THOMAS
-        contact@id-informatik.com
+    (C)2012, 2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-    Fonctions globales de bases utiles
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    [2010], Implementation
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-Divers
+/**
+ * @file base.js
+ *
+ * @defgroup Basique
+ * @brief Fonctions de bases
+ *
+ * @{
+ */
+
+
+/**--------------------------------------------------------------------------------------------------------------------------------------
+ * Divers
+ * @defgroup Divers
+ * @brief Fonctions de bases
+ * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
-
 /**
-*Retourne une valeur tronqué (rotative)
-*@param [numeric] val Valeur
-*@param [numeric] max Valeur maximum
-*@return [string] L'Identifiant
-*@remark Si la valeur 'val' depasse le seuil maximale, le restant de la valeur est ramené a zéro
+ * @brief Retourne une valeur tronqué (rotative)
+ * @param val [numeric] Valeur
+ * @param max [numeric] Valeur maximum
+ * @return [string] L'Identifiant
+ * @remark Si la valeur 'val' depasse le seuil maximale, le restant de la valeur est ramené a zéro
 */
 function rotval(val, max) {
     return (val % max);
 }
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    Divers
---------------------------------------------------------------------------------------------------------------------------------------*/
-
 /**
- *Compteur global utilisé par la fonction uniqid
- *(Ne pas modifier explicitement)
+ * @brief [int] Compteur global utilisé par la fonction uniqid (Ne pas modifier explicitement)
  */
 var _uniqid_cnt = 0;
 
 /**
-*    Génére un identifiant unique
+*    @brief Génére un identifiant unique
 *    @return [string] Identifiant unique
 */
 function uniqid()
@@ -51,13 +64,10 @@ function uniqid()
 }
 
 /**
-    Vérifie si une classe existe
-    Arguments:
-        [string] class_name : Nom de la classe de base
-    Remarques:
-        Pour être reconnue comme une classe, l'objet "class_name" doit être de type fonction
-    Retourne:
-        [bool] true si la classe existe sinon false
+    @brief Vérifie si une classe existe
+    @param class_name [string] Nom de la classe de base
+    @remarks Pour être reconnue comme une classe, l'objet "class_name" doit être de type fonction
+    @return true si la classe existe sinon false
 */
 function class_exists(class_name)
 {
@@ -68,14 +78,11 @@ function class_exists(class_name)
 }
 
 /**
-    Vérifie si une méthode de classe existe
-    Arguments:
-        [string] class_name : Nom de la classe de base
-        [string] method     : Nom de la méthode
-    Retourne:
-        [bool] true si la classe existe sinon false
-    Remarques:
-        Pour être reconnue comme une classe, l'objet "class_name" doit être de type fonction
+    @brief Vérifie si la méthode d'une classe existe
+    @param class_name [string] Nom de la classe de base
+    @param method     [string] Nom de la méthode
+    @return true si la classe existe sinon false
+    @remarks Pour être reconnue comme une classe, l'objet "class_name" doit être de type fonction
 */
 function method_exists(object_name,method)
 {
@@ -87,14 +94,11 @@ function method_exists(object_name,method)
 }
 
 /**
-    Vérifie si un objet possède une méthode
-    Arguments:
-        [object] object : L'objet de classe
-        [string] method : Nom de la méthode
-    Retourne:
-        [bool] true si la classe existe sinon false
-    Remarques:
-        Pour être reconnue comme une classe, l'objet doit être une instance de "Object"
+    @brief Vérifie si un objet possède une méthode
+    @param object [object] L'objet de classe
+    @param method [string] Nom de la méthode
+    @return [bool] true si la classe existe sinon false
+    @remarks Pour être reconnue comme une classe, l'objet doit être une instance de "Object"
 */
 function have_method(object, method) {
     //test l'existance de l'objet
@@ -103,19 +107,20 @@ function have_method(object, method) {
     //test l'existance de la methode
     return ((typeof (object[method]) == "function") ? true : false);
 }
+/** @} */ // end of group Divers
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    Object Section
+/**--------------------------------------------------------------------------------------------------------------------------------------
+ * Object Section
+ * @defgroup Object
+ * @brief Fonctions de bases
+ * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 /**
-    Copie une instance de variable
-    Arguments:
-        [mixed] a : La variable à dupliquer
-    Retourne:
-        [mixed] Nouvelle instance de la variable
-    Remarques:
-        copy éffectue une copie de chacun des éléments d'un objet ou d'un tableau puis retourne la nouvelle référence
+    @brief Duplique une instance de variable
+    @param a [mixed] La variable à dupliquer
+    @return [mixed] Nouvelle instance de la variable
+    @remarks Effectue une copie de chacun des éléments d'un objet ou d'un tableau puis retourne une nouvelle instance
 */
 function copy(a){
     var new_var;
@@ -146,11 +151,9 @@ function copy(a){
 }
 
 /**
-    Retourne le nombre de membres enfant d'un objet
-    Arguments:
-        [object] obj : L'Objet
-    Retourne:
-        [int] Nombre de membres enfant de l'objet 'obj'
+    @brief Retourne le nombre de membres enfant d'un objet
+    @param obj [object] L'Objet
+    @return [int] Nombre de membres enfant de l'objet 'obj'
 */
 function length(obj){
     var i=0;
@@ -160,14 +163,11 @@ function length(obj){
 }
 
 /**
-    Remonte un membre d'un objet en première position
-    Arguments:
-        [object] obj : L'Objet
-        [string] key : Clef du membre à repositionner
-    Retourne:
-        [object] Nouvel objet
-    Remarques:
-        L'Instance de 'obj' n'est pas modifié
+    @brief Remonte l'élément d'un objet en première position
+    @param obj [object] L'Objet
+    @param key [string] Clef du membre à repositionner
+    @return [object] Nouvel objet
+    @remarks L'Instance de 'obj' n'est pas modifié
 */
 function keyfirst(obj,key)
 {
@@ -188,14 +188,11 @@ function keyfirst(obj,key)
 }
 
 /**
-    Descend un membre d'un objet en dernière position
-    Arguments:
-        [object] obj : L'Objet
-        [string] key : Clef du membre à repositionner
-    Retourne:
-        [object] Nouvel objet
-    Remarques:
-        L'Instance de 'obj' n'est pas modifié
+    @brief Descend l'élément d'un objet en dernière position
+    @param obj [object] L'Objet
+    @param key [string] Clef du membre à repositionner
+    @return [object] Nouvel objet
+    @remarks L'Instance de 'obj' n'est pas modifié
 */
 function keylast(obj,key)
 {
@@ -215,6 +212,13 @@ function keylast(obj,key)
     return newObj;
 }
 
+/**
+    @brief Retourne la clé trouvée en position 'i'
+    @param obj [object] L'Objet
+    @param i   [int] Index de la clé
+    @return [string] Clé trouvé
+    @retval null Aucune clé pour cette index
+*/
 function object_key(obj, i) {
     var x = 0;
     for (var key in obj)
@@ -222,16 +226,19 @@ function object_key(obj, i) {
             return key;
     return null;
 }
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    String object Section
+/** @} */ // end of group Object
+
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * String object Section
+    * @defgroup String
+    * @brief Fonctions de bases
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 /**
-    Transforme un nombre d'octet en taille avec suffix
-    Arguments:
-        [number] bytes_count : Nombre d'octets
-    Retourne:
-        [string] Taille agréable à lire
+    @brief Transforme un nombre d'octet en taille avec suffix
+    @param bytes_count [number] Nombre d'octets
+    @return [string] Taille avec suffix
 */
 function byteToSize(bytes_count)
 {
@@ -248,13 +255,10 @@ function byteToSize(bytes_count)
 }
 
 /**
-    Transforme une taille en nombre d'octets
-    Arguments:
-        [string] size : Taille
-    Retourne:
-        [number] Nombre d'octet. Si null, 'size' est mal formé
-    Remarques:
-        Les suffix suivants sont acceptés:
+    @brief Transforme une taille en nombre d'octets
+    @param size [string] Taille
+    @return [number] Nombre d'octet. Si null, 'size' est mal formé
+    @remarks Les suffix suivants sont acceptés:
         "octets", "ko", "mo", "go", "to", "po", "zo", "yo"
         "octet", "kio", "mio", "gio", "tio", "pio", "zio", "yio"
         "o", "k", "m", "g", "t", "p", "z", "y"
@@ -291,7 +295,7 @@ function sizeToByte(size) {
 }
 
 /**
-    Retourne l'extension d'un fichier
+    @brief Retourne l'extension d'un fichier
     Arguments:
         [string] path : Chemin d'accès ou nom de fichier
     Retourne:
@@ -361,12 +365,10 @@ function path(base)
 }
 
 /**
-Change l'extension d'un fichier
-    Arguments:
-        [string] path : Chemin d'accès ou nom de fichier
-        [string] ext  : Nouvelle extension
-    Retourne:
-        [string] Nouveau chemin d'accès ou nom de fichier
+    @brief Change l'extension d'un fichier
+    @param path [string] Chemin d'accès ou nom de fichier
+    @param ext [string] Nouvelle extension
+    @return[string] Nouveau chemin d'accès ou nom de fichier
 */
 function set_fileext(path, ext) {
     var startIndex = path.lastIndexOf('.');
@@ -377,13 +379,10 @@ function set_fileext(path, ext) {
 }
 
 /**
-    Retourne le nom d'un fichier ou du dernier dossier dans un chemin d'accès
-    Arguments:
-        [string] path : Chemin d'accès
-    Retourne:
-        [string] Nom du fichier ou du dernier dossier
+    @brief Retourne le nom d'un fichier ou du dernier dossier dans un chemin d'accès
+    @param path [string] Chemin d'accès
+    @return [string] Nom du fichier ou du dernier dossier
 */
-var basename = filename;
 function filename(path){
     var startIndex = path.lastIndexOf('/');
     if(startIndex>=0){
@@ -397,11 +396,18 @@ function filename(path){
 }
 
 /**
-    Retourne le chemin d'accès à un fichier
-    Arguments:
-        [string] path : Chemin d'accès complet
-    Retourne:
-        [string] Chemin d'accès du fichier (avec le slash de fin)
+    @brief Retourne le nom d'un fichier ou du dernier dossier dans un chemin d'accès
+    @param path [string] Chemin d'accès
+    @return [string] Nom du fichier ou du dernier dossier
+*/
+function basename(path){
+    return filename(path);
+}
+
+/**
+    @brief Retourne le chemin d'accès à un fichier
+    @param path [string] Chemin d'accès complet
+    @return [string] Chemin d'accès du fichier (avec le slash de fin)
 */
 function dirname(path){
     var startIndex = path.lastIndexOf('/');
@@ -416,12 +422,10 @@ function dirname(path){
 }
 
 /**
-    Compare deux chaines à la recherche de caractères différents
-    Arguments:
-        [string] str : Chaine de caractères 1
-        [string] chr : Chaine de caractères 2
-    Retourne:
-        [bool] true, si 'str' est formé uniquement avec les caractères de 'chr', sinon false
+    @brief Test si la chaine 1 'str' est composée uniquement des caractères de la chaine 2 'chr'
+    @param str [string] Chaine de caractères 1
+    @param chr [string] Chaine de caractères 2
+    @return [bool] true, si 'str' est formé uniquement avec les caractères de 'chr', sinon false
 */
 function is_strof(str,chr){
 	for(var i=0;i<str.length;i++){
@@ -442,12 +446,10 @@ function is_strof(str,chr){
 
 
 /**
-    Compare deux chaines à la recherche de caractères identiques
-    Arguments:
-        [string] str : Chaine de caractères 1
-        [string] chr : Chaine de caractères 2
-    Retourne:
-        [bool] true, si 'str' n'est pas formé avec les caractères de 'chr', sinon false
+    @brief Test si la chaine 1 'str' n'est pas composé de 1 ou plusieurs caractères de la chaine 2
+    @param str [string] Chaine de caractères 1
+    @param chr [string] Chaine de caractères 2
+    @return [bool] true, si 'str' n'est pas formé avec les caractères de 'chr', sinon false
 */
 function is_not_strof(str,chr){
 	for(var i=0;i<str.length;i++){
@@ -467,45 +469,37 @@ function is_not_strof(str,chr){
 
 
 /**
-    Supprime les espaces en début et en fin de chaine
-    Arguments:
-        [string] str : Chaine
-    Retourne:
-        [string] Nouvelle chaine
+    @brief Supprime les espaces en début et en fin de chaine
+    @param str [string] Chaine
+    @return [string] Nouvelle chaine
 */
 function trim(str){
     return str.replace(/^\s+|\s+$/g, '');
 }
 
 /**
-    Supprime les espaces en début de chaine
-    Arguments:
-        [string] str : Chaine
-    Retourne:
-        [string] Nouvelle chaine
+    @brief Supprime les espaces en début de chaine
+    @param str [string] Chaine
+    @return [string] Nouvelle chaine
 */
 function ltrim(str){
     return str.replace(/^\s+/g, '');
 }
 
 /**
-    Supprime les espaces en fin de chaine
-    Arguments:
-        [string] str : Chaine
-    Retourne:
-        [string] Nouvelle chaine
+    @brief Supprime les espaces en fin de chaine
+    @param str [string] Chaine
+    @return [string] Nouvelle chaine
 */
 function rtrim(str){
     return str.replace(/\s+$/g, '');
 }
 
 /**
-    Compare le début d'une chaine
-    Arguments:
-        [string] str  : Chaine à tester
-        [string] find : Chaine à rechercher
-    Retourne:
-        [int] 0 Si 'find' est contenu en début de chaine 'str', sinon 1
+    @brief Compare le début d'une chaine
+    @param str  [string] Chaine à tester
+    @param find [string] Chaine à rechercher
+    @return [int] 0 Si 'find' est contenu en début de chaine 'str', sinon 1
 */
 function lstrcmp(text,find){
     if(text.substr(0,find.length) == find)
@@ -515,7 +509,7 @@ function lstrcmp(text,find){
 
 /**
     @brief Vérifie si une chaine est vide
-    @param string str Chaine à analyser
+    @param str [string] Chaine à analyser
     @return bool true Si l'objet est vide, sinon false
 */
 function empty_string(str){
@@ -525,11 +519,10 @@ function empty_string(str){
 }
 
 /**
-    Vérifie si un objet ou une chaine est vide
-    Arguments:
-        [object] obj : Objet à tester
-    Retourne:
-        [bool] true Si l'objet est vide, sinon false
+    @brief Vérifie si la variable est vide
+    @param obj [object] Objet à tester
+    @return [bool] true Si l'objet est vide, sinon false
+    @retval true si la variable n'est pas un objet ou chaine. Si la variable est objet ne contienant pas d'éléments. Si la variable est une chaine vide
 */
 function empty(obj){
     //text
@@ -555,15 +548,11 @@ function empty(obj){
 }
 
 /**
-	strToFlags
-	  Explose une chaine en tableau
-    Arguments:
-	  [string] text      : Chaine 
-	  [string] options   :  
-    Retourne:
-	  [array] Tableau des éléments de la chaine
-	Remarques:
-	  Les éléments vides sont ignorés
+	@brief Explose une chaine en tableau
+    @param text      [string] Chaine des mots (séparés par des espaces)
+	@param options   [string] Chaine des options (séparés par des espaces)
+    @return [array] Tableau des éléments de la chaine
+	@remarks Les éléments vides sont ignorés
 */
 function strToFlags(text,options){
     var text_list = strexplode(text," ",true);
@@ -590,16 +579,12 @@ function strToFlags(text,options){
 }
 
 /**
-	strexplode
-	  Explose une chaine en tableau
-    Arguments:
-	  [string] text      : Chaine 
-	  [string] separator : Chaine de séparation
-	  [bool]   bTrim     : Si true, les espaces blanc sont supprimés en début est fin de chaine
-    Retourne:
-	  [array] Tableau des éléments de la chaine
-	Remarques:
-	  Les éléments vides sont ignorés
+	@brief Explose une chaine en tableau
+    @param text      [string] Chaine 
+	@param separator [string] Chaine de séparation
+	@param bTrim     [bool]   Si true, les espaces blanc sont supprimés en début est fin de chaine
+    @return [array] Tableau des éléments de la chaine
+	@remarks Les éléments vides sont ignorés
 */
 function strexplode(text,separator,bTrim){
     var list = text.split(separator);
@@ -616,16 +601,12 @@ function strexplode(text,separator,bTrim){
 }
 
 /**
-	strimplode
-	  Implose un tableau en une chaine de caractères
-	Arguments:
-	  [array]  array     : Tableau 
-	  [string] separator : Chaine de séparation
-	  [bool]   bTrim     : Si true, les espaces blanc sont supprimés en début est fin de chaine
-    Retourne:
-	  [string] Chaine implosé
-	Remarques:
-	  Les éléments vides sont ignorés
+	@brief Implose un tableau en une chaine de caractères
+	@param array     [array]  Tableau 
+	@param separator [string] Chaine de séparation
+	@param bTrim     [bool]   Si true, les espaces blanc sont supprimés en début est fin de chaine
+    @return [string] Chaine implosé
+	@remarks Les éléments vides sont ignorés
 */
 function strimplode(array,separator,bTrim)
 {
@@ -643,9 +624,9 @@ function strimplode(array,separator,bTrim)
 }
 
 /**
-*    @brief Convertie un objet natif Javascript en chaine de caractéres
-*    @param obj   Objet à convertir en texte
-*    @param depth Si true, scan les objets recursivement
+*    @brief Convertie un objet natif Javascript en chaine de caractères
+*    @param obj [object] Objet à convertir en texte
+*    @param depth [bool] Si true, scan les objets recursivement
 *    @return Texte de l'objet
 */
 function tostr(obj, depth) {
@@ -666,7 +647,7 @@ function tostr(obj, depth) {
                 break;
             case 'object':
                 for (var obj_member in obj)
-                    text += 'object {' + obj_member + ':' + (!depth ? "" + obj[obj_member] : tostr(obj[obj_member])) + "},\n";
+                    text += 'object [' + obj_member + ':' + (!depth ? "" + obj[obj_member] : tostr(obj[obj_member])) + "],\n";
                 text += "\n";
                 break;
             case 'array':
@@ -674,7 +655,7 @@ function tostr(obj, depth) {
                     text += "" + obj;
                 else
                     for (var i = 0; i < obj.length; i++)
-                        text += '{' + i + ':' + (!depth ? "" + obj[i] : tostr(obj[i])) + "},\n";
+                        text += '[' + i + ':' + (!depth ? "" + obj[i] : tostr(obj[i])) + "],\n";
                 text += "\n";
                 break;
         }
@@ -687,8 +668,8 @@ function tostr(obj, depth) {
 
 /**
 *    @brief Convertie un objet natif Javascript en chaine HTML
-*    @param obj   Objet à convertir en texte
-*    @param depth Si true, scan les objets recursivement
+*    @param obj [object] Objet à convertir en texte
+*    @param depth [bool] Si true, scan les objets recursivement
 *    @return Texte de l'objet
 */
 function tohtml(obj, depth) {
@@ -733,7 +714,11 @@ function tohtml(obj, depth) {
     return text;
 }
 
-//transforme une chaine de caractere au format "name1:value1;name2:value2;..." en tableau associatif
+/**
+*    @brief transforme une chaine de caractères de format "name1:value1;name2:value2;..." en tableau associatif
+*    @param text [string] Chaine à convertir
+*    @return [array] Tableau associatif des éléments
+*/
 function parseHTTPHeader(text){
     var rslt = new Array()
     var response = text.split(';');
@@ -745,26 +730,19 @@ function parseHTTPHeader(text){
 }
 
 /**
-	strlen
-	  Retourne la taille d'une chaine
-    Arguments:
-	  [string] text      : Chaine 
-    Retourne:
-	  [int] Nombre de caractéres dans la chaine
-	Remarques:
-	  Equivaut à 'text.length'
+	@brief Retourne la taille d'une chaine
+    @param text [string] Chaine 
+    @return [int] Nombre de caractères dans la chaine
+	@remarks Equivaut à 'text.length'
 */
 function strlen(text){
     return text.length;
 }
 
 /**
-	strtoid
-	  Convertie une chaine en identificateur (voir cInputIdentifier)
-    Arguments:
-	  [string] str : Chaine à convertir
-    Retourne:
-	  [string] Chaine convertie
+	@brief Convertie une chaine en identificateur (voir cInputIdentifier)
+    @param str [string] Chaine à convertir
+    @return [string] Chaine convertie
 */
 function strtoid(str)
 {
@@ -785,11 +763,9 @@ function strtoid(str)
 }
 
 /**
-    Convertie une chaine en nom (voir cInputName)
-    Arguments:
-	  [string] str : Chaine à convertir
-    Retourne:
-	  [string] Chaine convertie
+    @brief Convertie une chaine en nom (voir cInputName)
+    @param str [string] Chaine à convertir
+    @return [string] Chaine convertie
 */
 function strtoname(str)
 {
@@ -805,14 +781,12 @@ function strtoname(str)
 }
 
 /**
-    Tronque le contenu d'un texte
-    Arguments:
-        [string] text   : Le texte à tronquer
-        [int] maxchar   : Maximum de caractères dans le texte
-        [int] maxline   : Maximum de lignes dans le texte
-        [string] endstr : Optionnel, Chaine à ajouter en fin de texte (si tronqué). Par défaut " [...]"
-    Retourne:
-        [string] Le texte tronqué
+    @brief Tronque le contenu d'un texte
+    @param text      [string] Text de base
+    @param maxchar   [int] Maximum de caractères dans le texte
+    @param maxline   [int] Maximum de lignes dans le texte
+    @param endstr    [string] Optionnel, Chaine à ajouter en fin de texte (si tronqué). Par défaut " [...]"
+    @return [string] Le texte tronqué
 */
 function trimtext(text, maxchar, maxline, endstr) {
     if (typeof (endstr) == "undefined")
@@ -828,13 +802,10 @@ function trimtext(text, maxchar, maxline, endstr) {
 }
 
 /**
-    strCharCount
-    Compte le nombre de caractères dans une chaine
-    Arguments:
-        [string] text      : Chaine 
-        [string] charlist  : Caractères à rechercher
-    Retourne:
-        [int] Nombre de caractères trouvés
+    @brief Compte le nombre de caractères dans une chaine
+    @param text      [string] Chaine 
+    @param charlist  [string] Caractères à rechercher
+    @return [int] Nombre de caractères trouvés
 */
 function strCharCount(text, charlist) {
     var count = 0;
@@ -844,38 +815,39 @@ function strCharCount(text, charlist) {
     }
     return count;
 } 
+/** @} */ // end of group String
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    Array/Object object Section
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * Array/Object object Section
+    * @defgroup Array
+    * @brief Fonctions de bases
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 /**
-Recherche a plus grande valeur d'un tableau numerique
-Arguments:
-[Array] ar   : Le tableau
-Retourne:
-index de la valeur la plus grande
+    @brief Recherche la plus grande valeur d'un tableau numerique
+    @param ar  [array] Le tableau
+    @return Index de la valeur la plus grande
 */
 function array_max(ar) {
-    var max = ar[0];
+    var max = parseFloat(ar[0]);
     var key = 0;
     var len = ar.length;
+        console.log(max);
     while (--len) {
         if (parseFloat(ar[len]) > max) {
             max = ar[len];
             key = len;
         }
     }
-    return len;
+    return key;
 }
 
 /**
-    Supprime un clé d'un tableau
-    Arguments:
-        [Array] ar   : Le tableau
-        [int]   key  : La clé
-    Retourne:
-        [mixed] Copie de l'item supprimé
+    @brief Supprime un clé d'un tableau
+    @param ar   [array] Le tableau
+    @param key  [int] La clé
+    @return [mixed] Copie de l'item supprimé
 */
 function remove_key(ar,key){
     if(typeof(ar[key]))
@@ -893,13 +865,11 @@ function remove_key(ar,key){
 }
 
 /**
-    Insert une nouvelle clé à un tableau
-    Arguments:
-        [Array] ar   : Le tableau
-        [int]   key  : La clé
-        [mixed] val  : La valeur
-    Retourne:
-        [mixed] Nouveau tableau
+    @brief Insert une nouvelle clé à un tableau
+    @param ar   [array] Le tableau
+    @param key  [int]   La clé
+    @param val  [mixed] La valeur
+    @return [mixed] Nouveau tableau
 */
 function insert_key(ar,key,val){
     var new_ar=[];
@@ -913,12 +883,10 @@ function insert_key(ar,key,val){
 }
 
 /**
-    Supprime des clés d'un objet
-    Arguments:
-        [object] obj        : Objet de base
-        [array]  key_array  : Tableau des clés à soustraire
-    Retourne:
-        [object] Nouvelle instance de l'objet 
+    @brief Supprime des clés d'un objet
+    @param obj        [object] Objet de base
+    @param key_array  [array]  Tableau des clés à soustraire
+    @return [object] Nouvelle instance de l'objet 
 */
 function object_pop(obj,key_array) {
     var new_ar = copy(obj);
@@ -931,16 +899,13 @@ function object_pop(obj,key_array) {
 }
 
 /**
-    Associe deux objets dans une nouvelle instance
-    Arguments:
-        [object] obj1   : Le première objet
-        [object] obj2   : Le deuxième objet
-        [bool]   bcopy  : Si true, crée une copie de l'objet sinon 'obj1' reçoit les données de 'obj2'
-    Remarques:
-        Si obj1 et/ou obj2 n'est pas de type 'object', le type est forcé.
-        Si deux champs porte la même clé, la valeur de 'ar2' écrase la valeur de 'ar1'
-    Retourne:
-        [Object] Le nouvel objet
+    @brief Associe deux objets dans une nouvelle instance
+    @param obj1   [object] Le première objet
+    @param obj2   [object] Le deuxième objet
+    @param bcopy  [bool]   Si true, crée une copie de l'objet sinon 'obj1' reçoit les données de 'obj2'
+    @remarks Si obj1 et/ou obj2 n'est pas de type 'object', le type est forcé.
+    @remarks Si deux champs porte la même clé, la valeur de 'ar2' écrase la valeur de 'ar1'
+    @return [Object] Le nouvel objet
 */
 function object_merge(obj1, obj2, bcopy) {
     if (typeof (bcopy) == "undefined")
@@ -960,15 +925,12 @@ function object_merge(obj1, obj2, bcopy) {
 }
 
 /**
-    Associe deux tableaux
-    Arguments:
-        [Array] ar1   : Le première objet
-        [Array] ar2   : Le deuxième objet
-        [bool]  bcopy : Si true une nouvelle instance est créé, sinon ar1 reçois les champs de 'ar2'
-    Remarques:
-        Tous les champs de 'ar2' sont ajoutés à 'ar1'
-    Retourne:
-        [Array] Le nouveau tableau
+    @brief Associe deux tableaux
+    @param ar1   [array] Le première objet
+    @param ar2   [array] Le deuxième objet
+    @param bcopy [bool]  Si true une nouvelle instance est créé, sinon ar1 reçois les champs de 'ar2'
+    @remarks Tous les champs de 'ar2' sont ajoutés à 'ar1'
+    @return [array] Le nouveau tableau
 */
 function array_merge(ar1,ar2,bcopy){
     if(bcopy)
@@ -979,16 +941,13 @@ function array_merge(ar1,ar2,bcopy){
 }
 
 /**
-    Recherche un champs dans un tableau
-    Arguments:
-        [array/object]  array  : Tableau de la recherche
-        [function]      func   : Callback(value,key,index), voir remarques
-    Remarques:
-        array_find() enumére toutes les clés/valeurs du tableau 'array'.
-        Tant que le callback 'func' ne retourne rien, la recherche continue.
-        Si au contraire, un retour est detecté, la recherche s'interrompt et la valeur est retournée.
-    Retourne:
-        [mixed] Valeur retourné par le callback, 'undefined' si la recherche n'a rien donnée.
+    @brief Recherche un champs dans un tableau
+    @param array  [array/object]  Tableau de la recherche
+    @param func   [function]      Callback(value,key,index), voir remarques
+    @remarks array_find() enumére toutes les clés/valeurs du tableau 'array'.
+    @remarks Tant que le callback 'func' ne retourne rien, la recherche continue.
+    @remarks Si au contraire, un retour est detecté, la recherche s'interrompt et la valeur est retournée.
+    @return [mixed] Valeur retourné par le callback, 'undefined' si la recherche n'a rien donnée.
 */
 function array_find(array,func){
     var i=0;
@@ -1003,7 +962,7 @@ function array_find(array,func){
 };
 
 /**
-    Inverse les clés d'un objet avec leurs valeurs
+    @brief Inverse les clés d'un objet avec leurs valeurs
     Arguments:
         [Object] ar1   : L'objet
     Remarques:
@@ -1022,8 +981,13 @@ function object_flip(ar1){
     return ar2;
 }
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    Date object Section
+/** @} */ // end of group Array
+
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * Date object Section
+    * @defgroup Date
+    * @brief Fonctions de bases
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 // timeToDate (obselete)
@@ -1036,7 +1000,7 @@ function timeToDate(timestamp) {
 }
 
 /**
-    Convertie une date en timestamp UNIX
+    @brief Convertie une date en timestamp UNIX
     Arguments:
         [int] year  : Année depuis 1970
         [int] month : Mois de 1~12
@@ -1055,7 +1019,7 @@ function dateToTime(year, month, day, hour, min, sec) {
 }
 
 /**
-    Retourne le timestamp actuel en secondes
+    @brief Retourne le timestamp actuel en secondes
     Remarques:
         dateToTime utilise l'objet Date pour obtenir le timestamp
     Retourne:
@@ -1067,7 +1031,7 @@ function getTime() {
 }
 
 /**
-    Retourne le timestamp actuel en millisecondes
+    @brief Retourne le timestamp actuel en millisecondes
     Remarques:
         dateToTime utilise l'objet Date pour obtenir le timestamp
     Retourne:
@@ -1079,7 +1043,7 @@ function getTimeMS() {
 }
 
 /**
-    Formate un timestamp en date textuel (PHP style)
+    @brief Formate un timestamp en date textuel (PHP style)
     Arguments:
         [string] format      : Format (voir remarques)
         [int]    [timestamp] : Optionnel, timestamp en secondes
@@ -1264,7 +1228,7 @@ function minToHour(minutes)
 }
 
 /**
-    Ajoute les zeros manquants en début de nombre/texte
+    @brief Ajoute les zeros manquants en début de nombre/texte
     Arguments:
         [mixed] num    : Valeur
         [int]   length : Taille du nombre
@@ -1284,13 +1248,13 @@ function zerolead(num, length)
 }
 
 /**
-Supprime les zeros superflus en début de nombre/texte (ne fonctionne pas avec les nombres a virgule)
-Arguments:
-[mixed] num    : Valeur
-Exemple:
-zerolead("0014"); // retourne 14
-Retourne:
-[string] Nouvelle valeur
+    @brief Supprime les zeros superflus en début de nombre/texte (ne fonctionne pas avec les nombres a virgule)
+    Arguments:
+    [mixed] num    : Valeur
+    Exemple:
+    zerolead("0014"); // retourne 14
+    Retourne:
+    [string] Nouvelle valeur
 */
 function zeroshift(num) {
     var r = "" + trim(num.toString());
@@ -1300,13 +1264,17 @@ function zeroshift(num) {
     }
     return r.substring(i);
 }
+/** @} */ // end of group Date
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    Debug Section
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * Debug Section
+    * @defgroup Debug
+    * @brief Fonctions de bases
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 /**
-    Affiche une boite de dialogue avec les attributs d'un élément
+    @brief Affiche une boite de dialogue avec les attributs d'un élément
     Arguments:
         [HTMLElement] obj : L'Elément
 */
@@ -1325,7 +1293,7 @@ function objAlertAttributes(obj){
 }
 
 /**
-    Affiche une boite de dialogue avec les membres d'un objet
+    @brief Affiche une boite de dialogue avec les membres d'un objet
     Arguments:
         [HTMLElement] obj : L'Elément
 */
@@ -1346,7 +1314,7 @@ function objAlertMembers(obj) {
 }
 
 /**
-    Affiche une boite de dialogue avec les clés d'un objet
+    @brief Affiche une boite de dialogue avec les clés d'un objet
     Arguments:
         [HTMLElement] obj : L'Elément
 */
@@ -1357,7 +1325,13 @@ function objAlertMembersKey(obj){
 	}
 	alert(txt);
 }
+/** @} */ // end of group Debug
 
+/**
+    * @defgroup Divers
+    * @brief Fonctions de bases
+    * @{
+*/
 
 /*--------------------------------------------------------------------------------------------------------------------------------------
     WebFrameWork Specific
@@ -1367,7 +1341,7 @@ var XARG_END_OF_TEXT_CODE   = 0x03;
 var XARG_START_OF_TEXT_CHAR = String.fromCharCode(0x2);
 var XARG_END_OF_TEXT_CHAR   = String.fromCharCode(0x3);
 /**
-    Convertie le corps d'un document 'text/wfw.xra' en objet javascript
+    @brief Convertie le corps d'un document 'text/wfw.xra' en objet javascript
     Parametres:
         [string] text     : Corps du document XARG
         [bool]   bencoded : Si true, scan 'text' avec l'encodage d'une URL
@@ -1646,3 +1620,7 @@ function isPtrOver(element){
 	}
 	return false;
 }
+
+/** @} */ // end of group Divers
+
+/** @} */ // end of group Basique
