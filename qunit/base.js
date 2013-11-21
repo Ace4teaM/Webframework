@@ -158,6 +158,68 @@ test( "cInputURL" , function() {
 });
 
 
+
+module( "STRING" );
+
+/* Convertions */
+test( "STRING" , function() {
+    //empty
+    equal( empty({}), true, "empty object" );
+    equal( empty("   "), true, "empty string" );
+    equal( empty(null), true, "empty null" );
+    equal( empty("hello"), false, "not empty string" );
+    equal( empty({foo:"bar"}), false, "not empty object" );
+    //strToFlags
+    deepEqual( strToFlags("azerty hello world","azerty hello"), {azerty:1,hello:1}, "strToFlags" );
+    //lstrcmp
+    equal( lstrcmp("hello world", "hello"), 0, "lstrcmp");
+    equal( ltrim(" hello"), "hello", "ltrim");
+    equal( rtrim("hello "), "hello", "rtrim");
+    equal( trim(" trim "), "trim", "trim");
+    equal( is_not_strof("hello world", "w"), false, "is_not_strof");
+    equal( is_strof("helloworld", "helowrld"), true, "is_strof");
+    equal( dirname("/home/thomas/doc.xml"), "/home/thomas/", "dirname");
+    equal( filename("/home/thomas/doc.xml"), "doc.xml", "filename");
+    equal( set_fileext("/home/thomas/doc.xml","html"), "/home/thomas/doc.html", "set_fileext");
+    equal( fileext("/home/thomas/doc.xml"), "xml", "fileext");
+    equal( path("/home","thomas","doc.xml"), "/home/thomas/doc.xml", "path");
+});
+
+module( "UTILS" );
+
+/* Convertions */
+test( "UTILS" , function() {
+    //utils
+    equal( byteToSize(1024), "1.0 Ko", "byteToSize 1.0 Ko" );
+    equal( byteToSize(Math.pow(1024,2)), "1.0 Mo", "byteToSize 1.0 Mo" );
+    equal( byteToSize(Math.pow(1024,3)), "1.0 Go", "byteToSize 1.0 Go" );
+    equal( byteToSize(Math.pow(1024,4)), "1.0 To", "byteToSize 1.0 To" );
+    equal( byteToSize(Math.pow(1024,5)), "1.0 Po", "byteToSize 1.0 Po" );
+    equal( byteToSize(Math.pow(1024,6)), "1.0 Zo", "byteToSize 1.0 Zo" );
+    equal( byteToSize(Math.pow(1024,7)), "1.0 Yo", "byteToSize 1.0 Yo" );
+    //utils
+    equal( sizeToByte("1KO"), 1024, "sizeToBytes 1KO" );
+    equal( sizeToByte("1.0 KO"), 1024, "sizeToBytes 1.0 KO" );
+    equal( sizeToByte("1,0 ko"), 1024, "sizeToBytes 1,0 ko" );
+    equal( sizeToByte("1MO"), Math.pow(1024,2), "sizeToByte 1MO" );
+    equal( sizeToByte("1GO"), Math.pow(1024,3), "sizeToByte 1GO" );
+    equal( sizeToByte("1TO"), Math.pow(1024,4), "sizeToByte 1TO" );
+    equal( sizeToByte("1PO"), Math.pow(1024,5), "sizeToByte 1PO" );
+    equal( sizeToByte("1ZO"), Math.pow(1024,6), "sizeToByte 1ZO" );
+    //equal( sizeToByte("1YO"), Math.pow(1024,7), "sizeToByte 1YO" );
+});
+
+
+module( "ARRAY" );
+
+/* Convertions */
+test( "Array" , function() {
+    //utils
+    equal( array_max([14,5,8,7,4,7,41,52,4]), 7, "array_max" );
+    //equal( remove_key({foo:"bar", bar:"foo"}), "foo", "remove_key" );
+});
+
+
 module( "URI" );
     
 /* Convertions */
