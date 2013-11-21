@@ -21,9 +21,13 @@
 
 
 /**
-    @brief Fonctions utiles à la lecture des fichiers
-*/
-
+ * @file file_reader.js
+ *
+ * @defgroup File
+ * @brief Fonctions utiles à la lecture des fichiers
+ *
+ * @{
+ */
 
 /**
     @brief Lit un fragement du fichier (encodé en base64)
@@ -170,3 +174,5 @@ function readFile_base64_IE(filePath, callback, param) {
         return false;
     }
 }
+
+/** @} */ // end of group File

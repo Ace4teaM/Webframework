@@ -24,7 +24,6 @@
  *
  * @defgroup Basique
  * @brief Fonctions de bases
- *
  * @{
  */
 
@@ -32,7 +31,7 @@
 /**--------------------------------------------------------------------------------------------------------------------------------------
  * Divers
  * @defgroup Divers
- * @brief Fonctions de bases
+ * @brief Fonctions non catégorisées
  * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -112,7 +111,7 @@ function have_method(object, method) {
 /**--------------------------------------------------------------------------------------------------------------------------------------
  * Object Section
  * @defgroup Object
- * @brief Fonctions de bases
+ * @brief Fonctions utilisables avec les objets natifs
  * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -231,7 +230,7 @@ function object_key(obj, i) {
 /**--------------------------------------------------------------------------------------------------------------------------------------
     * String object Section
     * @defgroup String
-    * @brief Fonctions de bases
+    * @brief Fonctions utiles aux chaines
     * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -296,10 +295,8 @@ function sizeToByte(size) {
 
 /**
     @brief Retourne l'extension d'un fichier
-    Arguments:
-        [string] path : Chemin d'accès ou nom de fichier
-    Retourne:
-        [string] Extension du fichier, vide si aucune
+    @param path [string] Chemin d'accès ou nom de fichier
+    @return [string] Extension du fichier, vide si aucune
 */
 function fileext(path){
     var file_name = filename(path);
@@ -320,9 +317,9 @@ function fileext(path){
  * @par Exemple
  * Dans cet exemple, la fonction path contruit un chemin à partir des éléments "/srv", "www" et "index.html".
    @code{.php}
-  var filename = path('/srv', 'www', 'index.html');
-  // return '/srv/www/index.html'
-  @endcode
+    var filename = path('/srv', 'www', 'index.html');
+    // return '/srv/www/index.html'
+   @endcode
  */
 function path(base)
 {
@@ -820,7 +817,7 @@ function strCharCount(text, charlist) {
 /**--------------------------------------------------------------------------------------------------------------------------------------
     * Array/Object object Section
     * @defgroup Array
-    * @brief Fonctions de bases
+    * @brief Fonctions utilisables avec les tableaux natifs
     * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
@@ -963,12 +960,9 @@ function array_find(array,func){
 
 /**
     @brief Inverse les clés d'un objet avec leurs valeurs
-    Arguments:
-        [Object] ar1   : L'objet
-    Remarques:
-        Les valeurs de l'objet sont converties en texte
-    Retourne:
-        [Object] Le nouvel objet
+    @param ar1   [Object] L'objet
+    @remarks Les valeurs de l'objet sont converties en texte
+    @return [Object] Le nouvel objet
 */
 function object_flip(ar1){
     var ar2={};
@@ -986,14 +980,16 @@ function object_flip(ar1){
 /**--------------------------------------------------------------------------------------------------------------------------------------
     * Date object Section
     * @defgroup Date
-    * @brief Fonctions de bases
+    * @brief Fonctions utilisables avec les objets Date
     * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
-// timeToDate (obselete)
-// Convertie un timestamp UNIX en date
-//   Integer -timestamp  : secondes depuis le 01/01/1970
-//   Retourne      : string de la date
+/**
+    @brief Convertie une date en timestamp UNIX
+    @param timestamp [int] Nombre de secondes depuis le 01/01/1970
+    @remarks Utilise la méthode Date.toGMTString pour formater la chaine
+    @return Texte de la date
+*/
 function timeToDate(timestamp) {
     var theDate = new Date(timestamp * 1000);
     return theDate.toGMTString();
@@ -1001,17 +997,14 @@ function timeToDate(timestamp) {
 
 /**
     @brief Convertie une date en timestamp UNIX
-    Arguments:
-        [int] year  : Année depuis 1970
-        [int] month : Mois de 1~12
-        [int] day   : Jour de 1~31
-        [int] hour  : Heure de 0~23
-        [int] min   : Minutes de 0~59
-        [int] sec   : Secondes de 0~59
-    Remarques:
-        dateToTime utilise l'objet Date pour obtenir le timestamp
-    Retourne:
-        [int] timestamp en secondes
+    @param year  [int] Année depuis 1970
+    @param month [int] Mois de 1~12
+    @param day   [int] Jour de 1~31
+    @param hour  [int] Heure de 0~23
+    @param min   [int] Minutes de 0~59
+    @param sec   [int] Secondes de 0~59
+    @remarks dateToTime utilise l'objet Date pour obtenir le timestamp
+    @return [int] timestamp en secondes
 */
 function dateToTime(year, month, day, hour, min, sec) {
     var humDate = new Date(Date.UTC(year, month - 1, day, hour, min, sec));
@@ -1020,10 +1013,8 @@ function dateToTime(year, month, day, hour, min, sec) {
 
 /**
     @brief Retourne le timestamp actuel en secondes
-    Remarques:
-        dateToTime utilise l'objet Date pour obtenir le timestamp
-    Retourne:
-        [int] timestamp en secondes
+    @remarks dateToTime utilise l'objet Date pour obtenir le timestamp
+    @return [int] timestamp en secondes
 */
 function getTime() {
     var current_time=new Date();
@@ -1032,10 +1023,8 @@ function getTime() {
 
 /**
     @brief Retourne le timestamp actuel en millisecondes
-    Remarques:
-        dateToTime utilise l'objet Date pour obtenir le timestamp
-    Retourne:
-        [int] timestamp en secondes
+    @remarks dateToTime utilise l'objet Date pour obtenir le timestamp
+    @return [int] timestamp en secondes
 */
 function getTimeMS() {
     var current_time=new Date();
@@ -1044,11 +1033,9 @@ function getTimeMS() {
 
 /**
     @brief Formate un timestamp en date textuel (PHP style)
-    Arguments:
-        [string] format      : Format (voir remarques)
-        [int]    [timestamp] : Optionnel, timestamp en secondes
-    Remarques:
-        Les formats prédéfinit sont:
+    @param format      [string] Format (voir remarques)
+    @param timestamp   [int]    Optionnel, timestamp en secondes
+    @remarks Les formats prédéfinit sont:
             DATE_ATOM
             DATE_COOKIE
             DATE_ISO8601
@@ -1061,8 +1048,7 @@ function getTimeMS() {
             DATE_RSS
             DATE_W3C
         Pour plus d'informations sur la syntaxe du format voir la documentation PHP de 'date()'
-    Retourne:
-        [string] La date fomatée
+    @return [string] La date fomatée
 */
 var DATE_DEFAULT = "d/m/Y H:i:s";
 var DATE_ATOM    = "Y-m-d\TH:i:sP";
@@ -1229,14 +1215,14 @@ function minToHour(minutes)
 
 /**
     @brief Ajoute les zeros manquants en début de nombre/texte
-    Arguments:
-        [mixed] num    : Valeur
-        [int]   length : Taille du nombre
-    Exemple:
+    @param num    [mixed] Valeur
+    @param length [int]   Taille du nombre
+    @par Exemple
+    @code{.js}
         zerolead(14,4); // retourne 0014
         zerolead("4.12",5); // retourne 04.12
-    Retourne:
-        [string] Nouvelle valeur
+    @endcode
+    @return [string] Nouvelle valeur
 */
 function zerolead(num, length)
 {
@@ -1249,12 +1235,13 @@ function zerolead(num, length)
 
 /**
     @brief Supprime les zeros superflus en début de nombre/texte (ne fonctionne pas avec les nombres a virgule)
-    Arguments:
-    [mixed] num    : Valeur
-    Exemple:
-    zerolead("0014"); // retourne 14
-    Retourne:
-    [string] Nouvelle valeur
+    @param num    [mixed] Valeur
+    @par Exemple
+    Dans cet exemple, la fonction path contruit un chemin à partir des éléments "/srv", "www" et "index.html".
+    @code{.js}
+        zerolead("0014"); // retourne 14
+    @endcode
+    @return [string] Nouvelle valeur
 */
 function zeroshift(num) {
     var r = "" + trim(num.toString());
@@ -1275,8 +1262,7 @@ function zeroshift(num) {
 
 /**
     @brief Affiche une boite de dialogue avec les attributs d'un élément
-    Arguments:
-        [HTMLElement] obj : L'Elément
+    @param obj [HTMLElement] L'Elément
 */
 function objAlertAttributes(obj){
 	var txt;
@@ -1294,8 +1280,7 @@ function objAlertAttributes(obj){
 
 /**
     @brief Affiche une boite de dialogue avec les membres d'un objet
-    Arguments:
-        [HTMLElement] obj : L'Elément
+    @param obj [HTMLElement] L'Elément
 */
 function objAlertMembers(obj) {
 	var txt="";
@@ -1315,8 +1300,7 @@ function objAlertMembers(obj) {
 
 /**
     @brief Affiche une boite de dialogue avec les clés d'un objet
-    Arguments:
-        [HTMLElement] obj : L'Elément
+    @param obj [HTMLElement] L'Elément
 */
 function objAlertMembersKey(obj){
 	var txt="";
@@ -1325,28 +1309,25 @@ function objAlertMembersKey(obj){
 	}
 	alert(txt);
 }
+
 /** @} */ // end of group Debug
 
-/**
-    * @defgroup Divers
-    * @brief Fonctions de bases
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * WebFrameWork Specific
+    * @defgroup XARG
+    * @brief Fonctions utiles au format XArg
     * @{
-*/
-
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    WebFrameWork Specific
 --------------------------------------------------------------------------------------------------------------------------------------*/
 var XARG_START_OF_TEXT_CODE = 0x02;
 var XARG_END_OF_TEXT_CODE   = 0x03; 
 var XARG_START_OF_TEXT_CHAR = String.fromCharCode(0x2);
 var XARG_END_OF_TEXT_CHAR   = String.fromCharCode(0x3);
+
 /**
     @brief Convertie le corps d'un document 'text/wfw.xra' en objet javascript
-    Parametres:
-        [string] text     : Corps du document XARG
-        [bool]   bencoded : Si true, scan 'text' avec l'encodage d'une URL
-    Retourne:
-       [Object] Tableau associatif des arguments
+    @param text     [string] Corps du document XARG
+    @param bencoded [bool]   Si true, scan 'text' avec l'encodage d'une URL
+    @return [Object] Tableau associatif des arguments
 */
 function x_request_arguments_parse(text,bencoded) {//v4
 	var rslt = new Object();
@@ -1380,32 +1361,36 @@ function x_request_arguments_parse(text,bencoded) {//v4
 	return rslt;
 }
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    Webframework standard errors codes
+/** @} */ // end of group XARG
+
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * Webframework standard errors codes
+    * @defgroup Result
+    * @brief Codes d'erreurs standard
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 //Resultats
-var ERR_SYSTEM              = 2;
-var ERR_FAILED              = 1;
-var ERR_OK                  = 0;
+var ERR_SYSTEM              = 2; //!< @brief Contexte en cas de succès
+var ERR_FAILED              = 1; //!< @brief Contexte en cas d'erreur ou d'echec de l'application
+var ERR_OK                  = 0; //!< @brief Contexte en cas d'erreur ou d'echec du système 
 
-//Bases
-var ERR_TEXT                = 1000;
-var ERR_REQ                 = 2000;
+/** @} */ // end of group Result
 
-//Format Texte
-var ERR_TEXT_EMPTY          = ERR_TEXT+1;
-var ERR_TEXT_INVALIDCHAR    = ERR_TEXT+2;
-
-//Requete
-var ERR_REQ_OPEN_URL        = ERR_REQ+1;
-var ERR_REQ_MISSING_ARG     = ERR_REQ+2;
-var ERR_REQ_INVALID_ARG     = ERR_REQ+3;
-
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    HTML-Document Specific
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * HTML-Document Specific
+    * @defgroup HTML
+    * @brief Fonctions HTML
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
+/**
+    @brief Convertie un text HTML en object de document natif
+    @param text [string] Corps du document HTML
+    @remarks L'Objet retourné est dépendant de l'implémentation du navigteur
+    @return [Object] Instance de l'objet DOMDOCUMENT
+    @retval null Echec de la création du document
+*/
 function html_parse(text) {
     var doc=null;
     var parser = null;
@@ -1421,18 +1406,21 @@ function html_parse(text) {
     return xmlDoc;
 }
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    XML-Document Specific
+/** @} */ // end of group HTML
+
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * XML-Document Specific
+    * @defgroup XML
+    * @brief Fonctions XML
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 /**
-    Convertie le corps d'un document 'text/xml' en objet javascript
-    Parametres:
-        [string] text : Corps du document XML
-    Remarques:
-        L'Objet retourné est dépendant de l'implémentation du navigteur
-    Retourne:
-        [Object] Instance de l'objet XML-DOM. null en cas d'échec
+    @brief Convertie le corps d'un document 'text/xml' en objet javascript
+    @param text [string] Corps du document XML
+    @remarks L'Objet retourné est dépendant de l'implémentation du navigteur
+    @return [Object] Instance de l'objet XML-DOM
+    @retval null Echec de la création du document
 */
 function xml_parse(text) {
     var xmlDoc=null;
@@ -1461,6 +1449,14 @@ function xml_parse(text) {
     return xmlDoc;
 }
 
+/**
+    @brief Charge un fichier XML
+    @param file_name [string] Corps du document XML
+    @param loaded [string] Corps du document XML
+    @remarks L'Objet retourné est dépendant de l'implémentation du navigteur
+    @return [Object] Instance de l'objet XML-DOM
+    @retval null Echec de la création du document
+*/
 //charge un fichier XML
 function xml_load2(file_name,loaded) {
     var content = wfw.http_get(file_name);
@@ -1496,8 +1492,13 @@ function xml_load(file_name,callback) {
     return true;
 }
 
-/*--------------------------------------------------------------------------------------------------------------------------------------
-    Divers
+/** @} */ // end of group XML
+
+/**--------------------------------------------------------------------------------------------------------------------------------------
+    * Divers
+    * @defgroup Divers
+    * @brief Fonctions diverses
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 function strToArray(text,separator) {
@@ -1518,11 +1519,9 @@ function strToArray(text,separator) {
 }
 
 /**
-    Obtient le sous-type d'un MIME
-    Parametres:
-        [string] mime_type : MIME type, ex: text/plain
-    Retourne:
-        [string] Sous-type du MIME
+    @brief Obtient le sous-type d'un MIME
+    @param mime_type [string] MIME type, ex: text/plain
+    @return [string] Sous-type du MIME
 */
 function MIME_lowerType(mime_type) {
     var i = mime_type.indexOf('/',0);
@@ -1532,11 +1531,9 @@ function MIME_lowerType(mime_type) {
 }
 
 /**
-    Obtient le super-type d'un MIME
-    Parametres:
-        [string] mime_type : MIME type, ex: text/plain
-    Retourne:
-        [string] Super-type du MIME
+    @brief Obtient le super-type d'un MIME
+    @param mime_type [string] MIME type, ex: text/plain
+    @return [string] Super-type du MIME
 */
 function MIME_upperType(mime_type) {
     var i = mime_type.indexOf('/',0);
@@ -1566,8 +1563,13 @@ function minmax(v,min,max){
     return v;
 }
 
+/** @} */ // end of group Divers
+
 /*--------------------------------------------------------------------------------------------------------------------------------------
-    Mouse detection
+    * Mouse detection
+    * @defgroup Mouse
+    * @brief Déctectin des mouvements de la souris
+    * @{
 --------------------------------------------------------------------------------------------------------------------------------------*/
 
 // Globales
@@ -1621,6 +1623,6 @@ function isPtrOver(element){
 	return false;
 }
 
-/** @} */ // end of group Divers
+/** @} */ // end of group Mouse
 
 /** @} */ // end of group Basique

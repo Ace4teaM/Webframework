@@ -22,13 +22,24 @@
 /**
  * @file
  * Fonctions utiles pour manipuler les addresses Internet (URI)
+ *
+ * @defgroup YUI
+ * @{
  */
 
 /**
- * @page wfw-uri YUI-3 [URI Module]
- * 
- * Ce module permet de gérer facilement les adresses relative au web
- * Les méthodes sont disponible via la classe @link URI
+    @defgroup URI
+    @brief Fonctions utiles pour manipuler les addresses Internet (URI)
+
+    @section samples Exemples
+    @subsection remakeURI Recréer une URI
+    @code{.js}
+    var wfw = Y.namespace('wfw');
+    var new_uri = wfw.remakeURI("http://google.fr/search?ie=utf8", {search:"hello world"} );
+    // new_uri == "http://google.fr/search?ie=utf8&search=hello%20world"
+    @endcode
+
+    @{
  */
 YUI.add('wfw-uri', function (Y) {
     var wfw = Y.namespace('wfw');
@@ -262,7 +273,7 @@ YUI.add('wfw-uri', function (Y) {
          * 
          * @brief Re-Fabrique une URI
          * @param uri               URI à transformer. Si null, l'URI en cours est utilisée
-         * @param add_fields Champs à insérer 
+         * @param add_fields        Champs à insérer 
          * @param att               Optionnel, si 'ReplaceQuery' est spécifié les champs existants seront remplacés
          * @param anchor            Optionnel, Ancre à insérer
          * @return Nouvelle URI. null est retourné si l'URI ou un des paramétres est invalide
@@ -456,3 +467,6 @@ YUI.add('wfw-uri', function (Y) {
 }, '1.0', {
     requires:['base','wfw','wfw-math']
 });
+
+/** @} */ // end of group URI
+/** @} */ // end of group YUI
