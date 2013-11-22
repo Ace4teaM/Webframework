@@ -1059,7 +1059,7 @@ class cApplication implements iApplication{
     }
     
     /**
-     * @brief Execute une requête SQL et converti le rsultat en éléments XML
+     * @brief Execute une requête SQL et converti le résultat en éléments XML
      * @param string $query Corps de la requête
      * @param string $doc   Document XML recevant les éléments
      * @param int    $node  Noeud parent recevant les éléments
@@ -1109,6 +1109,29 @@ class cApplication implements iApplication{
             return RESULT(cResult::Failed, iDatabaseQuery::EmptyResult);
         
         $obj = (object) $row;
+        
+        return RESULT_OK();
+    }
+    
+    /**
+     * @brief Execute une requête SQL et converti le résultat en éléments XML
+     * @param string $query Corps de la requête
+     * @param string $doc   Document XML recevant les éléments
+     * @param int    $node  Noeud parent recevant les éléments
+     * @return boolean Résultat de procédure
+     * @retval false Une erreur est survenue
+     */
+    public function queryResultToXML($result,&$doc,$node)
+    {
+        if(!$node)
+            $node = $doc->documentElement;
+        
+        $row = $result->fetchRow();
+        if(!is_array($row))
+            return RESULT(cResult::Failed, iDatabaseQuery::EmptyResult);
+        
+        foreach($row as $id=>$value)
+            $node->appendChild( $doc->createtextElement($id,$value) );
         
         return RESULT_OK();
     }

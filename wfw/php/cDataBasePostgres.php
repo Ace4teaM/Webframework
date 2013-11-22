@@ -243,6 +243,7 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
                 $new_pos = $pos;
                 break;
         }
+
         //ok?
         if(pg_result_seek( $this->res, $new_pos ) === TRUE){
             $this->cur_pos = $new_pos;
