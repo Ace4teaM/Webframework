@@ -1,24 +1,43 @@
 /*
-    (C)2012 AceTeaM, WebFrameWork(R). All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
-    Warning this script is protected by copyright, if you want to use this code you must ask permission:
-    Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        Author: AUGUEY THOMAS
-        dev@aceteam.org
+    (C)2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-    Base
-    Fonctions de base
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    JS  Dependences: base.js
-    YUI Dependences: base, wfw-states
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-    Revisions:
-        [17-10-2012] Implementation
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-//YUI.namespace("wfw");
+/**
+ * @file
+ * Fonctions utiles au modèle de données
+ *
+ * @defgroup YUI
+ * @{
+ */
 
+/**
+ * @defgroup WFW-Base
+ * @brief Fonctions de bases
+ *
+ * @section depend Dépendences
+ * @par
+ *   - JS  Dependences: base.js
+ *   - YUI Dependences: base, wfw-states
+ *
+ *  @{
+ */
 YUI.add('wfw', function (Y) {
     var wfw = Y.namespace('wfw');
     
@@ -27,7 +46,7 @@ YUI.add('wfw', function (Y) {
      * @memberof Y
      * @brief Classe mére de la librairie Webframework
      * 
-     *  */
+     */
     var tmp = {
         /**
          * @fn OBJECT createObject(att)
@@ -40,17 +59,19 @@ YUI.add('wfw', function (Y) {
         createObject : function(att){
             return new this.OBJECT(att);
         },
+
         /**
          * @class OBJECT
          * @brief Classe d'un objet de base
          * @memberof wfw
          * 
-         * @param string/object att Données de l'objet, Peut être un objet associatif ou un identifiant wfw.States
+         * @param att [string/object] Données de l'objet, Peut être un objet associatif ou un identifiant wfw.States
          * 
-         * @property string id Identificateur de l'instance
-         * @property string ns Espace de nommage
+         * @par Propriétés
+         * @param id [string] Identificateur de l'instance
+         * @param ns [string] Espace de nommage
          * 
-         * ## Initialiser les données depuis une instance wfw.States
+         * @remarks Initialiser les données depuis une instance wfw.States
          * 
         */
         OBJECT : function(att){
@@ -105,14 +126,14 @@ YUI.add('wfw', function (Y) {
             wfw.puts("new OBJECT("+this.ns+" => "+this.id+");");
         },
         
-        /*
-            Traitement dune exception Javascript
-            Parametres:
-                [object] e : Objet Exception
-            Retourne:
-                [boolean] false
-            Remarques:
-                checkError() utilise la fonction puts_error() pour afficher un message d'erreur
+        /**
+         * @fn bool checkError(e)
+         * @brief Traitement d'une exception Javascript
+         * @memberof wfw
+         * 
+         * @param e [object] Objet Exception
+         * @return [bool] false
+         * @remarks checkError() utilise la fonction puts_error() pour afficher un message d'erreur
         */
         checkError: function(e){
             var str ="Exception: ("+e.number+")\n"
@@ -123,12 +144,13 @@ YUI.add('wfw', function (Y) {
             return false;
         },
         
-        /*
-        Ecrit un texte ou un objet dans la console de deboguage avec une en-tête d'erreur
-        Arguments:
-            [mixed] obj : Variable à écrire, la variable est affichée par la fonction toString()
-        Retourne:
-            [string] Le texte généré
+        /**
+         * @fn bool checkError(e)
+         * @brief Ecrit un texte ou un objet dans la console de deboguage avec une en-tête d'erreur
+         * @memberof wfw
+         * 
+         * @param obj [mixed] Variable à écrire, la variable est affichée par la fonction toString()
+         * @return [string] Le texte généré
         */
         puts_error: function (txt) {
             return this.puts(
@@ -140,11 +162,13 @@ YUI.add('wfw', function (Y) {
         },
         
         /*
-        Ecrit un texte ou un objet dans la console de deboguage
-        Arguments:
-            [mixed] obj : Contenu à écrire, le contenu est transformé en texte par la fonction "wfw.toString"
-        Retourne:
-            [string] Le texte généré
+         * @fn bool puts(obj,depth)
+         * @brief Ecrit un texte ou un objet dans la console de deboguage
+         * @memberof wfw
+         * 
+         * @param obj [mixed] Contenu à écrire, le contenu est transformé en texte par la fonction "wfw.toString"
+         * @param depth [bool] Contenu à écrire, le contenu est transformé en texte par la fonction "wfw.toString"
+         * @return [string] Le texte généré
         */
         puts: function (obj,depth) {
             var text = this.toString(obj,depth);
@@ -161,13 +185,14 @@ YUI.add('wfw', function (Y) {
             return text;
         },
         
-        /*
-        Convertie un objet Javascript en chaine de caractéres
-        Arguments:
-            [mixed] obj   : Contenu à écrire, le contenu est transformé en texte par la fonction "wfw.toString"
-            [bool]  depth : Scan les objets et tableaux recursivement
-        Retourne:
-            [string] Texte de l'objet
+        /**
+         * @fn bool toString(obj,depth)
+         * @brief Convertie un objet Javascript en chaine de caractéres
+         * @memberof wfw
+         * 
+         * @param obj   [mixed] Contenu à écrire, le contenu est transformé en texte par la fonction "wfw.toString"
+         * @param depth [bool]  Si true, scan les objets et tableaux recursivement
+         * @return [string] Texte de l'objet
         */
         toString: function (obj, depth) {
             if (typeof (depth) == "undefined")
@@ -221,8 +246,8 @@ YUI.add('wfw', function (Y) {
         nav: new Object(), // navigator dependent-interfaces instances
         dummy: function () { }, // empty function
         version: "1.7", //webframework library version
-        copyright: "(C)2010-2012 AceTeaM. All rights reserved.", // empty function
-        url: "http://www.aceteam.org"
+        copyright: "(C)2013 Thomas AUGUEY", // empty function
+        url: "http://www.aceteam.org http://webframework.fr"
 
     };
     object_merge(wfw,tmp,false);
@@ -230,3 +255,7 @@ YUI.add('wfw', function (Y) {
 }, '1.0', {
     requires:['base','wfw-states']
 });
+
+
+/** @} */ // end of group Base
+/** @} */ // end of group YUI

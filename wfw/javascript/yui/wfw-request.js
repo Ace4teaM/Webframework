@@ -28,7 +28,7 @@
  */
 
 /**
- * @defgroup Request
+ * @defgroup WFW-Request
  * @brief Gestionnaire de requêtes HTTP
 
  * @section samples Exemples

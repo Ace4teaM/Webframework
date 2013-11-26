@@ -1,21 +1,43 @@
 /*
-    (C)2012 AceTeaM, WebFrameWork(R). All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
-    Warning this script is protected by copyright, if you want to use this code you must ask permission:
-    Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        Author: AUGUEY THOMAS
-        dev@aceteam.org
+    (C)2012,2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-    Utils
-    Fonctions utiles
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    JS  Dependences: base.js
-    YUI Dependences: base, wfw
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-    Implementation: [17-10-2012] 
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
+*/
+
+/**
+ * @file
+ * Fonctions utiles
+ *
+ * @defgroup YUI
+ * @{
  */
 
+/**
+ * @defgroup WFW-Utils
+ * @brief Fonctions utiles
+ *
+ * @section depend Dépendences
+ * @par
+ * - JS  Dependences: base.js
+ * - YUI Dependences: base, wfw
+ *  
+ *  @{
+ */
 YUI.add('wfw-utils', function (Y) {
     var wfw = Y.namespace('wfw');
     
@@ -25,14 +47,14 @@ YUI.add('wfw-utils', function (Y) {
      * @brief Fonctions utiles
      * */
     wfw.Utils = {
-        /*
-            Obtient le prochain Element par son nom de balise
-            Parametres:
-                [HTMLElement] node    : Element de base
-                [string]      tagName : Nom de balise a retourner. (insensible a la case)
-            Retourne:
-                [HTMLElement] Le noeud trouvé, null si introuvable.
-
+        /**
+            * @fn string getNextNodeByTagName(node,tagName)
+            * @memberof Utils
+            * 
+            * @brief Obtient le prochain Element par son nom de balise
+            * @param node    [HTMLElement] Elément de base
+            * @param tagName [string]      Nom de balise a retourner. (insensible à la case)
+            * @return [HTMLElement] Le noeud trouvé, null si introuvable.
          */
         getNextNodeByTagName : function(node,tagName)
         {
@@ -44,11 +66,16 @@ YUI.add('wfw-utils', function (Y) {
             );
         },
         
-        /*
-            Importe un noeud dans le document en cours
-
-            Retourne:
-                [Node] Le noeud inséré.
+        /**
+            * @fn string importNode(doc, node, allChildren)
+            * @memberof Utils
+            *
+            * @brief Importe un noeud dans le document en cours
+            * @param doc [DOMDocument] Document dans lequel sera importé le nouveau noeud
+            * @param node [Node] Noeud à importer
+            * @param allChildren [bool] Si true importe également les noeuds enfants
+            * 
+            * @return [Node] Le noeud inséré.
          */
         importNode : function(doc, node, allChildren)
         {
@@ -88,12 +115,13 @@ YUI.add('wfw-utils', function (Y) {
             }
         },
         
-        /*
-            Obtient le prochain element enfant
-            Paramètres:
-                [HTMLNode] node : Noeud parent
-            Retourne:
-                [HTMLNode] Noeud enfant, null si introuvable
+        /**
+            * @fn string getChildNode(node)
+            * @memberof Utils
+            * 
+            * @brief Obtient le prochain élément enfant
+            * @param node [HTMLNode] Noeud parent
+            * @return [HTMLNode] Noeud enfant, null si introuvable
          */
         getChildNode : function(node) {
             var child = node.get("firstChild");
@@ -105,12 +133,13 @@ YUI.add('wfw-utils', function (Y) {
             return child;
         },
 
-        /*
-            Obtient la largeur du client
-            Paramètres:
-                [HTMLDocument] doc : Optionel, document concerné.
-            Retourne:
-                [int] Largeur (dans l'unité définit).
+        /**
+            * @fn string getClientWidth(doc)
+            * @memberof Utils
+            * 
+            * @brief Obtient la largeur du client
+            * @param doc [HTMLDocument] Optionel, document concerné.
+            * @return [int] Largeur (dans l'unité définit).
          */
         getClientWidth : function(doc) {
             if(doc == "undefined")
@@ -118,12 +147,13 @@ YUI.add('wfw-utils', function (Y) {
             return parseInt(doc.one("body").get("clientWidth"));
         },
 
-        /*
-            Obtient la hauteur du client
-            Paramètres:
-                [HTMLDocument] doc : Optionel, document concerné.
-            Retourne:
-                [int] Hauteur (dans l'unité définit).
+        /**
+            * @fn string getClientHeight(doc)
+            * @memberof Utils
+            * 
+            * @brief Obtient la hauteur du client
+            * @param doc [HTMLDocument] Optionel, document concerné.
+            * @return [int] Hauteur (dans l'unité définit).
          */
         getClientHeight : function(doc) {
             if(doc == "undefined")
@@ -131,24 +161,44 @@ YUI.add('wfw-utils', function (Y) {
             return parseInt(doc.one("body").get("clientHeight"));
         },
         
-        /*
-         * Définit la hauteur d'un élément
+        /**
+            * @fn string setHeight(element, h)
+            * @memberof Utils
+            * 
+            * @brief Définit la hauteur d'un élément
+            * @param element [HTMLElement] Elément à modifier
+            * @param h [int] Hauteur en pixels
+            * @return Hauteur donnée en paramètre
+            * @remarks Cette fonction modifie l'attribut CSS 'height'
          */
         setHeight: function (element, h) {
             element.set("height",h+"px");
             return h;
         },
                         
-        /*
-         * Définit la largeur d'un élément
+        /**
+            * @fn string setWidth(element, w)
+            * @memberof Utils
+            *
+            * @brief Définit la largeur d'un élément
+            * @param element [HTMLElement] Elément à modifier
+            * @param w [int] Largeur en pixels
+            * @return Largeur donnée en paramètre
+            * @remarks Cette fonction modifie l'attribut CSS 'width'
          */
         setWidth: function (element, w) {
             element.set("width",w+"px");
             return w;
         },
         
-        /*
-         * Retourne la hauteur d'un élément
+        /**
+            * @fn string getHeight(element, options)
+            * @memberof Utils
+            *
+            * @brief Retourne la hauteur d'un élément
+            * @param element [HTMLElement] Elément à modifier
+            * @param options Obsolète
+            * @return Hauteur donnée en paramètre
          */
         getHeight: function (element, options) {
             //var s = parseInt(parent.get("clientHeight"));
@@ -156,8 +206,15 @@ YUI.add('wfw-utils', function (Y) {
             
             return s;
         },
-        /*
-         * Retourne la hauteur d'un élément
+
+        /**
+            * @fn string getWidth(element, options)
+            * @memberof Utils
+            *
+            * @brief Retourne la hauteur d'un élément
+            * @param element [HTMLElement] Elément à modifier
+            * @param options Obsolète
+            * @return Largeur donnée en paramètre
          */
         getWidth: function (element, options) {
             //var s = parseInt(parent.get("clientWidth"));
@@ -166,8 +223,14 @@ YUI.add('wfw-utils', function (Y) {
             return s;
         },
         
-        /*
-         * Retourne la hauteur originale d'un élément
+        /**
+            * @fn string getOrgHeight(element, options)
+            * @memberof Utils
+            *
+            * @brief Retourne la hauteur originale d'un élément
+            * @param element [HTMLElement] Elément à modifier
+            * @param options Obsolète
+            * @return Largeur en pixels
          */
         getOrgHeight: function (element, options)
         {
@@ -187,8 +250,14 @@ YUI.add('wfw-utils', function (Y) {
             return original_height;
         },
         
-        /*
-         * Retourne la hauteur d'un élément
+        /**
+            * @fn string getOrgWidth(element, options)
+            * @memberof Utils
+            *
+            * @brief Retourne la largeur originale d'un élément
+            * @param element [HTMLElement] Elément à modifier
+            * @param options Obsolète
+            * @return Largeur en pixels
          */
         getOrgWidth: function (element, options)
         {
@@ -208,13 +277,14 @@ YUI.add('wfw-utils', function (Y) {
             return original_width;
         },
         
-        /*
-         * Active/Desactive un groupe d'éléments
-         * Paramètres:
-         *  [YUI.Node] element  : Noeud de l'élément parent
-         *  [bool]     bEnabled : Active/Desactive les éléments
-         * Retourne:
-         *  [void]
+        /**
+         * @fn string enabledContent(element, bEnabled)
+         * @memberof Utils
+         *
+         * @brief Active/Désactive un groupe d'éléments
+         * @param element  [Node] Noeud de l'élément parent
+         * @param bEnabled [bool] Active/Desactive les éléments
+         * @remarks Cette fonction Supprime/Ajoute l'attribut 'disabled' à l'élément
          */
         enabledContent: function (element, bEnabled) {
             var enumNode = element.all("*");
@@ -233,21 +303,21 @@ YUI.add('wfw-utils', function (Y) {
                         }
                     }
                 }
-                );
+            );
         },
-        /*
-        Callback : wfw.request.Add
-        Vérifie et traite une requête
-        Parametres:
-        [object]   obj     : L'Objet requête (retourné par wfw.request.Add)
-        User Parametres:
-        [function] onsuccess(obj,response): Optionnel, callback en cas de succès
-        [function] onerror(obj)           : Optionnel, callback en cas d'erreur de transmition de la requête
-        [string]   no_msg                 : Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
-        Retourne:
-        rien
-        Remarques:
-        En cas d'echec, l'erreur est traité et affiché par la fonction wfw.utils.onRequestMsg (voir documentation)
+
+        /**
+         * @fn string onCheckRequestResult(obj)
+         * @memberof Utils
+         *
+         * @brief Vérifie et traite une requête
+         * @param obj     [object] L'Objet requête (retourné par wfw.Request.Add)
+         * @par User Paramètres
+         * @param onsuccess (obj,response) [function] Optionnel, callback en cas de succès
+         * @param onerror (obj)            [function] Optionnel, callback en cas d'erreur de transmition de la requête
+         * @param no_msg                   [string]   Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
+         * @remarks En cas d'echec, l'erreur est traité et affiché par la fonction wfw.utils.onRequestMsg (voir documentation)
+         * @remarks Callback utilisable avec wfw.Request.Add()
          */
         onCheckRequestResult: function (obj) {
             var bErrorFunc = 0;
@@ -265,14 +335,14 @@ YUI.add('wfw-utils', function (Y) {
             if (bSuccessFunc)
                 obj.user.onsuccess(obj, obj.response);
         },
-        /*
-        Convertie un tableau associatif en document XML
-        Parametres:
-        [object] fields : Tableau associatif des valeurs
-        Retourne:
-        [DOMDocument] Document XML, null en cas d'erreur
-        Remarques:
-        L'Elément root du document est nommé "data"
+        /**
+         * @fn string fieldsToXML(fields)
+         * @memberof Utils
+         *
+         * @brief Convertie un tableau associatif en document XML
+         * @param fields [object] Tableau associatif des valeurs
+         * @return [DOMDocument] Document XML, null en cas d'erreur
+         * @remarks L'Elément root du document est nommé "data"
          */
         fieldsToXML: function (fields) {
             /*fields to xmlDoc (Compatible)*/
@@ -315,12 +385,13 @@ YUI.add('wfw-utils', function (Y) {
 
             return doc;
         },
-        /*
-        Formate un texte simple en HTML
-            Arguments:
-                [string] text: Texte brut
-            Retourne:
-                [string] texte HTML
+        /**
+         * @fn string strToHTML(text)
+         * @memberof Utils
+         *
+         * @brief Formate un texte simple en HTML
+         * @param text [string] Texte brut
+         * @return [string] texte HTML
          */
         strToHTML: function (text) {
             text = text.replace(/</g, "&lt;");
@@ -333,3 +404,6 @@ YUI.add('wfw-utils', function (Y) {
 }, '1.0', {
     requires:['base','wfw']
 });
+
+/** @} */ // end of group URI
+/** @} */ // end of group YUI

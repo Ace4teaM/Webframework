@@ -28,7 +28,7 @@
  */
 
 /**
-    @defgroup URI
+    @defgroup WFW-URI
     @brief Fonctions utiles pour manipuler les addresses Internet (URI)
 
     @section samples Exemples

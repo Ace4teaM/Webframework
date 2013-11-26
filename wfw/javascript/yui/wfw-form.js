@@ -1,21 +1,43 @@
 /*
-    (C)2012 AceTeaM, WebFrameWork(R). All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
-    Warning this script is protected by copyright, if you want to use this code you must ask permission:
-    Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        MR AUGUEY THOMAS
-        dev@aceteam.org
+    (C)2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-    [16-10-2012] Formulaires HTML
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    JS  Dependences: base.js
-    YUI Dependences: base, wfw, wfw-request, wfw-uri, wfw-event, wfw-style, wfw-xarg, wfw-document
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-    Revisions:
-        [16-10-2012] Implementation
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
+/**
+ * @file
+ * Fonctions utiles aux formulaires
+ *
+ * @defgroup YUI
+ * @{
+ */
+
+/**
+ * @defgroup WFW-Form
+ * @brief Fonctions utile aux formulaires
+ *
+ * @section depend Dépendences
+ * @par
+ *   - JS  Dependences: base.js
+ *   - YUI Dependences: base, wfw, wfw-request, wfw-uri, wfw-event, wfw-style, wfw-xarg, wfw-document
+ *
+ *  @{
+ */
 YUI.add('wfw-form', function (Y) {
     var wfw = Y.namespace('wfw');
     
@@ -26,14 +48,13 @@ YUI.add('wfw-form', function (Y) {
      * */
     wfw.Form = {
         /**
-         *
-         *   Vérifie et traite le résultat d'une requête de formulaire
-             Arguments:
-         *       @param [string]          form_name : Nom de l'élément <FORM>
-         *       @param [Result.RESULT]   result    : L'Objet résultat
-         *       @param [Request.REQUEST] req_obj   : L'Objet requête
-             Retourne:
-         *       @return [void]
+         *   @fn void onFormResult(form_name, result, req_obj)
+         *   @brief Vérifie et traite le résultat d'une requête de formulaire
+         *   @memberof Form
+
+         *   @param form_name [string]  Nom de l'élément <FORM>
+         *   @param result    [RESULT]  L'Objet résultat
+         *   @param req_obj   [REQUEST] L'Objet requête
         */
         onFormResult: function (form_name, result, req_obj) {
 
@@ -96,15 +117,15 @@ YUI.add('wfw-form', function (Y) {
                 wfw.puts(title+"\n"+msg);
         },
             
-        /*
-                Vérifie et traite le résultat d'une requête de formulaire (DEBUG version)
-                Paramètres:
-                    [string]          form_name : Nom de l'élément <FORM>
-                    [Result.RESULT]   result    : L'Objet résultat
-                    [Request.REQUEST] req_obj   : L'Objet requête
-                Retourne:
-                    [void]
-             **/
+        /**
+         *   @fn void onFormResultDebug(form_name, result, req_obj)
+         *   @brief Vérifie et traite le résultat d'une requête de formulaire (DEBUG version)
+         *   @memberof Form
+
+         *   @param form_name [string]  Nom de l'élément <FORM>
+         *   @param result    [RESULT]  L'Objet résultat
+         *   @param req_obj   [REQUEST] L'Objet requête
+         **/
         onFormResultDebug: function (form_name, result, req_obj) {
                 
             //par défaut, affiche les messages dans la console
@@ -138,17 +159,18 @@ YUI.add('wfw-form', function (Y) {
             func.call(inst,"-------------------------------");
         },
             
-        /*
-            Initialise un formulaire depuis un résulat de requête
-            Arguments:
-                [string/YUI.Node]   name     : Identifiant de la requête (voir wfw.request.Add())
-                [string]            formId   : Identifiant de l'élément FORM
-                [object]            args     : Tableau associatif des champs retourné par une requête XARG
-            Remarques:
-                initFromArg() affiche les messages d'erreurs avec la fonction onFormResult()
-            Retourne:
-                [bool] true en cas de succès, sinon false
-            */
+        /**
+         *   @fn void onFormResultDebug(form_name, result, req_obj)
+         *   @brief Initialise un formulaire depuis un résulat de requête
+         *   @memberof Form
+
+         *   @param name     [string/Node]   Identifiant de la requête (voir wfw.request.Add())
+         *   @param formId   [string]        Identifiant de l'élément FORM
+         *   @param args     [object]        Tableau associatif des champs retourné par une requête XARG
+
+         *   @remarks initFromArg() affiche les messages d'erreurs avec la fonction onFormResult()
+         *   @return [bool] true en cas de succès, sinon false
+         */
         initFromArg: function (name, formId, args) {
             //obtient l'element form
             var form = (typeof(formId)=="string" ? Y.Node.one("#"+formId) : formId);
@@ -172,19 +194,22 @@ YUI.add('wfw-form', function (Y) {
 
             return true;
         },
-        /*
-            Initialise un formulaire depuis l'URL
-            Arguments:
-            [string]   name     : Identifiant de la requête (voir wfw.request.Add())
-            [string]   formId   : Identifiant de l'élément FORM
-            [function] callback : Optionnel, fonction de rappel (voir remarques)
-            Remarques:
-            Format du callback: void callback(string form_name, object result, [object req_obj])
-            callback reçois en argument le résultat de la requête au format XARG (voir documentation)
-            initFromURI affiche les messages d'erreurs si l'argument '_xarg_' est présent (wfw.stdEvent.onFormResult)
-            Retourne:
-            true en cas de succès, sinon false
-            */
+
+        /**
+         *  @fn bool initFromURI(name, formId, callback)
+         *  @brief Initialise un formulaire depuis l'URL
+         *  @memberof Form
+            
+         *  @param name     [string]   Identifiant de la requête (voir wfw.request.Add())
+         *  @param formId   [string]   Identifiant de l'élément FORM
+         *  @param callback [function] Optionnel, fonction de rappel (voir remarques)
+
+         *  @remarks Format du callback: void callback(string form_name, object result, [object req_obj])
+         *  @remarks callback reçois en argument le résultat de la requête au format XARG (voir documentation)
+         *  @remarks initFromURI affiche les messages d'erreurs si l'argument '_xarg_' est présent (wfw.stdEvent.onFormResult)
+         
+         * @return true en cas de succès, sinon false
+         */
         initFromURI: function (name, formId, callback) {
             //obtient l'element form
             var form = (typeof(formId)=="string" ? Y.Node.one("#"+formId) : formId);
@@ -225,15 +250,17 @@ YUI.add('wfw-form', function (Y) {
             }
             return true;
         },
-        /*
-            Initialise un formulaire depuis un tableau de données
-            Arguments:
-            [string]   name     : Identifiant de la requête (voir wfw.request.Add())
-            [string]   formId   : Identifiant de l'élément FORM
-            [object]   fields   : tableau associatif des données
-            Retourne:
-            false en cas d'échec, true en cas de succès
-            */
+        /**
+         *  @fn bool initFromFields(name, formId, fields)
+         *  @brief Initialise un formulaire depuis un tableau de données
+         *  @memberof Form
+            
+         *  @param name     [string]   Identifiant de la requête (voir wfw.Request.Add())
+         *  @param formId   [string]   Identifiant de l'élément FORM
+         *  @param fields   [object]   Tableau associatif des données
+         
+         *  @return false en cas d'échec, true en cas de succès
+         */
         initFromFields: function (name, formId, fields) {
             //obtient l'element form
             var form = (typeof(formId)=="string" ? Y.Node.one("#"+formId) : formId);
@@ -253,14 +280,15 @@ YUI.add('wfw-form', function (Y) {
 
             return true;
         },
+
+        /**
+         *  @fn void init_fields(formId)
+         *  @brief Initialise les champs d'un formulaire
+         *  @memberof Form
             
-        /*
-            Initialise les champs d'un formulaire
-            Arguments:
-            [string] formId : Identifiant de l'élément FORM
-            Remarques :
-            Pour connaitre les different éléments spéciaux (voir formulaire)
-            */
+         *  @param formId [string] Identifiant de l'élément FORM
+         *  @remarks Pour connaitre les différent éléments spéciaux (voir formulaire)
+         */
         init_fields: function (formId) {
             //obtient l'element form
             var form = (typeof(formId)=="string" ? Y.Node.one("#"+formId) : formId);
@@ -360,18 +388,15 @@ YUI.add('wfw-form', function (Y) {
                 );
         },
             
-        /*
-            Initialise les champs d'un formulaire
-            Arguments:
-                [string] formId : Identifiant de l'élément FORM
-                [object] fields : Tableau associatif des champs à initialiser
-            Remarques:
-                Seuls les champs donnés sont initialisés, les autres champs du formulaire restent inchangés
-            Options:
-                [...A Implenter...]
-            Retourne:
-                [void]
-            */
+        /**
+         *  @fn void set_fields(formId, fields, options)
+         *  @brief Initialise les champs d'un formulaire
+         *  @memberof Form
+            
+         *  @param formId [string] Identifiant de l'élément FORM
+         *  @param fields [object] Tableau associatif des champs à initialiser
+         *  @remarks Seuls les champs donnés sont initialisés, les autres champs du formulaire restent inchangés
+         */
         set_fields: function (formId, fields,options) {
             //obtient l'element form
             var form = (typeof(formId)=="string" ? Y.Node.one("#"+formId) : formId);
@@ -466,20 +491,22 @@ YUI.add('wfw-form', function (Y) {
                 );
         },
             
-        /*
-            Obtient la liste des champs d'un formulaire
-            Arguments:
-                [string] formId  : Identifiant de l'élément FORM
-                [object] options : Optionnel, Arguments additionnels (voir options)
-            Retourne:
-                [object] Tableau associatif des champs trouvés. Vide, si aucun élément n'est trouvé
-            Remarques:
-                Les input de type "radio" sont listés avec une valeur vide si aucun choix n'est fait
-            Options:
-                [string] selectByAtt   = "name"   : Attribut utilisé pour séléctionner les éléments
-                [bool]   getStaticNode = "false"  : Si true, ajoute les éléments non éditables à la liste (div, span, p, etc...)
-                [string] lang          = null     : Langage à utiliser lors de la lecture des textes (wfw.Language)
-            */
+        /**
+         *  @fn object get_fields(formId, options)
+         *  @brief Obtient la liste des champs d'un formulaire
+         *  @memberof Form
+
+         *  @param formId  [string] Identifiant de l'élément FORM
+         *  @param options [object] Optionnel, Arguments additionnels (voir options)
+         
+         *  @return [object] Tableau associatif des champs trouvés. Vide, si aucun élément n'est trouvé
+         *  @remarks Les input de type "radio" sont listés avec une valeur vide si aucun choix n'est fait
+
+         *  @par Options
+         *  @param selectByAtt   = "name"   [string] Attribut utilisé pour séléctionner les éléments
+         *  @param getStaticNode = "false"  [bool]   Si true, ajoute les éléments non éditables à la liste (div, span, p, etc...)
+         *  @param lang          = null     [string] Langage à utiliser lors de la lecture des textes (wfw.Language)
+         */
         get_fields: function (formId, options) {
             var fields = new Object();
 
@@ -560,17 +587,19 @@ YUI.add('wfw-form', function (Y) {
                 );
             return fields;
         },
-        /*
-            Obtient les champs d'un formulaire
-            Arguments:
-                [string] formId  : Identifiant de l'élément FORM
-                [object] options : Optionnel, Arguments additionnels (voir Options)
-            Retourne:
-                [object] Tableau associatif "nom/noeud" des champs trouvés. Vide, si aucun élément n'est trouvé
-            Options:
-                [string] selectByAtt   = "name"   : Attribut servant à identifier l'élément.
-                [bool]   getStaticNode = "false"  : Accepte les éléments non standard à un formulaire (div, span, p, etc...)
-            */
+        /**
+         *  @fn object get_elements(formId, options)
+         *  @brief Obtient les champs d'un formulaire
+         *  @memberof Form
+
+         *  @param formId  [string] Identifiant de l'élément FORM
+         *  @param options [object] Optionnel, Arguments additionnels (voir Options)
+         *  @return [object] Tableau associatif "nom/noeud" des champs trouvés. Vide, si aucun élément n'est trouvé
+         
+         * @par Options
+         *  @param selectByAtt   = "name"   [string] Attribut servant à identifier l'élément
+         *  @param getStaticNode = "false"  [bool]   Accepte les éléments non standard à un formulaire (div, span, p, etc...)
+         */
         get_elements: function (formId, options) {
             var fields = new Object();
 
@@ -632,18 +661,19 @@ YUI.add('wfw-form', function (Y) {
             return fields;
         },
             
-        /*
-            Envoie un formulaire
-            Arguments:
-            [string]   formId    : Identifiant de l'élément FORM
-            [function] [callback]: Obselete
-            [string]   [uri]     : Optionnel, URI
-            [string]   [target]  : Optionnel, nom du document cible
-            Retourne:
-            [bool] false en cas d'échec. true en cas de succès.
-            Remarques:
-            send, Provoque l'envoie du formulaire par le navigateur
-            */
+        /**
+         *  @fn bool send(formId, callback, uri, target)
+         *  @brief Envoie un formulaire
+         *  @memberof Form
+
+         *  @param formId    [string]   Identifiant de l'élément FORM
+         *  @param callback  [function] Obselete
+         *  @param uri       [string]   Optionnel, URI
+         *  @param target    [string]   Optionnel, nom du document cible
+         
+         *  @return [bool] false en cas d'échec. true en cas de succès.
+         *  @remarks Provoque l'envoie du formulaire par le navigateur
+         */
         send: function (formId, callback, uri, target) {
 
             //dynamique?
@@ -671,20 +701,21 @@ YUI.add('wfw-form', function (Y) {
 
             return true;
         },
-        /*
-            Envoie un formulaire par requête
-            Arguments:
-                [string]   formId    : Identifiant de l'élément FORM
-                [string]   [uri]     : Optionnel, URI
-                [bool]     [async]   : Optionnel, asynchrone ?
-                [function] [callback]: Optionnel, callback passé à wfw.request.Add Si non spécifié 'onFormResult()' est utilisé
-                [object]   [param]   : Optionnel, paramètres passés au callback
-            Remarques:
-                sendReq, Initilise une nouvelle requête avec les champs du formulaire
-                Les éléments de type input[file] ne sont pas supportés
-            Retourne:
-                [bool] false en cas d'échec. true en cas de succès.
-            */
+        /**
+         * @fn bool sendReq(formId, uri, async, callback, param)
+         * @brief Envoie un formulaire par requête
+         * @memberof Form
+
+         * @param formId   [string]   Identifiant de l'élément FORM
+         * @param uri      [string]   Optionnel, URI
+         * @param async    [bool]     Optionnel, asynchrone ?
+         * @param callbcak [function] Optionnel, callback passé à wfw.request.Add Si non spécifié 'onFormResult()' est utilisé
+         * @param param    [object]   Optionnel, paramètres passés au callback
+         
+         * @remarks Initilise une nouvelle requête avec les champs du formulaire
+         * @remarks Les éléments de type input[file] ne sont pas supportés
+         * @return [bool] false en cas d'échec. true en cas de succès.
+         */
         sendReq: function (formId, uri, async, callback, param) {
 
             //obtient la form
@@ -708,23 +739,24 @@ YUI.add('wfw-form', function (Y) {
 
             return true;
         },
-        /*
-            Envoie un formulaire par iframe
-            Arguments:
-                [string]   formId    : Identifiant de l'élément FORM
-                [string]   [uri]     : Optionnel, URI
-                [function] [callback]: Optionnel, callback recevant la réponse, callback(responseText,param)
-                [object]   [param]   : Optionnel, paramètres passés au callback
-                [object] options : Optionnel, Arguments additionnels (voir options)
-            Remarques:
-                sendFrame, initialise une IFrame dynamique pour recevoir le contenu de la requete. La reponse est ensuite passé au callback puis l'iframe est supprimée
-                
-            Retourne:
-                [bool] false en cas d'échec. true en cas de succès.
-            Options:
-                [object] add_fileds   = null   : Tableau associatif des paramètres supplementaire à ajouter
-                [bool]   hiddenFrame  = true   : Cache l'élément iframe lors de sa création
-            */
+        /**
+         * @fn bool sendFrame(formId, uri, callback, param, options)
+         * @brief Envoie un formulaire par iframe
+         * @memberof Form
+
+         * @param formId   [string]   Identifiant de l'élément FORM
+         * @param uri      [string]   Optionnel, URI
+         * @param callback [function] Optionnel, callback recevant la réponse, callback(responseText,param)
+         * @param param    [object]   Optionnel, paramètres passés au callback
+         * @param options  [object]   Optionnel, Arguments additionnels (voir options)
+
+         * @remarks Initialise une IFrame dynamique pour recevoir le contenu de la requete. La reponse est ensuite passé au callback puis l'iframe est supprimée
+           
+         * @return [bool] false en cas d'échec. true en cas de succès.
+         * @par Options
+         * @param add_fileds   = null   [object] Tableau associatif des paramètres supplementaire à ajouter
+         * @param hiddenFrame  = true   [bool]   Cache l'élément iframe lors de sa création
+         */
         sendFrame: function (formId, uri, callback, param, options) {
             //merge les options
             options = object_merge({
@@ -811,3 +843,7 @@ YUI.add('wfw-form', function (Y) {
 }, '1.0', {
     requires:['base', 'wfw','wfw-request','wfw-xml','wfw-uri','wfw-event','wfw-style','wfw-xarg']
 });
+
+
+/** @} */ // end of group Form
+/** @} */ // end of group YUI

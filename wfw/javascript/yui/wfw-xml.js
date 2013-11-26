@@ -1,19 +1,43 @@
 /*
-    (C)2012 AceTeaM, WebFrameWork(R). All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
-    Warning this script is protected by copyright, if you want to use this code you must ask permission:
-    Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        Author: AUGUEY THOMAS
-        dev@aceteam.org
+    (C)2012,2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-    XML Site file
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    JS  Dependences: base.js
-    YUI Dependences: base, node, wfw, wfw-http, wfw-request
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-    Implementation: [19-10-2012]
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
 */
+
+/**
+ * @file
+ * Fonctions utiles
+ *
+ * @defgroup YUI
+ * @{
+ */
+
+/**
+ * @defgroup WFW-XML
+ * @brief Fonctions XML
+ *
+ * @section depend Dépendences
+ * @par
+ *   - JS  Dependences: base.js
+ *   - YUI Dependences: base, node, wfw, wfw-http, wfw-request
+ *  
+ *  @{
+ */
 
 var XML_ELEMENT_NODE = 1;
 var XML_ATTRIBUTE_NODE = 2;
@@ -61,7 +85,7 @@ YUI.add('wfw-xml', function (Y) {
          * 
          * @brief Convertie les enfants d'un élément XML en tableau associatif (non-récursif)
          * 
-         * @param xml_element L'Élément parent à scanner
+         * @param xml_element [Node] L'Élément parent à scanner
          * @return Tableau associatif correspondant à l'élément XML
         */
         nodeToArray : function(xml_element)
@@ -80,8 +104,8 @@ YUI.add('wfw-xml', function (Y) {
          * 
          * @brief Convertie les enfants d'un élément XML en tableau associatif récursif
          * 
-         * @param xml_element L'Élément parent à scanner
-         * @param ar          Optionel, tableau associatif à initialiser
+         * @param xml_element [Node] L'Élément parent à scanner
+         * @param ar          [array] Optionel, tableau associatif à initialiser
          * @return Tableau associatif correspondant à l'élément XML
         */
         nodeToArrayRecursive : function(xml_element,ar)
@@ -107,28 +131,28 @@ YUI.add('wfw-xml', function (Y) {
          * @memberof Xml
          * 
          * @brief Traite le résultat d'une requête XML via wfw.Request
-         * @param obj L'Objet wfw.Request.REQUEST
-         * @remarks Cette fonction est un callback, elle doit être utilisée en paramètre de l'objet wfw.Request.REQUEST
-         * 
+         * @param obj [REQUEST] L'Objet de la requête 
+         * @remarks Cette fonction est un callback. Elle doit être utilisée en paramètre de l'objet REQUEST
+
+         * @par Informations
          * @code{.js}
-         * // Paramètres utilisateurs à passer à la fonction wfw.Request.Add:
-         * var param = {
-         *      no_result : false,                   // Si spécifié, le contenu du fichier est retourné sans traitement des erreurs
-         *      no_msg    : false,                   // Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
-         *      onsuccess : function(obj,xml_doc, xml_root){}, // Optionnel, callback en cas de succès
-         *      onfailed  : function(obj,xml_doc, xml_root){}, // Optionnel, callback en cas de échec
-         *      onerror   : function(obj){},         // Optionnel, callback en cas d'erreur de transmition de la requête
-         *      wfw_form_name : "formName"           // Optionnel, nom associé à l'élément FORM recevant les données de retours
-         * };
-         * @endcode
-         * 
-         * @verbatim
-         * La variable xml_doc des callbacks onsuccess() et onfailed() passe le document XML en objet 
-         * onCheckRequestResult() reçoit un format XML en réponse, il convertie en objet puis traite le résultat:
+          //
+          // Paramètres utilisateurs à passer à l'objet REQUEST.user
+          //
+          var param = {
+               no_result : false,                   // Si spécifié, le contenu du fichier est retourné sans traitement des erreurs
+               no_msg    : false,                   // Si spécifié, les messages d'erreurs ne sont pas affichés à l'écran
+               onsuccess : function(obj,xml_doc, xml_root){}, // Optionnel, callback en cas de succès
+               onfailed  : function(obj,xml_doc, xml_root){}, // Optionnel, callback en cas de échec
+               onerror   : function(obj){},         // Optionnel, callback en cas d'erreur de transmition de la requête
+               wfw_form_name : "formName"           // Optionnel, nom associé à l'élément FORM recevant les données de retours
+          };
+          @endcode
+         * - Le paramètre 'xml_doc' des callbacks onsuccess() et onfailed() donne le document XML en objet.
          * - En cas d'erreur, l'erreur est traité et affiché par la fonction wfw.Document.showRequestMsg (voir documentation)
          * - En cas d'echec, l'erreur est traité et affiché par la fonction wfw.Form.onFormResult (voir documentation)
          * [Le nom du formulaire HTML utilisé pour le résultat est définit par l'argument 'wfw_form_name' (si définit), sinon le nom de l'objet de requête]
-         * @endverbatim
+         * @remarks La méthode onCheckRequestResult() reçoit un texte XML en réponse, convertie en objet utilisable puis traite le résultat
          */
         onCheckRequestResult: function (obj) {
             var param = object_merge({
@@ -443,3 +467,6 @@ YUI.add('wfw-xml', function (Y) {
     requires:['base','wfw','wfw-form','wfw-http','wfw-request']
 });
 
+
+/** @} */ // end of group XML
+/** @} */ // end of group YUI

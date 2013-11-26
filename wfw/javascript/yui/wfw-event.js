@@ -1,21 +1,43 @@
 /*
-    (C)2012 AceTeaM, WebFrameWork(R). All rights reserved.
     ---------------------------------------------------------------------------------------------------------------------------------------
-    Warning this script is protected by copyright, if you want to use this code you must ask permission:
-    Attention ce script est protege part des droits d'auteur, si vous souhaitez utiliser ce code vous devez en demander la permission:
-        Author: AUGUEY THOMAS
-        dev@aceteam.org
+    (C)2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
 
-    Gestionnaire d'evenement
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-    JS  Dependences: base.js
-    YUI Dependences: base, node, wfw
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-    Revisions:
-        [11-10-2012] Implementation
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
+/**
+ * @file
+ * Fonctions utiles au modèle de données
+ *
+ * @defgroup YUI
+ * @{
+ */
+
+/**
+ * @defgroup WFW-Event
+ * @brief Fonctions utile aux événements
+ *
+ * @section depend Dépendences
+ * @par
+ *   - JS  Dependences: base.js
+ *   - YUI Dependences: base
+ *
+ *  @{
+ */
 YUI.add('wfw-event', function (Y) {
     var wfw = Y.namespace('wfw');
     
@@ -25,48 +47,52 @@ YUI.add('wfw-event', function (Y) {
      * @brief Gestionnaire d'événements
      * */
     wfw.Event = {
-        /*
-        Tableaux des listes d'événements
-
-        list[ListName][EventType][FuncName] = {
-            [function] func  : callback
-            [mixed]    param : callback param
-        }
-        
-        Exemple:
-        
-        list["checkValueEvents"] = {
-            click : {
-                controleFocus : {
-                    func  : function(e, p){
-                        this.set("text", p.foo);
+        /**
+          * @var list
+          * @brief Tableaux des listes d'événements
+          * @memberof Event
+          
+          * @code{.js}
+            list[ListName][EventType][FuncName] = {
+                func  : [function] callback
+                param : [mixed]    callback param
+            }
+            
+            // Exemple
+            
+            list["checkValueEvents"] = {
+                click : {
+                    controleFocus : {
+                        func  : function(e, p){
+                            this.set("text", p.foo);
+                        },
+                        param : {
+                            foo : "bar"
+                        }
                     },
-                    param : {
-                        foo : "bar"
-                    }
-                },
-                ...
-           },
-           ...
-        };
+                    ...
+               },
+               ...
+            };
+           @endcode
         */
         list: new Object(),
 
-        /*
-        Ajoute ou modifie un événement à la liste spécifié
+        /**
+          *  @fn bool SetCallback(list_name, event_type, func_name, func, bUp, param)
+          *  @brief Ajoute ou modifie un événement à la liste spécifié
+          *  @memberof Event
 
-        Arguments:
-            [string]   list_name  : Identifiant de la liste à modifier ou à créer
-            [string]   event_type : Type d'événement (ex: click, mouseover, etc...)
-            [string]   func_name  : Nom indicatif de la fonction à associer (généralement, le nom réel de la fonction)
-            [function] func       : La fonction de callback à associer
-            [bool]     bUp        : Si true, la fonction est placé en tête de liste
-            [mixed]    param      : Optionnel, paramètres à passer au callback
-        Remarques:
-            La fonction 'func' prend la forme : void function(event,param);
-            Les callback retournant 'false' seront supprimés de la liste d'appel et ne seront donc plus rappelés ultérieurement
-        Retourne:
-            [bool] true
+          *  @param list_name  [string]   Identifiant de la liste à modifier ou à créer
+          *  @param event_type [string]   Type d'événement (ex: click, mouseover, etc...)
+          *  @param func_name  [string]   Nom indicatif de la fonction à associer (généralement, le nom réel de la fonction)
+          *  @param func       [function] La fonction de callback à associer
+          *  @param bUp        [bool]     Si true, la fonction est placé en tête de liste
+          *  @param param      [mixed]    Optionnel, paramètres à passer au callback
+            
+          *  @remarks La fonction 'func' prend la forme : void function(event,param);
+          *  @remarks Les callback retournant 'false' seront supprimés de la liste d'appel et ne seront donc plus rappelés ultérieurement
+          *  @return [bool] true
         */
         SetCallback: function (list_name, event_type, func_name, func, bUp, param) {
             //initialise la liste si besoin
@@ -88,15 +114,15 @@ YUI.add('wfw-event', function (Y) {
             return true;
         },
 
-        /*
-        Supprime un événement de la liste spécifié
-
-        Arguments:
-        [string]   list_name  : Identifiant de la liste
-        [string]   event_type : Type d'événement (ex: click, mouseovr, etc...)
-        [string]   func_name  : Nom indicatif de la fonction à supprimer
-        Retourne:
-        [bool] true en case de succès, false en cas d'erreur
+        /**
+         *  @fn bool UnSetCallback(list_name, event_type, func_name)
+         *  @brief Supprime un événement de la liste spécifié
+         *  @memberof Event
+         *
+         *  @param list_name  [string]   Identifiant de la liste
+         *  @param event_type [string]   Type d'événement (ex: click, mouseovr, etc...)
+         *  @param func_name  [string]   Nom indicatif de la fonction à supprimer
+         *  @return [bool] true en case de succès, false en cas d'erreur
         */
         UnSetCallback: function (list_name, event_type, func_name) {
             if ((typeof (this.list[list_name]) != 'undefined') &&
@@ -108,16 +134,16 @@ YUI.add('wfw-event', function (Y) {
             return false;
         },
 
-        /*
-        Détache une liste d'événements d'un élément
-
-        Arguments:
-            [YUI.Node]   obj       : L'Elément précédement initialisé avec ApplyTo()
-            [string]     list_name : Identifiant de la liste à modifier ou à créer
-        Remarques:
-            RemoveTo supprime la variable de référence associé à l'objet '_wfw_events'
-        Retourne:
-            [bool] true en cas de succès, false en cas d'échec
+        /**
+         *   @fn bool RemoveTo(obj, list_name)
+         *   @brief Détache une liste d'événements d'un élément
+         *   @memberof Event
+         *
+         *   @param obj       [Node]    L'Elément précédement initialisé avec ApplyTo()
+         *   @param list_name [string]  Identifiant de la liste à modifier ou à créer
+         *
+         *   @remarks RemoveTo supprime la variable de référence associé à l'objet '_wfw_events'
+         *   @return [bool] true en cas de succès, false en cas d'échec
         */
         RemoveTo: function (obj, list_name) {
             //var states = new wfw.Event.CALL_LIST(obj.get("id")+":wfw_event");
@@ -127,17 +153,18 @@ YUI.add('wfw-event', function (Y) {
             return true;
         },
         
-        /*
-        Attache une liste d'événements à un élément
-
-        Arguments:
-            [YUI.Node]   obj       : L'Elément à initialiser
-            [string]     list_name : Identifiant de la liste à modifier ou à créer
-        Remarques:
-            ApplyTo ajoute une variable de référence associé à l'objet '_wfw_events'
-            Un élément ne peut être attaché qu'à une seule liste à la fois
-        Retourne:
-            [bool] true en cas de succès, false en cas d'échec
+        /**
+         *   @fn bool ApplyTo(obj, list_name)
+         *   @brief Attache une liste d'événements à un élément
+         *   @memberof Event
+         *
+         *   @param obj       [Node]    L'Elément à initialiser
+         *   @param list_name [string]  Identifiant de la liste à modifier ou à créer
+         *
+         *   @remarks ApplyTo ajoute une variable de référence associé à l'objet '_wfw_events'
+         *   @remarks Un élément ne peut être attaché qu'à une seule liste à la fois
+         *
+         *   @return [bool] true en cas de succès, false en cas d'échec
         */
         ApplyTo: function (obj, list_name) {
             //var states = new wfw.Event.CALL_LIST(obj.get("id")+":wfw_event");
@@ -164,11 +191,12 @@ YUI.add('wfw-event', function (Y) {
             return true;
         },
         
-        /*
-        CALLBACK
-        Appel successivement l'ensemble des callbacks attachées a l'élément
-        Remarques:
-        Les callback retournant 'false' seront supprimés de la liste d'appel et ne seront donc plus rappelés ultérieurement
+        /**
+          *   @fn bool onEventCall(e, events_list)
+          *   @brief Callback: Appel successivement l'ensemble des callbacks attachés a l'élément
+          *   @memberof Event
+
+          *   @remarks Les callback retournant 'false' seront supprimés de la liste d'appel et ne seront donc plus rappelés ultérieurement
         */
         onEventCall: function (e, events_list) {
             //recupere l'objet evenement (inutile ?!)
@@ -192,11 +220,12 @@ YUI.add('wfw-event', function (Y) {
             }
         },
         
-        /*
-        CALLBACK
-            Appel un événement
-        Remarques:
-            Les callback retournant 'false' seront supprimés de la liste d'appel et ne seront donc plus rappelés ultérieurement
+        /**
+          *   @fn bool callEvent(event_obj,list_name, event_type)
+          *   @brief Callback: Appel un événement
+          *   @memberof Event
+
+          *   @remarks Les callback retournant 'false' seront supprimés de la liste d'appel et ne seront donc plus rappelés ultérieurement
         */
         callEvent: function (event_obj,list_name, event_type) {
             //obtient la liste pour cet evenement
@@ -222,3 +251,7 @@ YUI.add('wfw-event', function (Y) {
 }, '1.0', {
     requires:['base','wfw']
 });
+
+
+/** @} */ // end of group Event
+/** @} */ // end of group YUI

@@ -19,13 +19,32 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
+/**
+ * @file
+ * Fonctions utiles au modèle de données
+ *
+ * @defgroup YUI
+ * @{
+ */
+
+/**
+ * @defgroup WFW-DataModel
+ * @brief Fonctions du modèle de données
+ *
+ * @section depend Dépendences
+ * @par
+ *   - JS  Dependences: base.js
+ *   - YUI Dependences: base, wfw, wfw-event, wfw-utils, wfw-navigator
+ *
+ *  @{
+ */
 YUI.add('wfw-datamodel', function (Y) {
     var wfw = Y.namespace('wfw');
     
     /**
      * @class DataModel
      * @memberof wfw
-     * @brief Fonctions relatives aux model de données
+     * @brief Fonctions relatives au modèle de données
      * */
     wfw.DataModel = {
 
@@ -90,13 +109,15 @@ YUI.add('wfw-datamodel', function (Y) {
         
         /*------------------------------------------------------------------------------------------------------------------*/
         /**
+         * @fn array fetchData(table_name, cols)
          * @brief Récupére des données d'une table SQL
+         * @memberof Request
+         *
          * @param string table_name Nom de table
          * @param array cols Liste des identifiants de colonnes
          * @return array Tableau des données
          * @remarks Cette fonction utilise le contrôleur 'datafetch' pour obtenir les données.
-         * @remarks Pour fonctionner, l'index de page 'datafetch' avec l'URL valide doit être définit dans le fichier 'default.xml' de votre application
-         **/
+         */
         /*------------------------------------------------------------------------------------------------------------------*/
 
         fetchData: function(table_name, cols)
@@ -126,12 +147,14 @@ YUI.add('wfw-datamodel', function (Y) {
         },
 
         /**
-         ------------------------------------------------------------------------------------------------------------------
+         * @fn array getFieldInfos(id)
          * @brief Obtient des informations sur un champ
+         * @memberof Request
+         *
          * @param string id Identifiant du champ
          * @return object Tableau associatif contenant les informations sur le champ
          * 
-         * ## Retour
+         * @par Retour
          * Détail sur le format de l'objet retourné
          * @code{.js}
          * var obj = wfw.DataModel.getFieldInfos('field_name');
@@ -141,8 +164,7 @@ YUI.add('wfw-datamodel', function (Y) {
          *  type  : string // Type du champ (tel que definit dans la configuration [fields_formats])
          * };
          * @endcode
-         ------------------------------------------------------------------------------------------------------------------
-         **/
+         */
 
         getFieldInfos : function(id)
         {
@@ -167,24 +189,25 @@ YUI.add('wfw-datamodel', function (Y) {
         },
 
         /**
-         ------------------------------------------------------------------------------------------------------------------
+         * @fn array getFieldsInfos(ids)
          * @brief Obtient des informations sur plusieurs champs
-         * @param array id Identifiants des champs
+         * @memberof Request
+         * 
+         * @param id [array] Identifiants des champs
          * @return array Liste des tableaux associatifs contenant les informations sur les champs
          * 
-         * ## Retour
+         * @par Retour
          * Détail sur le format de l'objet retourné
-         * @code{.js}
-         * var obj = wfw.DataModel.getFieldInfos('field_name');
-         * obj == [
-         *   {id,label,type},
-         *   {id,label,type},
-         *   {id,label,type},
-         *   ...
-         * ];
-         * @endcode
-         ------------------------------------------------------------------------------------------------------------------
-         **/
+          @code{.js}
+          var obj = wfw.DataModel.getFieldInfos('field_name');
+          // obj == [
+          //  {id,label,type},
+          //  {id,label,type},
+          //  {id,label,type},
+          //  ...
+          // ];
+          @endcode
+         */
 
         getFieldsInfos : function(ids)
         {
@@ -214,8 +237,12 @@ YUI.add('wfw-datamodel', function (Y) {
 
         /*------------------------------------------------------------------------------------------------------------------*/
         /**
-         * @brief Charge le model de données
-         **/
+         * @fn array loadDataModel()
+         * @brief Charge le modèle de données
+         * @memberof Request
+         *
+         * @return [XMLDocument] document du modèle de données
+         */
         /*------------------------------------------------------------------------------------------------------------------*/
 
         loadDataModel : function()
@@ -247,10 +274,14 @@ YUI.add('wfw-datamodel', function (Y) {
 
         /*------------------------------------------------------------------------------------------------------------------*/
         /**
+         * @fn object bindValue(type,value)
          * @brief Convertie une valeur en type Javascript
-         **/
+         * @memberof Request
+         *
+         * @return [object] Objet de données
+         * @retval null La classe input n'existe pas
+         */
         /*------------------------------------------------------------------------------------------------------------------*/
-
         bindValue : function(type,value)
         {
             var className = "cInput"+type.toLowerCase();
@@ -263,10 +294,14 @@ YUI.add('wfw-datamodel', function (Y) {
         
         /*------------------------------------------------------------------------------------------------------------------*/
         /**
-         * @brief Convertie une valeur en type wfw
-         **/
+         * @fn string parseValue(value)
+         * @brief Convertie un type Javascript en type Webframework
+         * @memberof Request
+         *
+         * @return [string] Valeur convertie
+         * @retval null Pour le type null
+         */
         /*------------------------------------------------------------------------------------------------------------------*/
-
         parseValue : function(value)
         {
             if(value == null)
@@ -288,11 +323,13 @@ YUI.add('wfw-datamodel', function (Y) {
      * FIELD Class Implementation
      *-----------------------------------------------------------------------------------------------------------------------*/
     
-    /*
-    * Génére un nom unique dans le membre 'name'
-    * Retourne:
-    *  [void]
-    * */
+    /**
+     * @fn string createHTML()
+     * @brief Crée l'élément HTML
+     * @memberof FIELD
+     *
+     * @return [Node] Noeud du champ
+     */
     wfw.DataModel.FIELD.prototype.createHTML = function(){
         return Y.Node.create('<input type="text" name="'+this.id+'">');
     };
@@ -303,11 +340,13 @@ YUI.add('wfw-datamodel', function (Y) {
     
     Y.extend(wfw.DataModel.FORM,wfw.OBJECT);
 
-    /*
-    * Génére un nom unique dans le membre 'name'
-    * Retourne:
-    *  [void]
-    * */
+    /**
+     * @fn string createHTML()
+     * @brief Créer le formulaire HTML
+     * @memberof FORM
+     *
+     * @return [Node] Noeud du formulaire
+     */
     wfw.DataModel.FORM.prototype.createHTML = function(){
         wfw.puts(this.fields);return;
         for(var i in this.fields){
@@ -321,3 +360,6 @@ YUI.add('wfw-datamodel', function (Y) {
 }, '1.0', {
     requires:['base','wfw','wfw-event','wfw-utils','wfw-navigator']
 });
+
+/** @} */ // end of group DataModel
+/** @} */ // end of group YUI
