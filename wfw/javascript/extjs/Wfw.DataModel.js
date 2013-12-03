@@ -1,4 +1,4 @@
-﻿/*
+/*
     ---------------------------------------------------------------------------------------------------------------------------------------
     (C)2013 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
@@ -167,7 +167,6 @@ Ext.define('Wfw.DataModel.FieldsDialog', {
             items: this.fieldsform
         });
 
-            
         //this.form = Ext.create('Wfw.FieldsForm',config);
         this.btnCancel = Ext.create('Ext.Button',{
             text:"Annuler",
@@ -175,7 +174,7 @@ Ext.define('Wfw.DataModel.FieldsDialog', {
                 me.close();
             }
         });
-            
+
         this.btnOK = Ext.create('Ext.Button',{
             text:"OK",
             handler: function() {
@@ -183,7 +182,7 @@ Ext.define('Wfw.DataModel.FieldsDialog', {
                 me.close();
             }
         });
-            
+
         Ext.apply(this, {
             buttons: [
             this.btnCancel,
@@ -206,13 +205,43 @@ Ext.define('Wfw.DataModel.FieldsDialog', {
     }
 });
 
-/*------------------------------------------------------------------------------------------------------------------*/
 /**
- * @brief Convertie les formulaires HTML présents en formulaire dynamique ExtJS
- * @remarks Le forumalire HTML original doit être généré via la methode PHP Application.makeFormView()
- **/
-/*------------------------------------------------------------------------------------------------------------------*/
+ * @brief Convertie un champ du model de données en composant Extjs
+ * @param att [object] Attributs du champs
+ * @par Exemple
+ * @code{.js}
+  var extjsComp = Wfw.DataModel.makeField({
+        id:"data_model_name",   // define the data model id
+        type:"data_model_type", // auto by default
+        label:"text",           // auto by default
+        optional:false,         // true si optional field item
+        //name:false            // auto by default (same of id)
+  });
+  @endcode
+ */
+Wfw.DataModel.makeFieldList = function(data)
+{
+    var fieldList = [];
+    for(var id in data){
+        fieldList.push({id:id});
+    }
+    return fieldList;
+}
 
+/**
+ * @brief Convertie un champ du model de données en composant Extjs
+ * @param att [object] Attributs du champs
+ * @par Exemple
+ * @code{.js}
+  var extjsComp = Wfw.DataModel.makeField({
+        id:"data_model_name",   // define the data model id
+        type:"data_model_type", // auto by default
+        label:"text",           // auto by default
+        optional:false,         // true si optional field item
+        //name:false            // auto by default (same of id)
+  });
+  @endcode
+ */
 Wfw.DataModel.makeField = function(att)
 {
     var wfw = Y.namespace("wfw");
