@@ -59,6 +59,7 @@
             <APP_CTRL_NOT_FOUND>Contrôleur introuvable</APP_CTRL_NOT_FOUND>
             <APP_CTRL_CLASS_NOT_FOUND>Classe contrôleur introuvable</APP_CTRL_CLASS_NOT_FOUND>
             <APP_CANT_REMOVE_RESOURCE>Impossible de supprimer la ressource</APP_CANT_REMOVE_RESOURCE>
+            <APP_INVALID_ARGUMENT_TYPE>Argument de fonction invalide</APP_INVALID_ARGUMENT_TYPE>
             
             <!-- WFW (ERR_SYSTEM) -->
             <NOT_SPECIFIED>Erreur non spécifié</NOT_SPECIFIED>
@@ -99,6 +100,7 @@
             <APP_CTRL_NOT_FOUND>Le fichier de contrôleur "$CTRL" est introuvable</APP_CTRL_NOT_FOUND>
             <APP_CTRL_CLASS_NOT_FOUND>Merci de vérifier le nom de classe. Celle-ci doit se nommée: $CLASS_NAME</APP_CTRL_CLASS_NOT_FOUND>
             <APP_CANT_REMOVE_RESOURCE>Le fichier suivant ne peut pas être supprimé: $FILE</APP_CANT_REMOVE_RESOURCE>
+            <APP_INVALID_ARGUMENT_TYPE>Fonction: $FUNCTION. Type attendu: $EXPECTED. Type reçu: $PASSED</APP_INVALID_ARGUMENT_TYPE>
         </messages>
         
         <fields>

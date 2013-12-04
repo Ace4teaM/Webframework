@@ -96,7 +96,18 @@ class cApplication implements iApplication{
      * @param CLASS_NAME Nom de la classe
      */
     const UnknownFieldClass          = "APP_UNKNOWN_FIELD_CLASS";
+    /**
+     * Argument invalide
+     */
     const InvalidArgument            = "APP_INVALID_ARGUMENT";
+
+    /**
+     * Type d'argument invalide
+     * @param FUNCTION Nom de la fonction appelée
+     * @param PASSED Type passé
+     * @param EXCPECTED Type attendu
+     */
+    const InvalidArgumentType        = "APP_INVALID_ARGUMENT_TYPE";
 
     /** 
      * Résultat: Ressource introuvable
