@@ -25,6 +25,14 @@
  *
  * @defgroup Application
  * @brief Classe de base d'une application
+ *
+ * L'implémentation propose la gestion :
+ * - Base de données
+ * - Fabrication des templates
+ * - Message d'erreurs (traductions et affichage)
+ * - Gestion de la configuration
+ *
+ *
  * @{
  */
 
@@ -49,12 +57,7 @@ class FormField
 
 /**
  * @brief Interface principale de l'application 
- * La classe Application propose une implémentation minimale de l'interface iApplication requise par la librairie.
- * L'implémentation propose la gestion :
- * - Base de données
- * - Fabrication des templates
- * - Message d'erreurs (traductions et affichage)
- * - Gestion de la configuration
+ * @remarks La classe Application propose une implémentation minimale de l'interface iApplication requise par la librairie.
  */
 class cApplication implements iApplication{
     //errors class
@@ -552,8 +555,8 @@ class cApplication implements iApplication{
     
     /**
      * @brief Fabrique une vue HTML
-     * @param string $filename Chemin d'accès au fichier template (relatif à la racine du site)
-     * @param string $attributes Tableau associatif des champs en entrée (voir cHTMLTemplate::transform)
+     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
+     * @param $attributes Tableau associatif des champs en entrée (voir cHTMLTemplate::transform)
      * @return string Contenu du template transformé
      */
     function makeHTMLView($filename,$attributes){

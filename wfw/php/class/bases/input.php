@@ -25,9 +25,14 @@ require_once("class/bases/cResult.php");
 /**
  * @file input.php
  *
- * @defgroup Application
+ * @defgroup Inputs
  * @brief Définition de champ
  * @{
+ */
+
+
+/**
+ * @brief Classe de base d'un champ de controle
  */
 class cInput {
 
@@ -52,8 +57,8 @@ class cInput {
 
     /**
      * @brief Convertie le champ en script HTML (obselete)
-     * @param id Identifiant de la balise HTML
-     * @param value Valeur du champ à insérer
+     * @param $id Identifiant de la balise HTML
+     * @param $value Valeur du champ à insérer
      * @return Texte du script HTML
      */
     public static function toHTML($id, $value) {
@@ -75,6 +80,15 @@ class cInput {
     public static function toObject($value){
         return $value;
     }
+
+    /**
+     * @brief Retourne l'expression régulière associée à ce champ
+     * @return Chaine
+     */
+    public static function regExp() {
+        return "";
+    }
+
 }
 
 /** @} */ // end of group

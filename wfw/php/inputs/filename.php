@@ -1,14 +1,41 @@
 <?php
 /*
-  (C)2010 WebFrameWork 1.3
-	La classe cInputFileName valide le format d'un nom de fichier
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    ---------------------------------------------------------------------------------------------------------------------------------------
+    This file is part of WebFrameWork.
+
+    WebFrameWork is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WebFrameWork is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+    ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
 require_once("class/bases/input.php");
 require_once("string.php");
 
+/**
+ * @file filename.php
+ *
+ * @defgroup Inputs
+ * @{
+ */
+
+/**
+ * @brief Test un nom de fichier Windows
+ */
 class cInputWindowsFileName extends cInput
 {
+    /** @copydoc cInput::isValid */
 	public static function isValid($value){
 		if( empty_string($value) )
                     return RESULT(cResult::Failed,cInput::EmptyText);
@@ -28,16 +55,22 @@ class cInputWindowsFileName extends cInput
 
 		return RESULT_OK();
 	}
+    /** @copydoc cInput::toHTML */
 	public static function toHTML($id,$value){
 		return '<input lang="en-us" size="20" maxlength="'.($this->getMaxLength()).'" name="'.$id.'" id="'.$id.'" type="text" value="'.$value.'" wbfw="mail" >';
 	}
+    /** @copydoc cInput::getMaxLength */
 	public static function getMaxLength(){
 		return 256;
 	}
 }
 
+/**
+ * @brief Test un nom de fichier UNIX
+ */
 class cInputUNIXFileName extends cInput
 {
+    /** @copydoc cInput::isValid */
 	public static function isValid($value){
 		if( empty($value) )
 			return RESULT(cResult::Failed,cInput::EmptyText);
@@ -57,12 +90,15 @@ class cInputUNIXFileName extends cInput
 
 		return RESULT_OK();
 	}
+    /** @copydoc cInput::toHTML */
 	public static function toHTML($id,$value){
 		return '<input lang="en-us" size="20" maxlength="'.($this->getMaxLength()).'" name="'.$id.'" id="'.$id.'" type="text" value="'.$value.'" wbfw="mail" >';
 	}
+    /** @copydoc cInput::getMaxLength */
 	public static function getMaxLength(){
 		return 256;
 	}
 }
 
+/** @} */ // end of group
 ?>

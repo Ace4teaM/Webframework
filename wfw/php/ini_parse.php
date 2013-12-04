@@ -25,10 +25,42 @@
  *
  * @defgroup Configuration
  * @brief Fichier de configuration
+ * Cette implémentation ajoute des fonctionnalités au format classique des fichiers INI 
  * @par Fonctionalités
  * - Transtypage des données
- * - Importation de fichiers (commande "@include file_name")
- * - Définit de constantes (commande "@const name")
+ * - Inclusion de fichiers
+ * - Définition de constantes
+ *
+ *  @section samples Exemples
+ *  @subsection const Définir une constante
+  @code{.ini}
+
+  ;
+  ; Définition de la constante 'path'
+  ;
+  @const path = "./my_app/www"
+
+  @endcode
+
+ * @subsection const_use Utiliser une constante
+  @code{.ini}
+
+  ;
+  ; Utilisation de la constante 'path'
+  ;
+  images_path    = "${path}/gfx"   ; équivaut à "./my_app/www/gfx"
+  documents_path = "${path}/doc"   ; équivaut à "./my_app/www/doc"
+
+  @endcode
+ * @subsection include Inclusion
+  @code{.ini}
+
+  ;
+  ; Inclusion d'un autre fichier INI
+  ;
+  @include "config/other.ini"
+
+  @endcode
  * @{
  */
 
@@ -44,24 +76,8 @@ require_once("inputs/datetime.php");
  * @param type $content Combinaison des masques suivants: INI_PARSE_UPPERCASE
  * @return array La configuration est retournée sous la forme d'un tableau associatif
  * @retval FALSE Une erreur est survenue
- * 
  * @remarks La constante ROOT_PATH doit être définit
  * 
- * @par Exemple
-  @code{.ini}
-  ;; Exemple de fichier ini étendu ;;
-  
-  ; définition d'une constante réutilisable
-  @const path = "./my_app/www"
-  
-  ; utilisation de la constante 'path'
-  [my_section]
-  images_path    = "${path}/gfx"   ; == "./my_app/www/gfx"
-  documents_path = "${path}/doc"   ; == "./my_app/www/doc"
-  
-  ; inclusion d'un autre fichier ini
-  @include "config/other.ini"
-  @endcode
  */
 function parse_ini_file_ex($filename,$att=INI_PARSE_UPPERCASE){
     
