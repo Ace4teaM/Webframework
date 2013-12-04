@@ -403,6 +403,23 @@ class cApplication implements iApplication{
     }
     
     /** 
+     * @todo A implémenter
+     */
+    function getURI($id,$params)
+    {
+        return RESULT(cResult::Failed,cApplication::UnsuportedFeature,array("FEATURE"=>"getURI"));
+        /*if(!$this->getDefaultFile($default))
+            return false;
+
+        $uri = $default->getIndexValue("page", $id);
+        
+        $uri_cmp = parse_url( $uri );
+        $query = $uri_cmp[PHP_URL_QUERY];
+        RESULT_OK();
+        return $uri;*/
+    }
+    
+    /** 
      * Obtient le nom de l'hote
      * @return Résultat de la procédure
      * @retval true La fonction à réussit, $hostname contient le nom de l'hôte (ex: localhost)

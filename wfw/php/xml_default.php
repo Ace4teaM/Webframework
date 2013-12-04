@@ -163,7 +163,7 @@ class cXMLDefault {
             return $node->nodeValue;
         return "";
     }
-
+    
     /*
       Obtient un noeud de l'index
       Arguments:
