@@ -223,7 +223,7 @@ Wfw.DataModel.makeFieldList = function(data)
 {
     var fieldList = [];
     for(var id in data){
-        fieldList.push({id:id});
+        fieldList.push({id:id,value:data[id]});
     }
     return fieldList;
 }
@@ -237,6 +237,7 @@ Wfw.DataModel.makeFieldList = function(data)
         id:"data_model_name",   // define the data model id
         type:"data_model_type", // auto by default
         label:"text",           // auto by default
+        value:null,             // null by default
         optional:false,         // true si optional field item
         //name:false            // auto by default (same of id)
   });
@@ -251,6 +252,7 @@ Wfw.DataModel.makeField = function(att)
         type:false,
         label:false,
         optional:false,
+        value:null,
         name:false//optionel, en remplacement de l'id
     };
     
@@ -261,7 +263,8 @@ Wfw.DataModel.makeField = function(att)
 
     var item = {
         name:(def.name?def.name:att.id),
-        fieldLabel: att.label
+        fieldLabel: att.label,
+        value: def.value
     };
     
     if(att.optional)
