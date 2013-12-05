@@ -160,8 +160,9 @@ YUI.add('wfw-datamodel', function (Y) {
          * var obj = wfw.DataModel.getFieldInfos('field_name');
          * obj == {
          *  id    : string // Identifiant du champ (passé en argument)
-         *  label : string // Nom du champ
+         *  name  : string // Nom du champ
          *  type  : string // Type du champ (tel que definit dans la configuration [fields_formats])
+         *  label : string // Titre du champ
          * };
          * @endcode
          */
@@ -180,12 +181,17 @@ YUI.add('wfw-datamodel', function (Y) {
                 wfw.puts("getFieldInfos: unknown "+id+" filed");
                 return false;
             }
-            return {
+            var field = {
                 id    : id,
                 name  : id,
                 type  : fieldNode.get("text"),
                 label : fieldNode.getAttribute("label")
             };
+            //Titre par défaut
+            if(empty(field.label))
+                field.label = "["+field.name+"]";
+            //return
+            return field;
         },
 
         /**
