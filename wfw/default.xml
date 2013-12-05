@@ -107,6 +107,7 @@
             <!-- CONTROLER -->
             <app>Nom de l'application</app>
             <ctrl>Nom de contrôleur</ctrl>
+            <output>Format de sortie</output>
             
             <!-- RESULT -->
             <result>Contexte de résultat</result>
