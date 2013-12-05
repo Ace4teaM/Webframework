@@ -206,8 +206,31 @@ Ext.define('Wfw.DataModel.FieldsDialog', {
 });
 
 /**
+ * @brief Convertie une liste de champs XML en liste de champs Extjs (utilisable avec Wfw.DataModel.FieldsForm)
+ * @param node [Y.Node] Noeud parent des champs
+ * @return [array] Liste des champs
+ */
+Wfw.DataModel.makeFieldsListFromXml = function(node)
+{
+    //liste les champs
+    var fieldNode = node.one(">*");
+    var fields = [];
+    while(fieldNode){
+        fields.push({
+            id : fieldNode.get("tagName"),
+            value : fieldNode.get("text")
+        });
+        fieldNode = fieldNode.next();
+    }
+    
+    return fields;
+}
+
+/**
  * @brief Convertie un champ du model de données en composant Extjs
  * @param att [object] Attributs du champs
+ * @return [array] Liste des champs
+ * 
  * @par Exemple
  * @code{.js}
   var extjsComp = Wfw.DataModel.makeField({
