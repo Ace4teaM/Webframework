@@ -33,9 +33,16 @@ class cResult {
     const Failed = "ERR_FAILED";   //!< @brief Contexte en cas d'erreur ou d'echec de l'application
     const System = "ERR_SYSTEM";   //!< @brief Contexte en cas d'erreur ou d'echec du système 
     
+    /**
+     * @defgroup Erreurs
+     * @{
+     */
+
     //codes
     const Success = "SUCCESS";                       //!< @brief Résultat: Succès
     const UnsuportedFeature = "UNSUPORTED_FEATURE";  //!< @brief Résultat: Fonctionnalité non supportée
+    
+    /** @} */
     
     //
     public static $last_code,$last_info,$last_att;

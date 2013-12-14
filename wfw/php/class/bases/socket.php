@@ -21,13 +21,22 @@
  */
 
 /**
- * Connexion de base à un serveur
+ * @brief Connexion de base à un serveur
  * Librairie PHP5
  */
 class cSocket {
-    //std error code
+    /**
+     * @defgroup Erreurs
+     * @{
+     */
+
+    /**
+     * @brief Impossible d'ouvrir l'URL
+     */
     const OpenURL = "SOCK_OPEN_URL";
 
+    /** @} */
+    
     var $sock = FALSE;
     var $errstr;
     var $errno;

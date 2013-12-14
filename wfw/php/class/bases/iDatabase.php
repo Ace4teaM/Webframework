@@ -36,9 +36,16 @@ require_once("cResult.php");
  * @brief Interface de connexion avec une base de données
  */
 interface iDatabase {
+    /**
+     * @defgroup Erreurs
+     * @{
+     */
+
     const ConnectionFailed = "DB_CONNECTION";
     const QueryFailed = "DB_SQL_QUERY";
 
+    /** @} */
+    
     /**
      * @brief Obtient le nom du service utilisé
      * 

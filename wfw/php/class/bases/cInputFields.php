@@ -28,15 +28,24 @@
  * @{
  */
 class cInputFields {
-    /** Aucun champ reçu */
-    const NoInputFileds = "NO_INPUT_FIELD";
+    
     /**
-     * Champ Manquant
+     * @defgroup Erreurs
+     * @{
+     */
+
+    /** @brief Aucun champ reçu */
+    const NoInputFileds = "NO_INPUT_FIELD";
+    
+    /**
+     * @brief Champ Manquant
      * @param FIELD_NAME Nom du champ manquant
      */
     const MissingArg = "MISSING_FIELD";
     const InvalidInput = "INVALID_INPUT";
 
+    /** @} */
+    
     /*
      * @brief Test les formats d'un tableau de champs
      * @param array $required_arg  Liste des défintions de champs requis. Si NULL, aucun.

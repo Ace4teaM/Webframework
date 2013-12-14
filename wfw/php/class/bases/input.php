@@ -36,6 +36,11 @@ require_once("class/bases/cResult.php");
  */
 class cInput {
 
+    /**
+     * @defgroup Erreurs
+     * @{
+     */
+
     const EmptyText      = "EMPTY_TEXT";
     const InvalidChar    = "INVALID_CHAR";
     const InvalidFormat  = "INVALID_FORMAT";
@@ -44,6 +49,8 @@ class cInput {
     const Undersized     = "UNDERSIZED";
     const TooSmallString = "TOO_SMALL_STRING";
 
+    /** @} */
+    
     /**
      * @brief Vérifie la validité du format d'un champ
      * @return Résultat de la procédure

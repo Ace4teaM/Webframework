@@ -60,6 +60,12 @@ class FormField
  * @remarks La classe Application propose une implémentation minimale de l'interface iApplication requise par la librairie.
  */
 class cApplication implements iApplication{
+    
+    /**
+     * @defgroup Erreurs
+     * @{
+     */
+
     //errors class
     const Configuration              = "APP_CONFIGURATION";
     const ModuleClassNotFound        = "APP_MODULE_NOT_FOUND";
@@ -75,37 +81,37 @@ class cApplication implements iApplication{
     const UnsuportedRoleByCtrl       = "APP_UNSUPORTED_ROLE_BY_CTRL";
     const CantLoadDefaultFile        = "APP_CANT_LOAD_DEFAULT_FILE";
     /**
-     * Controleur introuvable
+     * @brief Controleur introuvable
      * @param CTRL Nom du controleur
      */
     const CtrlNotFound               = "APP_CTRL_NOT_FOUND";
     /**
-     * Classe du controleur introuvable
+     * @brief Classe du controleur introuvable
      * @param CLASS_NAME Nom de la classe
      */
     const CtrlClassNotFound          = "APP_CTRL_CLASS_NOT_FOUND";
     /**
-     * Champ inconnue
+     * @brief Champ inconnue
      * @param FIELD_NAME Nom du champ
      */
     const UnknownField               = "APP_UNKNOWN_FIELD";
     /**
-     * Format de champ inconnue
+     * @brief Format de champ inconnue
      * @param FIELD_NAME Nom du champ
      */
     const UnknownFieldFormat         = "APP_UNKNOWN_FIELD_FORMAT";
     /**
-     * Classe de champ inconnue
+     * @brief Classe de champ inconnue
      * @param CLASS_NAME Nom de la classe
      */
     const UnknownFieldClass          = "APP_UNKNOWN_FIELD_CLASS";
     /**
-     * Argument invalide
+     * @brief Argument invalide
      */
     const InvalidArgument            = "APP_INVALID_ARGUMENT";
 
     /**
-     * Type d'argument invalide
+     * @brief Type d'argument invalide
      * @param FUNCTION Nom de la fonction appelée
      * @param PASSED Type passé
      * @param EXCPECTED Type attendu
@@ -113,32 +119,42 @@ class cApplication implements iApplication{
     const InvalidArgumentType        = "APP_INVALID_ARGUMENT_TYPE";
 
     /** 
-     * Résultat: Ressource introuvable
+     * @brief Résultat: Ressource introuvable
      * @param FILE Nom du fichier/ressource concernée
      */
     const ResourceNotFound           = "APP_RESOURCE_NOT_FOUND";
     
     /** 
-     * Résultat: Impossible de créer une ressource
+     * @brief Résultat: Impossible de créer une ressource
      * @param FILE Nom du fichier/ressource concernée
      */
     const CantCreateResource           = "APP_CANT_CREATE_RESOURCE";
     
     /** 
-     * Résultat: Impossible de supprimer une ressource
+     * @brief Résultat: Impossible de supprimer une ressource
      * @param FILE Nom du fichier/ressource concernée
      */
     const CantRemoveResource           = "APP_CANT_REMOVE_RESOURCE";
+    
+    
+    /** @} */
     
     //options
     const FieldFormatClassName = 1;
     const FieldFormatName      = 2;
     
+    /**
+     * @defgroup Roles
+     * @{
+     */
+
     //roles
     const AnyRole       = 0xffffffff;
     const AdminRole     = 0x10000000;
     const PublicRole    = 0x20000000;
     const UserRole      = 0x40000000;
+    
+    /** @} */
     
     //
     protected $template_attributes;
