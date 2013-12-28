@@ -86,7 +86,7 @@ class cTemplateMarker_superclass extends cTemplateMarker {
 
 /*
   check_simple_value
-  appele par check_text(), retourne la valeur d'un argument / argument de requete / dans la selection en cours
+  appelé par check_text(), retourne la valeur d'un argument / argument de requete / dans la selection en cours
   Syntaxe:
   -{identifier}
   -{identifier|'default value'}
@@ -467,7 +467,6 @@ class cTemplateMarkerdefault extends cTemplateMarker {
  *           Syntaxe: -{:[page_identifier]}
  *           Retourne l'URI compléte d'une page
  */
-
 class cTemplateMarker_node extends cTemplateMarker {
 
     public $sitefile;
@@ -531,9 +530,8 @@ class cTemplateMarker_node extends cTemplateMarker {
  * @remarks
  *   - check_selector
  *           Syntaxe: -{$syntax }
- *           Retourne la valeur d'un attribut dans la sélection active
+ *           Retourne la valeur d'un noeud dans la sélection active
  */
-
 class cTemplateMarker_selector extends cTemplateMarker {
 
     public static function exp() {
@@ -549,6 +547,38 @@ class cTemplateMarker_selector extends cTemplateMarker {
         if ($select)
             return $select->nodeValue;
         return "";
+    }
+
+}
+
+/*
+ * @brief Retourne la sélection XML en cours
+ * @remarks
+ *   - get_selection
+ *           Syntaxe: -{#__cur_selector__}
+ *           Retourne le chemin au noeud en cours
+ */
+class cTemplateMarker_selection extends cTemplateMarker {
+
+    public static function exp() {
+        return array(('\#__cur_selector__') => 'get_selection');
+    }
+
+    function __construct($input, &$arg) {
+        
+    }
+
+    public function get_selection($input, $select, $matches, &$arg) {
+        if($select === NULL)
+            return "NO SELECTION";
+        $path = "";
+        $node = $select;
+        while($node){
+            if($node->nodeType == XML_ELEMENT_NODE)
+                $path .= (empty($path) ? "" : " > ").$node->tagName;
+            $node = $node->nextSibling;
+        }
+        return ":".basename($select->ownerDocument->documentURI).":" . $path;
     }
 
 }
