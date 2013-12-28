@@ -32,7 +32,7 @@ class cApplicationCtrl{
     public $fields     = null; /**< Identifiants des champs requis */
     public $op_fields  = null; /**< Identifiants des champs optionnels */
     public $out_fields = null; /**< Identifiants des champs retournés */
-    public $att        = null; /**< Source des champs en entrée, si NULL $_REQUEST est utilisé */
+    public $att        = array(); /**< Source des champs en entrée, si NULL $_REQUEST est utilisé */
     public $role       = null; /**< Role utilisé pour executer le controleur */
     
     /**
