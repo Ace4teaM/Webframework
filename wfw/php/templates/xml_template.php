@@ -694,6 +694,36 @@ class cXMLTemplate
     } 
     
     /**
+     * @brief Charge un contenu XML en séléction
+     * @param string $name Nom du fichier (sans chemin)
+     * @param string $content Contenu du document XML
+     * @return Instance du document XML
+     * @retval NULL Le chargement du contenu a échoué
+     */
+    public function load_xml_content($name, $content) {
+        
+        //charge le fichier ?
+        if (!isset($this->xml_files[$name])) {
+            $file = new XMLDocument("1.0", "utf-8");
+
+            //@todo: ne pas utiliser loadHTML() ou loadHTMLFile() car les espaces de noms (namespace) ne sont pas résolues et empéche le bon fonctionnement du template
+            //@todo: la suppression des warning est indispensable pour ignorer les entités HTML non reconnues par le standard XML
+            if(!$file->loadXML($content)){
+                $error = libxml_get_last_error();
+                $this->post("load_xml_file", "$filename can't load");
+                RESULT(cResult::Failed,cXMLTemplate::CantLoadSelectFile,array("libxml_error"=>$error->message));
+                return NULL;
+            }
+            
+            $this->post("load_xml_content", "OK");
+            $this->xml_files[$name] = $file;
+        }
+
+        RESULT_OK();
+        return $this->xml_files[$name];
+    }
+
+    /**
      * @brief Charge un fichier de selection
      * @param string $name Nom du fichier (sans chemin)
      * @param string $path Chemin d'accès au fichier
