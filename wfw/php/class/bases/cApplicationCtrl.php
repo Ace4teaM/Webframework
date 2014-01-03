@@ -137,6 +137,15 @@ class cApplicationCtrl{
                         return false;
                     return $template->Make();
                 }
+                //initialise la vue depuis un template automatiquement
+                $template_path = path($app->getCfgValue("application", "template_path"),$att["app"],$att["ctrl"].".html");
+                if($template_path && file_exists($template_path)){
+                    // initialise à partir du template principale
+                    $template = $app->createXMLView($template_path,$att);
+                    if(!$template)
+                        return false;
+                    return $template->Make();
+                }
                 //initialise un formulaire générique
                 return $app->makeFormView($att, $this->fields, $this->op_fields, $this->att);
         }
