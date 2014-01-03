@@ -424,18 +424,12 @@ class cApplication implements iApplication{
     /** 
      * @todo A implémenter
      */
-    function getURI($id,$params)
+    function getURI($id)
     {
-        return RESULT(cResult::Failed,cApplication::UnsuportedFeature,array("FEATURE"=>"getURI"));
-        /*if(!$this->getDefaultFile($default))
+        if(!$this->getDefaultFile($default))
             return false;
 
-        $uri = $default->getIndexValue("page", $id);
-        
-        $uri_cmp = parse_url( $uri );
-        $query = $uri_cmp[PHP_URL_QUERY];
-        RESULT_OK();
-        return $uri;*/
+        return $default->getIndexValue("page", $id);
     }
     
     /** 
@@ -621,7 +615,7 @@ class cApplication implements iApplication{
     
     /**
      * @brief Fabrique un template de vue XML/XHTML
-     * @param $filename Chemin d'accès au fichier template ou instance d'une classe XMLDocument (relatif à la racine du site)
+     * @param $filename Chemin d'accès au fichier template (relatif à la racine du site) ou instance d'une classe XMLDocument
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
     * @return string Contenu du template transformé
