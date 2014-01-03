@@ -1203,7 +1203,12 @@ class cApplication implements iApplication{
     
     
     /*
-     * @brief fabrique un fragment de template
+     * @brief Fabrique un fragment de template
+     * @param $path Chemin d'accès au fichier du template (relatif à la racine du site)
+     * @param $att  Tableau associatif des attributs passés au template
+     * @param $data Nom ou instance d'un document XMLDocument à charger en sélection
+     * @param $doc  Pointeur sur le document créé (XMLDocument)
+     * @return boolean Résultat de procédure
      */
     function makeBundle($path,$att,$data,&$doc)
     {
@@ -1226,12 +1231,21 @@ class cApplication implements iApplication{
         if($this->getDefaultFile($default))
             $template->push_xml_file('default.xml',$default->doc);
         
-        //initialise le template 
+        //merge les attributs
         if(is_array($att))
             $att = array_merge($att, $this->getAttributes());
         else
             $att = $this->getAttributes();
         
+        //initialise les données depuis le script "make.php"
+        $make_path = path($dirname,"make.php");
+        if(file_exists($make_path)){
+            $var = eval(file_get_contents($make_path));
+            if(!$var($this,$template,$att,$data))
+                return false;
+        }
+        
+        //initialise le template 
         if (!$template->Initialise( $doc, NULL, $data, NULL, $att ))
             return false;
 
