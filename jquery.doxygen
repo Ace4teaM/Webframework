@@ -52,7 +52,7 @@ PROJECT_LOGO           = medias/logo_icon_small.png
 # If a relative path is entered, it will be relative to the location 
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = doc/yui
+OUTPUT_DIRECTORY       = doc/jquery
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create 
 # 4096 sub-directories (in 2 levels) under the output directory of each output 
@@ -729,8 +729,8 @@ RECURSIVE              = YES
 
 EXCLUDE                = wfw/modules \
                          wfw/php \
-                         wfw/javascript/jquery  \
-                         wfw/javascript/extjs
+                         wfw/javascript/extjs \
+                         wfw/javascript/yui
 
 # The EXCLUDE_SYMLINKS tag can be used to select whether or not files or 
 # directories that are symbolic links (a Unix file system feature) are excluded 
@@ -1937,4 +1937,5 @@ GENERATE_LEGEND        = YES
 # the various graphs.
 
 DOT_CLEANUP            = YES
+
 
