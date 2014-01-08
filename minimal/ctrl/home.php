@@ -53,7 +53,7 @@ class application_home_ctrl extends cApplicationCtrl
 
         // [add your execution code here]
 
-        return true;
+        return RESULT_OK();
     }
     
     function output(iApplication $app, $format, $att, $result)
