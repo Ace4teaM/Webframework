@@ -17,6 +17,14 @@
     <!-- FavIcon -->
     <link rel="icon" type="image/png" href="-{_LIB_PATH_WFW_}/bin/icons/logo_colors.ico" />
     <link rel="shortcut icon" type="image/x-icon" href="-{_LIB_PATH_WFW_}/bin/icons/logo_colors.ico" />
+    
+    <!-- config scripts -->
+    <template:container template:action="select" template:path=":template.xml:">
+        <!-- javascript -->
+        <script template:action="all" template:selector="> scripts > *" type="text/javascript" src="-{__inner_text__}"></script>
+        <!-- stylesheet -->
+        <link template:action="all" template:selector="> stylesheet > *" rel="stylesheet" href="-{__inner_text__}" />
+    </template:container>
 </head>
 
 <!-- Document -->
