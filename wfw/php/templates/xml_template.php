@@ -197,23 +197,28 @@ class cXMLTemplate
         return RESULT_OK();
     }
 
-    /*
-      Make
-      transforme le document
-      Retourne
-      Corps du document
+    /**
+     * @brief Transforme le document
+     * @return this Le template
      */
-
-    public function Make() {
+    public function Transform() {
         $first_child = $this->input_element->firstChild;
         if ($first_child !== NULL) {
             $this->check_node($this->select, $first_child, $this->arg);
             $this->clean_node($first_child);
         }
+        return $this;
+    }
+
+    /**
+     * @brief Fabrique le texte XML
+     * @return string Contenu du document
+     */
+    public function Output() {
         //$file_content = $this->doc->saveHTML();
 
         $file_content = $this->doc->saveXML();
-        //suprime la balise xml en tete de page
+        //supprime la balise xml en tete de page
         $file_content = strstr($file_content, "\n");
         $file_content = ltrim($file_content, "\n\r");
 
@@ -226,6 +231,16 @@ class cXMLTemplate
         $file_content = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $file_content);
 
         return $file_content;
+    }
+
+    /**
+     * @brief Transforme puis fabrique le texte XML du document
+     * @return string Contenu du document
+     */
+
+    public function Make() {
+        $this->Transform();
+        return $this->Output();
     }
 
     /*

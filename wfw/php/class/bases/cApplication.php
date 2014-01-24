@@ -618,7 +618,7 @@ class cApplication implements iApplication{
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site) ou instance d'une classe XMLDocument
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
-    * @return string Contenu du template transformé
+     * @return cXMLTemplate Template
      */
     function createXMLView($filename,$attributes,$template_file=NULL)
     {
@@ -1201,6 +1201,52 @@ class cApplication implements iApplication{
         return RESULT($row["err_code"], $row["err_str"], stra_to_array($row["ext_fields"]));
     }
     
+    /*
+     * @brief Fabrique un fragment de template
+     * @param $path Chemin d'accès au fichier du template (relatif à la racine du site)
+     * @param $att  Tableau associatif des attributs passés au template
+     * @param $data Nom ou instance d'un document XMLDocument à charger en sélection
+     * @param $doc  Pointeur sur le document créé (XMLDocument)
+     * @return boolean Résultat de procédure
+     */
+    function insertBundle($template,$src_selector_ar,$dst_selector_ar,$path,$att,$data)
+    {
+        //fabrique le bundle
+        if(!$this->makeBundle($path,$att,$data,$bundleDoc))
+            return false;
+        if(!is_array($src_selector_ar)){
+            $src_selector_ar = array($src_selector_ar);
+        }
+        if(!is_array($dst_selector_ar)){
+            $dst_selector_ar = array($dst_selector_ar);
+        }
+        if(count($src_selector_ar)!=count($dst_selector_ar))
+            return RESULT(cResult::Failed,"APP_INSERTBUNDLE_SELECTOR_SRC_AND_DST_COUNT_MUST_BE_EGALE");
+        
+        for($i=0;$i<count($src_selector_ar);$i++){
+            $src_selector = $src_selector_ar[$i];
+            $dst_selector = $dst_selector_ar[$i];
+            
+            //obtient la source
+            $srcNodeArray = $bundleDoc->all($src_selector);
+            if(!$srcNodeArray)
+                continue; //return RESULT(cResult::Failed,"APP_BUNDLE_SRC_SELECTOR_NOTFOUND",array("selector"=>$src_selector));
+            //obtient la destination
+            $dstNodeArray = $template->doc->all($dst_selector);
+            if(empty($dstNodeArray))
+                continue; //return RESULT(cResult::Failed,"APP_BUNDLE_DST_SELECTOR_NOTFOUND",array("selector"=>$dst_selector));
+            //insert le contenu
+            foreach ($dstNodeArray as $dstKey=>$dstNode){
+                foreach ($srcNodeArray as $srcKey=>$srcNode){
+                    $importNode = $template->doc->importNode($srcNode,true);
+                    if(!$importNode)
+                        continue;
+                    $dstNode->appendChild($importNode);
+                }
+            }
+        }
+        return RESULT_OK();
+    }
     
     /*
      * @brief Fabrique un fragment de template
@@ -1222,7 +1268,13 @@ class cApplication implements iApplication{
             RESULT(cResult::Failed, cApplication::ResourceNotFound, array("message"=>true,"file"=>$path) );
             $this->processLastError();
         }
-        $content = str_replace('images/', $dirname.'/images/', $content);//fix images path
+        //fix images path
+        $content = str_replace('images/', $dirname.'/images/', $content);
+        //fix path
+        $content = str_replace('src="', 'src="'.$dirname.'/', $content);
+        //fix path
+        $content = str_replace('href="', 'href="'.$dirname.'/', $content);
+        
         $doc->loadHTML($content);
 
         //initialise le template 
