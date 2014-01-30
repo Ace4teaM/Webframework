@@ -1202,11 +1202,13 @@ class cApplication implements iApplication{
     }
     
     /*
-     * @brief Fabrique un fragment de template
+     * @brief Insert un fragment de template
+     * @param $template Template reçevant le fragment
+     * @param $src_selector_ar Chaine ou tableau de chaine contenant les selecteurs source
+     * @param $dst_selector_ar Chaine ou tableau de chaine contenant les selecteurs de destination
      * @param $path Chemin d'accès au fichier du template (relatif à la racine du site)
      * @param $att  Tableau associatif des attributs passés au template
      * @param $data Nom ou instance d'un document XMLDocument à charger en sélection
-     * @param $doc  Pointeur sur le document créé (XMLDocument)
      * @return boolean Résultat de procédure
      */
     function insertBundle($template,$src_selector_ar,$dst_selector_ar,$path,$att,$data)
