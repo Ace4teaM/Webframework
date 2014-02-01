@@ -600,6 +600,13 @@ class cApplication implements iApplication{
     }
     
     /**
+     * @brief Evenement appellé par la méthode makeXMLView
+     */
+    function onTransformXMLTemplate(&$template,&$select,&$attributes)
+    {
+    }
+    
+    /**
      * @brief Fabrique une vue XML/XHTML
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
@@ -655,6 +662,8 @@ class cApplication implements iApplication{
                     NULL,
                     array_merge($attributes,$this->template_attributes) ) )
                 return false;
+
+        $this->onTransformXMLTemplate($template,$select,$attributes);
 
         //transforme le fichier
         RESULT_OK();
@@ -1271,11 +1280,11 @@ class cApplication implements iApplication{
             $this->processLastError();
         }
         //fix images path
-        $content = str_replace('images/', $dirname.'/images/', $content);
+        //$content = str_replace('images/', $dirname.'/images/', $content);
         //fix path
-        $content = str_replace('src="', 'src="'.$dirname.'/', $content);
+        //$content = str_replace('src="', 'src="'.$dirname.'/', $content);
         //fix path
-        $content = str_replace('href="', 'href="'.$dirname.'/', $content);
+        //$content = str_replace('href="', 'href="'.$dirname.'/', $content);
         
         $doc->loadHTML($content);
 
@@ -1295,7 +1304,7 @@ class cApplication implements iApplication{
         $make_path = path($dirname,"make.php");
         if(file_exists($make_path)){
             $var = eval(file_get_contents($make_path));
-            if(!$var($this,$template,$att,$data))
+            if(!$var($this,$doc,$att,$data,$filename,$dirname))
                 return false;
         }
         
