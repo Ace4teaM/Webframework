@@ -1279,14 +1279,9 @@ class cApplication implements iApplication{
             RESULT(cResult::Failed, cApplication::ResourceNotFound, array("message"=>true,"file"=>$path) );
             $this->processLastError();
         }
-        //fix images path
-        //$content = str_replace('images/', $dirname.'/images/', $content);
-        //fix path
-        //$content = str_replace('src="', 'src="'.$dirname.'/', $content);
-        //fix path
-        //$content = str_replace('href="', 'href="'.$dirname.'/', $content);
         
-        $doc->loadHTML($content);
+        $doc->loadXML($content);
+//        $doc->loadHTML($content);// add CDATA tag (css not work)
 
         //initialise le template 
         $template = new cXMLTemplate();
