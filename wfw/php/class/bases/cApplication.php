@@ -1273,9 +1273,9 @@ class cApplication implements iApplication{
         //fix images path
         $content = str_replace('images/', $dirname.'/images/', $content);
         //fix path
-        $content = str_replace('src="', 'src="'.$dirname.'/', $content);
+        //$content = str_replace('src="', 'src="'.$dirname.'/', $content);
         //fix path
-        $content = str_replace('href="', 'href="'.$dirname.'/', $content);
+        //$content = str_replace('href="', 'href="'.$dirname.'/', $content);
         
         $doc->loadHTML($content);
 
