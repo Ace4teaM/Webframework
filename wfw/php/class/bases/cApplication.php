@@ -1270,14 +1270,9 @@ class cApplication implements iApplication{
             RESULT(cResult::Failed, cApplication::ResourceNotFound, array("message"=>true,"file"=>$path) );
             $this->processLastError();
         }
-        //fix images path
-        $content = str_replace('images/', $dirname.'/images/', $content);
-        //fix path
-        //$content = str_replace('src="', 'src="'.$dirname.'/', $content);
-        //fix path
-        //$content = str_replace('href="', 'href="'.$dirname.'/', $content);
         
-        $doc->loadHTML($content);
+        $doc->loadXML($content);
+//        $doc->loadHTML($content);// add CDATA tag (css not work)
 
         //initialise le template 
         $template = new cXMLTemplate();
@@ -1295,7 +1290,7 @@ class cApplication implements iApplication{
         $make_path = path($dirname,"make.php");
         if(file_exists($make_path)){
             $var = eval(file_get_contents($make_path));
-            if(!$var($this,$template,$att,$data))
+            if(!$var($this,$doc,$att,$data,$filename,$dirname))
                 return false;
         }
         
