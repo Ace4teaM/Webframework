@@ -758,6 +758,7 @@ class cXMLTemplate
 
         //charge le fichier ?
         if (!isset($this->xml_files[$name])) {
+            
             /* ! retourne false avec les fichiers distants (suivant configuration !
 -             if (!file_exists($filename)) {
 -                $this->post("load_xml_file", "$filename does not exists");
@@ -766,6 +767,7 @@ class cXMLTemplate
             $file = new XMLDocument("1.0", "utf-8");
 
             if(!($content = @file_get_contents($filename))){
+                $this->post("load_xml_file", "$filename can't load");
                 RESULT(cResult::Failed,cXMLTemplate::CantLoadInputFile,array("filename"=>$filename));
                 return NULL;
             }
@@ -845,6 +847,7 @@ class cXMLTemplate
                 $this->post("get_xml_selection", $matches[1] . " -> " . $matches[2]);
                 if ($varfile = $this->load_xml_file($matches[1]))
                     return $this->get_xml_selection($varfile->documentElement, $arg, $matches[2], $conditions); //ok, re-selectionne avec le chemin seulement 
+                $this->post("get_xml_selection", "cant load $matches[1]");
                 return NULL;
             }
             else {
