@@ -5,12 +5,12 @@ class cEvent
 
     public function add($func)
     {
-        $listner[]=$func;
+        $this->listner[]=$func;
     }
     
     public function call()
     {
-        foreach($listner as $k=>$f)
+        foreach($this->listner as $k=>$f)
             $f();
     }
 }
