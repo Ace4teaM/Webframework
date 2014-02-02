@@ -600,13 +600,6 @@ class cApplication implements iApplication{
     }
     
     /**
-     * @brief Evenement appellé par la méthode makeXMLView
-     */
-    function onTransformXMLTemplate(&$template,&$select,&$attributes)
-    {
-    }
-    
-    /**
      * @brief Fabrique une vue XML/XHTML
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
@@ -662,8 +655,6 @@ class cApplication implements iApplication{
                     NULL,
                     array_merge($attributes,$this->template_attributes) ) )
                 return false;
-
-        $this->onTransformXMLTemplate($template,$select,$attributes);
 
         //transforme le fichier
         RESULT_OK();
