@@ -103,10 +103,20 @@ class cXMLTemplate
     public $input_element = NULL;
     //Decodes les entites HTML lors du chargement d'un document (load_xml_file)
     public $resolve_html_entites = true;
+    //Evenement: apres transformation (cEvent class)
+    public $transformed_event = NULL;
 
     public function setRootPath($path) {
         $this->var_path = $path;
     }
+    
+    /*
+     * Constructeur
+     */
+    function __construct() {
+        $this->transformed_event = new cEvent();
+    }
+    
     
     /**
      * @brief Prépare un template à être transformé
@@ -240,6 +250,7 @@ class cXMLTemplate
 
     public function Make() {
         $this->Transform();
+        $this->transformed_event->call();
         return $this->Output();
     }
 
