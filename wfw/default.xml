@@ -96,7 +96,7 @@
             <APP_UNKNOWN_FIELD_CLASS>L'Application doit définir la classe du champs '$CLASS_NAME'.</APP_UNKNOWN_FIELD_CLASS>
             <APP_RESOURCE_NOT_FOUND>Le fichier suivant est introuvable: $FILE</APP_RESOURCE_NOT_FOUND>
             <APP_CANT_CREATE_RESOURCE>Le fichier suivant ne peut pas être créé: $FILE</APP_CANT_CREATE_RESOURCE>
-            <APP_UNSUPORTED_ROLE_BY_CTRL>Vous n'ête pas autorisé à executer cette action (ctrl:$CTRL, role:$ROLE)</APP_UNSUPORTED_ROLE_BY_CTRL>
+            <APP_UNSUPORTED_ROLE_BY_CTRL>Vous n'êtes pas autorisé à exécuter cette action (ctrl:$CTRL, role:$ROLE)</APP_UNSUPORTED_ROLE_BY_CTRL>
             <APP_CTRL_NOT_FOUND>Le fichier de contrôleur "$CTRL" est introuvable</APP_CTRL_NOT_FOUND>
             <APP_CTRL_CLASS_NOT_FOUND>Merci de vérifier le nom de classe. Celle-ci doit se nommée: $CLASS_NAME</APP_CTRL_CLASS_NOT_FOUND>
             <APP_CANT_REMOVE_RESOURCE>Le fichier suivant ne peut pas être supprimé: $FILE</APP_CANT_REMOVE_RESOURCE>
