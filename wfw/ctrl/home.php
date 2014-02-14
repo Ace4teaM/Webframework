@@ -26,7 +26,7 @@
  * UC   : home
  */
 
-class application_home_ctrl extends cApplicationCtrl
+class wfw_home_ctrl extends cApplicationCtrl
 {
     // required fields
     // public $fields    = array("filed_name",...);
