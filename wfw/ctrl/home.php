@@ -63,9 +63,10 @@ class wfw_home_ctrl extends cApplicationCtrl
             // HTML output
             case "text/html":
                 // make from main template
+                $home_page = $app->getCfgValue ("application", "home_page");
                 $template_file = $app->getCfgValue ("application", "config_template");
                 $att["system"] = ucwords(strtolower(constant("SYSTEM")));
-                $template = $app->createXMLView("view/pages/home.html",$att,$template_file);
+                $template = $app->createXMLView($home_page,$att,$template_file);
                 if(!$template)
                     return false;
                 

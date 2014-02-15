@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:template="http://www.webframework.fr/last/xmlns/template" xml:lang="fr" lang="fr" dir="ltr">
+    <head>
+        <title>Webframework Minimal Web-Application</title>
+
+        <!-- page's id -->
+        <meta name="page_id" content="index" />
+
+        <link href="js/btn-group-vertical.css" rel="stylesheet" />
+
+        <style type="text/css">
+            body {  
+                padding-top: 40px;  
+                padding-bottom: 40px;  
+            }
+            #wfw_logo{
+                margin-bottom: 20px;
+            }
+            .carousel-content{
+                margin-left:100px;
+                margin-right:100px;
+                margin-top:40px;
+                padding-bottom:70px;
+                min-height:350px;
+                display: block;
+            }
+        </style>
+        
+        <script type="text/javascript">
+            $(function() {
+                $('.carousel').carousel();
+            });
+        </script>
+    </head>
+
+    <!-- Document -->
+    <body>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="col-md-3">
+                    <div class="well sidebar-nav">
+                        <center><img id="wfw_logo" src="-{_LIB_PATH_WFW_}/bin/logo.png" width="220px" /></center>
+                        <ul class="nav nav-list">
+                            <li class="nav-header">Liens utiles</li>
+                            <li><a href="-{_LIB_PATH_WFW_DOC_}" target="wfw_doc" class="btn btn-default" rel="popover" data-content="Afficher la documentation en ligne">Documentation</a></li>
+                            <!-- Administrateur -->
+                            <template:container template:action="select" template:path=":default.xml:index">
+                                <li class="nav-header">Pages</li>
+                                <li template:action="all" template:selector="> page"><a href="-{{page:-{@id}}}" class="btn btn-default" rel="popover" data-content="-{@name}">-{@id}</a></li>
+                            </template:container>
+                        </ul>
+                        <!-- informatins -->
+                        <hr/>
+                        <center>Système -{system} détecté</center>
+                    </div><!--/.well -->
+                </div>  
+                <div class="col-md-9">
+                    <!-- Sommaire -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Hello World !</div>
+                        <div class="panel-body">
+                            <h2>Heureux de vous revoir monsieur le développeur.</h2>
+                            <p>Que-pensez vous de mon interface réalisée avec <a href="Bootstrap">Bootstrap</a> ?<br/>Pas mal non ? En plus, c'est du responsive mode <code>:))</code></p>
+                            <hr/>
+                            <p>Et si on commençait les choses sérieuses ?<br/>Avant toutes choses, si vous accédez à ce site depuis le répertoire de Webframework, copiez-le ! (Il est préférable de garder une copie originale pour d'autres sites)</p>
+                            <p><a href="#configuration" class="btn btn-primary btn-lg">Continuer &raquo;</a></p>
+                        </div>
+                    </div>
+
+                    <!-- Infos -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Informations</div>
+                        <div class="panel-body">
+                            <p>Identifiez votre site</p>
+                            <form class="form">
+                                <div class="row">  
+                                    <div class="col-md-6">
+                                        <label>Titre</label>
+                                        <input class="form-control" name="title" type="text" value="" />
+                                        <label>Description</label>
+                                        <input class="form-control" name="desc" type="text" value="" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Auteur</label>
+                                        <input class="form-control" name="autor" type="text" value="" />
+                                        <label>Contact (Mail)</label>
+                                        <input class="form-control" name="contact" type="text" value="" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Modules -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Modules</div>
+                        <div class="panel-body">
+                            <p>Activez les modules qui vous intéressent</p>
+                            <form>
+                                <div class="row">  
+                                    <div class="col-md-4">
+                                        <h3>Disponibles</h3>
+                                        <div class="btn-group-vertical" data-toggle="buttons-checkbox">
+                                            <button type="button" class="btn btn-primary" rel="popover" data-content="Gérez les comptes utilisateurs">User</button>
+                                            <button type="button" class="btn btn-primary" rel="popover" data-content="Rédigez vos document en ligne">Writer</button>
+                                            <button type="button" class="btn btn-primary" rel="popover" data-content="Gérez les flux de courriers">Mail</button>
+                                            <button type="button" class="btn btn-primary" rel="popover" data-content="Gérez les catalogues d'items">Catalog</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h3>En savoir plus...</h3>
+                                        <p>Les modules sous webframework étend les possibilités de votre application en ajoutant des controleurs et des classes à votre model de données.</p>
+                                        <p>Pour activer un module cliquez simplement sur son nom ci-contre.</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <!-- Configuration -->
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Configuration</div>
+                        <div class="panel-body" template:action="select" template:path=":config.xml:">
+                            <p>Affiche l'état de la configuration actuelle</p>
+                            <ul class="nav nav-tabs" id="myTab">
+                                <li template:action="all" template:selector=">*"><a href="#-{__tag_name__}">-{__tag_name__}</a></li>
+                            </ul>
+
+                            <div class="tab-content" style="min-height:600px;">
+                                <div template:action="all" template:selector=">*" class="tab-pane" id="-{__tag_name__}">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr template:action="all" template:selector=">*">  
+                                                <td class="col-md-4">-{__tag_name__}</td>
+                                                <td class="col-md-8">-{__inner_text__}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            $(function (){
+                $("*[rel=popover]").popover({trigger:"hover",placement:"right"});
+                $('#myTab a:last').tab('show');
+                $('#myTab a').click(function (e) {
+                    e.preventDefault();
+                    $(this).tab('show');
+                });
+            });
+        </script>
+    </body>
+
+</html>
