@@ -1059,7 +1059,7 @@ class cApplication implements iApplication{
         $class=null;
 
         //initialise le controleur
-        if(!$this->callCtrl($ctrl,$app,null,$class,$role) && !isset($class))
+        if(!$this->callCtrl($ctrl,$app,$_REQUEST,$class,$role) && !isset($class))
             $class = new cApplicationCtrl();
 
         //recupére le resultat
