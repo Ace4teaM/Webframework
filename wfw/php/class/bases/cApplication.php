@@ -387,9 +387,11 @@ class cApplication implements iApplication{
         $db_iface = $this->db;
         return RESULT_OK();
     }
-    
+
     /** 
-     * Obtient le fichier default
+     * @brief Obtient le fichier default
+     * @var $iface cXMLDefault
+     * @param $iface Pointeur recevant l'instance de la classe cXMLDefault
      * @return Résultat de la procédure
      * @retval true La fonction à réussit, $iface contient un pointeur vers une classe cXMLDefault initialisée
      * @retval false La fonction à échouée, voir cResult::getLast() pour plus d'informations

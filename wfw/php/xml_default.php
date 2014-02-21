@@ -164,15 +164,13 @@ class cXMLDefault {
         return "";
     }
     
-    /*
-      Obtient un noeud de l'index
-      Arguments:
-      [string] type : type de noeud (nom de balise)
-      [string] id   : identificateur
-      Retourne:
-      [XMLElement] Noeud trouve, null si introuvable
+    /**
+     * @brief Retourne un élément de l'index
+     * @param $type Type (nom de balise)
+     * @param $id   Identifiant (attribut 'id')
+     * @return XMLElement Référence sur l'élément XML correspondant
+     * @retval null Élément introuvable
      */
-
     public function getIndexNode($type, $id) {
         //recherche
         $entry_node = $this->doc->getNode('site/index/' . $type);
