@@ -35,23 +35,26 @@ class wfw_home_ctrl extends cApplicationCtrl
     // public $op_fields = array("filed_name",...);
 
     // others data
-    // [put your data here]
+    //protected $data = null;
     
     function __construct()
     {
         // super call
         parent::__construct();
-        
-        // this, add cookies to entry fields 
-        // $this->att = array_merge($this->att,$_COOKIE);
-        
-        // initalize...
-        // [add your initialization code here]
     }
     
     function main(iApplication $app, $app_path, $p) {
 
-        // [add your execution code here]
+        // liste les controleurs
+        /*if($app->getDefaultFile($defaultDoc)){
+            $this->ctrlList = array();
+            $pagesNodes = $defaultDoc->doc->all("index page[id]");
+            foreach($pagesNodes as $node){
+                print_r($node);
+                if($node)
+            }
+            exit;
+        }*/
 
         return RESULT_OK();
     }
