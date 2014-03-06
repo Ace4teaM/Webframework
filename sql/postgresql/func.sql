@@ -200,19 +200,20 @@ CREATE OR REPLACE FUNCTION random_token(token_length int)
 RETURNS text AS 
 $$
 DECLARE
-  chars text[] := '{0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}';
+  --chars char[] := '{0,1,2,3,4,5,6,7,8,9,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}';
   result text := '';
   i integer := 0;
-  chars_length integer := 62; /*array_length(chars, 1); PG-8.4! */
+  --chars_length integer := 62; /*array_length(chars, 1); PG-8.4! */
 BEGIN
   for i in 1..token_length loop
-    result := result || chars[round(random()*(chars_length-1))];
+    --result := result || chars[round(random()*(chars_length-1))];
+    result := result || chr(65+cast(round(random()*(25)) as integer));
+    --RAISE NOTICE '%',result;
   end loop;
   return result;
 END;
 $$
 LANGUAGE plpgsql;
-
 
 /*
   Initialialise un nouvel id numerique
