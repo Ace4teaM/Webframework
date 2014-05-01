@@ -205,6 +205,9 @@
                 success: function(xml) {
                     defaultDoc = xml;
                     loaded = true;
+                },
+                error: function(){
+                    console.log("Failed to load default file. path="+p.defaultFile);
                 }
             });
 
