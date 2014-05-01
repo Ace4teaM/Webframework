@@ -1180,6 +1180,35 @@ class cApplication implements iApplication{
     }
     
     /*
+     * Execute une requête SQL
+     * @param string $query Corps de la requête
+     * @param array  $data  [out] Tableau des resultats
+     * @return bool Résultat de procédure
+     */
+    public static function execSql($query,&$data){ 
+        global $app;
+        $db=null;
+        
+        if(!$app->getDB($db))
+            return RESULT(cResult::Failed, Application::DatabaseConnectionNotFound);
+
+        //obtient le nom des tables liées à l'item
+        $result = null;
+        $data = array();
+        if($db->execute($query, $result))
+        {
+            // join les tables au resultat
+            $cnt=0;
+            while($result->seek($cnt,iDatabaseQuery::Origin)){
+                array_push($data, $result->fetchRow());
+                $cnt++;
+            }
+        }
+
+        return RESULT_OK();
+    }
+    
+    /*
      * Execute une procédure normalisé en base de données
      * @param string $name Nom de la procédure SQL
      * @param mixed ... Paramétres correspondant à la procédure SQL
