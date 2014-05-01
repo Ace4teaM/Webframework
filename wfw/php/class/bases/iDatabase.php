@@ -99,7 +99,7 @@ interface iDatabase {
      * @retval true  La requête à réussie
      * @retval false La requête ne peut être executée, voir getResult() pour obtenir plus de détails
      * 
-     * @remarks Pour extraire le résultat retourné par une fonction utilisez les methodes iDatabaseQuery::fetchValue ou iDatabaseQuery::fetchRow
+     * @remarks Pour extraire le résultat retourné, utilisez les methodes iDatabaseQuery::fetchValue ou iDatabaseQuery::fetchRow
      */
     public function execute($query,&$result);
     
