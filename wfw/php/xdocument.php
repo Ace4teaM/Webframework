@@ -635,6 +635,46 @@ class XMLDocument extends DOMDocument {
         }
         return $array;
     }
+    
+    /**
+     * @brief Converti les éléments du document en tableau associatif (non-recursif)
+     * @return array Tableau associatif des éléments
+     */
+    public static function toXML($node,$array) {
+        $doc = $node->ownerDocument;
+        foreach( $array as $key=>$var){
+            if(is_numeric($key))
+                $key="_$key";
+            if(is_array($var)){
+                self::toXML($node->appendChild($doc->createElement($key)),$var);
+            }
+            else{
+                $node->appendChild($doc->createTextElement($key,"$var"));
+            }
+        }
+        return $node;
+    }
+    
+    /**
+     * @brief Converti les éléments du document en tableau associatif (non-recursif)
+     * @return array Tableau associatif des éléments
+     */
+    public static function toAssocXML($node,$curKey,$array) {
+        $doc = $node->ownerDocument;
+        foreach( $array as $key=>$var){
+            if(is_string($key) && is_array($var)){
+                $curKey = $key;
+                self::toAssocXML($node,$curKey,$var);
+            }
+            else if(is_numeric($key) && is_array($var)){
+                self::toAssocXML($node->appendChild($doc->createElement($curKey)),$curKey,$var);
+            }
+            else{
+                $node->appendChild($doc->createTextElement(is_numeric($key) ? "_$key" : "$key","$var"));
+            }
+        }
+        return $node;
+    }
 }
 
 ?>
