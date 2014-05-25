@@ -294,6 +294,9 @@ class cApplication implements iApplication{
         
         // Détermine le rôle de l'utilisateur en cours
         $this->determinateRoles();
+        
+        // Détermine le langage en cours
+        $this->determinateLangage();
     }
     
     /**
@@ -319,6 +322,41 @@ class cApplication implements iApplication{
      */
     function getRole(){
         return $this->role;
+    }
+    
+    /**
+     * @brief Détermine le langage en cours
+     */
+    function determinateLangage()
+    {
+        $lang = $this->getLangage();
+
+        //determine le langage depuis les arguments ?
+        if(isset($_REQUEST["lang"]))
+            $lang = $_REQUEST["lang"];
+
+        //depuis les cookies ?
+        if(isset($_COOKIE["lang"]))
+            $lang = $_COOKIE["lang"];
+
+        // actualise la configuration
+        $this->setLangage($lang);
+    }
+    
+    /**
+     * @brief Définit le langage en cours
+     * @return string Code du langage, ex: "FR"
+     */
+    function setLangage($lang){
+        return $this->setCfgValue("application","lang",strtoupper($lang));
+    }
+    
+    /**
+     * @brief Obtient le langage en cours
+     * @return string Code du langage, ex: "FR"
+     */
+    function getLangage(){
+        return $this->getCfgValue("application","lang");
     }
     
     /**
@@ -545,7 +583,7 @@ class cApplication implements iApplication{
     /**
      * @brief Obtient les parametres d'une section du fichier de configuration
      * @param $section_name Nom de la section
-     * @param $section_name Nom de l'item
+     * @param $item_name Nom de l'item
      * @return Paramètres de configuration
      * @retval array Liste des paramètres
      * @retval null La section n'existe pas
@@ -554,6 +592,21 @@ class cApplication implements iApplication{
         $item_name = strtoupper($item_name);
         $section = $this->getCfgSection($section_name);
         return ($section!==null && isset($section[$item_name]) ? $section[$item_name] : null);
+    }
+    
+    /**
+     * @brief Définit un parametre de configuration
+     * @param $section_name Nom de la section
+     * @param $item_name Nom de l'item
+     * @param $value Valeur du paramètre
+     * @return Valeur du paramètre
+     * @remark La valeur n'est conservée que durant l'execution du script
+     */
+    function setCfgValue($section_name,$item_name,$value){
+        $item_name = strtoupper($item_name);
+        $section_name = strtoupper($section_name);
+        $this->config[$section_name][$item_name] = $value;
+        return $value;
     }
     
     /**
