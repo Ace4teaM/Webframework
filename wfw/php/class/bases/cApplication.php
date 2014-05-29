@@ -331,13 +331,13 @@ class cApplication implements iApplication{
     {
         $lang = $this->getLangage();
 
-        //determine le langage depuis les arguments ?
-        if(isset($_REQUEST["lang"]))
-            $lang = $_REQUEST["lang"];
-
         //depuis les cookies ?
         if(isset($_COOKIE["lang"]))
             $lang = $_COOKIE["lang"];
+
+        //determine le langage depuis les arguments ?
+        if(isset($_REQUEST["lang"]))
+            $lang = $_REQUEST["lang"];
 
         // actualise la configuration
         $this->setLangage($lang);
