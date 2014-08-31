@@ -35,7 +35,7 @@ var cInputString = {
     }
     ,
     regExp : function(){
-        return '[^"\n\r]*';
+        return '[^"\\n\\r]*';
     }
     ,
     getMaxLength : function(){
