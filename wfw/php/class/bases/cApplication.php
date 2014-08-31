@@ -503,8 +503,8 @@ class cApplication implements iApplication{
     }
         
     /** 
-     * Obtient le nom de l'adresse de base de l'application
-     * @return URI avec le chemin d'accès (ex: foo.com/bar)
+     * Obtient l'adresse de base de l'application
+     * @return L'URI avec le chemin d'accès (ex: foo.com/bar)
      */
     function getBaseURI()
     {
@@ -1006,6 +1006,28 @@ class cApplication implements iApplication{
     }
     
     /**
+     * @brief Ajoute un message au log
+     * @param string $message Message
+     */
+    public function log($message){
+        $log_file = path($this->getRootPath(),$this->getCfgValue("application","debug_log_ctrl_path"));
+        if(!empty($log_file)){
+            //   print_r("log file=".path($this->getRootPath(),$log_file));exit;
+            $str =
+                date("d/m/Y, H:i:s")
+                ." | "
+                . $message
+                . "\r\n"
+            ;
+            if(FALSE === @file_put_contents($log_file,$str,FILE_APPEND))
+               return RESULT(cResult::Failed,cApplication::CantCreateResource,array("FILE"=>$log_file));
+        }
+        
+        return RESULT_OK();
+    }
+
+
+    /**
      * @brief Execute un controleur
      * @param string $ctrl Nom du controleur
      * @param string $app Nom de l'application
@@ -1147,7 +1169,7 @@ class cApplication implements iApplication{
         if($content === false)
             $this->processLastError();
 
-        header("content-type: ".$format);
+        header("content-type: ".$format."; charset=utf-8");
         echo $content;
         
         // ok
@@ -1205,6 +1227,23 @@ class cApplication implements iApplication{
             return RESULT(cResult::Failed, iDatabaseQuery::EmptyResult);
         
         $obj = (object) $row;
+        
+        return RESULT_OK();
+    }
+    
+    public function queryToObjectArray($query,&$obj)
+    {
+        //obtient la bdd
+        if(!$this->getDB($db))
+            return false;
+        
+        if(!$db->execute($query, $result))
+            return false;
+        
+        $obj = array();
+        for($i=0; $i<$result->rowCount(); $i++){
+            $obj[]=(object)$result->fetchRow();
+        }
         
         return RESULT_OK();
     }
