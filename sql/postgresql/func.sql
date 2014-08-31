@@ -16,6 +16,18 @@ create type result as (
 );
 
 /*
+  Retourne un paramètre d'une chaine de caractères encodé
+  Format de l'encodage = "name:value;..."
+*/
+CREATE OR REPLACE FUNCTION public.get_string_param(string in varchar,name in varchar)
+  RETURNS VARCHAR
+as $$
+begin
+  RETURN (regexp_matches(string, name||E'\\s*:\\s*([^;]*)\\s*;','i'))[1];
+end;
+$$ LANGUAGE plpgsql;
+
+/*
   Convertie un BOOL en CHAR
 */
 CREATE OR REPLACE FUNCTION public.bool_to_char(bool_value in boolean)
