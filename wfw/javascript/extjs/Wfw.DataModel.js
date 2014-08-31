@@ -141,7 +141,7 @@ Ext.define('Wfw.DataModel.FieldsDialog', {
     requires: [
         'Wfw.DataModel.FieldsForm'
     ],
-        
+
     config:{
         closable: true,
         width: 400,
@@ -276,8 +276,12 @@ Wfw.DataModel.makeField = function(att)
         label:false,
         optional:false,
         value:null,
+        validator:null,
         name:false//optionel, en remplacement de l'id
     };
+    
+    if(typeof(att)=="string")
+        att = {id: att};
     
     if(att.id)
         def = object_merge(def,wfw.DataModel.getFieldInfos(att.id),false);
@@ -290,9 +294,17 @@ Wfw.DataModel.makeField = function(att)
         value: def.value
     };
     
+    // optionel
     if(att.optional)
         item.allowBlank = true;
     
+    // validation du format
+    /*if(att.type){
+        item["validator"] = eval("cInput"+att.type+".isValid");
+        //item["regex"] = eval("cInput"+att.type+".regExp()");
+    }*/
+    
+    // type
     switch(att.type){
         case "html":
         case "cInputHTML":
@@ -339,7 +351,7 @@ Wfw.DataModel.makeField = function(att)
             },false);
             break;
     }
-    
+
     return item;//Ext.create('Ext.form.field',item);
 }
 
