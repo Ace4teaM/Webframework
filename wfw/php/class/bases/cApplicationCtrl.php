@@ -149,7 +149,8 @@ class cApplicationCtrl{
                 //initialise un formulaire générique
                 return $app->makeFormView($att, $this->fields, $this->op_fields, $this->att);
         }
-        return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"OUTPUT FORMAT $format"));
+        return RESULT_INST($result);
+        //return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"OUTPUT FORMAT $format"));
     }
     
     
