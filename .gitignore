@@ -2,6 +2,7 @@
 /wfw/modules/
 /minimal/log/*
 /doc/*
+!/doc/articles
 .*
 ~*
 /samples/view/tmp/*
