@@ -2,7 +2,7 @@
 
 /*
   ---------------------------------------------------------------------------------------------------------------------------------------
-  (C)2012-2013 Thomas AUGUEY <contact@aceteam.org>
+  (C)2012-2013,2015 Thomas AUGUEY <contact@aceteam.org>
   ---------------------------------------------------------------------------------------------------------------------------------------
   This file is part of WebFrameWork.
 
@@ -21,18 +21,16 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @page wfw_data_model Data Model
- * 
- * # Retourne le modèle de données (dictionnaire)
- * 
- * | Informations |                          |
- * |--------------|--------------------------|
- * | PageId       | -
- * | Rôle         | Visiteur
- * | UC           | wfw_datamodel
- * 
- * @param lang Langage pour les textes
+/*
+  Retourne le dictionnaire du modèle de données
+  
+  Role   : Tous
+  UC     : DataModel
+  Module : wfw
+  Output : "text/xml"
+ 
+  Champs:
+    lang : Langage pour les textes
  */
 
 class wfw_datamodel_ctrl extends cApplicationCtrl{

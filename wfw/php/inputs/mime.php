@@ -23,18 +23,15 @@
 require_once("class/bases/input.php");
 
 /**
- * @file mime.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test un type MIME
  */
 class cInputMime extends cInput {
 
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputName
+    //--------------------------------------------------------
+    
     public static function isValid($value) {
         if (empty_string($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
@@ -45,17 +42,13 @@ class cInputMime extends cInput {
         return RESULT_OK();
     }
 
-    /** @copydoc cInput::regExp */
     public static function regExp() {
         return '\w+/\w+';
     }
 
-    /** @copydoc cInput::getMaxLength */
     public static function getMaxLength() {
         return 256;
     }
-
 }
 
-/** @} */ // end of group
 ?>

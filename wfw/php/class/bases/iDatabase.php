@@ -21,35 +21,24 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @file iDatabase.php
- *
- * @defgroup DataBase
- * @brief Interface avec la base de données
- * 
- * @{
- */
-
 require_once("cResult.php");
 
 /**
  * @brief Interface de connexion avec une base de données
  */
 interface iDatabase {
-    /**
-     * @defgroup Erreurs
-     * @{
-     */
-
     const ConnectionFailed = "DB_CONNECTION";
     const QueryFailed = "DB_SQL_QUERY";
-
-    /** @} */
+    
+    //--------------------------------------------------------
+    // Méthodes
+    // @class iDatabase
+    //--------------------------------------------------------
     
     /**
      * @brief Obtient le nom du service utilisé
      * 
-     * @return string Nom du fournisseur de service (MySQL, PostgreSQL, etc...)
+     * @return string Nom du fournisseur de service (ex: MySQL, PostgreSQL, etc...)
      */
     public function getServiceProviderName();
 
@@ -105,9 +94,7 @@ interface iDatabase {
     
     /**
      * @brief Convertie un objet PHP en type SQL
-     * 
      * @param  mixed  $value  Objet à convertir
-     * 
      * @return string Valeur comptatible avec le type SQL correspondant
      */
     public static function parseValue($value);
@@ -117,23 +104,21 @@ interface iDatabase {
  * @brief Interface de requête SQL
  */
 interface iDatabaseQuery {
-    /**
-     * Results
-     * @{
-     */
     const OutOfRangeResult = "DB_QUERY_OUT_OF_RANGE_RESULT"; //!< @brief Résultat: Déplacement hors rang
     const EmptyResult      = "DB_QUERY_NO_RESULT"; //!< @brief Résultat: Pas de résultat
-    /** @} */
 
-    /**
+    /*
      * Seeking
-     * @{
      */
     const Origin  = 1; //!< @brief Déplace le curseur depuis la position d'origine 
     const Current = 2; //!< @brief Déplace le curseur depuis la position en cours 
     const End     = 3; //!< @brief Déplace le curseur depuis la position de fin 
-    /** @} */
 
+    //--------------------------------------------------------
+    // Méthodes
+    // @class iDatabaseQuery
+    //--------------------------------------------------------
+    
     /**
      * @brief Extrait une valeur du résultat en cours
      * @param  mixed   $column_name   Nom de la colonne à extraire
@@ -168,5 +153,4 @@ interface iDatabaseQuery {
     public function seek($pos,$origin=iDatabaseQuery::Origin);
 }
 
-/** @} */ // end of group
 ?>

@@ -21,9 +21,12 @@
 */
 
 /*
- * Affiche la page d'accueil
- * Rôle : All
- * UC   : home
+  Affiche la page d'accueil
+  
+  Role : Tous
+  UC   : Home
+  Module : wfw
+  Output : "text/html"
  */
 
 class wfw_home_ctrl extends cApplicationCtrl

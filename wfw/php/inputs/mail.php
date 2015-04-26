@@ -1,7 +1,7 @@
 <?php
 /*
     ---------------------------------------------------------------------------------------------------------------------------------------
-    (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    (C)2008-2007, 2012-2014 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
     This file is part of WebFrameWork.
 
@@ -24,20 +24,16 @@ require_once("class/bases/input.php");
 require_once("string.php");
 
 /**
- * @file mail.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test une Adresse eMail RFC-2822 ( non-certifié)
+ * @remarks RFC-2822 ( non-certifié)
  */
-// Adresse eMail
-// RFC-2822 ( non-certifié)
 class cInputMail extends cInput {
 
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputMail
+    //--------------------------------------------------------
+    
     public static function isValid($value) {
         if( empty_string($value) )
             return RESULT(cResult::Failed, cInput::EmptyText);
@@ -77,17 +73,13 @@ class cInputMail extends cInput {
         return RESULT_OK();
     }
 
-    /** @copydoc cInput::toHTML */
     public static function toHTML($id, $value) {
         return '<input lang="en-us" size="20" maxlength="' . ($this->getMaxLength()) . '" name="' . $id . '" id="' . $id . '" type="text" value="' . $value . '" wbfw="mail" >';
     }
 
-    /** @copydoc cInput::getMaxLength */
     public static function getMaxLength() {
         return 255 + 64 + 1;
     }
-
 }
 
-/** @} */ // end of group
 ?>

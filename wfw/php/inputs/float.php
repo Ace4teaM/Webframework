@@ -23,18 +23,15 @@
 require_once("class/bases/input.php");
 
 /**
- * @file float.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test un nombre a virgule
  */
 class cInputFloat extends cInput
 {
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputFloat
+    //--------------------------------------------------------
+    
 	public static function isValid($value){
             if( empty_string($value) )
                     return RESULT(cResult::Failed,cInput::EmptyText);
@@ -45,19 +42,15 @@ class cInputFloat extends cInput
 
             return RESULT_OK();
 	}     
-    /** @copydoc cInput::regExp */
 	public static function regExp(){
 		return '\-?[0-9]+(?:[\.\,][0-9]*)?';
 	}
-    /** @copydoc cInput::toObject */
     public static function toObject($string) {
         return floatval($string);
     }
-    /** @copydoc cInput::getMaxLength */
 	public static function getMaxLength(){
 		return 128;
 	}
 }
 
-/** @} */ // end of group
 ?>

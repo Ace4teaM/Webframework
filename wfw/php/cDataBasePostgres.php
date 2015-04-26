@@ -20,23 +20,18 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @file cDataBasePostgres.php
- *
- * @defgroup DataBase
- * @brief Implémentation de la base de données PostgreSQL
- * 
- * @{
- */
-
 require_once 'class/bases/iDatabase.php';
 
 /**
  * @brief Interface de connexion avec la base de données PostgreSQL
- * @copydoc iDatabase
  */
 class cDataBasePostgres implements iDatabase {
 
+    //--------------------------------------------------------
+    // Membres
+    // @class cDataBasePostgres
+    //--------------------------------------------------------
+    
     /**
      * @brief Ressource de requête
      */
@@ -47,6 +42,10 @@ class cDataBasePostgres implements iDatabase {
      */
     private $db_conn = null;
 
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cDataBasePostgres
+    //--------------------------------------------------------
 
     /**
      * @brief Libére la connexion
@@ -58,14 +57,24 @@ class cDataBasePostgres implements iDatabase {
     /**
      * @brief Obtient le nom du fournisseur de service utilisé
      * 
-     * @return string Nom du fournisseur de service (MySQL, PostgreSQL, etc...)
+     * @return string "PostgreSQL"
      */
     public function getServiceProviderName(){
         return "PostgreSQL";
     }
 
     /**
-     * @copydoc iDatabase::connect
+     * @brief Etablie la connexion
+     * 
+     * @param string $user   Identifiant de connexion
+     * @param string $name   Nom de la base de données
+     * @param string $pwd    Mot-de-passe de connexion
+     * @param string $server Adresse du serveur
+     * @param string $port   Port du serveur
+     * 
+     * @return bool Etat de la connexion
+     * @retval true La connexion est établie
+     * @retval false la connexion à échouée
      */
     public function connect($user = "postgres", $name = "postgres", $pwd = "admin", $server = "localhost", $port = 5432) {
         //connexion
@@ -79,7 +88,8 @@ class cDataBasePostgres implements iDatabase {
     }
 
     /**
-     * @copydoc iDatabase::disconnect
+     * @brief Termine la connexion
+     * @return void Rien
      */
     public function disconnect() {
         if ($this->db_conn) {
@@ -89,7 +99,17 @@ class cDataBasePostgres implements iDatabase {
     }
 
     /**
-     * @copydoc iDatabase::call
+     * @brief Appel une fonction SQL
+     * 
+     * @param  string  $schema    Nom du schéma (package) parent de la fonction
+     * @param  string  $func      Nom de la fonction
+     * @param  array   $arg_list  Tableau associatif des arguments de la fonction, null si aucun
+     * 
+     * @return bool Résultat de la requête
+     * @retval true  La requête à réussie
+     * @retval false La requête ne peut être executée, voir getResult() pour obtenir plus de détails
+     * 
+     * @remarks Pour extraire le résultat retourné par une fonction utilisez les methodes fetchValue ou fetchRow
      */
     public function call($schema, $func, $arg_list,&$result) {
         $req = "";
@@ -112,7 +132,9 @@ class cDataBasePostgres implements iDatabase {
     }
 
     /**
-     * @copydoc iDatabase::parseValue
+     * @brief Convertie un objet PHP en type SQL
+     * @param  mixed  $value  Objet à convertir
+     * @return string Valeur comptatible avec le type SQL correspondant
      */
     public static function parseValue($value){
         if(is_null($value))
@@ -129,7 +151,16 @@ class cDataBasePostgres implements iDatabase {
     }
     
     /**
-     * @copydoc iDatabase::execute
+     * @brief Execute une requete SQL
+     * 
+     * @param  string          $query    Corps de la requête
+     * @param  iDatabaseQuery  $result   [out] Pointeur sur l'instance du résultat
+     * 
+     * @return bool Résultat de la requête
+     * @retval true  La requête à réussie
+     * @retval false La requête ne peut être executée, voir getResult() pour obtenir plus de détails
+     * 
+     * @remarks Pour extraire le résultat retourné, utilisez les methodes iDatabaseQuery::fetchValue ou iDatabaseQuery::fetchRow
      */
     public function execute($query,&$result){
         $result = new cDataBaseQueryPostgres($query, $this);
@@ -149,15 +180,28 @@ class cDataBasePostgres implements iDatabase {
 }
 
 /**
- * @brief Interface de connexion avec la base de données PostgreSQL
- * @copydoc iDatabase
+ * @brief Requête de données SQL pour la classe cDataBasePostgres
  */
 class cDataBaseQueryPostgres implements iDatabaseQuery {
+
+    //--------------------------------------------------------
+    // Membres
+    // @class cDataBaseQueryPostgres
+    //--------------------------------------------------------
+    
     private $query;
     private $res;
     private $db;
     private $cur_pos;//position du curseur dans le resultat en cours
     
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cDataBaseQueryPostgres
+    //--------------------------------------------------------
+    
+    /**
+     * @brief Constructeur
+     */
     function cDataBaseQueryPostgres($query, cDataBasePostgres $db){
         $this->query = $query;
         $this->db = $db;
@@ -165,7 +209,7 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
     }
     
     /**
-     * @copydoc iDatabase::execute
+     * @brief Execute 
      */
     public function execute(){
         $con = $this->db->getConnectionObject();
@@ -178,7 +222,9 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
     }
     
     /**
-     * @copydoc iDatabase::fetchValue
+     * @brief Extrait une valeur du résultat en cours
+     * @param  mixed   $column_name   Nom de la colonne à extraire
+     * @return mixed Valeur de la colonne
      */
     public function fetchValue($column_name){
         $num = pg_field_num($this->res,$column_name);
@@ -189,7 +235,9 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
     }
 
     /**
-     * @copydoc iDatabase::fetchValue
+     * @brief Extrait la prochaine ligne du résultat en cours
+     * @return array Tableau associatif des champs
+     * @remarks Le curseur de résultat est incrémenté
      */
     public function fetchRow(){
         $data = pg_fetch_assoc($this->res);
@@ -199,35 +247,39 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
     }
     
     /**
-     * @copydoc iDatabase::rowCount
+     * @brief Obtient le nombre de ligne présente
+     * @return int Nombre de lignes
      */
     public function rowCount(){
         return pg_num_rows( $this->res );
     }
     
     /**
-     * @copydoc iDatabase::getQueryStr
+     * @brief Obtient la requête SQL
+     * @return string Texte de la requête
      */
     public function getQueryStr(){
         return $this->query;
     }
     
     /**
-     * @copydoc iDatabase::getResult
+     * @brief Obtient l'objet de résultat
      */
     public function getResultObject(){
         return $this->res;
     }
     
     /**
-     * @copydoc iDatabase::setResult
+     * @brief Définit l'objet de résultat
      */
     public function setResultObject($res){
         return $this->res=$res;
     }
     
     /**
-     * @copydoc iDatabase::seek
+     * @brief Déplace le curseur de sélection
+     * @param $pos Index de la position. L'index débute à 0 jusqu'à rowCount()-1
+     * @return string Texte de la requête
      */
     public function seek($pos,$origin=iDatabaseQuery::Origin){
         switch($origin){
@@ -253,5 +305,4 @@ class cDataBaseQueryPostgres implements iDatabaseQuery {
     }
 }
 
-/** @} */ // end of group
 ?>

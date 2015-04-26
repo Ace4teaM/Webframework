@@ -15,9 +15,11 @@ create type result as (
 	ext_fields TEXT         -- autres champs ( "name:value;nameB:valueB;..." )
 );
 
-/*
+/**
   Retourne un paramètre d'une chaine de caractères encodé
-  Format de l'encodage = "name:value;..."
+
+  Remarque:
+	Format de l'encodage = "name:value;..."
 */
 CREATE OR REPLACE FUNCTION public.get_string_param(string in varchar,name in varchar)
   RETURNS VARCHAR
@@ -27,7 +29,7 @@ begin
 end;
 $$ LANGUAGE plpgsql;
 
-/*
+/**
   Convertie un BOOL en CHAR
 */
 CREATE OR REPLACE FUNCTION public.bool_to_char(bool_value in boolean)
@@ -41,11 +43,13 @@ begin
 end;
 $$ LANGUAGE plpgsql;
 
-/*
+/**
   Définit une variable globale
+
   Parametres:
 	[VARCHAR] p_name  : Nom de la variable
 	[VARCHAR] p_value : Valeur à définir
+
   Retourne:
 	[VARCHAR] Valeur
 */
@@ -62,11 +66,13 @@ exception
 end;
 $$ LANGUAGE plpgsql;
 
-/*
+/**
   Obtient une variable globale
+
   Parametres:
 	[VARCHAR] p_name      : Nom de la variable
 	[VARCHAR] p_def_value : Valeur retourné si introuvable, NULL par défaut
+
   Retourne:
 	[VARCHAR] Valeur
 */
@@ -84,7 +90,7 @@ exception
 end;
 $$ LANGUAGE plpgsql;
 
-/*
+/**
   Supprime une variable globale
   Parametres:
 	[VARCHAR] p_name : Nom de la variable
@@ -97,7 +103,7 @@ begin
 end;
 $$ LANGUAGE plpgsql;
 
-/*
+/**
   Crée une table dynamique
   Remarque:
            un identificateur primaire est automatiquement créé
@@ -126,7 +132,7 @@ EXCEPTION
 END;
 $$ LANGUAGE plpgsql;
 
-/*
+/**
   Supprime une table dynamique
 */
 CREATE OR REPLACE FUNCTION drop_table(
@@ -155,7 +161,7 @@ EXCEPTION
 END;
 $$ LANGUAGE plpgsql;
 
-/*
+/**
   Ajoute une entree à une table dynamique
 */
 CREATE OR REPLACE FUNCTION add_table_column(
@@ -183,7 +189,7 @@ EXCEPTION
 END;
 $$ LANGUAGE plpgsql;
 
-/*
+/**
   @brief Exclue les accents d'une chaine de caractères
   @param p_text Texte à convertir
   @return Texte sans accents
@@ -200,9 +206,10 @@ end;
 $$
 LANGUAGE plpgsql;
 
-/*
+/**
   Génère un token aléatoire
-    @param int token_length Taille du token
+  @param int token_length Taille du token
+
   Retourne:
      [TEXT] Token généré
 
@@ -227,7 +234,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
-/*
+/**
   Initialialise un nouvel id numerique
 */
 CREATE OR REPLACE FUNCTION make_id(
@@ -250,7 +257,7 @@ END;
 $$
 LANGUAGE plpgsql;
 
-/*
+/**
   Initialialise un nouvel id numerique
 */
 CREATE OR REPLACE FUNCTION new_id(

@@ -24,18 +24,15 @@ require_once("class/bases/input.php");
 require_once("string.php");
 
 /**
- * @file filename.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test un nom de fichier Windows
  */
 class cInputWindowsFileName extends cInput
 {
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputWindowsFileName
+    //--------------------------------------------------------
+    
 	public static function isValid($value){
 		if( empty_string($value) )
                     return RESULT(cResult::Failed,cInput::EmptyText);
@@ -55,11 +52,9 @@ class cInputWindowsFileName extends cInput
 
 		return RESULT_OK();
 	}
-    /** @copydoc cInput::toHTML */
 	public static function toHTML($id,$value){
 		return '<input lang="en-us" size="20" maxlength="'.($this->getMaxLength()).'" name="'.$id.'" id="'.$id.'" type="text" value="'.$value.'" wbfw="mail" >';
 	}
-    /** @copydoc cInput::getMaxLength */
 	public static function getMaxLength(){
 		return 256;
 	}
@@ -70,7 +65,11 @@ class cInputWindowsFileName extends cInput
  */
 class cInputUNIXFileName extends cInput
 {
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputUNIXFileName
+    //--------------------------------------------------------
+    
 	public static function isValid($value){
 		if( empty($value) )
 			return RESULT(cResult::Failed,cInput::EmptyText);
@@ -90,15 +89,12 @@ class cInputUNIXFileName extends cInput
 
 		return RESULT_OK();
 	}
-    /** @copydoc cInput::toHTML */
 	public static function toHTML($id,$value){
 		return '<input lang="en-us" size="20" maxlength="'.($this->getMaxLength()).'" name="'.$id.'" id="'.$id.'" type="text" value="'.$value.'" wbfw="mail" >';
 	}
-    /** @copydoc cInput::getMaxLength */
 	public static function getMaxLength(){
 		return 256;
 	}
 }
 
-/** @} */ // end of group
 ?>

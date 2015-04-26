@@ -21,19 +21,17 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @page wfw_maketaskrecursive_ctrl Initialise une tâche système (recursive)
- * 
- * 
- * | Informations |                          |
- * |--------------|--------------------------|
- * | PageId       | -
- * | Rôle         | Administrateur
- * | UC           | maketaskrecursive
- * 
- * @param task_name  Nom de la tâche
- * @param task_delay Déalis d'exécution en minutes
- * @param task_cmd   Commande système
+/*
+  Initialise une tâche système (recursive)
+  
+  Role   : Admin
+  UC     : MakeTaskRecursive
+  Module : wfw
+  
+  Champs:
+   task_name  : Nom de la tâche
+   task_delay : Déalis d'exécution en minutes
+   task_cmd   : Commande système
  */
 
 class wfw_maketaskrecursive_ctrl extends cApplicationCtrl{

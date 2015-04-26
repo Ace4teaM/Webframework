@@ -23,19 +23,16 @@
 require_once("class/bases/input.php");
 
 /**
- * @file string.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test une Chaine de caractères 
- * @remarks Ne doit pas contenir de caractères de fin de ligne, retour chariot ou double-quote
+ * @remarks Une Chaine ne contient pas de caractères de fin de ligne, retour chariot ou double-quote
  */
 class cInputString extends cInput {
 
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputString
+    //--------------------------------------------------------
+    
     public static function isValid($value) {
         if (empty_string($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
@@ -47,17 +44,14 @@ class cInputString extends cInput {
         return RESULT_OK();
     }
 
-    /** @copydoc cInput::regExp */
     public static function regExp() {
         return '[^"\n\r]*';
     }
 
-    /** @copydoc cInput::getMaxLength */
     public static function getMaxLength() {
         return 128;
     }
 
 }
 
-/** @} */ // end of group
 ?>

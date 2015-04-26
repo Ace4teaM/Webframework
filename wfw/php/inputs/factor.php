@@ -23,18 +23,15 @@
 require_once("class/bases/input.php");
 
 /**
- * @file factor.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test un facteur de 0 à 1 
  */
 class cInputFactor extends cInput
 {
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputFactor
+    //--------------------------------------------------------
+    
 	public static function isValid($value){
             // chaine valide ?
             if(preg_match("/^".cInputFactor::regExp()."$/",$value)==0)
@@ -42,19 +39,15 @@ class cInputFactor extends cInput
 
             return RESULT_OK();
 	}    
-    /** @copydoc cInput::toObject */ 
     public static function toObject($string) {
         return floatval($string);
     }
-    /** @copydoc cInput::regExp */
 	public static function regExp(){
             return '(?:0|1)(?:\\.[0-9]+)?';
 	}
-    /** @copydoc cInput::getMaxLength */
 	public static function getMaxLength(){
             return 128;
 	}
 }
 
-/** @} */ // end of group
 ?>

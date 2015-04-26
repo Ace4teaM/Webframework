@@ -21,10 +21,16 @@
 */
 
 /*
- * Affiche le contenu d'un ou plusieurs scripts d'inclusion
- * 
- * Rôle : Tous
- * UC   : include
+  Concaténe le contenu de plusieurs scripts d'inclusion
+ 
+  Role   : Tous
+  UC     : Include
+  Module : wfw
+  Output : "text/javascript", "text/css"
+ 
+  Champs:
+    script_type  : Type de script. Une des valeurs suivants: "jquery", "yui", "extjs", "bootstrap", "javascript"
+ 
  */
 
 class wfw_include_ctrl extends cApplicationCtrl{

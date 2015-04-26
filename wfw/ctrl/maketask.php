@@ -21,19 +21,17 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @page wfw_maketask_ctrl Initialise une tâche système
- * 
- * 
- * | Informations |                          |
- * |--------------|--------------------------|
- * | PageId       | -
- * | Rôle         | Administrateur
- * | UC           | maketask
- * 
- * @param task_name  Nom de la tâche
- * @param task_date  Date d'exécution
- * @param task_cmd   Commande système
+/*
+  Initialise une tâche système
+  
+  Role   : Admin
+  UC     : MakeTask
+  Module : wfw
+  
+  Champs:
+    task_name  : Nom de la tâche
+    task_date  : Date d'exécution
+    task_cmd   : Commande système
  */
 
 class wfw_maketask_ctrl extends cApplicationCtrl{

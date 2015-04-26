@@ -1,7 +1,7 @@
 <?php
 /*
     ---------------------------------------------------------------------------------------------------------------------------------------
-    (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    (C)2008-2007, 2012-2014 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
     This file is part of WebFrameWork.
 
@@ -25,52 +25,70 @@ require_once("string.php");
 require_once("base.php");
 
 /**
- * @file bool.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test une valeur booleen
  */
 class cInputBool extends cInput
 {
-    /** @copydoc cInput::isValid */
-	public static function isValid($value){
-		if( empty_string($value) )
-                    return RESULT(cResult::Failed,cInput::EmptyText);
+    //--------------------------------------------------------
+    // Méthodes héritées
+    // @class cInputBool
+    //--------------------------------------------------------
+    
+    /**
+     * @brief Test la validité d'une chaine
+     * @return [RESULT] Résultat du test 
+    */
+    public static function isValid($value){
+		  if( empty_string($value) )
+           return RESULT(cResult::Failed,cInput::EmptyText);
 		
-		// carateres valides
-		switch(strtolower($value)){
-			case "0":
-			case "1":
-			case "yes":
-			case "no":
-			case "on":
-			case "off":
-			case "true":
-			case "false":
-                            return RESULT_OK();
-		}
+		  // carateres valides
+		  switch(strtolower($value)){
+			  case "0":
+			  case "1":
+			  case "yes":
+			  case "no":
+			  case "on":
+			  case "off":
+			  case "true":
+			  case "false":
+             return RESULT_OK();
+		  }
 
-                return RESULT(cResult::Failed,cInput::InvalidChar);
+      return RESULT(cResult::Failed,cInput::InvalidChar);
 	}
-    /** @copydoc cInput::regExp */
+
+    /**
+     * @brief Obtient l'expression régulière 
+     * @return [string] Expression régulière 
+    */
 	public static function regExp(){
 		return 'on|off|0|1|yes|no|true|false';
 	}
-    /** @copydoc cInput::getMaxLength */
+    /**
+     * @brief Obtient la longueur maximale possible de la chaine 
+     * @return [int] Longueur maximale de la chaine 
+    */
 	public static function getMaxLength(){
 		return 128;
 	}
-    /** @copydoc cInput::toObject */
+    /**
+     * @brief Convertie la chaine en objet PHP
+     * @return [bool] valeur
+    */
 	public static function toObject($value){
 		return cInputBool::toBool($value);
 	}
 
-	// extra //
-
+    //--------------------------------------------------------
+    // Méthodes spécifiques
+    // @class cInputBool
+    //--------------------------------------------------------
+    
+    /**
+     * @brief Convertie la chaine en booléen
+     * @return [bool] valeur
+    */
 	public static function toBool($value){
 		switch(strtolower($value)){
 			case "1":
@@ -81,11 +99,15 @@ class cInputBool extends cInput
 		}
 		return false;
 	}
-        
-        public static function toString($value){
-            return ($value ? "true" : "false");
+       
+    /**
+     * @brief Convertie la chaine en booléen
+     * @param $value [string] Valeur 
+     * @return [bool] valeur
+    */ 
+    public static function toString($value){
+        return ($value ? "true" : "false");
 	}
 }
 
-/** @} */ // end of group
 ?>

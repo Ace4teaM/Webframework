@@ -10,7 +10,7 @@ interface iFile{
 
 interface iFileSysMgr{
 	/**
-	 * Cr�e un lien symbolique vers un fichier
+	 * Crée un lien symbolique vers un fichier
 	 */
 	public function createSymbolicFile(String $src_filename,String $dst_filename);
 	/**
@@ -18,11 +18,11 @@ interface iFileSysMgr{
 	 */
 	public function removeFile(String $filename);
 	/**
-	 * Cr�e un fichier
+	 * Crée un fichier
 	 */
 	public function createFile(String $filename);
 	/**
-	 * Cr�e un fichier temporaire
+	 * Crée un fichier temporaire
 	 */
 	public function createTempFile(String $filename);
 }

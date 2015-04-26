@@ -1,7 +1,7 @@
 <?php
 /*
     ---------------------------------------------------------------------------------------------------------------------------------------
-    (C)2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    (C)2012-2014 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
     This file is part of WebFrameWork.
 
@@ -20,55 +20,6 @@
     ---------------------------------------------------------------------------------------------------------------------------------------
 */
 
-/**
-  Classe de template XML
-
-  - Utilisez l'espace de nommage "http://www.webframework.fr/last/xmlns/template" pour inserer des commandes dans un fichier XML
-  - Le template agit sous forme 'd'actions' applicable a un element et ses enfants
-  - Tous les fichiers charges dynamiquement durant la transformation sont relatifs à l'URL du document [input]
-  - Les elements sont analyses comme suit: si une action est trouve -> proceder à la selection -> traiter les arguments -> executer l'action
-
-  Actions:
-  SELECT   : Deplace le curseur de selection. si introuvable, l'element est ignore.
-  EXIST    : Verifie si une valeur existe soit: dans la selection, dans les arguments ou dans les parametres. si introuvable, l'element est ignore. (le curseur de selection est deplace)
-  ARRAY    : Transforme n fois un element.
-  MERGE    : Fond les attributs et le contenu texte de la source dans la destination.
-  INCLUDE  : Inclue directement le contenu XML de la source dans la destination.
-  IGNORE   : Ignore le contenu de l'element concerne
-  FORMAT   : Formate le contenu texte au format HTML
-  EXP      : Test une expression reguliere sur la selection
-
-  Elements:
-  container : Utilise pour contenir une action, 'container' est supprime apres generation (seul les enfants sont conserves)
-
-  Attributs:
-  path      : chemin d'acces a la selection.
-  fichier+cible = [:FileName:[/xml_path]]
-  absolue       = [/xml_path]
-  relative      = [xml_path]
-  noeud         = [identifier]
-  action    : identifiant de l'action a entreprendre sur l'element.
-  condition : conditions dans une selection SELECT ou ARRAY, une ou plusieurs des conditions ci-dessous:
-  [attribut_name='value';] = condition d'egalite
-  exp       : expression reguliere utilise avec l'action "EXP".
-
-  Marqueurs:
-  -{!Identifier}                   : insert un texte brut au document sans formatage XML (insere apres transformation du document)
-  -{Identifier}                    : insert le texte passe en argument ou en selection.
-  -{Identifier|'ReplacementText'}  : insert le texte passe en argument ou en selection, si introuvable insert le texte de remplacement.
-  -{SectionId:Id}                  : insert le texte de l'index (default.xml): page, mail, uri, etc...
-  -{SectionId:Id@Attribute}        : insert le texte d'un attribut de l'index (default.xml): page, mail, uri, etc...
-  -{:Page_Id}                      : insert un lien de page de l'index (default.xml). URI complete avec protocole.
-
-  Marqueurs predefinies:
-  -{__array_count__}               : dans une action ARRAY, retourne le compteur de boucle.
-  -{__inner_text__}                : dans une action ARRAY ou SELECT, retourne le texte interne du noeud.
-  -{__date_rfc822__}               : date actuelle au format RFC822.
-  -{__date_w3c__}                  : date actuelle au format du W3C.
-  -{__timpestamp__}                : timestamp UNIX en cours.
-  -{__uri__}                       : nom de domaine specifie dans "default.xml", vide si inexistant.
-*/
-
 
 require_once("base.php");
 require_once("templates/template_markers.php");
@@ -76,45 +27,114 @@ require_once("xdocument.php");
 require_once("regexp.php");
 require_path("class/bases/");
 require_path("inputs/");
+  
+/*?
+	Template XML
 
+	- Ajouter l'espace de nommage "http://www.webframework.fr/last/xmlns/template" à l'en-tête du fichier XML
+	- Le template agit par "transformation" applicable aux éléments et leurs enfants
+	- Tous les fichiers chargés dynamiquement durant une transformation sont relatifs à l'URL du document [input]
+	- Les éléments sont analysés comme suit: si une action est définit -> sélection des données -> traitement des arguments -> transformation de l'élément
+
+	## Actions
+	SELECT   : Déplace le curseur de sélection. Si introuvable, l'élément est ignoré.
+	EXIST    : Vérifie si une valeur existe dans la sélection, les arguments ou les paramètres. Si introuvable, l'élément est ignoré (le curseur de sélection est déplacé).
+	ARRAY    : Transforme n fois un élément.
+	MERGE    : Fusionne les attributs et le contenu texte de la source dans la destination.
+	INCLUDE  : Inclue le contenu XML de la source dans la destination.
+	IGNORE   : Ignore le contenu de l'élément concerné
+	FORMAT   : Formate le contenu texte au format HTML
+	EXP      : Test une expression réguliere sur la sélection
+
+	## Éléments
+	container : Utilisé pour contenir une action, 'container' est supprimé après génération (seul les enfants sont conservés)
+
+	## Attributs
+	* path      : chemin d'accès à la sélection.
+		fichier+cible = [:FileName:[/xml_path]]
+		absolue       = [/xml_path]
+		relative      = [xml_path]
+		noeud         = [identifier]
+	* action    : identifiant de l'action à entreprendre sur l'élément.
+	* condition : conditions dans une sélection SELECT ou ARRAY, une ou plusieurs des conditions ci-dessous:
+		[attribut_name='value';] = condition d'egalite
+	* exp       : expression réguliere utilisé avec l'action "EXP".
+
+	## Marqueurs
+	-{!Identifier}                   : insert un texte brut au document sans formatage XML (insére apres transformation du document)
+	-{Identifier}                    : insert un texte passé en argument ou en sélection.
+	-{Identifier|'ReplacementText'}  : insert un texte passé en argument ou en sélection, si introuvable insert le texte de remplacement.
+	-{SectionId:Id}                  : insert un texte contenu dans l'index (default.xml): page, mail, uri, etc...
+	-{SectionId:Id@Attribute}        : insert un attribut contenu dans l'index (default.xml): page, mail, uri, etc...
+	-{:Page_Id}                      : insert un lien de page contenu dans l'index (default.xml). URI complète avec protocole.
+
+	## Marqueurs prédéfinies
+	-{__array_count__}               : dans une action ARRAY, retourne le compteur de boucle.
+	-{__inner_text__}                : dans une action ARRAY ou SELECT, retourne le texte interne du noeud.
+	-{__date_rfc822__}               : date actuelle au format RFC822.
+	-{__date_w3c__}                  : date actuelle au format du W3C.
+	-{__timpestamp__}                : timestamp UNIX en cours.
+	-{__uri__}                       : nom de domaine spécifié dans "default.xml", vide si inexistant.
+*/
+
+/**
+  @brief Classe de template XML
+*/
 class cXMLTemplate
 {
-    //errors
+    //--------------------------------------------------------
+    // Constantes des erreurs
+    // @class cXMLTemplate
+    //--------------------------------------------------------
+    
     const NoInputFile       = "XML_TEMPLATE_NO_INPUT_FILE";
     const NoInputElement    = "XML_TEMPLATE_NO_INPUT_ELEMENT";
     const CantLoadInputFile = "XML_TEMPLATE_CANT_LOAD_INPUT_FILE";
     const CantLoadSelectFile= "XML_TEMPLATE_CANT_LOAD_SELECTION_FILE";
-
-    //URI utilise par l'extention XML template
-    public $wfw_template_uri = "http://www.webframework.fr/last/xmlns/template";
-    //instances des classes Marker
-    public $check_text_class = NULL;
-    //instances des fichiers XML chargés
-    public $xml_files = array();
-    //chemin d'acces aux fichiers chargeables
-    public $var_path;
-    //arguments globales
-    public $arg;
-    //Element de selection
-    public $select = NULL;
-    //fichier à transformer (entrée)
-    public $doc = NULL;
-    //Element de selection principale (entrée)
-    public $input_element = NULL;
-    //Decodes les entites HTML lors du chargement d'un document (load_xml_file)
-    public $resolve_html_entites = true;
-    //Evenement: apres transformation (cEvent class)
-    public $transformed_event = NULL;
-
-    public function setRootPath($path) {
-        $this->var_path = $path;
-    }
+	
+    //--------------------------------------------------------
+    // Membres
+    // @class cXMLTemplate
+    //--------------------------------------------------------
     
-    /*
-     * Constructeur
+    // URI utilise par l'extention XML template
+    public $wfw_template_uri = "http://www.webframework.fr/last/xmlns/template";
+    // Instances des classes Marker
+    public $check_text_class = NULL;
+    // Instances des fichiers XML chargés
+    public $xml_files = array();
+    // Chemin d'acces aux fichiers chargeables
+    public $var_path;
+    // Arguments globales
+    public $arg;
+    // Element de selection
+    public $select = NULL;
+    // Fichier à transformer (entrée)
+    public $doc = NULL;
+    // Element de selection principale (entrée)
+    public $input_element = NULL;
+    // Décodes les entites HTML lors du chargement d'un document (load_xml_file)
+    public $resolve_html_entites = true;
+    // Evénement: apres transformation (cEvent class)
+    public $transformed_event = NULL;
+	
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cXMLTemplate
+    //--------------------------------------------------------
+    
+    /**
+     * @brief Constructeur
      */
     function __construct() {
         $this->transformed_event = new cEvent();
+    }
+    
+    /**
+     * @brief Définit le chemin racine
+     */
+    public function setRootPath($path) {
+        $this->var_path = $path;
     }
     
     
@@ -260,7 +280,6 @@ class cXMLTemplate
       Retourne:
       true, false si le document 'input_file' ne peut pas etre charge.
      */
-
     public function load($path) {
         $this->doc = new XMLDocument("1.0", "utf-8");
 
@@ -301,7 +320,6 @@ class cXMLTemplate
       Retourne
       la valeur correspondante, si introuvable une chene vide.
      */
-
     public function check_text($select, $text, $arg, $delimiter_l_char = '{', $delimiter_r_char = '}') {
         $identifier = cInputName::regExp();
         $string = "[^\']*";
@@ -957,6 +975,9 @@ class cXMLTemplate
 
 }
 
+/*
+  Action de base
+ */
 class cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -966,9 +987,8 @@ class cXMLTemplateAction {
 }
 
 /*
-  duplique et transforme en boucle les noeuds enfants
+  Duplique et transforme en boucle les noeuds enfants
  */
-
 class cXMLTemplateAction_each extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1016,9 +1036,8 @@ class cXMLTemplateAction_each extends cXMLTemplateAction {
 }
 
 /*
-  duplique et transforme en boucle le noeud en correspondance avec chaque selection trouve
+	Duplique et transforme en boucle le noeud en correspondance avec chaque selection trouve
  */
-
 class cXMLTemplateAction_array extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1063,26 +1082,25 @@ class cXMLTemplateAction_array extends cXMLTemplateAction {
 }
 
 /*
- * Déplace le curseur de sélection sur un ou plusieurs éléments
- * Transformation:
- *    Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
- *    Sinon l'élément est transformé autant de fois qu'il y a d'éléments trouvés (méthode cXMLTemplate::check_node)
- * Attributs:
- *    action   = "all"
- *    selector = Sélecteur CSS vers les éléments cibles
- * Arguments générés:
- *    __array_count__ = Index de l'élément en cours (débute à 1)
- *    __inner_text__  = Valeur de l'élément sélectionné (texte)
- *    __tag_name__    = Nom de la balise sélectionnée
- * Exemples:
- *    <li template:action="all" template:selector="books > *"> Book #-{__array_count__} is -{__inner_text__}</li>
+  Déplace le curseur de sélection sur un ou plusieurs éléments
+  Transformation:
+     Si l'action ne peut pas être appliquée, l'élément et ses enfants sont supprimés.
+     L'Élément est dupliqué autant de fois qu'il y a de transformation à éffectuées (méthode cXMLTemplate::check_node)
+
+  Attributs:
+     action   = "all"
+     selector = Sélecteur CSS vers les éléments cibles
+
+  Arguments générés:
+     __array_count__ = Index de l'élément en cours (débute à 1)
+     __inner_text__  = Valeur de l'élément sélectionné (texte)
+     __tag_name__    = Nom de la balise sélectionnée
+
+  Exemples:
+     <li template:action="all" template:selector="books > "> Book #-{__array_count__} is -{__inner_text__}</li>
  */
 class cXMLTemplateAction_all extends cXMLTemplateAction {
 
-    /**
-     * @copydoc cXMLTemplate::checkNode()
-     * @param $input Référence sur la classe appelante de type cXMLTemplate
-     */
     public static function check_node($input, $select, $node, $arg) {
         $arg['__array_count__'] = 0;
 
@@ -1125,25 +1143,24 @@ class cXMLTemplateAction_all extends cXMLTemplateAction {
 
 
 /*
- * Déplace le curseur de sélection sur un élément
- * Transformation:
- *    Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
- *    Sinon l'élément est transformé (méthode cXMLTemplate::check_node)
- * Attributs:
- *    action   = "one"
- *    selector = Sélecteur CSS vers l'élément cible
- * Arguments générés:
- *    __inner_text__  = Valeur de l'élément sélectionné (texte)
- *    __tag_name__    = Nom de la balise séléctionnée
- * Exemples:
- *    <li template:action="one" template:selector="books > *">First Book is -{__inner_text__}</li>
+  Déplace le curseur de sélection sur un élément
+  Transformation:
+     Si l'action ne peut pas être appliquée, l'élément et ses enfants sont supprimés.
+     L'Élément est transformé (méthode cXMLTemplate::check_node)
+
+  Attributs:
+     action   = "one"
+     selector = Sélecteur CSS vers l'élément cible
+
+  Arguments générés:
+     __inner_text__  = Valeur de l'élément sélectionné (texte)
+     __tag_name__    = Nom de la balise séléctionnée
+
+  Exemples:
+     <li template:action="one" template:selector="books > ">First Book is -{__inner_text__}</li>
  */
 class cXMLTemplateAction_one extends cXMLTemplateAction {
 
-    /**
-     * @copydoc cXMLTemplate::checkNode()
-     * @param $input Référence sur la classe appelante de type cXMLTemplate
-     */
     public static function check_node($input, $select, $node, $arg) {
 
         $next = $node->nextSibling;
@@ -1180,9 +1197,8 @@ class cXMLTemplateAction_one extends cXMLTemplateAction {
 }
 
 /*
-  test une expression reguliere sur la selection
+	Test une expression reguliere sur la selection
  */
-
 class cXMLTemplateAction_exp extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1245,9 +1261,8 @@ class cXMLTemplateAction_exp extends cXMLTemplateAction {
 }
 
 /*
-  evalue une expression du langage
+	Evalue une expression du langage
  */
-
 class cXMLTemplateAction_eval extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1289,17 +1304,20 @@ class cXMLTemplateAction_eval extends cXMLTemplateAction {
 }
 
 /*
- * Déplace le curseur de sélection sur l'élément choisi
- * Transformation:
- *    Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
- *    Sinon l'élément est transformé (méthode cXMLTemplate::check_node)
- * Attributs:
- *    action = "select"
- *    path   = Chemin d'accès à l'élément cible
- * Arguments générés:
- *    __inner_text__ = Valeur de l'élément sélectionné (texte)
- * Exemples:
- *    <div template:action="select" template:path="/root/element"> Si l'élément 'book' est sélectionné</div>
+  Déplace le curseur de sélection sur l'élément choisi
+  Transformation:
+     Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
+     Sinon l'élément est transformé (méthode cXMLTemplate::check_node)
+
+  Attributs:
+     action = "select"
+     path   = Chemin d'accès à l'élément cible
+
+  Arguments générés:
+     __inner_text__ = Valeur de l'élément sélectionné (texte)
+
+  Exemples:
+     <div template:action="select" template:path="/root/element"> Si l'élément 'book' est sélectionné</div>
  */
 class cXMLTemplateAction_select extends cXMLTemplateAction {
 
@@ -1336,16 +1354,19 @@ class cXMLTemplateAction_select extends cXMLTemplateAction {
 }
 
 /*
- * Test l’existence d'un argument
- * Transformation:
- *    Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
- *    Sinon l'élément est transformé (méthode cXMLTemplate::check_node)
- * Attributs:
- *    action = "exists"
- *    name   = Nom de l'argument
- * Exemples:
- *    <div template:action="exists" template:name="my_arg"> Si 'my_arg' existe</div>
- *    <div template:action="exists" template:name="!my_arg"> Si 'my_arg' n'existe pas</div>
+  Test l’existence d'un argument
+
+  Transformation:
+     Si l'action ne peut pas être appliquée, l'éléments et ses enfants sont supprimés.
+     Sinon l'élément est transformé (méthode cXMLTemplate::check_node)
+
+  Attributs:
+     action = "exists"
+     name   = Nom de l'argument
+
+  Exemples:
+     <div template:action="exists" template:name="my_arg"> Si 'my_arg' existe</div>
+     <div template:action="exists" template:name="!my_arg"> Si 'my_arg' n'existe pas</div>
  */
 class cXMLTemplateAction_exists extends cXMLTemplateAction {
 
@@ -1403,8 +1424,8 @@ class cXMLTemplateAction_exists extends cXMLTemplateAction {
 /*
   Fusionne le contenu XML de la sélection dans le nœud en cours
   Attributs:
-  action = "merge"
-  path   = Chemin d'accès à l'élément cible
+	  action = "merge"
+	  path   = Chemin d'accès à l'élément cible
  */
 class cXMLTemplateAction_merge extends cXMLTemplateAction {
 
@@ -1436,14 +1457,14 @@ class cXMLTemplateAction_merge extends cXMLTemplateAction {
     }
 }
 
-/**
- * Inclue contenu XML de la sélection dans le nœud en cours.
- * Attributs:
- * action = "include"
- * path   = Chemin d'accès à l'élément cible.
- * option = Une combinaison des valeurs suivantes:
- *          - "include_att"  = Inclue les attributs
- *          - "content_only" = Inclue uniquement le contenu du noeud
+/*
+  Inclue contenu XML de la sélection dans le nœud en cours.
+  Attributs:
+	  action = "include"
+	  path   = Chemin d'accès à l'élément cible.
+	  option = Une combinaison des valeurs suivantes:
+			   - "include_att"  = Inclue les attributs
+			   - "content_only" = Inclue uniquement le contenu du noeud
  */
 class cXMLTemplateAction_include extends cXMLTemplateAction {
 
@@ -1505,11 +1526,10 @@ class cXMLTemplateAction_include extends cXMLTemplateAction {
 /*
   Fabrique un sous contenu dans la destination
   Attributs:
-  action = "make"
-  path   = selection en cours.
-  import = chemin d'acces a l'element cible.
+	  action = "make"
+	  path   = selection en cours.
+	  import = chemin d'acces a l'element cible.
  */
-
 class cXMLTemplateAction_make extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1580,10 +1600,9 @@ class cXMLTemplateAction_make extends cXMLTemplateAction {
 /*
   Inclue du contenu XML dans la destination
   Attributs:
-  action = "ignore"
-  path   = chemin d'acces a l'element cible.
+	  action = "ignore"
+	  path   = chemin d'acces a l'element cible.
  */
-
 class cXMLTemplateAction_ignore extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {
@@ -1598,11 +1617,10 @@ class cXMLTemplateAction_ignore extends cXMLTemplateAction {
 /*
   Formate un texte brut en texte HTML
   Attributs:
-  action = "format"
-  transform = si true, les elements enfants sont transformés par checkNode()
-  preset = type de formatage ("script", "text"). Si non définit tous les formatages sont éffectués
+	  action = "format"
+	  transform = si true, les elements enfants sont transformés par checkNode()
+	  preset = type de formatage ("script", "text"). Si non définit tous les formatages sont éffectués
  */
-
 class cXMLTemplateAction_format extends cXMLTemplateAction {
 
     public static function check_node($input, $select, $node, $arg) {

@@ -1,7 +1,7 @@
 <?php
 /*
   ---------------------------------------------------------------------------------------------------------------------------------------
-  (C)2012-2013 Thomas AUGUEY <contact@aceteam.org>
+  (C)2012-2014 Thomas AUGUEY <contact@aceteam.org>
   ---------------------------------------------------------------------------------------------------------------------------------------
   This file is part of WebFrameWork.
 
@@ -21,54 +21,55 @@
  */
 
 /**
- * @file cResult.php
- *
- * @defgroup Application
  * @brief Résultat de procédure
- * @{
  */
 class cResult {
-    //contexts
+
+    //--------------------------------------------------------
+    // Constantes des contextes d'erreurs
+    // @class cResult
+    //--------------------------------------------------------
+    
     const Ok     = "ERR_OK";       //!< @brief Contexte en cas de succès
     const Failed = "ERR_FAILED";   //!< @brief Contexte en cas d'erreur ou d'echec de l'application
     const System = "ERR_SYSTEM";   //!< @brief Contexte en cas d'erreur ou d'echec du système 
     
-    /**
-     * @defgroup Erreurs
-     * @{
-     */
-
-    //codes
+    //--------------------------------------------------------
+    // Constantes des codes d'erreurs
+    // @class cResult
+    //--------------------------------------------------------
+    
     const Success = "SUCCESS";                       //!< @brief Résultat: Succès
     const UnsuportedFeature = "UNSUPORTED_FEATURE";  //!< @brief Résultat: Fonctionnalité non supportée
+
+    //--------------------------------------------------------
+    // Membres
+    // @class cResult
+    //--------------------------------------------------------
     
-    /** @} */
+    // Contexte de la dernière erreur
+    public static $last_code;
+    // Code de la dernière erreur
+    public static $last_info;
+    // Attributs de la dernière erreur (tableau associatif)
+    public static $last_att;
     
-    //
-    public static $last_code,$last_info,$last_att;
-    
-    /**
-     * @brief Identifiant précisiant le contexte de l'erreur
-     * @var string
-     */
+    // Contexte de l'erreur
     public $code;
-    
-    /**
-     * @brief Identifiant précisiant l'erreur
-     * @var string
-     */
+    // Code de l'erreur
     public $info;
-    
-    /**
-     * @brief Attributs de l'erreur (tableau associatif)
-     * @var array
-     */
+    // Attributs de l'erreur (tableau associatif)
     public $att;
+    
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cResult
+    //--------------------------------------------------------
     
     /**
      * @brief Constructeur de la classe  
-     * @param int    $code  Code de l'erreur
-     * @param string $info  Identifiant décrivant plus en détail le résultat
+     * @param $code  [int] Code de l'erreur
+     * @param $info  [string] Identifiant décrivant plus en détail le résultat
      * @remarks Voir cResult pour plus de détails sur les codes d'erreurs
      */
     public function cResult($code, $info, $att=array()){
@@ -77,6 +78,10 @@ class cResult {
         $this->att  = array_change_key_case($att, CASE_LOWER);
     }
     
+    /**
+     * @brief Convertie en tableau  
+     * @return [array] Tableau contenant les éléments de résultat
+     */
     public function toArray(){
         $ar = array("result"=>$this->code, "error"=>$this->info);
         if(is_array($this->att))
@@ -86,8 +91,8 @@ class cResult {
 
     /**
      * @brief Initialise la dernière erreur
-     * @param int    $code  Code de l'erreur
-     * @param string $info  Identifiant décrivant plus en détail le résultat
+     * @param $code  [int] Code de l'erreur
+     * @param $info  [string] Identifiant décrivant plus en détail le résultat
      * @remarks Voir cResult pour plus de détails sur les codes d'erreurs
      */
     public static function last($code, $info, $att=array()){
@@ -161,9 +166,14 @@ class cResult {
     }
 }
 
+//--------------------------------------------------------
+// Fonctions de résultat
+// @class cResult
+//--------------------------------------------------------
+
 /**
  * @brief Initialise le résultat en cours
- * @param cResult $result Instance d'un autre résultat
+ * @param $result [cResult] Instance d'un autre résultat
  * @return bool true si $code == cResult::Ok, sinon false
  */
 function RESULT_INST($result){
@@ -174,9 +184,9 @@ function RESULT_INST($result){
 
 /**
  * @brief Initialise le résultat en cours
- * @param string $code Contexte de l'erreur. Généralement une des constantes suivantes: [cResult::Ok, cResult::Failed, cResult::System]
- * @param string $info Code de l'erreur
- * @param array $att Tableau associatif des attributs supplémentaires
+ * @param $code [string] Contexte de l'erreur. Généralement une des constantes suivantes: [cResult::Ok, cResult::Failed, cResult::System]
+ * @param $info [string] Code de l'erreur
+ * @param $att  [array]  Tableau associatif des attributs supplémentaires
  * @return bool true si $code == cResult::Ok, sinon false
  */
 function RESULT($code,$info="",$att=array()){
@@ -200,7 +210,7 @@ function RESULT_PUSH_CALLSTACK(){
 }
 
 /**
- * @brief Initialise le résultat en coours avec le code cResult::Ok
+ * @brief Initialise le résultat en cours avec le code cResult::Ok
  * @return bool true
  */
 function RESULT_OK(){
@@ -209,13 +219,12 @@ function RESULT_OK(){
 
 /**
  * @brief Ajoute un attribut au résultat en cours
- * @param string $name Nom de l'attribut
- * @param string $value Valeur de l'attribut 
+ * @param  $name  [string] Nom de l'attribut
+ * @param  $value [string] Valeur de l'attribut 
  * @return string Valeur du paramètre
  */
 function RESULT_PUSH($name,$value){
     return cResult::$last_att[$name]=$value;
 }
 
-/** @} */ // end of group
 ?>

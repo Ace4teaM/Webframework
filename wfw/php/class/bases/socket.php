@@ -1,7 +1,7 @@
 <?php
 /*
   ---------------------------------------------------------------------------------------------------------------------------------------
-  (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+  (C)2012-2014 Thomas AUGUEY <contact@aceteam.org>
   ---------------------------------------------------------------------------------------------------------------------------------------
   This file is part of WebFrameWork.
 
@@ -21,26 +21,32 @@
  */
 
 /**
- * @brief Connexion de base à un serveur
- * Librairie PHP5
+ * @brief Socket de connexion 
  */
 class cSocket {
-    /**
-     * @defgroup Erreurs
-     * @{
-     */
-
-    /**
-     * @brief Impossible d'ouvrir l'URL
-     */
+ 
+    //--------------------------------------------------------
+    // Constantes des erreurs
+    // @class cSocket
+    //--------------------------------------------------------
+    
+    // Impossible d'ouvrir l'URL
     const OpenURL = "SOCK_OPEN_URL";
 
-    /** @} */
+    //--------------------------------------------------------
+    // Membres
+    // @class cSocket
+    //--------------------------------------------------------
     
     var $sock = FALSE;
     var $errstr;
     var $errno;
 
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cSocket
+    //--------------------------------------------------------
+    
     /**
      * @brief Ouvre une connexion avec le serveur
      * @param string $url Adresse du serveur
@@ -50,7 +56,7 @@ class cSocket {
      * 
      * @remarks N'oubliez pas de fermer la connexion avec la méthode Close() une fois les opérations terminées
      */
-    function Open($url, $port, $timeout = 30) {
+    public function Open($url, $port, $timeout = 30) {
 
         //   $ip=gethostbyname($url);
 
@@ -74,13 +80,16 @@ class cSocket {
      * @param string $str Message à envoyer
      * @return string Message en réponse
      */
-    function Puts($str) {
+    public function Puts($str) {
         fwrite($this->sock, $str);
 
         return fgets($this->sock);
     }
 
-    function Put($str) {
+    /**
+     * @brief N/A
+     */
+    public function Put($str) {
         fwrite($this->sock, $str);
 
         //lit la reponse
@@ -99,7 +108,7 @@ class cSocket {
     /**
      * @brief Termine la connexion
      */
-    function Close() {
+    public function Close() {
         if ($this->sock)
             fclose($this->sock);
     }
@@ -107,11 +116,16 @@ class cSocket {
 }
 
 /**
- * Connexion avec un serveur SMTP
+ * @brief Socket de connexion à un serveur SMTP
  */
 class cSMTP extends cSocket {
 
-    function SendMessage($from, $to, $author, $suject, $content) {
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cSMTP
+    //--------------------------------------------------------
+    
+    public function SendMessage($from, $to, $author, $suject, $content) {
         $this->Puts("HELO " . $_SERVER['SERVER_ADDR'] . "\n");
         $this->Puts("MAIL FROM: <$from>\n");
         $this->Puts("RCPT TO: <$to>\n");
@@ -132,11 +146,16 @@ class cSMTP extends cSocket {
 }
 
 /**
- * Connexion avec un serveur HTTP
+ * @brief Socket de connexion à un serveur HTTP
  */
 class cHTTP extends cSocket {
 
-    function Get($path) {
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cHTTP
+    //--------------------------------------------------------
+    
+    public function Get($path) {
         return $this->Put(
                         "GET $path HTTP/1.1\r\n" .
                         "Host: " . $this->url_desc["host"] . "\r\n" .

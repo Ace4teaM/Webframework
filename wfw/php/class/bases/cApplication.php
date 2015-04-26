@@ -20,22 +20,6 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @file cApplication.php
- *
- * @defgroup Application
- * @brief Classe de base d'une application
- *
- * L'implémentation propose la gestion :
- * - Base de données
- * - Fabrication des templates
- * - Message d'erreurs (traductions et affichage)
- * - Gestion de la configuration
- *
- *
- * @{
- */
-
 require_once("systemd.php");
 require_once("ini.php");
 require_once("class/bases/iApplication.php");
@@ -61,11 +45,11 @@ class FormField
  */
 class cApplication implements iApplication{
     
-    /**
-     * @defgroup Erreurs
-     * @{
-     */
-
+    //--------------------------------------------------------
+    // Constantes des erreurs
+    // @class cApplication
+    //--------------------------------------------------------
+    
     //errors class
     const Configuration              = "APP_CONFIGURATION";
     const ModuleClassNotFound        = "APP_MODULE_NOT_FOUND";
@@ -137,24 +121,30 @@ class cApplication implements iApplication{
     const CantRemoveResource           = "APP_CANT_REMOVE_RESOURCE";
     
     
-    /** @} */
+    //--------------------------------------------------------
+    // Constantes des Options
+    // @class cApplication
+    //--------------------------------------------------------
     
     //options
     const FieldFormatClassName = 1;
     const FieldFormatName      = 2;
     
-    /**
-     * @defgroup Roles
-     * @{
-     */
-
+    //--------------------------------------------------------
+    // Constantes des Roles
+    // @class cApplication
+    //--------------------------------------------------------
+    
     //roles
     const AnyRole       = 0xffffffff;
     const AdminRole     = 0x10000000;
     const PublicRole    = 0x20000000;
     const UserRole      = 0x40000000;
     
-    /** @} */
+    //--------------------------------------------------------
+    // Membres
+    // @class cApplication
+    //--------------------------------------------------------
     
     //
     protected $template_attributes;
@@ -164,19 +154,21 @@ class cApplication implements iApplication{
     protected $default;
     protected $hostname;
     
-    /** 
-     * @brief Rôle(s) actuel(s) de l'utilsateur 
-     * @var role
-     */
+    // Rôle(s) actuel(s) de l'utilsateur
     protected $role;
 
-    /** 
-     * @brief Pointeur sur la base de données par défaut
-     * @var iDataBase
-     */
+    // Pointeur sur la base de données par défaut
     public $db;
-
-    function cApplication($root_path,$config)
+	
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cApplication
+    //--------------------------------------------------------
+    
+	/**
+	 * @brief Constructeur
+	*/
+    public function cApplication($root_path,$config)
     {
         //enregistre la globale utilisée par les includes de ce construction
         global $app;
@@ -302,7 +294,7 @@ class cApplication implements iApplication{
     /**
      * @brief Détermine le rôle de l'utilisateur en cours
      */
-    function determinateRoles()
+    public function determinateRoles()
     {
         //assigne les nouveaux droits
         $this->setRole(cApplication::AnyRole);
@@ -312,7 +304,7 @@ class cApplication implements iApplication{
      * @brief Définit le(s) rôle(s) en cours
      * @return int Rôle passé en paramétre
      */
-    function setRole($role){
+    public function setRole($role){
         return $this->role = $role;
     }
     
@@ -320,14 +312,14 @@ class cApplication implements iApplication{
      * @brief Obtient le(s) rôle(s) en cours
      * @return Masque de bits définissant les rôles
      */
-    function getRole(){
+    public function getRole(){
         return $this->role;
     }
     
     /**
      * @brief Détermine le langage en cours
      */
-    function determinateLangage()
+    public function determinateLangage()
     {
         $lang = $this->getLangage();
 
@@ -347,7 +339,7 @@ class cApplication implements iApplication{
      * @brief Définit le langage en cours
      * @return string Code du langage, ex: "FR"
      */
-    function setLangage($lang){
+    public function setLangage($lang){
         return $this->setCfgValue("application","lang",strtoupper($lang));
     }
     
@@ -355,7 +347,7 @@ class cApplication implements iApplication{
      * @brief Obtient le langage en cours
      * @return string Code du langage, ex: "FR"
      */
-    function getLangage(){
+    public function getLangage(){
         return $this->getCfgValue("application","lang");
     }
     
@@ -363,7 +355,7 @@ class cApplication implements iApplication{
      * @brief Retourne les attributs globaux
      * @return array Tableau associatif des attributs globaux (utilisé entre autre pour fabriquer les templates)
      */
-    function getAttributes(){
+    public function getAttributes(){
         return $this->template_attributes;
     }
 
@@ -371,7 +363,7 @@ class cApplication implements iApplication{
      * @brief Retourne le document XML des attributs globaux
      * @return XMLDocument Le document XML
      */
-    function getAttributesXML(){
+    public function getAttributesXML(){
         return $this->template_attributes_xml;
     }
 
@@ -381,7 +373,7 @@ class cApplication implements iApplication{
      * @retval true La fonction à réussit, $iface contient un pointeur vers une interface iTaskMgr initialisée
      * @retval false La fonction à échouée, voir cResult::getLast() pour plus d'informations
      */
-    function getTaskMgr(&$iface)
+    public function getTaskMgr(&$iface)
     {
         //initialise
         if($this->task===NULL){
@@ -399,7 +391,7 @@ class cApplication implements iApplication{
      * @retval true La fonction à réussit, $db_iface contient un pointeur vers une interface iDataBase initialisée
      * @retval false La fonction à échouée, voir cResult::getLast() pour plus d'informations
      */
-    function getDB(&$db_iface)
+    public function getDB(&$db_iface)
     {
         //obtient le nom de la classe à instancier
         $db_classname = $this->getCfgValue("database","class");
@@ -434,7 +426,7 @@ class cApplication implements iApplication{
      * @retval true La fonction à réussit, $iface contient un pointeur vers une classe cXMLDefault initialisée
      * @retval false La fonction à échouée, voir cResult::getLast() pour plus d'informations
      */
-    function getDefaultFile(&$iface)
+    public function getDefaultFile(&$iface)
     {
         if($this->default instanceof cXMLDefault){
             $iface = $this->default;
@@ -464,7 +456,7 @@ class cApplication implements iApplication{
     /** 
      * @todo A implémenter
      */
-    function getURI($id)
+    public function getURI($id)
     {
         if(!$this->getDefaultFile($default))
             return false;
@@ -478,7 +470,7 @@ class cApplication implements iApplication{
      * @retval true La fonction à réussit, $hostname contient le nom de l'hôte (ex: localhost)
      * @retval false La fonction à échouée, voir cResult::getLast() pour plus d'informations
      */
-    function getHostName(&$hostname)
+    public function getHostName(&$hostname)
     {
         //si la tentative a deja echoue
         if(is_string($this->hostname)){
@@ -506,7 +498,7 @@ class cApplication implements iApplication{
      * Obtient l'adresse de base de l'application
      * @return L'URI avec le chemin d'accès (ex: foo.com/bar)
      */
-    function getBaseURI()
+    public function getBaseURI()
     {
         $uri = $this->getCfgValue("application","base_uri");
         if(empty($uri)){
@@ -533,7 +525,7 @@ class cApplication implements iApplication{
      * @brief Obtient le chemin d'accès vers l'application
      * @return string Chemin absolue vers la racine de l'application
      */
-    function getRootPath(){
+    public function getRootPath(){
         return $this->root_path;
     }
     
@@ -541,7 +533,7 @@ class cApplication implements iApplication{
      * @brief Obtient le chemin d'accès vers l'application
      * @return string Chemin absolue vers la racine de l'application
      */
-    function getTmpPath(){
+    public function getTmpPath(){
         $tmp = $this->getCfgValue("path","tmp");
         if(!empty($tmp))
             return $this->root_path."/".$tmp;
@@ -558,7 +550,7 @@ class cApplication implements iApplication{
      * @retval string Chemin d'accès (sans slash de fin)
      * @retval false  Chemin introuvable dans la configuration
      */
-    function getLibPath($name="wfw_local",$relatif=false){
+    public function getLibPath($name="wfw_local",$relatif=false){
         $path = $this->getCfgValue("path",$name);
         if($path == NULL){
             //$this->result->set(cResult::ERR_FAILED,"config_not_found",array("desc"=>"Library path '$name' not set in configuration file"));
@@ -575,7 +567,7 @@ class cApplication implements iApplication{
      * @retval array Liste des paramètres
      * @retval null La section n'existe pas
      */
-    function getCfgSection($name){
+    public function getCfgSection($name){
         $name = strtoupper($name);
         return (isset($this->config[$name]) ? $this->config[$name] : null);
     }
@@ -588,7 +580,7 @@ class cApplication implements iApplication{
      * @retval array Liste des paramètres
      * @retval null La section n'existe pas
      */
-    function getCfgValue($section_name,$item_name){
+    public function getCfgValue($section_name,$item_name){
         $item_name = strtoupper($item_name);
         $section = $this->getCfgSection($section_name);
         return ($section!==null && isset($section[$item_name]) ? $section[$item_name] : null);
@@ -602,7 +594,7 @@ class cApplication implements iApplication{
      * @return Valeur du paramètre
      * @remark La valeur n'est conservée que durant l'execution du script
      */
-    function setCfgValue($section_name,$item_name,$value){
+    public function setCfgValue($section_name,$item_name,$value){
         $item_name = strtoupper($item_name);
         $section_name = strtoupper($section_name);
         $this->config[$section_name][$item_name] = $value;
@@ -614,7 +606,7 @@ class cApplication implements iApplication{
      * @return Paramètres de configuration
      * @retval array Liste des paramètres
      */
-    function getCfg(){
+    public function getCfg(){
         return $this->config;
     }
     
@@ -624,7 +616,7 @@ class cApplication implements iApplication{
      * @param $attributes Tableau associatif des champs en entrée (voir cHTMLTemplate::transform)
      * @return string Contenu du template transformé
      */
-    function makeHTMLView($filename,$attributes){
+    public function makeHTMLView($filename,$attributes){
         //Assure le type array pour l'utilisation de array_merge()
         if(!is_array($attributes)) $attributes=array();
         
@@ -641,7 +633,7 @@ class cApplication implements iApplication{
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
      * @param $attributes Tableau associatif des champs en entrée (voir cHTMLTemplate::transform)
      */
-    function showHTMLView($filename,$attributes){
+    public function showHTMLView($filename,$attributes){
         $content = $this->makeHTMLView($filename,$attributes);
         header("Content-type: text/html");
         echo $content;
@@ -650,7 +642,7 @@ class cApplication implements iApplication{
     /**
      * @brief Evenement appellé par la méthode makeXMLView
      */
-    function onMakeXMLTemplate(&$template,&$select,&$attributes)
+    public function onMakeXMLTemplate(&$template,&$select,&$attributes)
     {
     }
     
@@ -659,9 +651,9 @@ class cApplication implements iApplication{
      * @param $filename Chemin d'accès au fichier template (relatif à la racine du site)
      * @param $attributes Tableau associatif des champs en entrée (voir cXMLTemplate::Initialise)
      * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
-    * @return string Contenu du template transformé
+     * @return string Contenu du template transformé
      */
-    function makeXMLView($filename,$attributes,$template_file=NULL)
+    public function makeXMLView($filename,$attributes,$template_file=NULL)
     {
         $template = $this->createXMLView($filename,$attributes,$template_file=NULL);
         //transforme le fichier
@@ -675,7 +667,7 @@ class cApplication implements iApplication{
      * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
      * @return cXMLTemplate Template
      */
-    function createXMLView($filename,$attributes,$template_file=NULL)
+    public function createXMLView($filename,$attributes,$template_file=NULL)
     {
         //Assure le type array pour l'utilisation de array_merge()
         if(!is_array($attributes)) $attributes=array();
@@ -723,7 +715,7 @@ class cApplication implements iApplication{
      * @param $template_file Optionnel, Nom et chemin du fichier template à utiliser. Si NULL, le champ <application:main_template> de la configuration est utilisé
      * @return string Contenu du template transformé
      */
-    function showXMLView($filename,$attributes,$template_file=NULL){
+    public function showXMLView($filename,$attributes,$template_file=NULL){
         $content = $this->makeXMLView($filename,$attributes,$template_file);
         echo $content;
     }
@@ -734,7 +726,7 @@ class cApplication implements iApplication{
      * @param $tmp_filename Nom du fichier en cache
      * @return string Chemin d'accès absolue au fichier template
      */
-    function cacheFilePath($extension=NULL,$tmp_filename=NULL)
+    public function cacheFilePath($extension=NULL,$tmp_filename=NULL)
     {
         //-------------------------------------------------------------------------
         //chemin d'accès au fichier cache
@@ -754,7 +746,7 @@ class cApplication implements iApplication{
      * @return string Contenu du template transformé
      * @retval false Une erreur est survenue, voir: cResult::getLast().
      */
-    function makeFormView($att,$fields,$opt_fields,$values,$template_file=NULL,$tmp_filename=NULL,$xml_template_file=NULL)
+    public function makeFormView($att,$fields,$opt_fields,$values,$template_file=NULL,$tmp_filename=NULL,$xml_template_file=NULL)
     {
         //Assure le type array pour l'utilisation de array_merge()
         if(!is_array($att)) $att=array();
@@ -1051,7 +1043,7 @@ class cApplication implements iApplication{
             return false;
 
         $basepath = $this->getCfgValue($app,"path");
-        $path = $this->getCfgValue($app,"ctrl_path")."/$ctrl.php";
+        $path = path($this->getCfgValue($app,"ctrl_path"),"$ctrl.php");
         if(!file_exists($path))
             return RESULT(cResult::Failed,cApplication::CtrlNotFound,array("CTRL"=>$ctrl));
 
@@ -1334,7 +1326,7 @@ class cApplication implements iApplication{
      * @param $data Nom ou instance d'un document XMLDocument à charger en sélection
      * @return boolean Résultat de procédure
      */
-    function insertBundle($template,$src_selector_ar,$dst_selector_ar,$path,$att,$data)
+    public function insertBundle($template,$src_selector_ar,$dst_selector_ar,$path,$att,$data)
     {
         //fabrique le bundle
         if(!$this->makeBundle($path,$att,$data,$bundleDoc))
@@ -1381,7 +1373,7 @@ class cApplication implements iApplication{
      * @param $doc  Pointeur sur le document créé (XMLDocument)
      * @return boolean Résultat de procédure
      */
-    function makeBundle($path,$att,$data,&$doc)
+    public function makeBundle($path,$att,$data,&$doc)
     {
         $filename = basename($path);
         $dirname  = dirname($path);
@@ -1429,5 +1421,4 @@ class cApplication implements iApplication{
     
 }
 
-/** @} */
 ?>

@@ -23,18 +23,15 @@
 require_once("class/bases/input.php");
 
 /**
- * @file ip.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test un adresse IP v4
  */
 class cInputIPv4 extends cInput
 {
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputIPv4
+    //--------------------------------------------------------
+    
 	public static function isValid($value){
 		if( empty_string($value) )
 			return RESULT(cResult::Failed, cInput::EmptyText);
@@ -45,18 +42,15 @@ class cInputIPv4 extends cInput
 
 		return RESULT_OK();
 	}
-    /** @copydoc cInput::regExp */
 	public static function regExp(){
 		return '(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'.'\.'
                         .'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'.'\.'
                         .'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])'.'\.'
                         .'(?:0|1[0-9]{0,2}|2[0-4][0-9]|25[0-5])';
 	}
-    /** @copydoc cInput::getMaxLength */
 	public static function getMaxLength(){
 		return (3*4)+4;
 	}
 }
 
-/** @} */ // end of group
 ?>

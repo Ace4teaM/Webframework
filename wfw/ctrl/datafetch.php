@@ -2,7 +2,7 @@
 
 /*
   ---------------------------------------------------------------------------------------------------------------------------------------
-  (C)2013 Thomas AUGUEY <contact@aceteam.org>
+  (C)2013,2015 Thomas AUGUEY <contact@aceteam.org>
   ---------------------------------------------------------------------------------------------------------------------------------------
   This file is part of WebFrameWork.
 
@@ -21,17 +21,21 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @page datafetch Extrait des données d'une table
- * 
- * # Retourne les données d'une table
- * 
- * | Informations |                          |
- * |--------------|--------------------------|
- * | PageId       | -
- * | Rôle         | Administrateur
- * | UC           | datafetch
- * 
+/*
+  Retourne les données d'une table
+  
+  Role : Tous
+  UC   : DataFetch
+  Module : wfw
+  Output : "text/xml"
+ 
+  Champs:
+    table_name : Nom de la table SQL
+
+  Champs complémentaires:
+    cols_names : Nom des colonnes séparé par des virgules
+    row_offset : Index de la première entrée retournée
+    row_count  : Nombre d'entrées retournées
  */
 class wfw_datafetch_ctrl extends cApplicationCtrl{
     public $fields    = array('table_name');

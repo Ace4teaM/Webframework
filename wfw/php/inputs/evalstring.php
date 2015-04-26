@@ -26,20 +26,16 @@ require_once("inputs/float.php");
 require_once("inputs/name.php");
 
 /**
- * @file evalstring.php
- *
- * @defgroup Inputs
- * @{
- */
-
-
-/**
  * @brief Test une chaine executable
  * @remarks La chaine ne doit pas avoir de caractères succeptible de modifier des variables ou appeler des fonctions
  */
 class cInputEvalString extends cInput
 {
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputEvalString
+    //--------------------------------------------------------
+    
 	public static function isValid($value){
             if( empty_string($value) )
                 return RESULT(cResult::Failed,cInput::EmptyText);
@@ -50,15 +46,12 @@ class cInputEvalString extends cInput
 
             return RESULT_OK();
 	}     
-    /** @copydoc cInput::regExp */
 	public static function regExp(){
 		return '[^\$\(\)\=]+';//pas de caracteres succeptible de modifier des variables ou appeler des fonctions
 	}
-    /** @copydoc cInput::getMaxLength */
 	public static function getMaxLength(){
 		return 128;
 	}
 }
 
-/** @} */ // end of group
 ?>

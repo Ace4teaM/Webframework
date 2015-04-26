@@ -1,7 +1,7 @@
 <?php
 /*
     ---------------------------------------------------------------------------------------------------------------------------------------
-    (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    (C)2008-2007, 2012-2014 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
     This file is part of WebFrameWork.
 
@@ -24,20 +24,22 @@ require_once("class/bases/input.php");
 require_once("string.php");
 
 /**
- * @file password.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test un Mot de passe ASCII
  */
 class cInputPassword extends cInput
 {
+    //--------------------------------------------------------
+    // Constantes
+    // @class cInputPassword
+    //--------------------------------------------------------
+    
     const MIN_CHAR_COUNT = 6;
 
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputPassword
+    //--------------------------------------------------------
+    
     public static function isValid($value)
     {
         if (empty_string($value))
@@ -53,22 +55,18 @@ class cInputPassword extends cInput
         return RESULT_OK();
     }
 
-    /** @copydoc cInput::regExp */
     public static function regExp() {
         return '[a-zA-Z0-9_\-\@\#\&\+\~]+';
     }
 
-    /** @copydoc cInput::toHTML */
     public static function toHTML($id, $value) {
         return '<input lang="en-us" size="20" maxlength="' . ($this->getMaxLength()) . '" name="' . $id . '" id="' . $id . '" type="text" value="' . $value . '" wbfw="edit" >';
     }
 
-    /** @copydoc cInput::getMaxLength */
     public static function getMaxLength() {
         return 128;
     }
 
 }
 
-/** @} */ // end of group
 ?>

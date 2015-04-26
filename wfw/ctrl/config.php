@@ -21,8 +21,13 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @page config Configuration
+/*
+  Configuration
+
+  Role : Tous
+  UC: config
+  Module: wfw
+  Remarque: Retourne les champs de configuration
  */
 
 class wfw_config_ctrl extends cApplicationCtrl{

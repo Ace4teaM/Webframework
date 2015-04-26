@@ -29,7 +29,16 @@ require_once("regexp.php");
 require_path("class/bases/");
 require_path("inputs/");
 
+/**
+ * @brief Document XML
+ * @remarks La classe XMLDocument est une extension de la classe DOMDocument
+ */
 class XMLDocument extends DOMDocument {
+    
+    //--------------------------------------------------------
+    // Constantes
+    // @class XMLDocument
+    //--------------------------------------------------------
     
     const loadFile = "CANT_LOAD_HTML_FILE";
     const loadHTML = "CANT_LOAD_HTML_CONTENT";
@@ -47,6 +56,11 @@ class XMLDocument extends DOMDocument {
     const TypeDiffer  = 0x4;
     const TagDiffer   = 0x8;
     const NSDiffer    = 0x10;
+    
+    //--------------------------------------------------------
+    // Méthodes
+    // @class XMLDocument
+    //--------------------------------------------------------
     
     function make($content) {
         return $this->loadHTML($content);
@@ -88,7 +102,7 @@ class XMLDocument extends DOMDocument {
         return $result;
     }
 
-    /*
+    /**
      * @brief Fusionne recursivement deux éléments
      * @param XMLElement $select     Elément source
      * @param XMLElement $node       Elément de destination
@@ -115,7 +129,7 @@ class XMLDocument extends DOMDocument {
         return TRUE;
     }
     
-    /*
+    /**
      * @brief Compare deux noeuds
      * @param XMLElement $src     Elément source
      * @param XMLElement $dst     Elément de destination
@@ -160,7 +174,7 @@ class XMLDocument extends DOMDocument {
         return $dif;
     }
     
-    /*
+    /**
      * @brief Fusionne les arguments de deux éléments
      * @param XMLElement $select     Elément source
      * @param XMLElement $node       Elément de destination
@@ -194,8 +208,14 @@ class XMLDocument extends DOMDocument {
         return $node;
     }
 
-    //obtient le contenu d'un noeud specifique
-    // retourne: le valeur du noeud trouvé (DOMNode), -1 si introuvable, NULL en cas d'erreur
+    /**
+     * @brief Obtient la valeur d'un noeud
+     * @param string $path             Chemin d'accès au noeud
+     * @param bool   $bcreate_missing  Elément de destination
+     * @return Valeur du noeud (DOMNode::nodeValue)
+     * @retval -1 si introuvable
+     * @retval NULL en cas d'erreur
+     */
     public function getNodeValue($path, $bcreate_missing = FALSE) {
         $node = $this->getNode($path, $bcreate_missing);
         if ($node !== NULL && $node !== -1)
@@ -203,8 +223,14 @@ class XMLDocument extends DOMDocument {
         return NULL;
     }
 
-    //definit le contenu d'un noeud specifique
-    // retourne: le valeur du noeud trouvé (DOMNode), -1 si introuvable, NULL en cas d'erreur
+    /**
+     * @brief Definit la valeur d'un noeud
+     * @param string $path             Chemin d'accès au noeud
+     * @param string $value            Valeur du noeud
+     * @param bool   $bcreate_missing  Elément de destination
+     * @return $value
+     * @retval NULL en cas d'erreur
+     */
     public function setNodeValue($path, $value, $bcreate_missing = FALSE) {
         $node = $this->getNode($path, $bcreate_missing);
         if ($node !== NULL && $node !== -1){
@@ -214,13 +240,12 @@ class XMLDocument extends DOMDocument {
         return NULL;
     }
 
-    /*
-     * Définit la valeur (texte) d'un élément
-     * @param DOMElement $node Element a modifier
-     * @param string $value Valeur à insérer
-     * @remarks Le contenu de l'élément '$node' est remplacé
-     * 
+    /**
+     * @brief Définit la valeur (texte) d'un élément
+     * @param DOMElement $node  Element a modifier
+     * @param string     $value Valeur à insérer
      * @return L'Element modifié
+     * @remarks Le contenu du noeud est supprimé
      */
     public function setValue($node, $value) {
         $valueEl = $this->createTextNode($value);
@@ -229,7 +254,13 @@ class XMLDocument extends DOMDocument {
         return $node;
     }
 
-    //obtient la valeur d'un attribut
+    /**
+     * @brief Obtient la valeur d'un attribut
+     * @param DOMElement $node  Noeud de base
+     * @param string     $name  Nom de l'attribut
+     * @return Valeur de l'attribut
+     * @remarks Une chaine vide est retournée si l'attribut est introuvable
+     */
     public function getAtt($node, $name) {
         if (!$node || !$node->attributes)
             return "";
@@ -241,6 +272,13 @@ class XMLDocument extends DOMDocument {
         return $att->nodeValue;
     }
 
+    /**
+     * @brief Obtient la valeur d'un attribut
+     * @param DOMElement $node  Noeud de base
+     * @param string     $name  Nom de l'attribut
+     * @param string     $value Valeur de l'attribut
+     * @return Le nouveau DOMAttr ou FALSE si une erreur survient
+     */
     //définit la valeur d'un attribut
     public function setAtt($node, $name, $value) {
         if (!$node)
@@ -249,14 +287,13 @@ class XMLDocument extends DOMDocument {
         return $node->setAttribute($name, $value);
     }
 
-    /*
+    /**
      * @brief Obtient plusieurs éléments du document
-     * @param selector Sélecteur, de style CSS (voir Remarques)
-     * @return Liste des noeuds trouvés (DOMNode), tableau vide si introuvable
-     * 
+     * @param string $selector Sélecteur, de style CSS (voir Remarques)
+     * @param DOMNode $context  Noeud de base, si NULL l'élément racine du document est choisit
+     * @return Liste des noeuds trouvés (DOMNode) ou un tableau vide si introuvable
      * @remarks Le selecteur peut prendre la forme suivante ( > TAGNAME [ATT_NAME=ATT_VALUE,...] )
      */
-
     public function all($selector, $context = NULL) {
         $list = array();
 
@@ -280,16 +317,14 @@ class XMLDocument extends DOMDocument {
         return $list;
     }
 
-    /*
+    /**
      * @brief Obtient un élément du document
-     * @param selector Sélecteur, de style CSS (voir Remarques)
-     * @param context  Noeud de base, si NULL l'élément racine du document est choisit
-     * @param addCheck Fonction de verification additionnel
+     * @param string $selector Sélecteur, de style CSS (voir Remarques)
+     * @param DOMNode $context  Noeud de base, si NULL l'élément racine du document est choisit
+     * @param function $addCheck Fonction de verification additionnel
      * @return Retourne le noeud trouvé (DOMNode), NULL si introuvable
-     * 
      * @remarks Le selecteur peut prendre la forme suivante ( > TAGNAME [ATT_NAME=ATT_VALUE,...] )
      */
-
     public function one($selector, $context = NULL, $addCheck = NULL) {
         $cur = ($context === NULL) ? $this->documentElement : $context;
 

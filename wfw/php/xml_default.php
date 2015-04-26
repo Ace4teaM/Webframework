@@ -23,8 +23,13 @@
 /**
  * Classe de fichier XML-Default
  */
-
 class cXMLDefault {
+
+    //--------------------------------------------------------
+    // Constantes
+    // @class cXMLDefault
+    //--------------------------------------------------------
+    
     //errors
     const InvalidArg        = "XML_DEFAULT_INVALID_FUNCTION_ARG";
     const CantLoadFile      = "XML_DEFAULT_CANT_LOAD_FILE";
@@ -36,10 +41,21 @@ class cXMLDefault {
     const FieldFormatClassName = 1;
     const FieldFormatName = 2;
 
-    /** @ brief Instance de la classe XMLDocument */
+    //--------------------------------------------------------
+    // Membres
+    // @class cXMLDefault
+    //--------------------------------------------------------
+    
+    // Instance de la classe XMLDocument
     public $doc = NULL;
+    // Nom du fichier
     public $fileName = NULL;
 
+    //--------------------------------------------------------
+    // Constantes
+    // @class cXMLDefault
+    //--------------------------------------------------------
+    
     /**
      * @brief Charge le document XML
      * @param $doc Chemin d'accès au fichier ou instance d'une classe XMLDocument
@@ -64,7 +80,7 @@ class cXMLDefault {
     }
 
     /**
-     * @brief SAuvegarde le document dans son fichier d'origine
+     * @brief Sauvegarde le document dans son fichier d'origine
      * @return Résultat de procédure
      */
     public function save() {
@@ -75,14 +91,11 @@ class cXMLDefault {
         return RESULT_OK();
     }
 
-    /*
-      Obtient un noeud de l'index des modules (obselete, utiliser getConfigNode)
-      Arguments:
-      [string] id   : identificateur du module. Si null, retourne le premier noeud
-      Retourne:
-      [XMLElement] Noeud trouve, null si introuvable
+    /**
+     * @brief Obtient un noeud de l'index des modules (obselete, utiliser getConfigNode)
+     * @param $id Identificateur du module. Si null, retourne le premier noeud
+     * @return [XMLElement] Noeud trouve, null si introuvable
      */
-
     public function getModuleConfigNode($id) {
         //obtient le noeud des modules
         /*  $entry_node = $this->doc->getNode('site/config/module');
@@ -103,15 +116,12 @@ class cXMLDefault {
         return $this->getConfigNode("module", $id);
     }
 
-    /*
-      Obtient un noeud de la configuration
-      Arguments:
-      [string] type : nom de balise de l'element enfant
-      [string] id   : identificateur du module. Si null, retourne le premier noeud
-      Retourne:
-      [XMLElement] Noeud trouve, null si introuvable
+    /**
+     * @brief Obtient un noeud de la configuration
+     * @param $type Nom de balise de l'element enfant
+     * @param $id   Identificateur du module. Si null, retourne le premier noeud
+     * @return [XMLElement] Noeud trouve, null si introuvable
      */
-
     public function getConfigNode($type, $id) {
         //obtient le noeud des modules
         $entry_node = $this->doc->getNode('site/config/' . $type);
@@ -131,14 +141,11 @@ class cXMLDefault {
         return null;
     }
 
-    /*
-      Obtient la valeur d'un noeud
-      Arguments:
-      [string] nodeName : nom du noeud (nom de balise)
-      Retourne:
-      [string] Text du noeud trouve. Une chaine vide est retourné si le noeud est introuvable
+    /**
+     * @brief Obtient la valeur d'un noeud
+     * @param $nodeName Nom du noeud (nom de balise)
+     * @return Texte du noeud. Une chaine vide est retourné si le noeud est introuvable
      */
-
     public function getValue($nodeName) {
         $node = $this->doc->getNode('site/' . $nodeName);
         //recherche
@@ -147,15 +154,12 @@ class cXMLDefault {
         return "";
     }
 
-    /*
-      Obtient la valeur d'un noeud de l'index
-      Arguments:
-      [string] type : type de noeud (nom de balise)
-      [string] id   : identificateur
-      Retourne:
-      [string] Text du noeud trouve. Une chaine vide est retourné si le noeud est introuvable
+    /**
+     * @brief Obtient la valeur d'un noeud de l'index
+     * @param $type Type de noeud (nom de balise)
+     * @param $id   Identificateur
+     * @return Text du noeud trouve. Une chaine vide est retourné si le noeud est introuvable
      */
-
     public function getIndexValue($type, $id) {
         //recherche
         $node = $this->getIndexNode($type, $id);
@@ -184,13 +188,11 @@ class cXMLDefault {
         return NULL;
     }
 
-    /*
-      Ajoute un noeud à l'index
-      Arguments:
-      [string] type : type de noeud (nom de balise)
-      [string] id   : identificateur
-      Retourne:
-      [XMLElement] Noeud inséré, null en cas d'erreur
+    /**
+     * @brief Ajoute un noeud à l'index
+     * @param $type : Type de noeud (nom de balise)
+     * @param $id   : Identificateur
+     * @return [XMLElement] Noeud inséré, null en cas d'erreur
      */
 
     public function addIndexNode($type, $id) {
@@ -229,14 +231,11 @@ class cXMLDefault {
         return $this->doc->setValue($node,$value);
     }
 
-    /*
-      Obtient un noeud de l'arbre de navigation
-      Arguments:
-      [string] page_id   : identificateur. Si null retourne le noeud parent de l'arbre 'site/tree'
-      Retourne:
-      [XMLElement] Noeud trouve, null si introuvable
+    /**
+     * @brief Obtient un noeud de l'arbre de navigation
+     * @param $page_id   : Identificateur. Si null retourne le noeud parent de l'arbre 'site/tree'
+     * @return [XMLElement] Noeud trouve, null si introuvable
      */
-
     public function getTreeNode($page_id) {
         $tree_node;
         if (($tree_node = $this->doc->getNode('site/tree')) == NULL){
@@ -262,13 +261,11 @@ class cXMLDefault {
         return $ret;
     }
 
-    /*
-      Ajoute un noeud a l'arbre de navigation
-      Arguments:
-      [string] parent_id : identificateur de la page du parent. Si null, le neud est placé à la racine de l'arbre
-      [string] page_id   : identificateur de la page à inserer
-      Retourne:
-      [XMLElement] Noeud insere, null en cas d'erreur
+    /**
+     * @brief Ajoute un noeud à l'arbre de navigation
+     * @param $parent_id : identificateur de la page du parent. Si null, le neud est placé à la racine de l'arbre
+     * @param $page_id   : identificateur de la page à inserer
+     * @return [XMLElement] Noeud insere, null en cas d'erreur
      * @remarks Si le noeud existe dans l'arbre, il est déplacé
      */
 
@@ -304,8 +301,8 @@ class cXMLDefault {
         return $page_node;
     }
 
-    /*
-      Obtient le texte associé à un code de résultat
+    /**
+      @brief Obtient le texte associé à un code de résultat
       @param string $code Code de résultat désiré
       @param string $lang Code du langage désiré
       @return Traduction du code. Si le texte est introuvable, $code est retourné.
@@ -321,8 +318,8 @@ class cXMLDefault {
         return trim($entry_node->nodeValue);
     }
 
-    /*
-      Obtient le texte associé à une définition de champs
+    /**
+      @brief Obtient le texte associé à une définition de champs
       @param string $id Identificateur du champs
       @param string $text Référence recevant le texte
       @param string $lang Langage utilisé

@@ -1,7 +1,7 @@
 <?php
 /*
     ---------------------------------------------------------------------------------------------------------------------------------------
-    (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    (C)2008-2007, 2012-2014 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
     This file is part of WebFrameWork.
 
@@ -25,18 +25,15 @@ require_once("class/bases/input.php");
 require_once("base.php");
 
 /**
- * @file integer.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test un entier numérique 32bits signée
  */
 class cInputInteger extends cInput {
 
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputInteger
+    //--------------------------------------------------------
+    
     public static function isValid($value) {
         // vide ?
         if (empty_string($value))
@@ -61,22 +58,18 @@ class cInputInteger extends cInput {
         return RESULT_OK();
     }
 
-    /** @copydoc cInput::toObject */
     public static function toObject($string) {
         return intval($string);
     }
 
-    /** @copydoc cInput::regExp */
     public static function regExp() {
         return '\-?(?:0|[1-9]{1}[0-9]*)';
     }
 
-    /** @copydoc cInput::getMaxLength */
     public static function getMaxLength() {
         return 11;
     }
 
-    /** @copydoc cInput::getMinLength */
     public static function getMinLength() {
         return 1;
     }
@@ -91,5 +84,4 @@ class cInputInteger extends cInput {
 
 }
 
-/** @} */ // end of group
 ?>

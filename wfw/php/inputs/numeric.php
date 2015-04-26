@@ -1,7 +1,7 @@
 <?php
 /*
     ---------------------------------------------------------------------------------------------------------------------------------------
-    (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    (C)2008-2007, 2012-2014 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
     This file is part of WebFrameWork.
 
@@ -25,19 +25,16 @@ require_once("inputs/integer.php");
 require_once("inputs/float.php");
 
 /**
- * @file numeric.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test un nombre
  * @remarks Accepte les nombres entier ou à virgule 
  */
 class cInputNumeric extends cInput {
 
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputNumeric
+    //--------------------------------------------------------
+    
     public static function isValid($value) {
         if (empty_string($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
@@ -49,24 +46,20 @@ class cInputNumeric extends cInput {
         return RESULT_OK();
     }
 
-    /** @copydoc cInput::toObject */
     public static function toObject($string) {
         if(strstr($string, ",."))
             return cInputFloat::toObject($string);
         return cInputInteger::toObject($string);
     }
 
-    /** @copydoc cInput::regExp */
     public static function regExp() {
         return cInputInteger::regExp() . '|' . cInputFloat::regExp();
     }
 
-    /** @copydoc cInput::getMaxLength */
     public static function getMaxLength() {
         return 128;
     }
 
 }
 
-/** @} */ // end of group
 ?>

@@ -1,7 +1,7 @@
 <?php
 /*
   ---------------------------------------------------------------------------------------------------------------------------------------
-  (C)2012-2013 Thomas AUGUEY <contact@aceteam.org>
+  (C)2012-2014 Thomas AUGUEY <contact@aceteam.org>
   ---------------------------------------------------------------------------------------------------------------------------------------
   This file is part of WebFrameWork.
 
@@ -21,20 +21,16 @@
  */
 
 /**
- * @file cInputFields.php
- *
- * @defgroup Application
  * @brief Fonctions utiles à la vérification des champs
- * @{
  */
 class cInputFields {
     
-    /**
-     * @defgroup Erreurs
-     * @{
-     */
-
-    /** @brief Aucun champ reçu */
+    //--------------------------------------------------------
+    // Constantes des codes d'erreurs
+    // @class cInputFields
+    //--------------------------------------------------------
+    
+    // Aucun champ reçu
     const NoInputFileds = "NO_INPUT_FIELD";
     
     /**
@@ -44,14 +40,17 @@ class cInputFields {
     const MissingArg = "MISSING_FIELD";
     const InvalidInput = "INVALID_INPUT";
 
-    /** @} */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputFields
+    //--------------------------------------------------------
     
     /*
      * @brief Test les formats d'un tableau de champs
-     * @param array $required_arg  Liste des défintions de champs requis. Si NULL, aucun.
-     * @param array $optionnal_arg Liste des défintions de champs optionnels. Si NULL, aucun.
-     * @param array $fields        Tableau associatif des valeurs de champs. Si NULL, $_REQUEST est utilisé
-     * @param array $output        Référence sur l'objet recevant l'ensemble des valeurs converties en objets PHP 
+     * @param $required_arg  [array] Liste des défintions de champs requis. Si NULL, aucun.
+     * @param $optionnal_arg [array] Liste des défintions de champs optionnels. Si NULL, aucun.
+     * @param $fields        [array] Tableau associatif des valeurs de champs. Si NULL, $_REQUEST est utilisé
+     * @param $output        [array] Référence sur l'objet recevant l'ensemble des valeurs converties en objets PHP 
      * @return bool Succès de la procédure. Voir cResult::getLast() pour plus d'informations le résultat
      */
     public static function checkArray($required_arg, $optionnal_arg=NULL, $fields=NULL, &$output=NULL) {
@@ -121,6 +120,4 @@ class cInputFields {
         return RESULT_OK();
     }
 }
-
-/** @} */ // end of group
 ?>

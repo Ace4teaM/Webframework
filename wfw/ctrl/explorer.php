@@ -1,7 +1,7 @@
 <?php
 /*
   ---------------------------------------------------------------------------------------------------------------------------------------
-  (C)2012-2013 Thomas AUGUEY <contact@aceteam.org>
+  (C)2012-2013,2015 Thomas AUGUEY <contact@aceteam.org>
   ---------------------------------------------------------------------------------------------------------------------------------------
   This file is part of WebFrameWork.
 
@@ -20,18 +20,16 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @page wfw_explorer_ctrl File explorer
- * 
- * # Explore le disque de données
- * 
- * | Informations |                          |
- * |--------------|--------------------------|
- * | PageId       | -
- * | Rôle         | Administrateur
- * | UC           | explorer
- * 
- * @param path Chemin d'accès à explorer
+/*
+  Explore le disque de données
+  
+  Role : Admin
+  UC   : Explorer
+  Module : wfw
+  Output : "text/html"
+ 
+  Champs:
+     path : Chemin d'accès local
  */
 class wfw_explorer_ctrl extends cApplicationCtrl {
     

@@ -21,8 +21,8 @@
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
 
-/**
- * @page wfw_tasklist_ctrl Liste les tâches système
+/*
+ * Liste les tâches système
  * 
  * 
  * | Informations |                          |
@@ -31,7 +31,6 @@
  * | Rôle         | Administrateur
  * | UC           | maketask
  * 
- * @param lang Langage pour les textes
  */
 
 class wfw_tasklist_ctrl extends cApplicationCtrl{

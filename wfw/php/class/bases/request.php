@@ -1,27 +1,51 @@
 <?php
 /*
+  ---------------------------------------------------------------------------------------------------------------------------------------
+  (C)2012-2014 Thomas AUGUEY <contact@aceteam.org>
+  ---------------------------------------------------------------------------------------------------------------------------------------
+  This file is part of WebFrameWork.
 
-	WebFrameWork, v1.3 - Classe de base pour le traitement des requetes
-	request.php
-	(C)2007-2008 Avalanche, Tout droits reserver
-	PHP Code
-	
-	AUTHOR: Auguey Thomas
-	MAIL  : augueyace@wanadoo.fr
+  WebFrameWork is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-*/
+  WebFrameWork is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
+  You should have received a copy of the GNU General Public License
+  along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
+  ---------------------------------------------------------------------------------------------------------------------------------------
+ */
+
+/**
+ * @brief Classe de traitement des requêtes HTTP
+ */
 class cHTTPRequest
 {
+
+    //--------------------------------------------------------
+    // Membres
+    // @class cHTTPRequest
+    //--------------------------------------------------------
+    
 	var $content;
 	var $headers;
 	var $fields;
-	function Send($url){
+
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cHTTPRequest
+    //--------------------------------------------------------
+    
+	public function Send($url){
 		$data=false;
 		$response      = http_post_fields($url,$this->fields);
 		$this->headers = webfw_HTTP_ParseResponse($response,$this->content);
 	}
-	function Read(){
+	public function Read(){
 		$this->headers = array();
 		$list = headers_list();
 		foreach($list as $text){
@@ -32,29 +56,29 @@ class cHTTPRequest
 		}
 		$this->fields  = $_REQUEST;
 	}
-	function Write(){
+	public function Write(){
 		$this->headers['Content-Length'] = strlen($this->content);
 		foreach($this->headers as $name=>$text)
 			header($name.': '.$text);
 		echo($this->content);
 		echo("\r\n");
 	}
-	function SetContent($content){
+	public function SetContent($content){
 		$this->content = $content;
 	}
-	function GetContent(){
+	public function GetContent(){
 		return $this->content;
 	}
-	function SetHeaders($headers){
+	public function SetHeaders($headers){
 		return $this->headers=$headers;
 	}
-	function GetHeaders(){
+	public function GetHeaders(){
 		return $this->headers;
 	}
-	function SetFields($fields){
+	public function SetFields($fields){
 		return $this->fields=$fields;
 	}
-	function GetFields(){
+	public function GetFields(){
 		return $this->fields;
 	}
 }

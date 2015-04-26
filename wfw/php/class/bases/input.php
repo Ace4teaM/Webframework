@@ -23,24 +23,15 @@
 require_once("class/bases/cResult.php");
 
 /**
- * @file input.php
- *
- * @defgroup Inputs
- * @brief Définition de champ
- * @{
- */
-
-
-/**
- * @brief Classe de base d'un champ de controle
+ * @brief Classe de contrôle de champ 
  */
 class cInput {
 
-    /**
-     * @defgroup Erreurs
-     * @{
-     */
-
+    //--------------------------------------------------------
+    // Constantes des erreurs
+    // @class cInput
+    //--------------------------------------------------------
+    
     const EmptyText      = "EMPTY_TEXT";
     const InvalidChar    = "INVALID_CHAR";
     const InvalidFormat  = "INVALID_FORMAT";
@@ -49,7 +40,10 @@ class cInput {
     const Undersized     = "UNDERSIZED";
     const TooSmallString = "TOO_SMALL_STRING";
 
-    /** @} */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInput
+    //--------------------------------------------------------
     
     /**
      * @brief Vérifie la validité du format d'un champ
@@ -98,5 +92,4 @@ class cInput {
 
 }
 
-/** @} */ // end of group
 ?>

@@ -23,19 +23,15 @@
 require_once("class/bases/input.php");
 
 /**
- * @file date.php
- *
- * @defgroup Inputs
- * @{
- */
-
-
-/**
  * @brief Test une date
  */
 class cInputDate extends cInput {
 
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputDate
+    //--------------------------------------------------------
+    
     public static function isValid($value/*,&$output*/) {
         if ( empty_string($value) )
             return RESULT(cResult::Failed, cInput::EmptyText);
@@ -47,13 +43,11 @@ class cInputDate extends cInput {
         return RESULT_OK();
     }
 
-    /** @copydoc cInput::toObject */
     public static function toObject($string) {
         $date = new DateTime($string);
         return $date;
     }
     
-    /** @copydoc cInput::regExp */
     public static function regExp() {
         $sep = '[\-\/\\\s]';
 
@@ -63,12 +57,9 @@ class cInputDate extends cInput {
         ;
     }
 
-    /** @copydoc cInput::getMaxLength */
     public static function getMaxLength() {
         return -1;
     }
-
 }
 
-/** @} */ // end of group
 ?>

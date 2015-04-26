@@ -1,7 +1,7 @@
 <?php
 /*
     ---------------------------------------------------------------------------------------------------------------------------------------
-    (C)2008-2007, 2012-2013 Thomas AUGUEY <contact@aceteam.org>
+    (C)2008-2007, 2012-2014 Thomas AUGUEY <contact@aceteam.org>
     ---------------------------------------------------------------------------------------------------------------------------------------
     This file is part of WebFrameWork.
 
@@ -23,19 +23,15 @@
 require_once("class/bases/input.php");
 
 /**
- * @file text.php
- *
- * @defgroup Inputs
- * @{
- */
-
-/**
  * @brief Test une chaine de caractères 
- * @todo Classe non implémentée
  */
 class cInputText extends cInput {
 
-    /** @copydoc cInput::isValid */
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cInputText
+    //--------------------------------------------------------
+    
     public static function isValid($value) {
         if (empty_string($value))
             return RESULT(cResult::Failed, cInput::EmptyText);
@@ -43,17 +39,14 @@ class cInputText extends cInput {
         return RESULT_OK();
     }
 
-    /** @copydoc cInput::regExp */
     public static function regExp() {
         return '.*';
     }
 
-    /** @copydoc cInput::getMaxLength */
     public static function getMaxLength() {
         return -1;
     }
 
 }
 
-/** @} */ // end of group
 ?>

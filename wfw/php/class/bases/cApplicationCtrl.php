@@ -21,101 +21,112 @@
  */
 
 /**
- * @file cApplicationCtrl.php
- *
- * @defgroup Application
  * @brief Classe de base d'un controleur
- * @{
  */
-
 class cApplicationCtrl{
-    public $fields     = null; /**< Identifiants des champs requis */
-    public $op_fields  = null; /**< Identifiants des champs optionnels */
-    public $out_fields = null; /**< Identifiants des champs retournés */
-    public $att        = array(); /**< Source des champs en entrée, si NULL $_REQUEST est utilisé */
-    public $role       = null; /**< Role utilisé pour executer le controleur */
+
+    //--------------------------------------------------------
+    // Membres
+    // @class cApplicationCtrl
+    //--------------------------------------------------------
+    
+	// Identifiants des champs requis
+    public $fields     = null;
+	// Identifiants des champs optionnels
+    public $op_fields  = null;
+	// Identifiants des champs retournés
+    public $out_fields = null;
+	// Source des champs en entrée, si NULL $_REQUEST est utilisé
+    public $att        = array();
+	// Role utilisé pour executer le controleur
+    public $role       = null;
+    
+    //--------------------------------------------------------
+    // Méthodes
+    // @class cApplicationCtrl
+    //--------------------------------------------------------
     
     /**
-     * Champs requis
+     * @brief Champs requis
      * @return Champs requis pour l'execution du contrôleur
-     * @retval array Liste des champs (tableau associatif)
-     * @retval null Aucun champs
+     * @retval [array] Liste des champs (tableau associatif)
+     * @retval [null] Aucun champs
      */
-    function getRequiredField() {
+    public function getRequiredField() {
         return $this->fields;
     }
     
     /**
-     * Champs optionnels
+     * @brief Champs optionnels
      * @return Champs optionnels à l'execution du contrôleur
-     * @retval array Liste des champs (tableau associatif)
-     * @retval null Aucun champs
+     * @retval [array] Liste des champs (tableau associatif)
+     * @retval [null] Aucun champs
      */
-    function getOptionalField() {
+    public function getOptionalField() {
         return $this->op_fields;
     }
     
     /**
-     * Champs retournés
+     * @brief Champs retournés
      * @return Champs retournés à l'execution du contrôleur
-     * @retval array Liste des champs (tableau associatif)
-     * @retval null Aucun champs
+     * @retval [array] Liste des champs (tableau associatif)
+     * @retval [null] Aucun champs
      */
-    function getReturnedField() {
+    public function getReturnedField() {
         return $this->out_fields;
     }
     
     /**
-     * Retourne les rôles acceptés par le contrôleur
+     * @brief Retourne les rôles acceptés par le contrôleur
      * @return int Masque de bits des rôles possibles
      * @remarks Les rôles prédéfinits sont définit dans la classe \c cApplication
      * @remarks Si le contrôleur est exécuté avec un rôle different de celui retourné, la procédure échoue.
      */
-    function acceptedRole() {
+    public function acceptedRole() {
         return cApplication::AnyRole;
     }
     
     /**
-     * Retourne le type de rôle assigné pour l'execution
+     * @brief Retourne le type de rôle assigné pour l'execution
      * @return int Masque de bits des rôles possibles
-     * @remarks Les rôles prédéfinits sont définit dans la classe \c cApplication
-     * @remarks Cette propriété est initialisée par la méthode \c cApplication::callCtrl
+     * @remarks Les rôles prédéfinits sont définit dans la classe cApplication
+     * @remarks Cette propriété est initialisée par la méthode cApplication::callCtrl
      */
-    function hasRole() {
+    public function hasRole() {
         return $this->role;
     }
     
     /**
-     * Point d(entree du controleur
+     * @brief Point d(entree du controleur
      * @param iApplication $app       Instance de l'application
      * @param string       $app_path  Chemin d'accés à l'application qui à définit le controleur
      * @param StdClass     $p         Paramétres d'entrée
      * @return bool Résutat de procédure
      */
-    function cApplicationCtrl() {
+    public function cApplicationCtrl() {
         $this->att = $_REQUEST;
     }
     
     /**
-     * Point d'entree du controleur
+     * @brief Point d'entree du controleur
      * @param iApplication $app       Instance de l'application
      * @param string       $app_path  Chemin d'accés à l'application qui à définit le controleur
      * @param StdClass     $p         Paramétres d'entrée
      * @return bool Résutat de procédure
      */
-    function main(iApplication $app, $app_path, $p) {
+    public function main(iApplication $app, $app_path, $p) {
         return RESULT_OK();
     }
     
     /**
-     * Génére la sortie du controleur
+     * @brief Génére la sortie du controleur
      * @param iApplication $app       Instance de l'application
      * @param string       $format    Format de sortie attendue (type MIME)
      * @param StdClass     $att       Attribut de résultat
      * @return string Données en sortie
      * @retval false La génération à échoué, l'application attend un résultat de procédure
      */
-    function output(iApplication $app, $format, $att, $result) {
+    public function output(iApplication $app, $format, $att, $result) {
         switch($format){
             case "text/xarg":
                 return xarg_encode_array($att);
@@ -152,9 +163,6 @@ class cApplicationCtrl{
         return RESULT_INST($result);
         //return RESULT(cResult::Failed,Application::UnsuportedFeature,array("FEATURE"=>"OUTPUT FORMAT $format"));
     }
-    
-    
 };
 
-/** @} */
 ?>

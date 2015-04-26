@@ -20,14 +20,18 @@
   along with WebFrameWork.  If not, see <http://www.gnu.org/licenses/>.
   ---------------------------------------------------------------------------------------------------------------------------------------
  */
-/**
- * @page defaults Fusionne les fichiers defaults de tous les modules puis affiche le contenu
- * 
+/*
+  Fusionne les fichiers defaults de tous les modules puis retourne le contenu
+  
+  Role : Tous
+  UC   : Defaults
+  Module : wfw
+  Output : "text/xml"
+ 
  */
 class wfw_defaults_ctrl extends cApplicationCtrl{
     public $fields    = null;
     public $op_fields = null;
-//    public $role      = Role::Administrator;
 
     protected $doc = null;
 
