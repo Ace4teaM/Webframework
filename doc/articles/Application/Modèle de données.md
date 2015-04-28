@@ -16,11 +16,11 @@ Le format, test la validité d’une chaine de caractères. C’est une composan
 
 Par convention, votre application définit les formats associés à vos champs dans la section **[fields_formats]** du document **cfg/fileds.ini**, comme dans l’exemple suivant :
 
-> [fields_formats]
-> firstname = name
-> lastname = name
-> birthday = date
-> contact = mail
+	[fields_formats] 
+	firstname = name
+	lastname = name 
+	birthday = date 
+	contact = mail 
 
 Le contrôleur de l'application fait la relation avec la classe de base **cInput** correspondante. Ainsi le format **mail** utilise la classe **cInputMail**, le format **identifier** utilise la classe **cInputIdentifier**, etc… Vous pouvez donc aisément ajouter vos propres formats en définissant de nouvelles classes dérivées de **cInput**.
 
