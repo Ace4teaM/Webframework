@@ -1,7 +1,6 @@
-Fichier INI avancé
-===================
+#Fichier INI avancÃ©#
 
-Depuis **Webframework 1.8** une gestion avancée des fichiers .ini a été introduite. Cette version remplace l’utilisation de la fonction standard PHP: **parse_ini_file**.
+Depuis **Webframework 1.8** une gestion avancÃ©e des fichiers .ini a Ã©tÃ© introduite. Cette version remplace lâ€™utilisation de la fonction standard PHP: **parse_ini_file**.
 
 Sources
 -----------
@@ -11,27 +10,27 @@ Usage
 --------
 
 ###Constantes
-La définition de constante permet d’éviter la redondance dans les définitions de chaines, et notamment les chemins d’accès.
+La dÃ©finition de constante permet dâ€™Ã©viter la redondance dans les dÃ©finitions de chaines, et notamment les chemins dâ€™accÃ¨s.
 
 > @global nom="valeur"
 
-Pour utiliser une constante entourez celle-ci des caractères ${ et } :
+Pour utiliser une constante entourez celle-ci des caractÃ¨res ${ et } :
 
 > my_value =  "${nom}"
 
 ###Inclusions
-La balise @include permet d’inclure un sous fichier de configuration.
+La balise @include permet dâ€™inclure un sous fichier de configuration.
 
 > @include "nom_du_fichier.ini"
 
-Inclura le fichier « nom_du_fichier.ini » au fichier en cours.
+Inclura le fichier Â« nom_du_fichier.ini Â» au fichier en cours.
 
-Note: Les chemins d’accès sont relatifs. Lorsqu’un fichier inclue un autre fichier, c’est l’emplacement de celui-ci qui fait office de chemin de base pour l’inclusion.
+Note: Les chemins dâ€™accÃ¨s sont relatifs. Lorsquâ€™un fichier inclue un autre fichier, câ€™est lâ€™emplacement de celui-ci qui fait office de chemin de base pour lâ€™inclusion.
 
-###Résolution des doublons
-Si dans un fichier vous définissez plusieurs fois une même section, le résultat sera une fusion des paramètres trouvés dans l’ordre de leurs définitions.
+###RÃ©solution des doublons
+Si dans un fichier vous dÃ©finissez plusieurs fois une mÃªme section, le rÃ©sultat sera une fusion des paramÃ¨tres trouvÃ©s dans lâ€™ordre de leurs dÃ©finitions.
 
-Les paramètres définit en doubles seront écrasés dans l’ordre de leurs définitions, c’est-à-dire du haut vers le bas.
+Les paramÃ¨tres dÃ©finit en doubles seront Ã©crasÃ©s dans lâ€™ordre de leurs dÃ©finitions, câ€™est-Ã -dire du haut vers le bas.
 
 | [my_section] |+| [my_section]       |=| [my_section]       |
 | :-------     | | :----              | | :---               |

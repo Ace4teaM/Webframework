@@ -1,66 +1,65 @@
-Résultats de procédure
-===================
+#RÃ©sultats de procÃ©dure#
 
-Par convention, les développeurs ont l’habitude d'utiliser un code unique pour identifier des erreurs ou informations de retour de fonction.
-Les résultat de procédures expliqué ici permette de structurer une erreur ou une information a travers les différents langages d'une API (SQL>PHP>HTML>...)
+Par convention, les dÃ©veloppeurs ont lâ€™habitude d'utiliser un code unique pour identifier des erreurs ou informations de retour de fonction.
+Les rÃ©sultat de procÃ©dures expliquÃ© ici permette de structurer une erreur ou une information a travers les diffÃ©rents langages d'une API (SQL>PHP>HTML>...)
 
 Sources
 -----------
 > **Webframework/wfw/php/result.php**
 
-Définition
+DÃ©finition
 ----------------------
 
-> 0 (zéro) indique un succès, les autres valeurs une erreur.
+> 0 (zÃ©ro) indique un succÃ¨s, les autres valeurs une erreur.
 
-Cette méthode a l'inconvénient d'être uniquement relative à la fonction ou au programme qu'il exécute, masquant ainsi généralement les détail d'une erreur plus profonde et ajoutant ainsi de la difficulté au débogage.
+Cette mÃ©thode a l'inconvÃ©nient d'Ãªtre uniquement relative Ã  la fonction ou au programme qu'il exÃ©cute, masquant ainsi gÃ©nÃ©ralement les dÃ©tail d'une erreur plus profonde et ajoutant ainsi de la difficultÃ© au dÃ©bogage.
 
-Pour combler ces lacunes, Webframework représente les résultats de procédure de façon structuré:
+Pour combler ces lacunes, Webframework reprÃ©sente les rÃ©sultats de procÃ©dure de faÃ§on structurÃ©:
 
-| Donnée       | Description |
+| DonnÃ©e       | Description |
 |--------------|----------------------------------------------|
-| Code         | Fichier erroné, Connexion impossible, etc... |
-| Contexte     | Succès, Échec, Erreur système, etc...        |
-| Informations | Données associatives                         |
+| Code         | Fichier erronÃ©, Connexion impossible, etc... |
+| Contexte     | SuccÃ¨s, Ã‰chec, Erreur systÃ¨me, etc...        |
+| Informations | DonnÃ©es associatives                         |
 
 ###Contexte
-Définit dans quel contexte c’est produit l’erreur. Généralement définit par l’une des valeurs suivantes:
+DÃ©finit dans quel contexte câ€™est produit lâ€™erreur. GÃ©nÃ©ralement dÃ©finit par lâ€™une des valeurs suivantes:
 
-    ERR_OK     : La procédure est un succès
-    ERR_FAILED : La procédure à échoué pour des raisons fonctionnelles (argument invalide, état incorrecte, manque de droits, etc…)
-    ERR_SYSTEM : La procédure à échoué pour des raisons systèmes (problème matériel, etc…) indépendant de l’application 
+    ERR_OK     : La procÃ©dure est un succÃ¨s
+    ERR_FAILED : La procÃ©dure Ã  Ã©chouÃ© pour des raisons fonctionnelles (argument invalide, Ã©tat incorrecte, manque de droits, etcâ€¦)
+    ERR_SYSTEM : La procÃ©dure Ã  Ã©chouÃ© pour des raisons systÃ¨mes (problÃ¨me matÃ©riel, etcâ€¦) indÃ©pendant de lâ€™application 
 
 ###Code
-Définit un identifiant précisant la cause de l’erreur, ce code est définit par l’utilisateur.
+DÃ©finit un identifiant prÃ©cisant la cause de lâ€™erreur, ce code est dÃ©finit par lâ€™utilisateur.
 
 ###Informations
-Un tableau associatif précisant l’erreur.
+Un tableau associatif prÃ©cisant lâ€™erreur.
 
 Conventions
 ----------------------
 
 ####Codage des fonctions
-* La valeur de retour est un booléen: true (succès) ou false (échec)
-* La fonction stocke le résultat dans une variable a portée globale.
+* La valeur de retour est un boolÃ©en: true (succÃ¨s) ou false (Ã©chec)
+* La fonction stocke le rÃ©sultat dans une variable a portÃ©e globale.
 
-Le résultat d’une fonction à une porté globale:
+Le rÃ©sultat dâ€™une fonction Ã  une portÃ© globale:
 - Il est consultable en dehors du bloque de la fonction
-- Il n’existe qu’un seul code en cours à la fois
+- Il nâ€™existe quâ€™un seul code en cours Ã  la fois
 
-Cette méthode s’applique essentiellement aux applications Single-Thread.
+Cette mÃ©thode sâ€™applique essentiellement aux applications Single-Thread.
 
 Pourquoi utiliser cette convention ?
 ------------------------------------------------
-###Le problème avec un code de retour numérique
-* Les codes sont limités par la plage de valeur
-* Les application utilisent des codes d’erreurs spécifiques
-* Le manque de précision dans l’information
+###Le problÃ¨me avec un code de retour numÃ©rique
+* Les codes sont limitÃ©s par la plage de valeur
+* Les application utilisent des codes dâ€™erreurs spÃ©cifiques
+* Le manque de prÃ©cision dans lâ€™information
 * Le risque de masquer un code de retour
 
-###L’avantage du résultat de procédure
-* Une chaîne ne pose pas de limitation de taille
-* Les codes d’erreurs son facilement compréhensible et réutilisable par d’autres applications
-* Des informations complémentaires sous forme d’un tableau associatif permet de détailler l’erreur
-* La porté globale permet de ne pas perdre l’information entre deux fonctions
+###Lâ€™avantage du rÃ©sultat de procÃ©dure
+* Une chaÃ®ne ne pose pas de limitation de taille
+* Les codes dâ€™erreurs son facilement comprÃ©hensible et rÃ©utilisable par dâ€™autres applications
+* Des informations complÃ©mentaires sous forme dâ€™un tableau associatif permet de dÃ©tailler lâ€™erreur
+* La portÃ© globale permet de ne pas perdre lâ€™information entre deux fonctions
 
 

@@ -1,63 +1,62 @@
-Configuration
-===================
+#Configuration#
 
-La configuration est un élément important de l’application, elle permet au développeur de modifier l’environnement d’exécution et le comportement de l’application sans modification du code.
+La configuration est un Ã©lÃ©ment important de lâ€™application, elle permet au dÃ©veloppeur de modifier lâ€™environnement dâ€™exÃ©cution et le comportement de lâ€™application sans modification du code.
 
-Depuis la révision « 174 »  Webframework a introduit une gestion avancée des fichiers INI sur lequel s'appui ce système. Reportez-vous au chapitre <Format de fichier INI avancé > pour plus d’informations.
+Depuis la rÃ©vision Â« 174 Â»  Webframework a introduit une gestion avancÃ©e des fichiers INI sur lequel s'appui ce systÃ¨me. Reportez-vous au chapitre <Format de fichier INI avancÃ© > pour plus dâ€™informations.
 
 La configuration permet principalement :
-    Définir les chemins d’accès aux librairies associées
-    Définir les inclusions globales
-    Définir les paramètres de connexion à la base de données
-    Définir le dictionnaire de données
-    Définir les paramètres de l’application
+    DÃ©finir les chemins dâ€™accÃ¨s aux librairies associÃ©es
+    DÃ©finir les inclusions globales
+    DÃ©finir les paramÃ¨tres de connexion Ã  la base de donnÃ©es
+    DÃ©finir le dictionnaire de donnÃ©es
+    DÃ©finir les paramÃ¨tres de lâ€™application
 
 Arborescence des fichiers
 ------------------------------------
 
-Pour faciliter l’intégration de configuration, Webframework recommande de sectionner la configuration d’une application en plusieurs fichiers:
+Pour faciliter lâ€™intÃ©gration de configuration, Webframework recommande de sectionner la configuration dâ€™une application en plusieurs fichiers:
 
-| Donnée      | Description                                         |
+| DonnÃ©e      | Description                                         |
 |-------------|-----------------------------------------------------|
 | config.ini  | Configuration locale de l'application               |
 | all.ini     | Regroupe l'ensemble des fichiers de configuration   |
-| fields.ini  | Champs et formats de données                        |
-| options.ini | Définit les options spécifiques à l’application     |
-| sql.ini     | Fichiers SQL (tables, fonctions, jeu d’essai, …)    |
+| fields.ini  | Champs et formats de donnÃ©es                        |
+| options.ini | DÃ©finit les options spÃ©cifiques Ã  lâ€™application     |
+| sql.ini     | Fichiers SQL (tables, fonctions, jeu dâ€™essai, â€¦)    |
 
-Un exemple d’intégration est présent dans le répertoire "wfw/minimal/cfg" proposant une base générique d’application. 
+Un exemple dâ€™intÃ©gration est prÃ©sent dans le rÃ©pertoire "wfw/minimal/cfg" proposant une base gÃ©nÃ©rique dâ€™application. 
 
-###Champs et formats de données (fields.ini)
+###Champs et formats de donnÃ©es (fields.ini)
 
-Stock le dictionnaire de données dans une unique section: [fields_formats].
+Stock le dictionnaire de donnÃ©es dans une unique section: [fields_formats].
 
-Chaque champ est identifié par un nom et un format, exemple :
+Chaque champ est identifiÃ© par un nom et un format, exemple :
 
 > birth_date = date
 
-Pour savoir quel sont les types supportés, reportez-vous à la section <Format de champ>.
+Pour savoir quel sont les types supportÃ©s, reportez-vous Ã  la section <Format de champ>.
 
-L’utilisation d’un unique nom de section permet de fusionner plusieurs listes de champs et ainsi former un unique dictionnaire de données.
+Lâ€™utilisation dâ€™un unique nom de section permet de fusionner plusieurs listes de champs et ainsi former un unique dictionnaire de donnÃ©es.
 
-Il est impératif de prévenir tout conflit de noms et de types (voir convention de nommage).
+Il est impÃ©ratif de prÃ©venir tout conflit de noms et de types (voir convention de nommage).
 
-La plupart des champs définit, sont un copié-collé des colonnes de table de la base de données. Il est donc aisé grâce à des logiciels de modélisation de maintenir un modèle de données cohérant et générer le dictionnaire de données. 
+La plupart des champs dÃ©finit, sont un copiÃ©-collÃ© des colonnes de table de la base de donnÃ©es. Il est donc aisÃ© grÃ¢ce Ã  des logiciels de modÃ©lisation de maintenir un modÃ¨le de donnÃ©es cohÃ©rant et gÃ©nÃ©rer le dictionnaire de donnÃ©es. 
 
 ###Fichiers SQL (sql.ini)
 
-Les fichiers SQL permettent aux applications hôtes d’inclure les dépendances de script pour configurer la base de données. Cette configuration inclue plusieurs sections :
+Les fichiers SQL permettent aux applications hÃ´tes dâ€™inclure les dÃ©pendances de script pour configurer la base de donnÃ©es. Cette configuration inclue plusieurs sections :
 
 [sql_tables]
->Correspond généralement au fichier sql/tables.sql généré par le model de données. Ce fichier crée les tables, domaines et types SQL.
+>Correspond gÃ©nÃ©ralement au fichier sql/tables.sql gÃ©nÃ©rÃ© par le model de donnÃ©es. Ce fichier crÃ©e les tables, domaines et types SQL.
 
 [sql_func]
->Correspond généralement au fichier sql/func.sql maintenu par le développeur. Ce fichier crée les procédures stockées.
+>Correspond gÃ©nÃ©ralement au fichier sql/func.sql maintenu par le dÃ©veloppeur. Ce fichier crÃ©e les procÃ©dures stockÃ©es.
 
 [sql_init]
->Correspond généralement au fichier sql/ini.sql maintenu par le développeur. Ce fichier initialise divers modification sur les objets avant utilisation (insertions de données, modification de contraintes, etc…).
+>Correspond gÃ©nÃ©ralement au fichier sql/ini.sql maintenu par le dÃ©veloppeur. Ce fichier initialise divers modification sur les objets avant utilisation (insertions de donnÃ©es, modification de contraintes, etcâ€¦).
 
 [sql_populate]
->Correspond généralement au fichier sql/jeu_essai.sql maintenu par le développeur. Ce fichier insert un jeu d’essai global à la BDD permettant de réaliser des tests de fonctionnement.
+>Correspond gÃ©nÃ©ralement au fichier sql/jeu_essai.sql maintenu par le dÃ©veloppeur. Ce fichier insert un jeu dâ€™essai global Ã  la BDD permettant de rÃ©aliser des tests de fonctionnement.
 
 [sql_remove]
->Correspond généralement au fichier sql/remove.sql maintenu par le développeur. Ce fichier permet de supprimer l’ensemble des objets et insertions du module sans affecter le reste de la BDD.
+>Correspond gÃ©nÃ©ralement au fichier sql/remove.sql maintenu par le dÃ©veloppeur. Ce fichier permet de supprimer lâ€™ensemble des objets et insertions du module sans affecter le reste de la BDD.

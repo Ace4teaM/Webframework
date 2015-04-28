@@ -1,20 +1,20 @@
-Modèle de données
-=================
-Créer un modèle de données définit l'ensemble des champs utilisés par votre application.
+#ModÃ¨le de donnÃ©es#
 
-Définition
+CrÃ©er un modÃ¨le de donnÃ©es dÃ©finit l'ensemble des champs utilisÃ©s par votre application.
+
+DÃ©finition
 ----------
   * Un Identifiant
   * Une Description
   * Un Format
 
 ###Identifiant
-Chaque champ est unique et possède un usage spécifique. Webframework en définit certains (voir Champs réservés par Webframework). Les modules comme toutes applications, en définissent aussi, pour plus d’informations reportez-vous à la documentation concernée.
+Chaque champ est unique et possÃ¨de un usage spÃ©cifique. Webframework en dÃ©finit certains (voir Champs rÃ©servÃ©s par Webframework). Les modules comme toutes applications, en dÃ©finissent aussi, pour plus dâ€™informations reportez-vous Ã  la documentation concernÃ©e.
 
 ###Format
-Le format, test la validité d’une chaine de caractères. C’est une composante de sécurité importante car elle filtre les champs reçu par l’utilisateur avant leurs utilisations.
+Le format, test la validitÃ© dâ€™une chaine de caractÃ¨res. Câ€™est une composante de sÃ©curitÃ© importante car elle filtre les champs reÃ§u par lâ€™utilisateur avant leurs utilisations.
 
-Par convention, votre application définit les formats associés à vos champs dans la section **[fields_formats]** du document **cfg/fileds.ini**, comme dans l’exemple suivant :
+Par convention, votre application dÃ©finit les formats associÃ©s Ã  vos champs dans la section **[fields_formats]** du document **cfg/fileds.ini**, comme dans lâ€™exemple suivant :
 
 > [fields_formats]
 > firstname = name
@@ -22,67 +22,67 @@ Par convention, votre application définit les formats associés à vos champs dans
 > birthday = date
 > contact = mail
 
-Le contrôleur de l'application fait la relation avec la classe de base **cInput** correspondante. Ainsi le format **mail** utilise la classe **cInputMail**, le format **identifier** utilise la classe **cInputIdentifier**, etc… Vous pouvez donc aisément ajouter vos propres formats en définissant de nouvelles classes dérivées de **cInput**.
+Le contrÃ´leur de l'application fait la relation avec la classe de base **cInput** correspondante. Ainsi le format **mail** utilise la classe **cInputMail**, le format **identifier** utilise la classe **cInputIdentifier**, etcâ€¦ Vous pouvez donc aisÃ©ment ajouter vos propres formats en dÃ©finissant de nouvelles classes dÃ©rivÃ©es de **cInput**.
 
 ###Description
-La description apparait dans les formulaires utilisateur et les résultats de procédures.
+La description apparait dans les formulaires utilisateur et les rÃ©sultats de procÃ©dures.
 
-Chaque texte peut être écrit dans différents langages, dans le cas ou votre application doit être multi-langage. Le langage par défaut est définit par un paramètre de configuration (voir chapitre Application).
+Chaque texte peut Ãªtre Ã©crit dans diffÃ©rents langages, dans le cas ou votre application doit Ãªtre multi-langage. Le langage par dÃ©faut est dÃ©finit par un paramÃ¨tre de configuration (voir chapitre Application).
 
-Les descriptions sont écrites au format XML dans le fichier **default.xml**.
+Les descriptions sont Ã©crites au format XML dans le fichier **default.xml**.
 
     <results lang="fr">
         <fields>
             <contact>Adresse eMail</contact>
-            <firstname>Prénom</firstname>
+            <firstname>PrÃ©nom</firstname>
             <lastname>Nom</lastname>
             <birthday>Date de naissance</birthday>
         </fields>
     </results>
 
 
-Champs réservés
+Champs rÃ©servÃ©s
 ---------------
-Webframework définit une partie du dictionnaire de données pour son fonctionnement de base. Il est donc déconseillé d’utiliser ces identifiants dans un contexte différent de celui définit ci-dessous.
+Webframework dÃ©finit une partie du dictionnaire de donnÃ©es pour son fonctionnement de base. Il est donc dÃ©conseillÃ© dâ€™utiliser ces identifiants dans un contexte diffÃ©rent de celui dÃ©finit ci-dessous.
 
-Résultat de procédure :
+RÃ©sultat de procÃ©dure :
 
-| Identifiant | Description                   | Format
-|-------------|-------------------------------|-----------
-| result      | Contexte de résultat          | Identifier
-| error       | Code de l’erreur              | Identifier
-| message     | Message de l’erreur           | Identifier
-| txt_result  | Texte du contexte de résultat | String
-| txt_error   | Texte de l’erreur             | String
-| txt_message | Texte du message de l’erreur  | String
+| Identifiant | Description                   | Format     |
+|-------------|-------------------------------|----------- |
+| result      | Contexte de rÃ©sultat          | Identifier |
+| error       | Code de lâ€™erreur              | Identifier |
+| message     | Message de lâ€™erreur           | Identifier |
+| txt_result  | Texte du contexte de rÃ©sultat | String     |
+| txt_error   | Texte de lâ€™erreur             | String     |
+| txt_message | Texte du message de lâ€™erreur  | String     |
 
-Model-Vue-Contrôleur :
+Model-Vue-ContrÃ´leur :
 
-| Identifiant | Description                   | Format
-|-------------|-------------------------------|-----------
-| app 	      | Nom de l’application 	      | Identifier
-| ctrl 	      | Nom du contrôleur 	      | Identifier
-| output      | Format de sortie du document  | Identifier
+| Identifiant | Description                   | Format     |
+|-------------|-------------------------------|----------- |
+| app 	      | Nom de lâ€™application 	      | Identifier |
+| ctrl 	      | Nom du contrÃ´leur 	          | Identifier |
+| output      | Format de sortie du document  | Identifier |
 
 
-Modélisation des données
+ModÃ©lisation des donnÃ©es
 ------------------------
-Il est vivement recommandé d’utiliser un logiciel spécialisé pour modéliser votre modèle de données.
+Il est vivement recommandÃ© dâ€™utiliser un logiciel spÃ©cialisÃ© pour modÃ©liser votre modÃ¨le de donnÃ©es.
 
 Cela apporte plusieurs avantages :
 
-1. Modélisation intuitive des entités
-2. Exportation du modèle de données (scripts SQL)
-3. Exportation du modèle orienté objet (classes PHP, C++, Java, etc…)
-4. Maintenance facilitée
+1. ModÃ©lisation intuitive des entitÃ©s
+2. Exportation du modÃ¨le de donnÃ©es (scripts SQL)
+3. Exportation du modÃ¨le orientÃ© objet (classes PHP, C++, Java, etcâ€¦)
+4. Maintenance facilitÃ©e
 5. Gain de temps
 
 
 PowerAMC
 ---------------
-Les applications tierces de **Webframework** ont été construites avec le logiciel **PowerAMC **.
+Les applications tierces de **Webframework** ont Ã©tÃ© construites avec le logiciel **PowerAMC **.
 
-Si vous êtes familier de ce logiciel vous pourrez utiliser les extensions suivantes pour faciliter l’exportation de vos données :
+Si vous Ãªtes familier de ce logiciel vous pourrez utiliser les extensions suivantes pour faciliter lâ€™exportation de vos donnÃ©es :
 
 Extension de langage pour PHP:
 > Webframework/documents/sybase/php-wfw.xol
